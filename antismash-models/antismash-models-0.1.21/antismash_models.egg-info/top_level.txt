@@ -1,1 +1,0 @@
-antismash_models
