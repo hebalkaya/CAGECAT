@@ -1,0 +1,23 @@
+{% extends "base.xhtml" %}
+
+{% block title %}
+        Submission succesfull
+{% endblock %}
+
+{% block content %}
+    <h1>Your job has succesfully been submitted!</h1>
+<p>Your job ID is: <b>{{ job_id }}</b></p>
+    <h2>Your submitted form data was:</h2>
+    <span class="submitted-data">{{ submitted_data }}</span>
+
+<hr>
+<a
+        href="{{ url_for('home_page') }}"><button type="button"
+                                                  class="button warning">Go
+    again</button></a>
+<a
+        href="{{ url_for('home_page') }}"><button type="button"
+                                                  class="button info">Something else
+</button></a>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+h1 {
+    color: floralwhite;
+    font-size: x-large;
+}
+
+body {
+    background-color: black;
+    text-align: center;
+    color: white;
+    font-family: "Cambria Math";
+}
+
+.image_title {
+    color: blueviolet;
+    font-weight: bold;
+}
+
+span.smallertext {
+    font-size: xxx-large;
+}
+
+.error-message {
+    color: red;
+    font-size: xx-large;
+}
+
+.submitted-data {
+    font-family: "Courier New";
+    background: gray;
+    color: white;
+}
+
+.button {
+    border-radius: 15px;
+    border: 2px solid white;
+    background: rebeccapurple;
+    color: white;
+    font-size: 16px;
+    /*    color: black;*/
+}
+
+.button:hover {
+    background: #f8cc2c;
+    color:white;
+}
+
+.info {
+    background: limegreen;
+    color: white;
+
+}
+
+.warning {
+    background: orangered;
+    color: white;
+
+}
+/*.again-button {*/
+/*    border: white;*/
+/*    border-width: 10px;*/
+/*    background: coral;*/
+/*    color: black;*/
+/*}*/
