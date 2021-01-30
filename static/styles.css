@@ -2,10 +2,32 @@ h1 {
     color: floralwhite;
     font-size: x-large;
 }
+p.server-status {
+    margin: auto;
+    background: gray;
+    padding-left: 16px;
+    /*padding-top: 8px;*/
+    font-size: 15px;
+    width: 30%;
+    text-align: center;
+    border-radius: 15px;
+    border: 2px solid white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.centered {
+    text-align-all: center;
+}
+
+span.important {
+    font-weight: bold;
+    color: red;
+
+}
 
 body {
     background-color: black;
-    text-align: center;
+    /*text-align: center;*/
     color: white;
     font-family: "Cambria Math";
 }
@@ -24,6 +46,10 @@ span.smallertext {
     font-size: xx-large;
 }
 
+.hidden {
+    display: none;
+}
+
 .submitted-data {
     font-family: "Courier New";
     background: gray;
@@ -36,6 +62,7 @@ span.smallertext {
     background: rebeccapurple;
     color: white;
     font-size: 16px;
+    font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
     /*    color: black;*/
 }
 

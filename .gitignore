@@ -1,3 +1,4 @@
 .idea/*
 __pycache__/*
 antismash-models/*
+static/images/*

@@ -5,4 +5,9 @@
 {% endblock %}
 {% block content %}
     <p class="error-message">The page you tried to reach was not found</p>
+
+<a
+href="{{ url_for('home_page') }}"><button type="button"
+                                          class="button warning">Home page
+</button></a>
 {% endblock %}
