@@ -21,7 +21,25 @@ function validateForm(){
     console.log(x.value);
     // TODO
 
-    return false;
+    return true; // Accepts form (and therefore continues to next page if true
+    // is returned)
 }
+function changeFooterVisibility(){
+    var elem = document.getElementById("showFooterCheckbox");
+    // var footer = document.getElementById("custom_footer");
+    //console.log(elem);
+    // console.log($("custom_footer"));
+
+    var footer = $("#custom_footer"); // uses ID
+    let speed = "slow"
+    if (!elem.checked) {
+        footer.slideUp(speed);
+    }
+    else {
+        footer.slideDown(speed)
+    }
+
+}
+
 
 // When option 5 becomes checked: uncheck option 1 and 2, and make them unclickable

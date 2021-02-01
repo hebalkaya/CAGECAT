@@ -7,6 +7,7 @@
     <title>{% block title %}{% endblock %}</title>
     <script type="application/javascript"
             src="{{ url_for('static', filename='js/tester.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"></link>
     <link rel="apple-touch-icon" sizes="180x180"
           href="{{url_for('static', filename='/images/icon/apple-touch-icon.png')}}"/>
@@ -15,13 +16,32 @@
 <!--    <link rel="manifest" href="{{url_for('static', filename='/images/icon/site.webmanifest')}}"/>-->
 </head>
 <body>
-    <p class="server-status centered">Server satus:<span class="important">
+    <p class="server-status">Server satus:<span class="important">
         {{serv_info["server_status"]}}</span> Queued:
         <span class="important">{{serv_info["queued"]}}</span>    Running:
         <span class="important">{{serv_info["running"]}}</span>
             Completed:
         <span class="important">{{serv_info["completed"]}}</span>
     </p>
-    {% block content %}{% endblock %}
+{% block content %}{% endblock %}
+
+        <hr/>
+    <div id="custom_footer">
+        <p style="text-align: center" class="footer">This work has been created
+            by the <a
+                href="https://www.wur.nl/en/Research-Results/Chair-groups/Plant-Sciences/Bioinformatics.htm">BIF</a></>
+            group
+            of
+            Wageningen University and Research</p>
+        <a href="https://www.wur.nl/en.htm"><img class="centerrrr"
+                src="{{url_for('static', filename='images/wur_logo.png')}}"
+                alt="WUR logo"/></a>
+</div>
+    <div style="margin: auto; width: 10%">
+        <label for="showFooterCheckbox">Show footer</label>
+        <input type="checkbox" onclick="changeFooterVisibility()"
+               id="showFooterCheckbox" name="showFooterCheckbox" checked="checked"/>
+
+    </div>
 </body>
 </html>

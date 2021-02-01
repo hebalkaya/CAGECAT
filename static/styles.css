@@ -15,14 +15,48 @@ p.server-status {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.centered {
+p.centered {
     text-align-all: center;
+    /*Doesn't do anything currently*/
 }
+
+a {
+    color: #ff0000;
+}
+
+a:hover {
+    color: #ff996f;
+}
+img.centerrrr {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+}
+
+.mcenter {
+    margin-left: auto;
+    margin-right: auto;
+    /*width: 30%;*/
+    padding-left: 30px;
+    padding-right: 30px;
+}
+/*img.center {*/
+/*    display: block;*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*}*/
 
 span.important {
     font-weight: bold;
     color: red;
 
+}
+p.footer {
+    font-size: 11px;
+    color: white;
+    font-family: Arial;
+    margin: fill;
 }
 
 body {
