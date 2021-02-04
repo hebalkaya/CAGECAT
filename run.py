@@ -1,7 +1,7 @@
-from flask import Flask, request, url_for, redirect, render_template
-import utils
+from flask import Flask, render_template, request, url_for, redirect
+from utils import get_server_info, save_file, POSTED_FILE_TRANSLATION, fetch_base_error_message
 import os
-import logging
+
 # TODO: Find out how pre-submission uploading works
 
 app = Flask("multicblaster")
@@ -10,23 +10,44 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 #logging.basicConfig(filename="logs.log", level=logging.INFO)
 SUBMIT_URL = "/submit_job"
 
+# Views
 @app.route("/")
 def home_page():
     # TODO: create function to fetch server info
     return render_template("index.xhtml", submit_url=SUBMIT_URL, serv_info=get_server_info())
 
+
 @app.route("/new_job", methods=["GET"])
 def new_job():
     return render_template("new_job.xhtml", serv_info=get_server_info())
 
+
 @app.route(SUBMIT_URL, methods=["POST"])
 def submit_job():
+    print(request.form)
+    print(request.files)
     if request.method == "POST":
+
+        previous_url = "/" + request.referrer.split("/")[-1]
+        # url_for returns with leading /
+        #
+        # print(request.files)
+        # print(request.referrer)
+        # print(previous_url)
+
+        # print(url_for("create_database"))
+        if previous_url == url_for("create_database"):
+            print("ok")
+            # save_file("custom_databases", request.files.getlist(), app)
+            save_file(request.files.getlist(POSTED_FILE_TRANSLATION[
+                                                "create_database"]), app)
+            # TODO: here we can do something
+        print(request.form)
         return render_template("job_submitted.xhtml", job_id="TODO",
                                submitted_data=request.form,
-                                serv_info=get_server_info())
-    else:
-        return redirect(url_for("home_page"), serv_info=get_server_info())
+                               serv_info=get_server_info())
+    return redirect(url_for("home_page"), serv_info=get_server_info())
+
 
 @app.route("/status/<job_id>")
 def show_status(job_id):
@@ -45,26 +66,31 @@ def show_status(job_id):
                            serv_info=get_server_info())
     # TODO: create not_found template
 
-def get_server_info() -> dict:
-    data = {"server_status": "running",
-            "queued": 2,
-            "running": 8,
-            "completed": 3418}
 
-    # TODO: actually create this one. Now dummy data
+@app.route("/create-database")
+def create_database():
+    # submitted_data
 
-    return data
+    return render_template("create_database.xhtml", submit_url=SUBMIT_URL,
+                           serv_info=get_server_info())
 
-# Error handlers
+
+@app.route("/extract-sequence")
+def extract_sequence():
+    # TODO
+    return 404
+
+
 @app.errorhandler(404)
 def invalid_method(error):
     #logging.error(utils.fetch_base_error_message(error, request))
     # return redirect(url_for("home_page"))
     return render_template("page_not_found.xhtml", serv_info=get_server_info()), 404
 
+
 @app.errorhandler(405)
 def page_not_found(error):
-    base = utils.fetch_base_error_message(error, request)
+    base = fetch_base_error_message(error, request)
     #logging.error(f"{base}, METHOD: {request.method}")
     return redirect("home_page")
 

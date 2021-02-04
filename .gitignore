@@ -2,3 +2,5 @@
 __pycache__/*
 antismash-models/*
 static/images/*
+./sequence.gb
+/static/uploads/
