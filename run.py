@@ -36,8 +36,9 @@ def submit_job():
         # print(request.files)
         # print(request.referrer)
         # print(previous_url)
-        print(request.form)
+        # print(request.form)
         # print(url_for("create_database"))
+        # TODO: lines below can be optimized
         if previous_url == url_for("create_database"):
             print("ok")
             # save_file("custom_databases", request.files.getlist(), app)
