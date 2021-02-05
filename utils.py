@@ -58,9 +58,9 @@ def save_file(posted_files, app):
 #     print(f"File: {file.filename} has been saved at ")
 
 
-def get_server_info() -> dict:
+def get_server_info(q) -> dict:
     data = {"server_status": "running",
-            "queued": 2,
+            "queued": len(q),
             "running": 8,
             "completed": 3418}
 
