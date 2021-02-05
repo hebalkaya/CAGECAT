@@ -1,0 +1,15 @@
+{% extends "base.xhtml" %}
+
+{% block title %}Gene neighbourhood plot {% endblock %}
+{% block content %}
+<form action="{{submit_url}}" method="post" name="neighbourhoodForm"
+      enctype="multipart/form-data">
+
+    {{session_file_upload|safe}}
+    {{outf_name|safe}}
+
+    <input type="submit" value="Submit"/>
+</form>
+
+{% endblock %}
+

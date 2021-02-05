@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
-from utils import get_server_info, save_file, POSTED_FILE_TRANSLATION, fetch_base_error_message
+from utils import get_server_info, save_file, POSTED_FILE_TRANSLATION, \
+    fetch_base_error_message
+import HTMLGenerators as htmlg
 import os
 
 # TODO: Find out how pre-submission uploading works
@@ -34,7 +36,7 @@ def submit_job():
         # print(request.files)
         # print(request.referrer)
         # print(previous_url)
-
+        print(request.form)
         # print(url_for("create_database"))
         if previous_url == url_for("create_database"):
             print("ok")
@@ -42,10 +44,17 @@ def submit_job():
             save_file(request.files.getlist(POSTED_FILE_TRANSLATION[
                                                 "create_database"]), app)
             # TODO: here we can do something
-        print(request.form)
+
+
+        elif previous_url == url_for("calculate_neighbourhood"):
+            save_file(request.files.getlist(POSTED_FILE_TRANSLATION[
+                                                "calculate_neighbourhood"]), app)
+
         return render_template("job_submitted.xhtml", job_id="TODO",
                                submitted_data=request.form,
                                serv_info=get_server_info())
+
+
     return redirect(url_for("home_page"), serv_info=get_server_info())
 
 
@@ -72,7 +81,9 @@ def create_database():
     # submitted_data
 
     return render_template("create_database.xhtml", submit_url=SUBMIT_URL,
-                           serv_info=get_server_info())
+                           serv_info=get_server_info(),
+                           outf_name= htmlg.generate_output_filename_form(
+                               "database_name"))
 
 
 @app.route("/extract-sequence")
@@ -80,7 +91,16 @@ def extract_sequence():
     # TODO
     return 404
 
+@app.route("/neighbourhood")
+def calculate_neighbourhood():
+    return render_template("neighbourhood.xhtml",
+                           submit_url=SUBMIT_URL,
+                           serv_info=get_server_info(),
+                           session_file_upload=htmlg.SESSION_FILE_UPLOAD,
+                           outf_name=htmlg.generate_output_filename_form(
+                               "output_name"))
 
+# Error handlers
 @app.errorhandler(404)
 def invalid_method(error):
     #logging.error(utils.fetch_base_error_message(error, request))

@@ -1,6 +1,7 @@
 import os
 
-POSTED_FILE_TRANSLATION = {"create_database": "genomeFiles"
+POSTED_FILE_TRANSLATION = {"create_database": "genomeFiles",
+                           "calculate_neighbourhood": "outputFileName"
                            }
 
 class StatusException(Exception):
@@ -66,8 +67,4 @@ def get_server_info() -> dict:
     # TODO: actually create this one. Now dummy data
 
     return data
-
-
-
-
 
