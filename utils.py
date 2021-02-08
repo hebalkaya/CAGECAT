@@ -4,6 +4,8 @@ POSTED_FILE_TRANSLATION = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
                            }
 
+COMPRESSION_FORMATS = [".tar", ".tar.gz", ".gz",  ".7z", ".zip", ".rar"]
+
 class StatusException(Exception):
     def __init__(self, msg):
         super(StatusException, self).__init__(msg)

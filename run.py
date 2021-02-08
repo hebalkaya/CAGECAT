@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, \
+    send_from_directory, flash
 from utils import get_server_info, save_file, POSTED_FILE_TRANSLATION, \
-    fetch_base_error_message
+    fetch_base_error_message, COMPRESSION_FORMATS
 import workers as rf
 import HTMLGenerators as htmlg
 import os
@@ -71,8 +72,8 @@ def submit_job():
     return redirect(url_for("home_page"), serv_info=get_server_info(q))
 
 
-@app.route("/status/<job_id>")
-def show_status(job_id):
+@app.route("/results/<job_id>")
+def show_result(job_id):
     #TODO: search for job ID
     found = True
 
@@ -80,13 +81,40 @@ def show_status(job_id):
     status = "running"
 
     if found:
-        return render_template("status_page.xhtml", job_id=job_id,
-                               status=status, serv_info=get_server_info(q))
+        return render_template("result_page.xhtml", job_id=job_id,
+                               status=status, serv_info=get_server_info(q),
+                               compr_formats=COMPRESSION_FORMATS)
         # TODO: create status template
 
     return render_template("not_found.xhtml", job_id=job_id,
                            serv_info=get_server_info(q))
     # TODO: create not_found template
+
+@app.route("/download-results", methods=["POST"])
+def return_user_download():
+    print(request.form)
+
+
+
+    # execute convert_compression.py
+    submitted_data = request.form
+    print(submitted_data)
+    if len(submitted_data) != 2: # should be job_id and compression_type
+        # flash("Invalid post attributes") # TODO: should show them on the page
+        return redirect(url_for("home_page"))
+
+    job_id = submitted_data["job_id"]
+    compr_type = submitted_data["compression_type"]
+
+    # TODO: first, execute compression_conversion script
+    # to go from ours server-default compression to the desired compresion
+    # format
+
+    # print("-"*50)
+    # print(job_id, compr_type)
+    return "Example" # TODO: use send_from_directory to return file
+
+    # return "Hello there"
 
 
 @app.route("/create-database")
@@ -126,7 +154,7 @@ def invalid_method(error):
 def page_not_found(error):
     base = fetch_base_error_message(error, request)
     #logging.error(f"{base}, METHOD: {request.method}")
-    return redirect("home_page")
+    return redirect(url_for("home_page"))
 
 
 
