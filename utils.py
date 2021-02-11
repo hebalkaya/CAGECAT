@@ -1,14 +1,30 @@
 import os
+import random
 
-POSTED_FILE_TRANSLATION = {"create_database": "genomeFiles",
+FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
-                           }
+                               }
 
 COMPRESSION_FORMATS = [".tar", ".tar.gz", ".gz",  ".7z", ".zip", ".rar"]
+
+TEST_PATH = "."
 
 class StatusException(Exception):
     def __init__(self, msg):
         super(StatusException, self).__init__(msg)
+
+def generate_job_id(id_len=15):
+    job_id = []
+
+    for i in range(id_len):
+        if i % 4 == 0:
+            min, max = 65, 90
+        else:
+            min, max = 48, 57
+
+        job_id.append(chr(random.randint(min, max)))
+
+    return "".join(job_id)
 
 
 def parse_error(error_msg):

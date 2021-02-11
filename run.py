@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, \
     send_from_directory, flash
-from utils import get_server_info, save_file, POSTED_FILE_TRANSLATION, \
-    fetch_base_error_message, COMPRESSION_FORMATS
+from utils import get_server_info, save_file, FILE_POST_FUNCTION_ID_TRANS, \
+    fetch_base_error_message, COMPRESSION_FORMATS, generate_job_id
 import workers as rf
 import HTMLGenerators as htmlg
 import os
@@ -35,38 +35,29 @@ def new_job():
 
 @app.route(SUBMIT_URL, methods=["POST"])
 def submit_job():
-    print(request.form)
-    print(request.files)
-    if request.method == "POST":
-
-        previous_url = "/" + request.referrer.split("/")[-1]
-        # url_for returns with leading /
-        #
-        # print(request.files)
-        # print(request.referrer)
-        # print(previous_url)
-        # print(request.form)
-        # print(url_for("create_database"))
-        # TODO: lines below can be optimized
-        if previous_url == url_for("create_database"):
-            print("ok")
-            # save_file("custom_databases", request.files.getlist(), app)
-            save_file(request.files.getlist(POSTED_FILE_TRANSLATION[
-                                                "create_database"]), app)
-            # TODO: here we can do something
+    # print(request.form)
+    # print(request.files)
+    # print(request)
+    # if request.method == "POST":
 
 
-        elif previous_url == url_for("calculate_neighbourhood"):
-            save_file(request.files.getlist(POSTED_FILE_TRANSLATION[
-                                                "calculate_neighbourhood"]), app)
+    # url_for returns with leading /
+    #
+    # print(request.files)
+    # print(request.referrer)
+    # print(previous_url)
+    # print(request.form)
+    # print(url_for("create_database"))
+    # TODO: lines below can be optimized
 
-        # Here we add a dummy function to add to the queue
-        job = q.enqueue(rf.dummy_sleeping, "this is a dummy function")
-        print(job)
-        print(job.id)
-        return render_template("job_submitted.xhtml", job_id="TODO",
-                               submitted_data=request.form,
-                               serv_info=get_server_info(q),)
+
+    # Here we add a dummy function to add to the queue
+    job_id = generate_job_id() # TODO: check if job ID is already in database
+
+    job = q.enqueue(rf.execute_dummy_cmd)
+    return render_template("job_submitted.xhtml", job_id=job_id,
+                           submitted_data=request.form,
+                           serv_info=get_server_info(q),)
 
 
     return redirect(url_for("home_page"), serv_info=get_server_info(q))
