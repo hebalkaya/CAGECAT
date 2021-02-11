@@ -54,7 +54,7 @@ def submit_job():
     # Here we add a dummy function to add to the queue
     job_id = generate_job_id() # TODO: check if job ID is already in database
 
-    job = q.enqueue(rf.execute_dummy_cmd)
+    job = q.enqueue(rf.execute_dummy_cmd, job_id)
     return render_template("job_submitted.xhtml", job_id=job_id,
                            submitted_data=request.form,
                            serv_info=get_server_info(q),)

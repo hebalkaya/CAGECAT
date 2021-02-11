@@ -1,7 +1,11 @@
 from time import sleep
 from random import randint
 import subprocess
+import os
 from flask import url_for
+
+LOGGING_BASE_DIR = "jobs" # on Unix, so /
+FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 
 # Redis functions
 def dummy_sleeping(msg):
@@ -14,8 +18,15 @@ def dummy_sleeping(msg):
     sleep(to_sleep)
     print(f"Wakey wakey! - Job finished. Msg: ({msg})")
 
-def execute_dummy_cmd():
-    with open("dummy_log.txt", "w") as outf:
+def execute_dummy_cmd(job_id):
+    base_path =f"{LOGGING_BASE_DIR}/{job_id}"
+    os.mkdir(base_path)
+
+    for folder in FOLDERS_TO_CREATE:
+        os.mkdir(f"{base_path}/{folder}")
+
+    with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
+        # outf.write(f"{job_id}\n")
         cmd = ["pip3", "freeze"]
         subprocess.run(cmd, stderr=outf, stdout=outf, text=True,
                        encoding="UTF=-8")
