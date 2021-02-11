@@ -53,9 +53,15 @@ def submit_job():
 
     # Here we add a dummy function to add to the queue
     job_id = generate_job_id() # TODO: check if job ID is already in database
+    # prev_page =
+    # print(prev_page)
 
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)
-    job = q.enqueue(rf.execute_cblaster, job_id, request.form)
+    job = q.enqueue(rf.execute_cblaster, args=(job_id,), kwargs={
+        "form": request.form,
+        "files": request.files,
+        "prev_page": "/" + request.referrer.split("/")[-1]
+    })
 
     # TODO: dont pass full request object, it will crash
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)

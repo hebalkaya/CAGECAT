@@ -18,7 +18,13 @@ def dummy_sleeping(msg):
     sleep(to_sleep)
     print(f"Wakey wakey! - Job finished. Msg: ({msg})")
 
-def execute_cblaster(job_id, test):
+def execute_cblaster(job_id, form=None, files=None, prev_page=None):
+    # Using None for every keyword parameter allows future calls to this
+    # function to exclude setting this keyword parameter when it is not
+    # required
+    print(form)
+    print(files)
+    print(prev_page)
     create_directories(job_id)
 
 
