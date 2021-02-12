@@ -1,5 +1,6 @@
 import os
 import random
+from rq.registry import StartedJobRegistry
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
@@ -76,10 +77,14 @@ def save_file(posted_files, app):
 #     print(f"File: {file.filename} has been saved at ")
 
 
-def get_server_info(q) -> dict:
+def get_server_info(q, redis_conn) -> dict:
+    registry = StartedJobRegistry('default', connection=redis_conn)
+    # above registry has the jobs in it which have been started, but are not
+    # finished yet: running jobs.
+
     data = {"server_status": "running",
             "queued": len(q),
-            "running": 8,
+            "running": len(registry.get_job_ids()),
             "completed": 3418}
 
     # TODO: actually create this one. Now dummy data

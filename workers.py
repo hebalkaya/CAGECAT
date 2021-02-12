@@ -3,9 +3,11 @@ from random import randint
 import subprocess
 import os
 from flask import url_for
-
-LOGGING_BASE_DIR = "jobs" # on Unix, so /
+LOGGING_BASE_DIR = "jobs"
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
+
+
+
 
 # Redis functions
 def dummy_sleeping(msg):
@@ -18,18 +20,6 @@ def dummy_sleeping(msg):
     sleep(to_sleep)
     print(f"Wakey wakey! - Job finished. Msg: ({msg})")
 
-def execute_cblaster(job_id, form=None, files=None, prev_page=None):
-    # Using None for every keyword parameter allows future calls to this
-    # function to exclude setting this keyword parameter when it is not
-    # required
-    print(form)
-    print(files)
-    print(prev_page)
-    create_directories(job_id)
-
-
-
-
 def create_directories(job_id):
     base_path = f"{LOGGING_BASE_DIR}/{job_id}"
     os.mkdir(base_path)
@@ -39,6 +29,30 @@ def create_directories(job_id):
         # outf.write(f"{job_id}\n")
         cmd = ["pip3", "freeze"]
         subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+
+def execute_cblaster(job_id, form=None, files=None, prev_page=None):
+    sleep(randint(5, 12))
+    # Using None for every keyword parameter allows future calls to this
+    # function to exclude setting this keyword parameter when it is not
+    # required
+    base_path = create_directories(job_id)# TODO: uncomment for on linux
+
+    # if files is not None or not files:
+    #     for name, file in files.items():
+    #         safe_filename = file.filename #TODO: make it a safe filename
+    #         path = f"{base_path}/uploads/{safe_filename}"
+    #         file.save(path)
+    #         print(f"File saved: {path}")
+    print(form)
+    print(files)
+    # We can't do anything with the files because they are still part of the
+    # request. They are not yet saved on the server. Possible solution: save
+    # them from during request processing, and store links to the paths of
+    # the files in the file keyword to use it here
+    print(prev_page)
+
+
 
 
 # def execute_cblaster_cmd(req, job_id):

@@ -25,12 +25,12 @@ if __name__ == "__main__":
 def home_page():
     # TODO: create function to fetch server info
     return render_template("index.xhtml", submit_url=SUBMIT_URL,
-                           serv_info=get_server_info(q))
+                           serv_info=get_server_info(q, r))
 
 
 @app.route("/new_job", methods=["GET"])
 def new_job():
-    return render_template("new_job.xhtml", serv_info=get_server_info(q))
+    return render_template("new_job.xhtml", serv_info=get_server_info(q, r))
 
 
 @app.route(SUBMIT_URL, methods=["POST"])
@@ -67,10 +67,10 @@ def submit_job():
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)
     return render_template("job_submitted.xhtml", job_id=job_id,
                            submitted_data=request.form,
-                           serv_info=get_server_info(q),)
+                           serv_info=get_server_info(q, r))
 
 
-    return redirect(url_for("home_page"), serv_info=get_server_info(q))
+    return redirect(url_for("home_page"), serv_info=get_server_info(q, r))
 
 
 @app.route("/results/<job_id>")
@@ -83,7 +83,7 @@ def show_result(job_id):
 
     if found:
         return render_template("result_page.xhtml", job_id=job_id,
-                               status=status, serv_info=get_server_info(q),
+                               status=status, serv_info=get_server_info(q, r),
                                compr_formats=COMPRESSION_FORMATS)
         # TODO: create status template
 
@@ -123,7 +123,7 @@ def create_database():
     # submitted_data
 
     return render_template("create_database.xhtml", submit_url=SUBMIT_URL,
-                           serv_info=get_server_info(q),
+                           serv_info=get_server_info(q, r),
                            outf_name= htmlg.generate_output_filename_form(
                                "database_name"))
 
@@ -137,7 +137,7 @@ def extract_sequence():
 def calculate_neighbourhood():
     return render_template("neighbourhood.xhtml",
                            submit_url=SUBMIT_URL,
-                           serv_info=get_server_info(q),
+                           serv_info=get_server_info(q, r),
                            session_file_upload=htmlg.SESSION_FILE_UPLOAD,
                            outf_name=htmlg.generate_output_filename_form(
                                "output_name"))
@@ -148,7 +148,7 @@ def invalid_method(error):
     #logging.error(utils.fetch_base_error_message(error, request))
     # return redirect(url_for("home_page"))
     return render_template("page_not_found.xhtml",
-                           serv_info=get_server_info(q)), 404
+                           serv_info=get_server_info(q, r)), 404
 
 
 @app.errorhandler(405)
