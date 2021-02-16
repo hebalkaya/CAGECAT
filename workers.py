@@ -25,10 +25,12 @@ def create_directories(job_id):
     os.mkdir(base_path)
     for folder in FOLDERS_TO_CREATE:
         os.mkdir(f"{base_path}/{folder}")
-    with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
-        # outf.write(f"{job_id}\n")
-        cmd = ["pip3", "freeze"]
-        subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+    # with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
+    #     # outf.write(f"{job_id}\n")
+    #     cmd = ["pip3", "freeze"]
+    #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+    return base_path
 
 
 def execute_cblaster(job_id, form=None, files=None, prev_page=None):
@@ -44,15 +46,29 @@ def execute_cblaster(job_id, form=None, files=None, prev_page=None):
     #         path = f"{base_path}/uploads/{safe_filename}"
     #         file.save(path)
     #         print(f"File saved: {path}")
+
+    # Prints are not shown unless the cmd is not executed, or after the cmd
+    # has finished
     print(form)
     print(files)
+    print(job_id)
     # We can't do anything with the files because they are still part of the
     # request. They are not yet saved on the server. Possible solution: save
     # them from during request processing, and store links to the paths of
     # the files in the file keyword to use it here
     print(prev_page)
 
+    print("Going to execute cblaster now")
+    cmd = ["cblaster", "search", "-qf", "A0A411L027.1.fasta", "-o",
+           f"{base_path}/results/{job_id}_cblaster.json"] # -o should point
+    # to result directory
+    program = cmd[0] # for pipeline stage
 
+    with open(f"{base_path}/logs/{job_id}_{program}.log", "w") as outf: # should
+        # point
+        # to
+        # log directory
+        subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
 
 # def execute_cblaster_cmd(req, job_id):

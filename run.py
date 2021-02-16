@@ -11,7 +11,7 @@ import rq
 # TODO: Find out how pre-submission uploading works
 if __name__ == "__main__":
     r = redis.Redis()
-    q = rq.Queue(connection=r)
+    q = rq.Queue(connection=r, default_timeout=7200) # 2h for 1 job
 
     app = Flask("multicblaster")
     UPLOAD_FOLDER = os.path.join("static", "uploads")
@@ -59,9 +59,9 @@ def submit_job():
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)
     job = q.enqueue(rf.execute_cblaster, args=(job_id,), kwargs={
         "form": request.form,
-        "files": request.files,
+        "files": request.files if request.files else None,
         "prev_page": "/" + request.referrer.split("/")[-1]
-    })
+    }, result_ttl=86400) # keep results for 1 day
 
     # TODO: dont pass full request object, it will crash
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)
