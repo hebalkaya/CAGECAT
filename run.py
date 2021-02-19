@@ -11,7 +11,7 @@ import rq
 # TODO: Find out how pre-submission uploading works
 if __name__ == "__main__":
     r = redis.Redis()
-    q = rq.Queue(connection=r, default_timeout=7200) # 2h for 1 job
+    q = rq.Queue(connection=r, default_timeout=28800) # 2h for 1 job
 
     app = Flask("multicblaster")
     UPLOAD_FOLDER = os.path.join("static", "uploads")
@@ -35,20 +35,12 @@ def new_job():
 
 @app.route(SUBMIT_URL, methods=["POST"])
 def submit_job():
-    # print(request.form)
-    # print(request.files)
-    # print(request)
-    # if request.method == "POST":
+    job_type = request.form["job_type"]
 
-
-    # url_for returns with leading /
-    #
-    # print(request.files)
-    # print(request.referrer)
-    # print(previous_url)
-    # print(request.form)
-    # print(url_for("create_database"))
-    # TODO: lines below can be optimized
+    if job_type == "search":
+        f = rf.cblaster_search
+    else:
+        f = rf.cblaster_search # in case
 
 
     # Here we add a dummy function to add to the queue
@@ -56,12 +48,21 @@ def submit_job():
     # prev_page =
     # print(prev_page)
 
-    # job = q.enqueue(rf.execute_dummy_cmd, job_id)
-    job = q.enqueue(rf.execute_cblaster, args=(job_id,), kwargs={
-        "form": request.form,
-        "files": request.files if request.files else None,
+    job = q.enqueue(f, args=(job_id,),kwargs={
+        "options": request.form,
+        "file_path": None, # TODO for uploaded files
         "prev_page": "/" + request.referrer.split("/")[-1]
-    }, result_ttl=86400) # keep results for 1 day
+    }, result_ttl=86400)
+
+    print(job)
+
+
+    # job = q.enqueue(rf.execute_dummy_cmd, job_id)
+    # job = q.enqueue(rf.execute_cblaster, args=(job_id,), kwargs={
+    #     "form": request.form,
+    #     "files": request.files if request.files else None,
+    #     "prev_page": "/" + request.referrer.split("/")[-1]
+    # }, result_ttl=86400) # keep results for 1 day
 
     # TODO: dont pass full request object, it will crash
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)

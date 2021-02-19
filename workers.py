@@ -6,6 +6,8 @@ from flask import url_for
 LOGGING_BASE_DIR = "jobs"
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 
+sep = os.sep
+
 
 
 
@@ -31,6 +33,34 @@ def create_directories(job_id):
     #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
     return base_path
+
+
+def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
+    sleep(10)
+    base_path = create_directories(job_id) # should probably be done when
+    # getting the request to store the uploaded files
+
+    # cmd = ["cblaster", "search", "-qf", "A0A411L027.1.fasta", "-o",
+    #        f"{base_path}/results/{job_id}_cblaster.json"]
+
+    # TODO: change -qf to uploaded file
+    cmd = ["cblaster", "search",
+           "-qf", "bua_seq.fasta",
+           "-o", f"{base_path}{sep}results{sep}{job_id}_summary.txt",
+           "--database", options["database_type"],
+           "--entrez_query", options["entrez_query"],
+           "--hitlist_size", options["max_hits"]
+           ]
+    print("Is this going ok?")
+    program = cmd[0]
+
+    with open(f"{base_path}/logs/{job_id}_{program}.log", "w") as outf: # should
+        # point
+        # to
+        # log directory
+        subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+    print("We are finished :)")
 
 
 def execute_cblaster(job_id, form=None, files=None, prev_page=None):

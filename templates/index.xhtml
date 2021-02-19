@@ -4,32 +4,50 @@
         {% block content %}
 <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
       onsubmit="return validateForm()" name="optionForm">
+    <input type="hidden" name="job_type" value="search" required="required"/>
     <div>
-        <label for="option1">Option 1</label>
-        <input type="checkbox" id="option1" name="option1" checked="checked"/>
-
+        <label for="database_type">Database</label>
+        <input type="text" required="required" name="database_type"
+               id="database_type"
+               value="nr"/>
     </div>
     <div>
-        <label for="option2">Option 2</label>
-        <input type="checkbox" id="option2" name="option2" checked="checked"/>
+        <label for="entrez_query">Entrez query</label>
+        <input type="text" required="required" name="entrez_query"
+               id="entrez_query" value="Aspergillus[organism]"/>
     </div>
+    <div>
+        <label for="max_hits">Maximum hits</label>
+        <input type="number" required="required" name="max_hits"
+               id="max_hits" min="1" step="1"
+               value="5000"/>
+    </div>
+<!--    <div>-->
+<!--        <label for="option1">Option 1</label>-->
+<!--        <input type="checkbox" id="option1" name="option1" checked="checked"/>-->
 
-    <fieldset id="optionGroup1">
-        <legend>Options belonging together</legend>
-        <label for="option3">Option 3</label>
-        <input type="checkbox" id="option3" name="option3"/>
+<!--    </div>-->
+<!--    <div>-->
+<!--        <label for="option2">Option 2</label>-->
+<!--        <input type="checkbox" id="option2" name="option2" checked="checked"/>-->
+<!--    </div>-->
 
-        <label for="option4">Option 4</label>
-        <input type="checkbox" id="option4" name="option4" checked="checked"/>
+<!--    <fieldset id="optionGroup1">-->
+<!--        <legend>Options belonging together</legend>-->
+<!--        <label for="option3">Option 3</label>-->
+<!--        <input type="checkbox" id="option3" name="option3"/>-->
 
-        <label for="option5">Option 5</label>
-        <input type="checkbox" id="option5" name="option5"
-               onclick="option5change()"/>
-    </fieldset>
+<!--        <label for="option4">Option 4</label>-->
+<!--        <input type="checkbox" id="option4" name="option4" checked="checked"/>-->
+
+<!--        <label for="option5">Option 5</label>-->
+<!--        <input type="checkbox" id="option5" name="option5"-->
+<!--               onclick="option5change()"/>-->
+<!--    </fieldset>-->
 
 
-    <input type="number" id="e-value" name="e-value" value="0.005"
-           step="0.001" required="required"/>
+<!--    <input type="number" id="e-value" name="e-value" value="0.005"-->
+<!--           step="0.001" required="required"/>-->
     <input type="submit" value="Run"/>
 
 <!--    <input type="file" name="image"/>-->
