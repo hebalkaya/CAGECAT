@@ -1,6 +1,8 @@
 import os
 import random
 from rq.registry import StartedJobRegistry, FinishedJobRegistry
+LOGGING_BASE_DIR = "jobs"
+FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
@@ -90,3 +92,12 @@ def get_server_info(q, redis_conn) -> dict:
 
     return data
 
+def create_directories(job_id):
+    base_path = f"{LOGGING_BASE_DIR}/{job_id}"
+    os.mkdir(base_path)
+    for folder in FOLDERS_TO_CREATE:
+        os.mkdir(f"{base_path}/{folder}")
+    # with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
+    #     # outf.write(f"{job_id}\n")
+    #     cmd = ["pip3", "freeze"]
+    #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)

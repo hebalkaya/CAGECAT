@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect, \
     send_from_directory, flash
 from utils import get_server_info, save_file, FILE_POST_FUNCTION_ID_TRANS, \
-    fetch_base_error_message, COMPRESSION_FORMATS, generate_job_id
+    fetch_base_error_message, COMPRESSION_FORMATS, generate_job_id, \
+    create_directories, LOGGING_BASE_DIR
 import workers as rf
 import HTMLGenerators as htmlg
 import os
@@ -11,7 +12,7 @@ import rq
 # TODO: Find out how pre-submission uploading works
 if __name__ == "__main__":
     r = redis.Redis()
-    q = rq.Queue(connection=r, default_timeout=28800) # 2h for 1 job
+    q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
     app = Flask("multicblaster")
     UPLOAD_FOLDER = os.path.join("static", "uploads")
@@ -48,13 +49,23 @@ def submit_job():
     # prev_page =
     # print(prev_page)
 
+    create_directories(job_id) # FLASK should be ran on linux
+    print("Succesfully created directories")
+
+    # save the files
+    if request.files:
+        for file in request.files:
+            file = request.files[file]
+             # TODO: make filename safe
+            file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id, "uploads",
+                                file.filename)
+            file.save(file_path)
+
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
-        "file_path": None, # TODO for uploaded files
+        "file_path": file_path, # TODO for uploaded files
         "prev_page": "/" + request.referrer.split("/")[-1]
     }, result_ttl=86400)
-
-    print(job)
 
 
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)
@@ -163,4 +174,4 @@ def page_not_found(error):
 
 #print(app.config.keys())
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

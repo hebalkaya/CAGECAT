@@ -6,6 +6,11 @@
       onsubmit="return validateForm()" name="optionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
     <div>
+        <label for="genomeFile">Query</label>
+        <input type="file" id="genomeFile" name="genomeFiles"
+               required="required"/>
+    </div>
+    <div>
         <label for="database_type">Database</label>
         <input type="text" required="required" name="database_type"
                id="database_type"

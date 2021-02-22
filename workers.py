@@ -3,12 +3,13 @@ from random import randint
 import subprocess
 import os
 from flask import url_for
-LOGGING_BASE_DIR = "jobs"
-FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
+from utils import LOGGING_BASE_DIR
+
 
 sep = os.sep
 
-
+# Whenever a CMD is ran from a function, all print statements within that
+# same function are performed when the CMD has finished
 
 
 # Redis functions
@@ -22,22 +23,23 @@ def dummy_sleeping(msg):
     sleep(to_sleep)
     print(f"Wakey wakey! - Job finished. Msg: ({msg})")
 
-def create_directories(job_id):
-    base_path = f"{LOGGING_BASE_DIR}/{job_id}"
-    os.mkdir(base_path)
-    for folder in FOLDERS_TO_CREATE:
-        os.mkdir(f"{base_path}/{folder}")
-    # with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
-    #     # outf.write(f"{job_id}\n")
-    #     cmd = ["pip3", "freeze"]
-    #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
-
-    return base_path
+# def create_directories(job_id):
+#     base_path = f"{LOGGING_BASE_DIR}/{job_id}"
+#     os.mkdir(base_path)
+#     for folder in FOLDERS_TO_CREATE:
+#         os.mkdir(f"{base_path}/{folder}")
+#     # with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
+#     #     # outf.write(f"{job_id}\n")
+#     #     cmd = ["pip3", "freeze"]
+#     #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+#
+#     return base_path
 
 
 def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     sleep(10)
-    base_path = create_directories(job_id) # should probably be done when
+    base_path = f"{LOGGING_BASE_DIR}{sep}{job_id}"
+    #base_path = create_directories(job_id) # should probably be done when
     # getting the request to store the uploaded files
 
     # cmd = ["cblaster", "search", "-qf", "A0A411L027.1.fasta", "-o",
@@ -45,7 +47,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
 
     # TODO: change -qf to uploaded file
     cmd = ["cblaster", "search",
-           "-qf", "bua_seq.fasta",
+           "-qf", file_path,
            "-o", f"{base_path}{sep}results{sep}{job_id}_summary.txt",
            "--database", options["database_type"],
            "--entrez_query", options["entrez_query"],
@@ -54,16 +56,14 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     print("Is this going ok?")
     program = cmd[0]
 
-    with open(f"{base_path}/logs/{job_id}_{program}.log", "w") as outf: # should
-        # point
-        # to
-        # log directory
+    with open(f"{base_path}/logs/{job_id}_{program}.log", "w") as outf:
         subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
     print("We are finished :)")
 
 
-def execute_cblaster(job_id, form=None, files=None, prev_page=None):
+def execute_cblaster(job_id, form=None, files=None, prev_page=None): #
+    # deprecated
     sleep(randint(5, 12))
     # Using None for every keyword parameter allows future calls to this
     # function to exclude setting this keyword parameter when it is not
