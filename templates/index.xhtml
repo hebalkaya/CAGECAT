@@ -8,18 +8,38 @@
       onsubmit="return validateForm()" name="optionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
-    {{ prev_session() }}
+    <label for="inputSection">Input</label>
+    <fieldset id="inputSection">
 
-    <div>
+        <input type="radio" value="fasta" checked="checked" id="radioFasta"
+               name="inputType" onclick="showInputOptions('fasta')">FASTA
+        </input>
+        <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
+               name="inputType"
+               onclick="showInputOptions('ncbi_entries')">NCBI entries</input>
+        <input type="radio" value="prev_session" id="radioPrevSession"
+               name="inputType"
+                onclick="showInputOptions('prev_session')">Previous
+            search</input>
+
+    <div id="genomeFileUploadDiv">
         <label for="genomeFile">Query</label>
         <input type="file" id="genomeFile" name="genomeFiles"
                required="required"/>
     </div>
+    <div id="ncbiEntriesDiv" style="display: none">
+        <label for="ncbiEntriesTextArea">NCBI identifiers</label>
+        <textarea rows="4" cols="25" id="ncbiEntriesTextArea"
+                  name="ncbiEntriesTextArea"
+        ></textarea>
+    </div>
+    {{ prev_session() }}
+
+</fieldset>
     <div>
         <label for="database_type">Database</label>
         <input type="text" required="required" name="database_type"
-               id="database_type"
-               value="nr"/>
+               id="database_type" value="nr"/>
     </div>
     <div>
         <label for="entrez_query">Entrez query</label>

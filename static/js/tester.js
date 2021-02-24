@@ -51,5 +51,27 @@ function toggleElementVisibility(id) {
     }
 }
 
+function showInputOptions(selectionOption){
+    if (selectionOption === 'fasta'){
+        document.getElementById('genomeFileUploadDiv').style.display = 'block';
+        document.getElementById('ncbiEntriesDiv').style.display = 'none';
+        document.getElementById('previousJobOptions').style.display = 'none';
+
+        document.getElementById('genomeFile').setAttribute('required', 'required');   } else if (selectionOption === 'ncbi_entries'){
+        document.getElementById('genomeFileUploadDiv').style.display = 'none';
+        document.getElementById('ncbiEntriesDiv').style.display = 'block';
+        document.getElementById('previousJobOptions').style.display = 'none';
+
+        document.getElementById('genomeFile').removeAttribute('required');
+
+    } else if (selectionOption === 'prev_session'){
+        document.getElementById('genomeFileUploadDiv').style.display = 'none';
+        document.getElementById('ncbiEntriesDiv').style.display = 'none';
+        document.getElementById('previousJobOptions').style.display = 'block';
+
+        document.getElementById('genomeFile').removeAttribute('required');
+    }
+}
+
 
 // When option 5 becomes checked: uncheck option 1 and 2, and make them unclickable

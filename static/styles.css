@@ -5,6 +5,10 @@ input::-webkit-inner-spin-button {
     /*Remove arrows from number inputs*/
 }
 
+textarea {
+    resize: none;
+}
+
 h1 {
     color: floralwhite;
     font-size: x-large;
