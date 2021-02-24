@@ -1,10 +1,15 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import prev_session %}
 
-        {% block title %}multicblaster{% endblock %}
-        {% block content %}
+
+{% block title %}multicblaster{% endblock %}
+{% block content %}
 <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
       onsubmit="return validateForm()" name="optionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
+
+    {{ prev_session() }}
+
     <div>
         <label for="genomeFile">Query</label>
         <input type="file" id="genomeFile" name="genomeFiles"
@@ -58,4 +63,6 @@
 <!--    <input type="file" name="image"/>-->
 <!--    <input type="submit" value="Upload"/>-->
 </form>
+
+
         {% endblock %}

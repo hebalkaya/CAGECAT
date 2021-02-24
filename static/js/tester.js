@@ -41,5 +41,15 @@ function changeFooterVisibility(){
 
 }
 
+function toggleElementVisibility(id) {
+    var elem = document.getElementById(id);
+
+    if (elem.style.display === "none") {
+        elem.style.display = "block";
+    } else {
+        elem.style.display = "none";
+    }
+}
+
 
 // When option 5 becomes checked: uncheck option 1 and 2, and make them unclickable
