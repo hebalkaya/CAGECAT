@@ -4,12 +4,25 @@
 
 {% block title %}multicblaster{% endblock %}
 {% block content %}
+
+<div class="modules">
+    <button class="moduleSelector" onclick="showModule(event,
+    'searchModuleContent')">Search
+    </button>
+    <button class="moduleSelector"
+            onclick="showModule(event, 'gneModuleContent')">Neighbourhood
+    </button>
+    <button class="moduleSelector"
+            onclick="showModule(event, 'extractModuleContent')">Extract
+    </button>
+</div>
+<div id="searchModuleContent" class="moduleContent">
 <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
       onsubmit="return validateForm()" name="optionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     <label for="inputSection">Input</label>
-    <fieldset id="inputSection">
+    <fieldset id="inputSection" disabled="disabled">
 
         <input type="radio" value="fasta" checked="checked" id="radioFasta"
                name="inputType" onclick="showInputOptions('fasta')">FASTA
@@ -62,17 +75,18 @@
 <fieldset id="filteringSection">
     <div>
         <label for="max_evalue">Max. e-value</label>
-        <input type="number" value="0.01" step="0.01" id="max_evalue"
+        <input type="number" required="required" value="0.01" step="0.01" id="max_evalue"
            name="max_evalue"/>
     </div>
     <div>
         <label for="min_identity">Min. identity (%)</label>
-        <input type="number" value="30" id="min_identity" name="min_identity"/>
+        <input type="number" required="required" value="30"
+               id="min_identity" name="min_identity"/>
     </div>
 
     <div>
         <label for="min_query_coverage">Min. query coverage (%)</label>
-        <input type="number" value="50" id="min_query_coverage"
+        <input type="number" required="required" value="50" id="min_query_coverage"
                name="min_query_coverage"/>
     </div>
 
@@ -108,7 +122,11 @@
 
 <!--    <input type="file" name="image"/>-->
 <!--    <input type="submit" value="Upload"/>-->
-</form>
+    </form>
+</div>
+
+<div id="gneModuleContent" class="moduleContent" style="display: none"><p>TODO</p></div>
+<div id="extractModuleContent" class="moduleContent" style="display: none"><p>TODO</p></div>
 
 
         {% endblock %}

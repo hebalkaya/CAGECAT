@@ -73,5 +73,18 @@ function showInputOptions(selectionOption){
     }
 }
 
+function showModule(ev, moduleName){
+    var i, moduleSelector, moduleContent;
+
+    moduleContent = document.getElementsByClassName('moduleContent');
+    for (i=0; i < moduleContent.length; i++){
+        moduleContent[i].style.display ="none";
+    }
+
+    document.getElementById(moduleName).style.display = "block";
+
+    // Could add "active" to the moduleSelector class for better visualisation
+}
+
 
 // When option 5 becomes checked: uncheck option 1 and 2, and make them unclickable
