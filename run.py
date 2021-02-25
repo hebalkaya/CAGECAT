@@ -59,7 +59,9 @@ def submit_job():
             if file.filename != "": # indicates that no file was uploaded
              # TODO: make filename safe
                 file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
+                                         "uploads", file.filename)
                 file.save(file_path)
+
 
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
