@@ -5,6 +5,7 @@
 {% block title %}multicblaster{% endblock %}
 {% block content %}
 
+<!--Module buttons-->
 <div class="modules">
     <button class="moduleSelector" onclick="showModule(event,
     'searchModuleContent')">Search
@@ -16,9 +17,13 @@
             onclick="showModule(event, 'extractModuleContent')">Extract
     </button>
 </div>
+
+<!--Module contents-->
+<div>
+
 <div id="searchModuleContent" class="moduleContent">
 <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
-      onsubmit="return validateForm()" name="optionForm">
+      onsubmit="return validateForm()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     <label for="inputSection">Input</label>
@@ -42,9 +47,9 @@
     </div>
     <div id="ncbiEntriesDiv" style="display: none">
         <label for="ncbiEntriesTextArea">NCBI identifiers</label>
-        <textarea rows="4" cols="25" id="ncbiEntriesTextArea"
+        <textarea rows="6" cols="25" id="ncbiEntriesTextArea"
                   name="ncbiEntriesTextArea"
-        ></textarea>
+                  placeholder="NCBI entry"></textarea>
     </div>
     {{ prev_session() }}
 
@@ -118,6 +123,39 @@
 <!--    <input type="number" id="e-value" name="e-value" value="0.005"-->
 <!--           step="0.001" required="required"/>-->
     <br/>
+    <label for="clusteringSection">Clustering</label>
+    <fieldset id="clusteringSection">
+        <div>
+            <label for="max_intergenic_gap">Max. intergenic gap</label>
+            <input type="number" id="max_intergenic_gap"
+                   name="max_intergenic_gap" value="20000" step="1" required="required"/>
+        </div>
+        <div>
+            <label for="min_unique_query_hits">Min. unique query hits</label>
+            <input type="number" id="min_unique_query_hits"
+                   name="min_unique_query_hits" value="3" step="1" min="0"
+                   required="required"/>
+        </div>
+        <div>
+            <label for="min_hits_in_clusters">Min. hits in clusters</label>
+            <input type="number" id="min_hits_in_clusters"
+                   name="min_hits_in_clusters" value="3" step="1" min="0" required="required"/>
+        </div>
+
+        <div>
+            <input type="checkbox" id="requiredSequencesCheckbox"
+                   name="requiredSequencesCheckbox"
+                   onclick="toggleDisabled('requiredSequences')">Required sequences</input>
+            <div id="requiredSequencesTextarea">
+                <textarea rows="4" cols="25" name="requiredSequences"
+                          id="requiredSequences" disabled="disabled"></textarea>
+            </div>
+        </div>
+
+
+    </fieldset>
+
+    <br/>
     <input type="submit" value="Run"/>
 
 <!--    <input type="file" name="image"/>-->
@@ -125,8 +163,17 @@
     </form>
 </div>
 
-<div id="gneModuleContent" class="moduleContent" style="display: none"><p>TODO</p></div>
+<div id="gneModuleContent" class="moduleContent" style="display: none">
+    <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
+          onsubmit="return validateForm()" name="gneOptionForm">
+
+        <input type="submit" value="Run"/>
+    </form>
+</div>
+
+
 <div id="extractModuleContent" class="moduleContent" style="display: none"><p>TODO</p></div>
+</div>
 
 
         {% endblock %}
