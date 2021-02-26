@@ -84,7 +84,7 @@ function showInputOptions(selectionOption){
         // disable elements
         removeRequiredAndEnabled('ncbiEntriesTextArea');
         removeRequiredAndEnabled('searchEnteredJobId');
-        removeRequiredAndEnabled('uploadedSessionFile');
+        removeRequiredAndEnabled('searchUploadedSessionFile');
         // document.getElementById('ncbiEntriesTextArea').setAttribute('disabled', 'disabled');
         // document.getElementById('entered_job_id').setAttribute('disabled', 'disabled');
         // document.getElementById('uploaded_session_file').setAttribute('disabled', 'disabled');

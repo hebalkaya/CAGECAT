@@ -16,25 +16,30 @@
     </div>
 {% endmacro %}
 
-{% macro result_table(type) %}
+{% macro result_table(module, type) %}
 <div>
-    <label for="{{ '%sTableSection' % type }}">
-        {{ 'Summary table' if type == 'sum' else 'Binary table'}}</label>
-    <fieldset id="{{ '%sTableSection' % type }}">
+    <label for="{{ '%s%sTableSection' % (module, type) }}">
+        {{ 'Summary table' if type == 'Sum' else 'Binary table'}}</label>
+    <fieldset id="{{ '%s%sTableSection' % (module, type) }}">
         <div>
-            <label for="{{ '%sTableDelim' % type }}">Delimiter</label>
-            <input type="text" id="{{ '%sTableDelim' % type }}"
-                   name="{{ '%sTableDelim' % type }}"/>
+            <label
+                    for="{{ '%s%sTableDelim' % (module, type) }}">Delimiter</label>
+            <input type="text"
+                   id="{{ '%s%sTableDelim' % (module, type) }}"
+                   name="{{ '%s%sTableDelim' % (module, type) }}"/>
         </div>
         <div>
-            <label for="{{ '%sTableDecimals' % type }}">Decimal places</label>
-            <input type="number" id="{{ '%sTableDecimals' % type }}"
-                   name="{{ '%sTableDecimals' % type }}" value="2" step="1" min="0"
+            <label
+                    for="{{ '%s%sTableDecimals' % (module, type) }}">Decimal places</label>
+            <input type="number"
+                   id="{{ '%s%sTableDecimals' % (module, type) }}"
+                   name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0"
                    required="required"/>
         </div>
         <div>
-            <input type="checkbox" id="{{ '%sTableHideHeaders' % type }}"
-                   name="{{ '%sTableHideHeaders' % type }}">Hide headers</input>
+            <input type="checkbox"
+                   id="{{ '%s%sTableHideHeaders' % (module, type) }}"
+                   name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
         </div>
     </fieldset>
 </div>
