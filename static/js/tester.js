@@ -53,10 +53,10 @@ function toggleDisabled(id){
     var elem = document.getElementById(id);
 
     if (elem.disabled === false){
-        elem.disabled = true;
+        removeRequiredAndEnabled(id);
     }
     else {
-        elem.disabled = false;
+        setRequiredAndEnabled(id);
     }
 }
 
@@ -105,7 +105,7 @@ function showInputOptions(selectionOption){
         // disable elements
         removeRequiredAndEnabled('genomeFile');
         removeRequiredAndEnabled('searchEnteredJobId');
-        removeRequiredAndEnabled('uploadedSessionFile');
+        removeRequiredAndEnabled('searchUploadedSessionFile');
         // document.getElementById('genomeFile').setAttribute('disabled', 'disabled');
         // document.getElementById('entered_job_id').setAttribute('disabled', 'disabled');
         // document.getElementById('uploaded_session_file').setAttribute('disabled', 'disabled');
