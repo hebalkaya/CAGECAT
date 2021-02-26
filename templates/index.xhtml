@@ -30,16 +30,20 @@
     <label for="inputSection">Input</label>
     <fieldset id="inputSection">
 
+        <label>
         <input type="radio" value="fasta" checked="checked" id="radioFasta"
-               name="inputType" onclick="showInputOptions('fasta')">FASTA
-        </input>
+               name="inputType" onclick="showInputOptions('fasta')"/>FASTA</label>
+        <label>
         <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
                name="inputType"
-               onclick="showInputOptions('ncbi_entries')">NCBI entries</input>
+               onclick="showInputOptions('ncbi_entries')"/>NCBI entries
+        </label>
+        <label>
         <input type="radio" value="prev_session" id="radioPrevSession"
                name="inputType"
-                onclick="showInputOptions('prev_session')">Previous
-            search</input>
+                onclick="showInputOptions('prev_session')"/>Previous
+            search
+        </label>
 
     <div id="genomeFileUploadDiv">
         <label for="genomeFile">Query</label>
@@ -160,11 +164,19 @@
     {{ result_table("bin") }}
     <br/>
 
+    <label for="generalOptionSection">Additional options</label>
+    <fieldset id="generalOptionSection">
+        <input type="checkbox" id="sortClusters" name="sortClusters">Sort
+            clusters
+        </input>
+        <input type="checkbox" id="generatePlot"
+               name="generatePlot">Generate plot
+        </input>
+    </fieldset>
+
     <br/>
     <input type="submit" value="Run"/>
 
-<!--    <input type="file" name="image"/>-->
-<!--    <input type="submit" value="Upload"/>-->
     </form>
 </div>
 

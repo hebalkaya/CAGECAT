@@ -6,7 +6,6 @@
         <input type="text" id="entered_job_id" name="entered_job_id"
                placeholder="AAAAA"/>
         <span>or</span>
-
         <label for="uploaded_session_file">Session file</label>
         <input type="file" id="uploaded_session_file"
                name="uploaded_session_file"/>
@@ -23,7 +22,6 @@
             <input type="text" id="{{ '%sTableDelim' % type }}"
                    name="{{ '%sTableDelim' % type }}"/>
         </div>
-
         <div>
             <label for="{{ '%sTableDecimals' % type }}">Decimal places</label>
             <input type="number" id="{{ '%sTableDecimals' % type }}"
@@ -34,10 +32,6 @@
             <input type="checkbox" id="{{ '%sTableHideHeaders' % type }}"
                    name="{{ '%sTableHideHeaders' % type }}">Hide headers</input>
         </div>
-
-<!--        {{ partly() }}-->
     </fieldset>
-
 </div>
-
 {% endmacro %}
