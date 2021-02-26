@@ -1,21 +1,25 @@
 <!--Here we can have code block which are used more than once-->
 
-{% macro prev_session() %}
-    <div id="previousJobOptions" style="display: none">
-        <label for="entered_job_id">Previous job ID</label>
-        <input type="text" id="entered_job_id" name="entered_job_id"
-               placeholder="AAAAA" disabled="disabled"/>
+{% macro prev_session(module, mainInput) %}
+    <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
+    mainInput else 'display: none'}}">
+
+        <label for="{{ '%sEnteredJobId' % module }}">Previous job
+            ID</label>
+        <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}"
+               placeholder="AAAAA" {{ '' if mainInput else 'disabled="disabled"'}}/>
         <span>or</span>
-        <label for="uploaded_session_file">Session file</label>
-        <input type="file" id="uploaded_session_file"
-               name="uploaded_session_file"/>
+        <label for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
+        <input type="file"
+               id="{{ '%sUploadedSessionFile' % module }}"
+               name="{{ '%sUploadedSessionFile' % module }}" {{ '' if mainInput else 'disabled="disabled"'}}/>
     </div>
 {% endmacro %}
 
 {% macro result_table(type) %}
 <div>
     <label for="{{ '%sTableSection' % type }}">
-        {{ 'Summary table 'if type == 'sum' else 'Binary table'}}</label>
+        {{ 'Summary table' if type == 'sum' else 'Binary table'}}</label>
     <fieldset id="{{ '%sTableSection' % type }}">
         <div>
             <label for="{{ '%sTableDelim' % type }}">Delimiter</label>

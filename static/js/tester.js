@@ -60,43 +60,77 @@ function toggleDisabled(id){
     }
 }
 
+function setRequiredAndEnabled(id){
+    document.getElementById(id).setAttribute('required', 'required');
+    document.getElementById(id).removeAttribute('disabled');
+}
+
+function removeRequiredAndEnabled(id){
+    document.getElementById(id).setAttribute('disabled', 'disabled');
+    document.getElementById(id).removeAttribute('required');
+}
+
 function showInputOptions(selectionOption){
 
     // TODO: add requirement for file session or job ID
     if (selectionOption === 'fasta'){
         document.getElementById('genomeFileUploadDiv').style.display = 'block';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
-        document.getElementById('previousJobOptions').style.display = 'none';
+        document.getElementById('searchPrevJobOptions').style.display = 'none';
 
-        document.getElementById('genomeFile').setAttribute('required', 'required');
+        // enable
+        setRequiredAndEnabled('genomeFile');
 
-        document.getElementById('ncbiEntriesTextArea').disabled = true;
-        document.getElementById('entered_job_id').disabled = true;
+        // disable elements
+        removeRequiredAndEnabled('ncbiEntriesTextArea');
+        removeRequiredAndEnabled('searchEnteredJobId');
+        removeRequiredAndEnabled('uploadedSessionFile');
+        // document.getElementById('ncbiEntriesTextArea').setAttribute('disabled', 'disabled');
+        // document.getElementById('entered_job_id').setAttribute('disabled', 'disabled');
+        // document.getElementById('uploaded_session_file').setAttribute('disabled', 'disabled');
+
+        // document.getElementById('genomeFile').setAttribute('required', 'required');
+        //
+        // document.getElementById('ncbiEntriesTextArea').disabled = true;
+        // document.getElementById('entered_job_id').disabled = true;
     }
     else if (selectionOption === 'ncbi_entries'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
         document.getElementById('ncbiEntriesDiv').style.display = 'block';
-        document.getElementById('previousJobOptions').style.display = 'none';
+        document.getElementById('searchPrevJobOptions').style.display = 'none';
 
-        // remove required attribute
-        document.getElementById('genomeFile').removeAttribute('required');
-        document.getElementById('entered_job_id').disabled = true;
+        // enable
+        setRequiredAndEnabled('ncbiEntriesTextArea')
 
-        // enable and set required attribute
-        document.getElementById('ncbiEntriesTextArea').disabled = false;
-        document.getElementById('genomeFile').setAttribute('required', 'required');
+        // disable elements
+        removeRequiredAndEnabled('genomeFile');
+        removeRequiredAndEnabled('searchEnteredJobId');
+        removeRequiredAndEnabled('uploadedSessionFile');
+        // document.getElementById('genomeFile').setAttribute('disabled', 'disabled');
+        // document.getElementById('entered_job_id').setAttribute('disabled', 'disabled');
+        // document.getElementById('uploaded_session_file').setAttribute('disabled', 'disabled');
+
+
+        // // remove required attribute
+        // document.getElementById('genomeFile').removeAttribute('required');
+        // document.getElementById('entered_job_id').disabled = true;
+        //
+        // // enable and set required attribute
+        // document.getElementById('ncbiEntriesTextArea').disabled = false;
+        // document.getElementById('genomeFile').setAttribute('required', 'required');
 
 
     } else if (selectionOption === 'prev_session'){
+        // TODO
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
-        document.getElementById('previousJobOptions').style.display = 'block';
+        document.getElementById('searchPrevJobOptions').style.display = 'block';
 
-        document.getElementById('entered_job_id').disabled = false;
-
-        // remove attributes
-        document.getElementById('genomeFile').removeAttribute('required');
-        document.getElementById('ncbiEntriesTextArea').disabled = true;
+        // document.getElementById('entered_job_id').disabled = false;
+        //
+        // // remove attributes
+        // document.getElementById('genomeFile').removeAttribute('required');
+        // document.getElementById('ncbiEntriesTextArea').disabled = true;
     }
 }
 
