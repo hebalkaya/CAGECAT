@@ -49,6 +49,7 @@ def submit_job():
     # prev_page =
     # print(prev_page)
 
+    print(request.form)
     create_directories(job_id) # FLASK should be ran on linux
     print("Succesfully created directories")
 

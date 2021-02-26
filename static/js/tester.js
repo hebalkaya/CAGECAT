@@ -1,5 +1,3 @@
-console.log("We logged something")
-
 function enableOrDisableOption(id, enable) {
     // For checkboxes
     var elem = document.getElementById(id);
@@ -63,24 +61,42 @@ function toggleDisabled(id){
 }
 
 function showInputOptions(selectionOption){
+
+    // TODO: add requirement for file session or job ID
     if (selectionOption === 'fasta'){
         document.getElementById('genomeFileUploadDiv').style.display = 'block';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
         document.getElementById('previousJobOptions').style.display = 'none';
 
-        document.getElementById('genomeFile').setAttribute('required', 'required');   } else if (selectionOption === 'ncbi_entries'){
+        document.getElementById('genomeFile').setAttribute('required', 'required');
+
+        document.getElementById('ncbiEntriesTextArea').disabled = true;
+        document.getElementById('entered_job_id').disabled = true;
+    }
+    else if (selectionOption === 'ncbi_entries'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
         document.getElementById('ncbiEntriesDiv').style.display = 'block';
         document.getElementById('previousJobOptions').style.display = 'none';
 
+        // remove required attribute
         document.getElementById('genomeFile').removeAttribute('required');
+        document.getElementById('entered_job_id').disabled = true;
+
+        // enable and set required attribute
+        document.getElementById('ncbiEntriesTextArea').disabled = false;
+        document.getElementById('genomeFile').setAttribute('required', 'required');
+
 
     } else if (selectionOption === 'prev_session'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
         document.getElementById('previousJobOptions').style.display = 'block';
 
+        document.getElementById('entered_job_id').disabled = false;
+
+        // remove attributes
         document.getElementById('genomeFile').removeAttribute('required');
+        document.getElementById('ncbiEntriesTextArea').disabled = true;
     }
 }
 
