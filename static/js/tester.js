@@ -51,6 +51,17 @@ function toggleElementVisibility(id) {
     }
 }
 
+function toggleDisabled(id){
+    var elem = document.getElementById(id);
+
+    if (elem.disabled === false){
+        elem.disabled = true;
+    }
+    else {
+        elem.disabled = false;
+    }
+}
+
 function showInputOptions(selectionOption){
     if (selectionOption === 'fasta'){
         document.getElementById('genomeFileUploadDiv').style.display = 'block';

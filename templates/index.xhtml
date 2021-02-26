@@ -1,5 +1,6 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import prev_session %}
+{% from "macros.xhtml" import result_table %}
 
 
 {% block title %}multicblaster{% endblock %}
@@ -148,12 +149,16 @@
                    onclick="toggleDisabled('requiredSequences')">Required sequences</input>
             <div id="requiredSequencesTextarea">
                 <textarea rows="4" cols="25" name="requiredSequences"
-                          id="requiredSequences" disabled="disabled"></textarea>
+                          id="requiredSequences" placeholder="NCBI entry"
+                          disabled="disabled"></textarea>
             </div>
         </div>
-
-
     </fieldset>
+    <br/>
+    {{ result_table("sum") }}
+    <br/>
+    {{ result_table("bin") }}
+    <br/>
 
     <br/>
     <input type="submit" value="Run"/>

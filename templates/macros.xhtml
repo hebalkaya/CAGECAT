@@ -1,7 +1,6 @@
 <!--Here we can have code block which are used more than once-->
 
 {% macro prev_session() %}
-
     <div id="previousJobOptions" style="display: none">
         <label for="entered_job_id">Previous job ID</label>
         <input type="text" id="entered_job_id" name="entered_job_id"
@@ -12,4 +11,33 @@
         <input type="file" id="uploaded_session_file"
                name="uploaded_session_file"/>
     </div>
+{% endmacro %}
+
+{% macro result_table(type) %}
+<div>
+    <label for="{{ '%sTableSection' % type }}">
+        {{ 'Summary table 'if type == 'sum' else 'Binary table'}}</label>
+    <fieldset id="{{ '%sTableSection' % type }}">
+        <div>
+            <label for="{{ '%sTableDelim' % type }}">Delimiter</label>
+            <input type="text" id="{{ '%sTableDelim' % type }}"
+                   name="{{ '%sTableDelim' % type }}"/>
+        </div>
+
+        <div>
+            <label for="{{ '%sTableDecimals' % type }}">Decimal places</label>
+            <input type="number" id="{{ '%sTableDecimals' % type }}"
+                   name="{{ '%sTableDecimals' % type }}" value="2" step="1" min="0"
+                   required="required"/>
+        </div>
+        <div>
+            <input type="checkbox" id="{{ '%sTableHideHeaders' % type }}"
+                   name="{{ '%sTableHideHeaders' % type }}">Hide headers</input>
+        </div>
+
+<!--        {{ partly() }}-->
+    </fieldset>
+
+</div>
+
 {% endmacro %}
