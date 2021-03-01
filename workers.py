@@ -50,7 +50,6 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     # TODO: change -qf to uploaded file
     # create the basic command, with all required fields
     cmd = ["cblaster", "search",
-           "--query_file", file_path,
            "--output", f"{results_path}{job_id}_summary.txt",
            "--session_file", f"{results_path}{job_id}_session.json"
            # TODO: or add creating plot to standard options
@@ -59,6 +58,15 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
            # "--hitlist_size", options["max_hits"]
            ]
 
+    input_type = options["inputType"]
+
+    if input_type == "fasta":
+        cmd.extend(["--query_file", file_path])
+    elif input_type == "ncbi_entries":
+        cmd.append("--query_ids")
+        cmd.extend(options["ncbiEntriesTextArea"].split())
+    else: # future input types and prev_session
+        raise NotImplementedError()
 
     # TODO: add search options
     # add filtering options
@@ -111,6 +119,13 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
         cmd.extend(["--plot", f"{results_path}{job_id}_plot.html"])
 
     program = cmd[0]
+
+    # with open(f"{logs_path}huh.txt", "w") as outf:
+    #     print(cmd, file=outf)
+    #     print("\n", file=outf)
+    #     print(options, file=outf)
+    #     print("\n", file=outf)
+    #     print(" ".join(cmd), file=outf)
 
     with open(f"{logs_path}{job_id}_cmd.txt", "w") as outf:
         outf.write(f"Sent options:\n{options}\n\nCommand:\n{' '.join(cmd)}\n")

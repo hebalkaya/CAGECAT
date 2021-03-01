@@ -40,8 +40,8 @@ def submit_job():
 
     if job_type == "search":
         f = rf.cblaster_search
-    else:
-        f = rf.cblaster_search # in case
+    elif job_type == "gne":
+        raise NotImplementedError()# in case
 
 
     # Here we add a dummy function to add to the queue
@@ -54,15 +54,20 @@ def submit_job():
     print("Succesfully created directories")
 
     # save the files
-    if request.files:
-        for file_key in request.files :
-            file = request.files[file_key]
-            if file.filename != "": # indicates that no file was uploaded
-             # TODO: make filename safe
-                file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
-                                         "uploads", file.filename)
-                file.save(file_path)
-
+    input_type = request.form["inputType"]
+    if input_type == 'fasta':
+        if request.files:
+            for file_key in request.files :
+                file = request.files[file_key]
+                if file.filename != "": # indicates that no file was uploaded
+                 # TODO: make filename safe
+                    file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
+                                             "uploads", file.filename)
+                    file.save(file_path)
+    elif input_type == "ncbi_entries":
+        file_path = None
+    else: # future input types and prev_session
+        raise NotImplementedError()
 
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
