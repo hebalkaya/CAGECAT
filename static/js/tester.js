@@ -146,6 +146,14 @@ function showModule(ev, moduleName){
 
     // Could add "active" to the moduleSelector class for better visualisation
 }
+function changeHitAttribute(){
+    if (document.getElementById('keyFunction').value !== "len"){
+        setRequiredAndEnabled('hitAttribute');
+    }
+    else {
+        removeRequiredAndEnabled('hitAttribute');
+    }
+}
 
 
 // When option 5 becomes checked: uncheck option 1 and 2, and make them unclickable

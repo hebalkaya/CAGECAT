@@ -41,6 +41,28 @@
                    id="{{ '%s%sTableHideHeaders' % (module, type) }}"
                    name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
         </div>
+
+        {% if type == 'Bin' %}
+        <div>
+            <label for="keyFunction">Key function</label>
+                <select name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
+                    <option name="functionLen" value="len">len</option>
+                    <option name="functionSum" value="sum">sum</option>
+                    <option name="functionMax" value="max">max</option>
+                </select>
+        </div>
+
+        <div>
+            <label for="hitAttribute">Hit attribute</label>
+            <select name="hitAttribute" id="hitAttribute" disabled="disabled">
+                <option name="hitAttrIdentity" value="identity">identity</option>
+                <option name="hitAttrCoverage" value="coverage">coverage</option>
+                <option name="hitAttrBitscore" value="bitscore">bitscore</option>
+                <option name="hitAttrEValue" value="evalue">e-value</option>
+            </select>
+        </div>
+
+        {% endif %}
     </fieldset>
 </div>
 {% endmacro %}
