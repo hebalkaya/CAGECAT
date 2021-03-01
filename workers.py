@@ -39,6 +39,8 @@ def dummy_sleeping(msg):
 def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     sleep(10)
     base_path = f"{LOGGING_BASE_DIR}{sep}{job_id}"
+
+    all_keys = options.keys()
     #base_path = create_directories(job_id) # should probably be done when
     # getting the request to store the uploaded files
 
@@ -46,16 +48,36 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     #        f"{base_path}/results/{job_id}_cblaster.json"]
 
     # TODO: change -qf to uploaded file
+    # create the basic command, with all required fields
     cmd = ["cblaster", "search",
            "-qf", file_path,
            "-o", f"{base_path}{sep}results{sep}{job_id}_summary.txt",
-           "--database", options["database_type"],
-           "--entrez_query", options["entrez_query"],
-           "--hitlist_size", options["max_hits"]
+           # "--database", options["database_type"],
+           # "--entrez_query", options["entrez_query"],
+           # "--hitlist_size", options["max_hits"]
            ]
-    print("Is this going ok?")
+
+
+    # TODO: add search options
+    # add filtering options
+    cmd.extend(["--max_evalue", options["max_evalue"],
+                "--min_identity", options["min_identity"],
+                "--min_coverage", options["min_query_coverage"]])
+    # TODO: add clustering options
+    # TODO: add summary table
+    sum_table_delim = options["searchSumTableDelim"]
+    if sum_table_delim: # evalutes to True if not an empty string
+        cmd.extend(["--output_delimiter", sum_table_delim])
+
+    cmd.extend(["--output_decimals", options["searchSumTableDecimals"]])
+
+    if "searchSumTableHideHeaders" in all_keys:
+        cmd.append("--output_hide_headers")
+    # TODO: add binary table
+    # TODO: add additional options
     program = cmd[0]
 
+    print(f"------------------\nCommand: {cmd}")
     with open(f"{base_path}/logs/{job_id}_{program}.log", "w") as outf:
         subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
