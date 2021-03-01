@@ -66,10 +66,14 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
                 "--min_identity", options["min_identity"],
                 "--min_coverage", options["min_query_coverage"]])
 
-    # TODO: add clustering options
+    # add clustering options
     cmd.extend(["--gap", options["max_intergenic_gap"],
                 "--unique", options["min_unique_query_hits"],
                 "--min_hits", options["min_hits_in_clusters"]])
+
+    if "requiredSequences" in options:
+        cmd.append("--require")
+        cmd.extend(options["requiredSequences"].split())
 
     # add summary table
     sum_table_delim = options["searchSumTableDelim"]
@@ -111,7 +115,6 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     with open(f"{logs_path}{job_id}_cmd.txt", "w") as outf:
         outf.write(f"Sent options:\n{options}\n\nCommand:\n{' '.join(cmd)}\n")
 
-    # print(f"------------------\nCommand: {cmd}")
     with open(f"{logs_path}{job_id}_{program}.log", "w") as outf:
         subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
