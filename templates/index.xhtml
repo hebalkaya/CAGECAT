@@ -192,6 +192,32 @@
 
         {{ result_table('gne', 'Sum') }}
         <br/>
+        <label for="gneOptions">Extra options</label>
+        <fieldset id="gneOptions">
+            <div>
+                <label for="max_intergenic_distance">Max. intergenic distance</label>
+                <input type="number" id="max_intergenic_distance" name="max_intergenic_distance" value="100000" required="required" step="1" min="0"/>
+            </div>
+            <div>
+                <label for="sample_number">Number of samples</label>
+                <input type="number" id="sample_number" name="sample_number" value="100" step="1" min="1" required="required"/>
+            </div>
+            <div>
+                <label for="sampling_space">Sampling space</label>
+                <select name="sampling_space" id="sampling_space" required="required">
+                    <option name="spaceLinear" value="linear">linear</option>
+                    <option name="spaceLog" value="log">log</option>
+                </select>
+            </div>
+
+<!--            <select name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">-->
+<!--                <option name="functionLen" value="len">len</option>-->
+<!--                <option name="functionSum" value="sum">sum</option>-->
+<!--                <option name="functionMax" value="max">max</option>-->
+<!--            </select>-->
+        </fieldset>
+
+        <br/>
         <input type="submit" value="Run"/>
     </form>
 </div>
