@@ -84,6 +84,8 @@ function showInputOptions(selectionOption){
         removeRequiredAndEnabled('searchEnteredJobId');
         removeRequiredAndEnabled('searchUploadedSessionFile');
 
+        enableOrDisableOption('searchSection', true);
+
     }
     else if (selectionOption === 'ncbi_entries'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
@@ -98,6 +100,8 @@ function showInputOptions(selectionOption){
         removeRequiredAndEnabled('searchEnteredJobId');
         removeRequiredAndEnabled('searchUploadedSessionFile');
 
+        enableOrDisableOption('searchSection', true);
+
     } else if (selectionOption === 'prev_session'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
@@ -109,6 +113,8 @@ function showInputOptions(selectionOption){
         // disable elements
         removeRequiredAndEnabled('genomeFile');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
+
+        enableOrDisableOption('searchSection', false);
     }
 }
 

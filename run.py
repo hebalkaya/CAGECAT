@@ -40,7 +40,7 @@ def submit_job():
     # prev_page =
     # print(prev_page)
 
-    # print(request.form)
+    print(request.form)
     create_directories(job_id)
 
     job_type = request.form["job_type"]
@@ -51,16 +51,20 @@ def submit_job():
         # save the files
         input_type = request.form["inputType"]
         if input_type == 'fasta':
-            if request.files:
-                for file_key in request.files :
-                    file = request.files[file_key]
-                    if file.filename != "": # indicates that no file was uploaded
-                        # TODO: make filename safe
-                        file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
-                                                 "uploads", file.filename)
-                        file.save(file_path)
+            file_path = save_file(request.files["genomeFiles"], job_id)
         elif input_type == "ncbi_entries":
             file_path = None
+        elif input_type == "prev_session":
+            file_type = request.form["searchPreviousType"]
+
+            if file_type == "jobID":
+                prev_job_id = "searchEnteredJobId"
+                file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+            elif file_type == "sessionFile":
+                file_path = save_file(request.files["searchUploadedSessionFile"], job_id)
+                # print(file_path)
+            else:
+                raise IOError("Not valid file type")
         else: # future input types and prev_session
             raise NotImplementedError()
     elif job_type == "gne":
@@ -90,6 +94,9 @@ def submit_job():
 
 
     return redirect(url_for("home_page"), serv_info=get_server_info(q, r))
+
+
+
 
 
 @app.route("/results/<job_id>")

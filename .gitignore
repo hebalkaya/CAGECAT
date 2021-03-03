@@ -5,3 +5,4 @@ static/images/*
 ./sequence.gb
 /static/uploads/
 /test_runs/
+/jobs/

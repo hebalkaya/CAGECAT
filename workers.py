@@ -51,24 +51,40 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     # create the basic command, with all required fields
     cmd = ["cblaster", "search",
            "--output", f"{results_path}{job_id}_summary.txt",
-           "--session_file", f"{results_path}{job_id}_session.json"
            # TODO: or add creating plot to standard options
            # "--database", options["database_type"],
            # "--entrez_query", options["entrez_query"],
            # "--hitlist_size", options["max_hits"]
            ]
 
+    # cmd.extend(["--session_file", ])
+
+    # TODO: add search options
     input_type = options["inputType"]
 
     if input_type == "fasta":
         cmd.extend(["--query_file", file_path])
+        session_path = f"{results_path}{job_id}_session.json"
     elif input_type == "ncbi_entries":
         cmd.append("--query_ids")
         cmd.extend(options["ncbiEntriesTextArea"].split())
+        session_path = f"{results_path}{job_id}_session.json"
+    elif input_type == "prev_session":
+        # TODO: maybe the if's below are not required as the file path is given
+        cmd.extend(["--recompute", f"{results_path}{job_id}_recomputed.json"])
+
+        file_type = options["searchPreviousType"]
+
+        if file_type == "jobID":
+            raise NotImplementedError()
+        elif file_type == "sessionFile":
+            session_path = file_path
+        else:
+            raise NotImplementedError()
     else: # future input types and prev_session
         raise NotImplementedError()
 
-    # TODO: add search options
+    cmd.extend(["--session_file", session_path])
     # add filtering options
     cmd.extend(["--max_evalue", options["max_evalue"],
                 "--min_identity", options["min_identity"],

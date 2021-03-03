@@ -52,17 +52,25 @@ def format_status_message(status): #TODO: can probably be removed
 
     return msg
 
-def save_file(posted_files, app):
-    for file in posted_files:
-        path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        if os.path.exists(path):
-            print("Overwriting...")
-            #raise FileExistsError("There already is a file at that path")
-        # We can return false here, indicating that something went wrong.
-        # The client side can then react by giving an error
-        # Maybe flashing messages?
-        file.save(path)
-        print(f"File: {file.filename} has been saved at {path}")
+def save_file(file_obj, job_id):
+    # TODO: make filename safe
+    file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
+                             "uploads", file_obj.filename)
+    file_obj.save(file_path)
+
+    return file_path
+
+# def save_file(posted_files, app):
+#     for file in posted_files:
+#         path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+#         if os.path.exists(path):
+#             print("Overwriting...")
+#             #raise FileExistsError("There already is a file at that path")
+#         # We can return false here, indicating that something went wrong.
+#         # The client side can then react by giving an error
+#         # Maybe flashing messages?
+#         file.save(path)
+#         print(f"File: {file.filename} has been saved at {path}")
 
 # def save_file(directory: str, posted_files: dict, app) -> None:
 #     print(posted_files)
