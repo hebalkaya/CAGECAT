@@ -72,15 +72,8 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     elif input_type == "prev_session":
         # TODO: maybe the if's below are not required as the file path is given
         cmd.extend(["--recompute", f"{results_path}{job_id}_recomputed.json"])
-
-        file_type = options["searchPreviousType"]
-
-        if file_type == "jobID":
-            raise NotImplementedError()
-        elif file_type == "sessionFile":
-            session_path = file_path
-        else:
-            raise NotImplementedError()
+        session_path = file_path
+        # - Results in error when trying to recompute a recomputed session file -
     else: # future input types and prev_session
         raise NotImplementedError()
 

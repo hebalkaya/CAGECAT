@@ -58,8 +58,9 @@ def submit_job():
             file_type = request.form["searchPreviousType"]
 
             if file_type == "jobID":
-                prev_job_id = "searchEnteredJobId"
+                prev_job_id = request.form["searchEnteredJobId"]
                 file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+                print(file_path)
             elif file_type == "sessionFile":
                 file_path = save_file(request.files["searchUploadedSessionFile"], job_id)
                 # print(file_path)
