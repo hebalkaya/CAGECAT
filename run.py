@@ -71,7 +71,9 @@ def submit_job():
     elif job_type == "gne":
         f = rf.cblaster_gne
 
+        prev_job_id = request.form["gneEnteredJobId"]
 
+        file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
 
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,

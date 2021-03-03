@@ -156,11 +156,17 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     #     print("\n", file=outf)
     #     print(" ".join(cmd), file=outf)
 
-    with open(f"{logs_path}{job_id}_cmd.txt", "w") as outf:
+    log_settings(cmd, options, f"{logs_path}{job_id}_cmd.txt")
+    run_command(cmd, f"{logs_path}{job_id}_{program}.log")
+
+def run_command(cmd, log_path):
+    with open(log_path, "w") as outf:
+        subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+def log_settings(cmd, options, settings_log_path):
+    with open(settings_log_path, "w") as outf:
         outf.write(f"Sent options:\n{options}\n\nCommand:\n{' '.join(cmd)}\n")
 
-    with open(f"{logs_path}{job_id}_{program}.log", "w") as outf:
-        subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
 def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     pass
