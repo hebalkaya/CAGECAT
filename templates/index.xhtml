@@ -148,9 +148,11 @@
         </div>
 
         <div>
-            <input type="checkbox" id="requiredSequencesCheckbox"
-                   name="requiredSequencesCheckbox"
-                   onclick="toggleDisabled('requiredSequences')">Required sequences</input>
+            <label>
+                <input type="checkbox" id="requiredSequencesCheckbox"
+                       name="requiredSequencesCheckbox"
+                       onclick="toggleDisabled('requiredSequences')">Required sequences</input>
+            </label>
             <div id="requiredSequencesTextarea">
                 <textarea rows="4" cols="25" name="requiredSequences"
                           id="requiredSequences" placeholder="NCBI entry"
@@ -166,12 +168,16 @@
 
     <label for="generalOptionSection">Additional options</label>
     <fieldset id="generalOptionSection">
-        <input type="checkbox" id="sortClusters" name="sortClusters">Sort
-            clusters
-        </input>
-        <input type="checkbox" id="generatePlot"
-               name="generatePlot">Generate plot
-        </input>
+        <label>
+            <input type="checkbox" id="sortClusters" name="sortClusters">Sort
+                clusters
+            </input>
+        </label>
+        <label>
+            <input type="checkbox" id="generatePlot"
+                   name="generatePlot">Generate plot
+            </input>
+        </label>
     </fieldset>
 
     <br/>

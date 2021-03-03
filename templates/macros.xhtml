@@ -45,9 +45,11 @@
                    required="required"/>
         </div>
         <div>
-            <input type="checkbox"
-                   id="{{ '%s%sTableHideHeaders' % (module, type) }}"
-                   name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
+            <label>
+                <input type="checkbox"
+                       id="{{ '%s%sTableHideHeaders' % (module, type) }}"
+                       name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
+            </label>
         </div>
 
         {% if type == 'Bin' %}
