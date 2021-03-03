@@ -36,38 +36,37 @@ def new_job():
 
 @app.route(SUBMIT_URL, methods=["POST"])
 def submit_job():
-    job_type = request.form["job_type"]
-
-    if job_type == "search":
-        f = rf.cblaster_search
-    elif job_type == "gne":
-        raise NotImplementedError()# in case
-
-
-    # Here we add a dummy function to add to the queue
     job_id = generate_job_id() # TODO: check if job ID is already in database
     # prev_page =
     # print(prev_page)
 
-    print(request.form)
-    create_directories(job_id) # FLASK should be ran on linux
-    print("Succesfully created directories")
+    # print(request.form)
+    create_directories(job_id)
 
-    # save the files
-    input_type = request.form["inputType"]
-    if input_type == 'fasta':
-        if request.files:
-            for file_key in request.files :
-                file = request.files[file_key]
-                if file.filename != "": # indicates that no file was uploaded
-                 # TODO: make filename safe
-                    file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
-                                             "uploads", file.filename)
-                    file.save(file_path)
-    elif input_type == "ncbi_entries":
-        file_path = None
-    else: # future input types and prev_session
-        raise NotImplementedError()
+    job_type = request.form["job_type"]
+
+    if job_type == "search":
+        f = rf.cblaster_search
+
+        # save the files
+        input_type = request.form["inputType"]
+        if input_type == 'fasta':
+            if request.files:
+                for file_key in request.files :
+                    file = request.files[file_key]
+                    if file.filename != "": # indicates that no file was uploaded
+                        # TODO: make filename safe
+                        file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
+                                                 "uploads", file.filename)
+                        file.save(file_path)
+        elif input_type == "ncbi_entries":
+            file_path = None
+        else: # future input types and prev_session
+            raise NotImplementedError()
+    elif job_type == "gne":
+        f = rf.cblaster_gne
+
+
 
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,

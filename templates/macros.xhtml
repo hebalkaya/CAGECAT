@@ -3,7 +3,15 @@
 {% macro prev_session(module, mainInput) %}
     <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">
+        <div>
+            <label>
+            <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
+            </label>
 
+            <label>
+                <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile" onclick="changePrevSessionType()">Session file</input>
+            </label>
+        </div>
         <label for="{{ '%sEnteredJobId' % module }}">Previous job
             ID</label>
         <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}"
@@ -12,7 +20,7 @@
         <label for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
         <input type="file"
                id="{{ '%sUploadedSessionFile' % module }}"
-               name="{{ '%sUploadedSessionFile' % module }}" {{ '' if mainInput else 'disabled="disabled"'}}/>
+               name="{{ '%sUploadedSessionFile' % module }}" disabled="disabled"/>
     </div>
 {% endmacro %}
 

@@ -155,5 +155,24 @@ function changeHitAttribute(){
     }
 }
 
+function changePrevSessionType(){
+    let clickedButton = event.target;
+    let module = clickedButton.id.split("Prev")[0];
+    console.log(module);
+
+    if (clickedButton.value === "sessionFile"){
+        setRequiredAndEnabled(module + "UploadedSessionFile")
+        removeRequiredAndEnabled(module + "EnteredJobId")
+    }
+    else if (clickedButton.value === "jobID"){
+        removeRequiredAndEnabled(module + "UploadedSessionFile")
+        setRequiredAndEnabled(module + "EnteredJobId")
+    }
+
+
+
+    document.getElementById("${module}")
+}
+
 
 // When option 5 becomes checked: uncheck option 1 and 2, and make them unclickable

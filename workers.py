@@ -133,4 +133,5 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     with open(f"{logs_path}{job_id}_{program}.log", "w") as outf:
         subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
-    print("We are finished :)")
+def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
+    pass
