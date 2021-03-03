@@ -40,6 +40,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     base_path = f"{LOGGING_BASE_DIR}{sep}{job_id}"
     results_path = f"{base_path}{sep}results{sep}"
     logs_path = f"{base_path}{sep}logs{sep}"
+    recompute = False
 
     #base_path = create_directories(job_id) # should probably be done when
     # getting the request to store the uploaded files
@@ -52,14 +53,9 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     cmd = ["cblaster", "search",
            "--output", f"{results_path}{job_id}_summary.txt",
            # TODO: or add creating plot to standard options
-           # "--database", options["database_type"],
-           # "--entrez_query", options["entrez_query"],
-           # "--hitlist_size", options["max_hits"]
            ]
 
-    # cmd.extend(["--session_file", ])
-
-    # TODO: add search options
+    # add input options
     input_type = options["inputType"]
 
     if input_type == "fasta":
@@ -70,14 +66,38 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
         cmd.extend(options["ncbiEntriesTextArea"].split())
         session_path = f"{results_path}{job_id}_session.json"
     elif input_type == "prev_session":
+        recompute = True
         # TODO: maybe the if's below are not required as the file path is given
         cmd.extend(["--recompute", f"{results_path}{job_id}_recomputed.json"])
         session_path = file_path
         # - Results in error when trying to recompute a recomputed session file -
+    # ------------------------------------------------------------------------
+#         Traceback (most recent call last):
+#     File "/home/pi/Desktop/linux/bin/cblaster", line 8, in <module>
+#     sys.exit(main())
+#       File "/home/pi/Desktop/linux/lib/python3.7/site-packages/cblaster/main.py", line 441, in main
+# testing=args.testing,
+# File "/home/pi/Desktop/linux/lib/python3.7/site-packages/cblaster/main.py", line 201, in cblaster
+# query_profiles=query_profiles,
+# File "/home/pi/Desktop/linux/lib/python3.7/site-packages/cblaster/helpers.py", line 149, in get_sequences
+# raise ValueError("Expected 'query_file' or 'query_ids', or 'query_profiles'")
+# ValueError: Expected 'query_file' or 'query_ids', or 'query_profiles'
+
+    # ------------------------------------------------------------------------
+
+
     else: # future input types and prev_session
         raise NotImplementedError()
 
     cmd.extend(["--session_file", session_path])
+
+    # add search options
+    if not recompute:
+        cmd.extend([
+            "--database", options["database_type"],
+            "--entrez_query", options["entrez_query"],
+            "--hitlist_size", options["max_hits"]])
+
     # add filtering options
     cmd.extend(["--max_evalue", options["max_evalue"],
                 "--min_identity", options["min_identity"],
