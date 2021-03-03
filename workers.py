@@ -36,10 +36,32 @@ def dummy_sleeping(msg):
 #     return base_path
 
 
+def create_summary_table_commands(module, options):
+    summary_cmds = []
+
+    if module == "search":
+        prefix = "output_"
+    elif module == "gne":
+        prefix = ""
+    else:
+        raise IOError("Invalid module")
+
+    sum_table_delim = options[f"{module}SumTableDelim"]
+    if sum_table_delim: # evalutes to True if not an empty string
+        summary_cmds.extend([f"--{prefix}delimiter", sum_table_delim])
+
+    summary_cmds.extend([f"--{prefix}decimals", options[f"{module}SumTableDecimals"]])
+
+    if f"{module}SumTableHideHeaders" in options:
+        summary_cmds.append(f"--{prefix}hide_headers")
+
+    return summary_cmds
+
+
 def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
-    base_path = f"{LOGGING_BASE_DIR}{sep}{job_id}"
-    results_path = f"{base_path}{sep}results{sep}"
-    logs_path = f"{base_path}{sep}logs{sep}"
+    BASE_PATH = f"{LOGGING_BASE_DIR}{sep}{job_id}"
+    RESULTS_PATH = f"{BASE_PATH}{sep}results{sep}"
+    LOG_PATH = f"{BASE_PATH}{sep}logs{sep}"
     recompute = False
 
     #base_path = create_directories(job_id) # should probably be done when
@@ -51,7 +73,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     # TODO: change -qf to uploaded file
     # create the basic command, with all required fields
     cmd = ["cblaster", "search",
-           "--output", f"{results_path}{job_id}_summary.txt",
+           "--output", f"{RESULTS_PATH}{job_id}_summary.txt",
            # TODO: or add creating plot to standard options
            ]
 
@@ -60,15 +82,15 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
 
     if input_type == "fasta":
         cmd.extend(["--query_file", file_path])
-        session_path = f"{results_path}{job_id}_session.json"
+        session_path = f"{RESULTS_PATH}{job_id}_session.json"
     elif input_type == "ncbi_entries":
         cmd.append("--query_ids")
         cmd.extend(options["ncbiEntriesTextArea"].split())
-        session_path = f"{results_path}{job_id}_session.json"
+        session_path = f"{RESULTS_PATH}{job_id}_session.json"
     elif input_type == "prev_session":
         recompute = True
         # TODO: maybe the if's below are not required as the file path is given
-        cmd.extend(["--recompute", f"{results_path}{job_id}_recomputed.json"])
+        cmd.extend(["--recompute", f"{RESULTS_PATH}{job_id}_recomputed.json"])
         session_path = file_path
         # - Results in error when trying to recompute a recomputed session file -
     # ------------------------------------------------------------------------
@@ -113,17 +135,10 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
         cmd.extend(options["requiredSequences"].split())
 
     # add summary table
-    sum_table_delim = options["searchSumTableDelim"]
-    if sum_table_delim: # evalutes to True if not an empty string
-        cmd.extend(["--output_delimiter", sum_table_delim])
-
-    cmd.extend(["--output_decimals", options["searchSumTableDecimals"]])
-
-    if "searchSumTableHideHeaders" in options:
-        cmd.append("--output_hide_headers")
+    cmd.extend(create_summary_table_commands('search', options))
 
     # add binary table
-    cmd.extend(["--binary", f"{results_path}{job_id}_binary.txt"]) # create a binary table
+    cmd.extend(["--binary", f"{RESULTS_PATH}{job_id}_binary.txt"]) # create a binary table
 
     bin_table_delim = options["searchBinTableDelim"]
     if bin_table_delim:
@@ -145,7 +160,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
         cmd.append("--sort_clusters")
 
     if "generatePlot" in options:
-        cmd.extend(["--plot", f"{results_path}{job_id}_plot.html"])
+        cmd.extend(["--plot", f"{RESULTS_PATH}{job_id}_plot.html"])
 
     program = cmd[0]
 
@@ -156,8 +171,8 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     #     print("\n", file=outf)
     #     print(" ".join(cmd), file=outf)
 
-    log_settings(cmd, options, f"{logs_path}{job_id}_cmd.txt")
-    run_command(cmd, f"{logs_path}{job_id}_{program}.log")
+    log_settings(cmd, options, f"{LOG_PATH}{job_id}_cmd.txt")
+    run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
 
 def run_command(cmd, log_path):
     with open(log_path, "w") as outf:
@@ -169,4 +184,30 @@ def log_settings(cmd, options, settings_log_path):
 
 
 def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
-    pass
+    """
+
+    :param job_id:
+    :param options:
+    :param file_path: session file path
+    :param prev_page:
+    :return:
+    """
+    BASE_PATH = f"{LOGGING_BASE_DIR}{sep}{job_id}"
+    RESULTS_PATH = f"{BASE_PATH}{sep}results{sep}"
+    LOG_PATH = f"{BASE_PATH}{sep}logs{sep}"
+
+    session_path = file_path
+
+    cmd = ["cblaster", "gne", session_path,
+           "--max_gap", options["max_intergenic_distance"],
+           "--samples", options["sample_number"],
+           "--scale", options["sampling_space"],
+           "--plot", f"{RESULTS_PATH}{job_id}_plot.html"
+           ]
+
+    # TODO: test if gne also works with a job_id
+    cmd.extend(create_summary_table_commands('gne', options))
+    program = cmd[0]
+
+    log_settings(cmd, options, f"{LOG_PATH}{job_id}_cmd.txt")
+    run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")

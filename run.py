@@ -71,9 +71,16 @@ def submit_job():
     elif job_type == "gne":
         f = rf.cblaster_gne
 
-        prev_job_id = request.form["gneEnteredJobId"]
+        file_type = request.form["gnePreviousType"]
 
-        file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+        if file_type == "jobID":
+            prev_job_id = request.form["gneEnteredJobId"]
+            file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+        elif file_type == "sessionFile":
+            file_path = save_file(request.files["gneUploadedSessionFile"], job_id)
+            # print(file_path)
+        else:
+            raise IOError("Not valid file type")
 
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
