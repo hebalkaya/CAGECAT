@@ -1,9 +1,7 @@
 from flask import render_template, request, url_for, redirect
 from multicblaster import app, q, r
-from multicblaster.utils import get_server_info, save_file, \
-    fetch_base_error_message, COMPRESSION_FORMATS, generate_job_id, \
-    create_directories, LOGGING_BASE_DIR, SUBMIT_URL
-from multicblaster.modules import Job
+import multicblaster.utils as ut
+from multicblaster.models import Job
 from multicblaster import db
 import multicblaster.workers as rf
 import os
@@ -12,27 +10,27 @@ import os
 @app.route("/")
 def home_page():
     # TODO: create function to fetch server info
-    return render_template("index.xhtml", submit_url=SUBMIT_URL,
-                           serv_info=get_server_info(q, r))
+    return render_template("index.xhtml", submit_url=ut.SUBMIT_URL,
+                           serv_info=ut.get_server_info(q, r))
 
 
 @app.route("/new_job", methods=["GET"])
 def new_job():
-    return render_template("new_job.xhtml", serv_info=get_server_info(q, r))
+    return render_template("new_job.xhtml", serv_info=ut.get_server_info(q, r))
 
 
-@app.route(SUBMIT_URL, methods=["POST"])
+@app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():
-    job_id = generate_job_id() # TODO: check if job ID is already in database
+    job_id = ut.generate_job_id() # TODO: check if job ID is already in database
     # prev_page =
     # print(prev_page)
-    a = Job(id=job_id)
+    a = Job(id=job_id, status="queued")
     db.session.add(a)
     db.session.commit()
     print(Job.query.all())
 
     print(request.form)
-    create_directories(job_id)
+    ut.create_directories(job_id)
 
     job_type = request.form["job_type"]
 
@@ -42,7 +40,7 @@ def submit_job():
         # save the files
         input_type = request.form["inputType"]
         if input_type == 'fasta':
-            file_path = save_file(request.files["genomeFiles"], job_id)
+            file_path = ut.save_file(request.files["genomeFiles"], job_id)
         elif input_type == "ncbi_entries":
             file_path = None
         elif input_type == "prev_session":
@@ -50,10 +48,10 @@ def submit_job():
 
             if file_type == "jobID":
                 prev_job_id = request.form["searchEnteredJobId"]
-                file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+                file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
                 print(file_path)
             elif file_type == "sessionFile":
-                file_path = save_file(request.files["searchUploadedSessionFile"], job_id)
+                file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
                 # print(file_path)
             else:
                 raise IOError("Not valid file type")
@@ -66,9 +64,9 @@ def submit_job():
 
         if file_type == "jobID":
             prev_job_id = request.form["gneEnteredJobId"]
-            file_path = os.path.join(LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+            file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
         elif file_type == "sessionFile":
-            file_path = save_file(request.files["gneUploadedSessionFile"], job_id)
+            file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
             # print(file_path)
         else:
             raise IOError("Not valid file type")
@@ -91,7 +89,7 @@ def submit_job():
     # job = q.enqueue(rf.execute_dummy_cmd, job_id)
     return render_template("job_submitted.xhtml", job_id=job_id,
                            submitted_data=request.form,
-                           serv_info=get_server_info(q, r))
+                           serv_info=ut.get_server_info(q, r))
 
 
     return redirect(url_for("home_page"), serv_info=get_server_info(q, r))
@@ -107,12 +105,12 @@ def show_result(job_id):
 
     if found:
         return render_template("result_page.xhtml", job_id=job_id,
-                               status=status, serv_info=get_server_info(q, r),
-                               compr_formats=COMPRESSION_FORMATS)
+                               status=status, serv_info=ut.get_server_info(q, r),
+                               compr_formats=ut.COMPRESSION_FORMATS)
         # TODO: create status template
 
     return render_template("not_found.xhtml", job_id=job_id,
-                           serv_info=get_server_info(q))
+                           serv_info=ut.get_server_info(q))
     # TODO: create not_found template
 
 @app.route("/download-results", methods=["POST"])
@@ -144,9 +142,9 @@ def return_user_download():
 def create_database():
     # submitted_data
 
-    return render_template("create_database.xhtml", submit_url=SUBMIT_URL,
-                           serv_info=get_server_info(q, r),
-                           outf_name= htmlg.generate_output_filename_form(
+    return render_template("create_database.xhtml", submit_url=ut.SUBMIT_URL,
+                           serv_info=ut.get_server_info(q, r),
+                           outf_name=ut.htmlg.generate_output_filename_form(
                                "database_name"))
 
 
@@ -158,10 +156,10 @@ def extract_sequence():
 @app.route("/neighbourhood")
 def calculate_neighbourhood():
     return render_template("neighbourhood.xhtml",
-                           submit_url=SUBMIT_URL,
-                           serv_info=get_server_info(q, r),
-                           session_file_upload=htmlg.SESSION_FILE_UPLOAD,
-                           outf_name=htmlg.generate_output_filename_form(
+                           submit_url=ut.SUBMIT_URL,
+                           serv_info=ut.get_server_info(q, r),
+                           session_file_upload=ut.htmlg.SESSION_FILE_UPLOAD,
+                           outf_name=ut.htmlg.generate_output_filename_form(
                                "output_name"))
 
 # Error handlers
@@ -170,12 +168,12 @@ def invalid_method(error):
     #logging.error(utils.fetch_base_error_message(error, request))
     # return redirect(url_for("home_page"))
     return render_template("page_not_found.xhtml",
-                           serv_info=get_server_info(q, r)), 404
+                           serv_info=ut.get_server_info(q, r)), 404
 
 
 @app.errorhandler(405)
 def page_not_found(error):
-    base = fetch_base_error_message(error, request)
+    base = ut.fetch_base_error_message(error, request)
     #logging.error(f"{base}, METHOD: {request.method}")
     return redirect(url_for("home_page"))
 
