@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, url_for, redirect, \
 from utils import get_server_info, save_file, FILE_POST_FUNCTION_ID_TRANS, \
     fetch_base_error_message, COMPRESSION_FORMATS, generate_job_id, \
     create_directories, LOGGING_BASE_DIR
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import workers as rf
 import HTMLGenerators as htmlg
 import os
@@ -15,6 +17,11 @@ if __name__ == "__main__":
     q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
     app = Flask("multicblaster")
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///status.db'
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db = SQLAlchemy(app)
+    db.create_all()
+
     UPLOAD_FOLDER = os.path.join("static", "uploads")
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     #logging.basicConfig(filename="logs.log", level=logging.INFO)
@@ -39,6 +46,10 @@ def submit_job():
     job_id = generate_job_id() # TODO: check if job ID is already in database
     # prev_page =
     # print(prev_page)
+    a = Job(id=job_id)
+    db.session.add(a)
+    db.session.commit()
+    print(Job.query.all())
 
     print(request.form)
     create_directories(job_id)
@@ -193,6 +204,27 @@ def page_not_found(error):
     #logging.error(f"{base}, METHOD: {request.method}")
     return redirect(url_for("home_page"))
 
+
+## SQLAlchemy database classes #TODO: move it to another file
+class Job(db.Model):
+    id = db.Column(db.String(15), primary_key=True)
+    redis_id = db.Column(db.String(80))
+    post_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    start_time = db.Column(db.DateTime)
+    finished_time = db.Column(db.DateTime)
+
+    status = db.Column(db.Text, nullable=False)
+
+
+
+
+    # class User(db.Model):
+    #     id = db.Column(db.Integer, primary_key=True)
+    # username = db.Column(db.String(80), unique=True, nullable=False)
+    # email = db.Column(db.String(120), unique=True, nullable=False)
+    #
+    # def __repr__(self):
+    #     return '<User %r>' % self.username
 
 
 
