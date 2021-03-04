@@ -3,7 +3,7 @@ from random import randint
 import subprocess
 import os
 from flask import url_for
-from utils import LOGGING_BASE_DIR
+from multicblaster.utils import LOGGING_BASE_DIR
 
 
 sep = os.sep

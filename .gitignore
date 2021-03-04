@@ -1,8 +1,8 @@
 .idea/*
 __pycache__/*
 antismash-models/*
-static/images/*
+multicblaster/static/images/*
 ./sequence.gb
-/static/uploads/
+/multicblaster/static/uploads/
 /test_runs/
-/jobs/
+/multicblaster/jobs/

@@ -1,8 +1,10 @@
 import os
 import random
 from rq.registry import StartedJobRegistry, FinishedJobRegistry
+
 LOGGING_BASE_DIR = "jobs"
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
+SUBMIT_URL = "/submit_job"
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
@@ -10,7 +12,7 @@ FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
 
 COMPRESSION_FORMATS = [".tar", ".tar.gz", ".gz",  ".7z", ".zip", ".rar"]
 
-TEST_PATH = "."
+TEST_PATH = ".."
 
 class StatusException(Exception):
     def __init__(self, msg):
@@ -109,3 +111,5 @@ def create_directories(job_id):
     #     # outf.write(f"{job_id}\n")
     #     cmd = ["pip3", "freeze"]
     #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+
