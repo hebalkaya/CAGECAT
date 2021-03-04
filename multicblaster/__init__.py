@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from multicblaster import workers as rf
+
 import os
 import redis
 import rq

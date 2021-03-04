@@ -1,6 +1,8 @@
 import os
 import random
 from rq.registry import StartedJobRegistry, FinishedJobRegistry
+from multicblaster.models import Job
+from datetime import datetime
 
 LOGGING_BASE_DIR = "jobs"
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
@@ -111,5 +113,26 @@ def create_directories(job_id):
     #     # outf.write(f"{job_id}\n")
     #     cmd = ["pip3", "freeze"]
     #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+def mutate_status(job_id, new_status):
+    pass
+
+def add_time_to_db(job_id, time_to_add, db):
+    """
+
+    :param job_id:
+    :param time_to_add:
+    :return:
+    """
+    job = Job.query.filter_by(id=job_id).first()
+    print(job)
+    if time_to_add == "start":
+        job.start_time = datetime.utcnow()
+    elif time_to_add == "finish":
+        job.finish_time = datetime.utcnow()
+    else:
+        raise IOError("Invalid time type")
+
+    db.session.commit()
 
 

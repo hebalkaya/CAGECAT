@@ -2,8 +2,8 @@ from time import sleep
 from random import randint
 import subprocess
 import os
-from flask import url_for
-from multicblaster.utils import LOGGING_BASE_DIR
+from multicblaster.utils import LOGGING_BASE_DIR, add_time_to_db
+from multicblaster import db
 
 
 sep = os.sep
@@ -59,6 +59,8 @@ def create_summary_table_commands(module, options):
 
 
 def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
+    pre_job_formalities(job_id)
+
     BASE_PATH = f"{LOGGING_BASE_DIR}{sep}{job_id}"
     RESULTS_PATH = f"{BASE_PATH}{sep}results{sep}"
     LOG_PATH = f"{BASE_PATH}{sep}logs{sep}"
@@ -211,3 +213,9 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
 
     log_settings(cmd, options, f"{LOG_PATH}{job_id}_cmd.txt")
     run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
+
+def pre_job_formalities(job_id):
+    add_time_to_db(job_id, "start", db)
+
+def post_job_formalities(job_id):
+    add_time_to_db(job_id, "finish", db)

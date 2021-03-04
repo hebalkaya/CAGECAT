@@ -5,4 +5,4 @@ multicblaster/static/images/*
 ./sequence.gb
 /multicblaster/static/uploads/
 /test_runs/
-/multicblaster/jobs/
+/jobs/
