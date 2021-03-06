@@ -105,7 +105,7 @@ def get_server_info(q, redis_conn) -> dict:
     data = {"server_status": "running",
             "queued": len(q),
             "running": len(start_registry),
-            "completed": len(finished_registry)}
+            "completed": Statistic.query.filter_by(name="finished").first().count}
 
     return data
 
