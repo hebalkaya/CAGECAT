@@ -21,13 +21,11 @@ def new_job():
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():
-    job_id = ut.generate_job_id() # TODO: check if job ID is already in database
-    # prev_page =
-    # print(prev_page)
-    a = Job(id=job_id, status="queued")
-    db.session.add(a)
+    job_id = ut.generate_job_id()
+
+    j = Job(id=job_id, status="queued")
+    db.session.add(j)
     db.session.commit()
-    print(Job.query.all())
 
     print(request.form)
     ut.create_directories(job_id)

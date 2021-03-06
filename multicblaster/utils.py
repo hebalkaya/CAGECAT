@@ -21,17 +21,22 @@ class StatusException(Exception):
         super(StatusException, self).__init__(msg)
 
 def generate_job_id(id_len=15):
-    job_id = []
+    characters = []
+    id = 0
 
-    for i in range(id_len):
-        if i % 4 == 0:
-            min, max = 65, 90
-        else:
-            min, max = 48, 57
+    while id is not None:
+        for i in range(id_len):
+            if i % 4 == 0:
+                min, max = 65, 90
+            else:
+                min, max = 48, 57
 
-        job_id.append(chr(random.randint(min, max)))
+            characters.append(chr(random.randint(min, max)))
 
-    return "".join(job_id)
+        job_id = "".join(characters)
+        id = Job.query.filter_by(id=job_id).first() # becomes None if no such job exists
+
+    return job_id
 
 
 def parse_error(error_msg):
@@ -114,9 +119,6 @@ def create_directories(job_id):
     #     cmd = ["pip3", "freeze"]
     #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
-def mutate_status(job_id, new_status):
-    pass
-
 def add_time_to_db(job_id, time_to_add, db):
     """
 
@@ -135,4 +137,20 @@ def add_time_to_db(job_id, time_to_add, db):
 
     db.session.commit()
 
+
+def mutate_status(job_id, stage, db, return_code=None):
+    job = Job.query.filter_by(id=job_id).first()
+
+    if stage == "start":
+        new_status = "running"
+    elif stage == "finish":
+        if return_code is None:
+            raise IOError("Return code should be provided")
+        new_status = "finished" if not return_code else "failed"
+    else:
+        raise IOError("Invalid stage")
+
+    job.status = new_status
+
+    db.session.commit()
 

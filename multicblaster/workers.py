@@ -2,7 +2,7 @@ from time import sleep
 from random import randint
 import subprocess
 import os
-from multicblaster.utils import LOGGING_BASE_DIR, add_time_to_db
+from multicblaster.utils import LOGGING_BASE_DIR, add_time_to_db, mutate_status
 from multicblaster import db
 
 
@@ -174,11 +174,15 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     #     print(" ".join(cmd), file=outf)
 
     log_settings(cmd, options, f"{LOG_PATH}{job_id}_cmd.txt")
-    run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
+    return_code = run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
+
+    post_job_formalities(job_id, return_code)
 
 def run_command(cmd, log_path):
     with open(log_path, "w") as outf:
-        subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+        res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+
+    return res.returncode
 
 def log_settings(cmd, options, settings_log_path):
     with open(settings_log_path, "w") as outf:
@@ -216,6 +220,8 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
 
 def pre_job_formalities(job_id):
     add_time_to_db(job_id, "start", db)
+    mutate_status(job_id, "start", db)
 
-def post_job_formalities(job_id):
+def post_job_formalities(job_id, return_code):
     add_time_to_db(job_id, "finish", db)
+    mutate_status(job_id, "finish", db, return_code=return_code)

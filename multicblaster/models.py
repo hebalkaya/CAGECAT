@@ -12,4 +12,4 @@ class Job(db.Model):
     status = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
-        return f"{'-'*30}\nId: {self.id}; Status: {self.status}; Posted: {self.post_time}; Started: {self.start_time}; Finished: {self.finish_time}"
+        return f"Id: {self.id}; Status: {self.status}; Posted: {self.post_time}; Started: {self.start_time}; Finished: {self.finish_time}"
