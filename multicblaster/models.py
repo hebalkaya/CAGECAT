@@ -12,4 +12,11 @@ class Job(db.Model):
     status = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
-        return f"Id: {self.id}; Status: {self.status}; Posted: {self.post_time}; Started: {self.start_time}; Finished: {self.finish_time}"
+        return f"ID: {self.id}; Status: {self.status}; Posted: {self.post_time}; Started: {self.start_time}; Finished: {self.finish_time}"
+
+class Statistic(db.Model):
+    name = db.Column(db.String(20), primary_key=True)
+    count = db.Column(db.Integer, default=0, nullable=False)
+
+    def __repr__(self):
+        return f"{self.name.capitalize()}: {self.count} jobs"

@@ -1,7 +1,7 @@
 import os
 import random
 from rq.registry import StartedJobRegistry, FinishedJobRegistry
-from multicblaster.models import Job
+from multicblaster.models import Job, Statistic
 from datetime import datetime
 
 LOGGING_BASE_DIR = "jobs"
@@ -146,7 +146,13 @@ def mutate_status(job_id, stage, db, return_code=None):
     elif stage == "finish":
         if return_code is None:
             raise IOError("Return code should be provided")
-        new_status = "finished" if not return_code else "failed"
+        elif not return_code: # return code of 0
+            new_status = "finished"
+        else:
+            new_status = "failed"
+
+        Statistic.query.filter_by(name=new_status).first().count += 1
+
     else:
         raise IOError("Invalid stage")
 
