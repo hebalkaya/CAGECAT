@@ -197,6 +197,8 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     :param prev_page:
     :return:
     """
+    pre_job_formalities(job_id)
+
     BASE_PATH = f"{LOGGING_BASE_DIR}{sep}{job_id}"
     RESULTS_PATH = f"{BASE_PATH}{sep}results{sep}"
     LOG_PATH = f"{BASE_PATH}{sep}logs{sep}"
@@ -207,7 +209,8 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
            "--max_gap", options["max_intergenic_distance"],
            "--samples", options["sample_number"],
            "--scale", options["sampling_space"],
-           "--plot", f"{RESULTS_PATH}{job_id}_plot.html"
+           "--plot", f"{RESULTS_PATH}{job_id}_plot.html",
+           "--output", f"{RESULTS_PATH}{job_id}_summary.txt"
            ]
 
     # TODO: test if gne also works with a job_id
@@ -215,7 +218,9 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     program = cmd[0]
 
     log_settings(cmd, f"{LOG_PATH}{job_id}")
-    run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
+    return_code = run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
+
+    post_job_formalities(job_id, return_code)
 
 def pre_job_formalities(job_id):
     add_time_to_db(job_id, "start", db)
