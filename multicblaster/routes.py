@@ -20,16 +20,16 @@ def new_job():
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():
+    job_type = request.form["job_type"]
+
     job_id = ut.generate_job_id()
 
-    j = Job(id=job_id, status="queued")
+    j = Job(id=job_id, status="queued", job_type=job_type)
     db.session.add(j)
     db.session.commit()
 
     print(request.form)
     ut.create_directories(job_id)
-
-    job_type = request.form["job_type"]
 
     if job_type == "search":
         f = rf.cblaster_search

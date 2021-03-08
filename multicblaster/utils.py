@@ -10,7 +10,6 @@ FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
 SEP = os.sep
 PATTERN = "\('(.+?)', '(.*?)'\)"
-LABELS_TO_SKIP = []
 
 PRETTY_TRANSLATION = {"job_type": "Job type",
                       "inputType": "Input type",
@@ -31,7 +30,15 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "searchBinTableDecimals": "Binary decimals",
                       "keyFunction": "Key function",
                       "sortClusters": "Sort clusters",
-                      "generatePlot": "Generate plot"}
+                      "generatePlot": "Generate plot",
+                      "gnePreviousType": "Previous session type",
+                      "requiredSequencesCheckbox": None,
+                      "requiredSequences": "Required sequences",
+                      "searchBinTableHideHeaders": "Binary hide headers",
+                      "hitAttribute": "Hit attribute",
+                      "searchSumTableHideHeaders": "Summary hide headers",
+                      "searchEnteredJobId": "Previous job ID"
+                      }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
@@ -193,10 +200,11 @@ def load_settings(job_id):
     with open(file_path) as inf:
         settings = inf.read()
 
-    all = re.findall(PATTERN, settings[20:-2])
-    for key, value in all:
-        if key not in LABELS_TO_SKIP:
-            label = PRETTY_TRANSLATION[key]
+    matches = re.findall(PATTERN, settings[20:-2])
+    for key, value in matches:
+        label = PRETTY_TRANSLATION[key]
+
+        if label is not None:
             settings_dict[label] = value
 
     return settings_dict
