@@ -21,12 +21,7 @@ def new_job():
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():
     job_type = request.form["job_type"]
-
     job_id = ut.generate_job_id()
-
-    j = Job(id=job_id, status="queued", job_type=job_type)
-    db.session.add(j)
-    db.session.commit()
 
     print(request.form)
     ut.create_directories(job_id)
@@ -45,7 +40,13 @@ def submit_job():
 
             if file_type == "jobID":
                 prev_job_id = request.form["searchEnteredJobId"]
+
+                if Job.query.filter_by(id=prev_job_id).first() is None:
+                    # TODO: create invalid job ID template
+                    # TODO: OR let JS check job ID on front-end
+                    raise NotImplementedError("Invalid job ID. Template should be created")
                 file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+
                 print(file_path)
             elif file_type == "sessionFile":
                 file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
@@ -74,6 +75,11 @@ def submit_job():
         "file_path": file_path, # TODO for uploaded files
         "prev_page": "/" + request.referrer.split("/")[-1]
     }, result_ttl=86400)
+
+
+    j = Job(id=job_id, status="queued", job_type=job_type)
+    db.session.add(j)
+    db.session.commit()
 
     return redirect(url_for("show_result", job_id=job_id))
 

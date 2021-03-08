@@ -37,7 +37,14 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "searchBinTableHideHeaders": "Binary hide headers",
                       "hitAttribute": "Hit attribute",
                       "searchSumTableHideHeaders": "Summary hide headers",
-                      "searchEnteredJobId": "Previous job ID"
+                      "searchEnteredJobId": "Previous job ID",
+                      "gneEnteredJobId": "Previous job ID",
+                      "gneSumTableDelim": "Summary delimiter",
+                      "gneSumTableDecimals": "Summary decimals",
+                      "gneSumTableHideHeaders": "Summary hide headers",
+                      "max_intergenic_distance": "Maximum intergenic distance",
+                      "sample_number": "Sample size",
+                      "sampling_space": "Sampling space"
                       }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
