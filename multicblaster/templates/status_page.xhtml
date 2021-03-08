@@ -1,0 +1,15 @@
+{% extends "base.xhtml" %}
+
+{% block title %}Status: {{job_id}}{% endblock %}
+{% block content %}
+<p>Job {{job_id}} is currently {{status}}</p>
+
+<label for="optionsList">Selected options</label>
+<ul id="optionsList">
+    {% for label, option in settings.items() %}
+    <li>{{label}}: {{option}}</li>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -172,8 +172,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     #     print(options, file=outf)
     #     print("\n", file=outf)
     #     print(" ".join(cmd), file=outf)
-
-    log_settings(cmd, options, f"{LOG_PATH}{job_id}_cmd.txt")
+    log_settings(cmd, f"{LOG_PATH}{job_id}")
     return_code = run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
 
     post_job_formalities(job_id, return_code)
@@ -184,10 +183,10 @@ def run_command(cmd, log_path):
 
     return res.returncode
 
-def log_settings(cmd, options, settings_log_path):
-    with open(settings_log_path, "w") as outf:
-        outf.write(f"Sent options:\n{options}\n\nCommand:\n{' '.join(cmd)}\n")
-
+def log_settings(cmd,base_path):
+    with open(f"{base_path}_cmd.txt", "w") as outf:
+        # outf.write(f"Sent options:\n{options}\n\nCommand:\n{' '.join(cmd)}\n")
+        outf.write(" ".join(cmd))
 
 def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     """
@@ -215,7 +214,7 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     cmd.extend(create_summary_table_commands('gne', options))
     program = cmd[0]
 
-    log_settings(cmd, options, f"{LOG_PATH}{job_id}_cmd.txt")
+    log_settings(cmd, f"{LOG_PATH}{job_id}")
     run_command(cmd, f"{LOG_PATH}{job_id}_{program}.log")
 
 def pre_job_formalities(job_id):

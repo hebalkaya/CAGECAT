@@ -6,7 +6,6 @@ from multicblaster import db
 import multicblaster.workers as rf
 import os
 
-
 @app.route("/")
 def home_page():
     # TODO: create function to fetch server info
@@ -69,46 +68,54 @@ def submit_job():
         else:
             raise IOError("Not valid file type")
 
+    ut.save_settings(request.form, os.path.join(ut.LOGGING_BASE_DIR, job_id, "logs", job_id))
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
         "file_path": file_path, # TODO for uploaded files
         "prev_page": "/" + request.referrer.split("/")[-1]
     }, result_ttl=86400)
 
+    return redirect(url_for("show_result", job_id=job_id))
 
-    # job = q.enqueue(rf.execute_dummy_cmd, job_id)
-    # job = q.enqueue(rf.execute_cblaster, args=(job_id,), kwargs={
-    #     "form": request.form,
-    #     "files": request.files if request.files else None,
-    #     "prev_page": "/" + request.referrer.split("/")[-1]
-    # }, result_ttl=86400) # keep results for 1 day
-
-    # TODO: dont pass full request object, it will crash
-    # job = q.enqueue(rf.execute_dummy_cmd, job_id)
     return render_template("job_submitted.xhtml", job_id=job_id,
                            submitted_data=request.form,
                            serv_info=ut.get_server_info(q, r))
 
 
-    return redirect(url_for("home_page"), serv_info=get_server_info(q, r))
-
-
 @app.route("/results/<job_id>")
 def show_result(job_id):
     #TODO: search for job ID
-    found = True
+    job = Job.query.filter_by(id=job_id).first()
+
+
+    if job is not None:
+        settings = ut.load_settings(job_id)
+        status = job.status
+
+        if status == "finished" or status == "failed":
+            return render_template("result_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
+                                   compr_formats=ut.COMPRESSION_FORMATS, status=status)
+            # show results page
+        elif status == "queued" or status == "running":
+            return render_template("status_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
+                                   status=status, settings=settings)
+        else:
+            raise IOError(f"Incorrect status of job {job_id} in database")
+
+    else: # indicates no such job exists in the database
+        return render_template("not_found.xhtml", job_id=job_id,
+                               serv_info=ut.get_server_info(q, r))
 
     # TODO: get status of the job
     status = "running"
 
-    if found:
-        return render_template("result_page.xhtml", job_id=job_id,
-                               status=status, serv_info=ut.get_server_info(q, r),
-                               compr_formats=ut.COMPRESSION_FORMATS)
+    # if found:
+    #     return render_template("result_page.xhtml", job_id=job_id,
+    #                            status=status, serv_info=ut.get_server_info(q, r),
+    #                            compr_formats=ut.COMPRESSION_FORMATS)
         # TODO: create status template
 
-    return render_template("not_found.xhtml", job_id=job_id,
-                           serv_info=ut.get_server_info(q))
+
     # TODO: create not_found template
 
 @app.route("/download-results", methods=["POST"])

@@ -3,10 +3,35 @@ import random
 from rq.registry import StartedJobRegistry, FinishedJobRegistry
 from multicblaster.models import Job, Statistic
 from datetime import datetime
+import re
 
 LOGGING_BASE_DIR = "jobs"
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
+SEP = os.sep
+PATTERN = "\('(.+?)', '(.*?)'\)"
+LABELS_TO_SKIP = []
+
+PRETTY_TRANSLATION = {"job_type": "Job type",
+                      "inputType": "Input type",
+                      "ncbiEntriesTextArea": "NCBI entries",
+                      "searchPreviousType": "Previous session type",
+                      "database_type": "Database",
+                      "entrez_query": "Entrez query",
+                      "max_hits": "Maximum hits",
+                      "max_evalue": "Maximum e-value",
+                      "min_identity": "Minimum % identity",
+                      "min_query_coverage": "Minimum query coverage (%)",
+                      "max_intergenic_gap": "Maximum intergenic gap",
+                      "min_unique_query_hits": "Minimum unique query hits",
+                      "min_hits_in_clusters": "Minimum hits in clusters",
+                      "searchSumTableDelim": "Summary delimiter",
+                      "searchSumTableDecimals": "Summary decimals",
+                      "searchBinTableDelim": "Binary delimiter",
+                      "searchBinTableDecimals": "Binary decimals",
+                      "keyFunction": "Key function",
+                      "sortClusters": "Sort clusters",
+                      "generatePlot": "Generate plot"}
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                            "calculate_neighbourhood": "outputFileName"
@@ -160,3 +185,22 @@ def mutate_status(job_id, stage, db, return_code=None):
 
     db.session.commit()
 
+
+def load_settings(job_id):
+    settings_dict = {}
+
+    file_path = f"{LOGGING_BASE_DIR}{SEP}{job_id}{SEP}logs{SEP}{job_id}_options.txt"
+    with open(file_path) as inf:
+        settings = inf.read()
+
+    all = re.findall(PATTERN, settings[20:-2])
+    for key, value in all:
+        if key not in LABELS_TO_SKIP:
+            label = PRETTY_TRANSLATION[key]
+            settings_dict[label] = value
+
+    return settings_dict
+
+def save_settings(options, base_path):
+    with open(f"{base_path}_options.txt", "w") as outf:
+        outf.write(str(options))
