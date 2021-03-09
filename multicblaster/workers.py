@@ -76,6 +76,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     # create the basic command, with all required fields
     cmd = ["cblaster", "search",
            "--output", f"{RESULTS_PATH}{job_id}_summary.txt",
+           "--plot", f"{RESULTS_PATH}{job_id}_plot.html"
            # TODO: or add creating plot to standard options
            ]
 
@@ -162,7 +163,7 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
         cmd.append("--sort_clusters")
 
     if "generatePlot" in options:
-        cmd.extend(["--plot", f"{RESULTS_PATH}{job_id}_plot.html"])
+        cmd.extend([])
 
     program = cmd[0]
 
@@ -224,8 +225,13 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
 
 def zip_results(job_id):
     base = os.path.join(LOGGING_BASE_DIR, job_id)
-    cmd = ["zip", "-r", os.path.join(base, "results", f"{job_id}.zip"), os.path.join(base, "results")]
-    run_command(cmd, os.path.join(base, "logs", f"{job_id}_zip.txt"))
+    os.chdir(base)
+
+    # to_include = [os.path.join(base, "results"), os.path.join(base), "uploads"]
+
+    cmd = ["zip", "-r", os.path.join("results", f"{job_id}.zip"), "."] # all files under the base folder
+
+    run_command(cmd, os.path.join("logs", f"{job_id}_zip.txt"))
 
 
 def pre_job_formalities(job_id):
