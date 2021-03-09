@@ -5,6 +5,11 @@ input::-webkit-inner-spin-button {
     /*Remove arrows from number inputs*/
 }
 
+iframe {
+    border: none;
+    width: 100%;
+}
+
 textarea {
     resize: none;
 }

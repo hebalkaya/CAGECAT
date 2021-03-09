@@ -83,11 +83,6 @@ def submit_job():
 
     return redirect(url_for("show_result", job_id=job_id))
 
-    return render_template("job_submitted.xhtml", job_id=job_id,
-                           submitted_data=request.form,
-                           serv_info=ut.get_server_info(q, r))
-
-
 @app.route("/results/<job_id>")
 def show_result(job_id):
     #TODO: search for job ID
@@ -99,8 +94,11 @@ def show_result(job_id):
         status = job.status
 
         if status == "finished" or status == "failed":
+            with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
+                plot_contents = inf.read()
+
             return render_template("result_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
-                                   compr_formats=ut.COMPRESSION_FORMATS, status=status)
+                                   compr_formats=ut.COMPRESSION_FORMATS, status=status, plot_contents=plot_contents)
             # show results page
         elif status == "queued" or status == "running":
             return render_template("status_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
