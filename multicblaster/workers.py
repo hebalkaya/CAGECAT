@@ -222,6 +222,12 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
 
     post_job_formalities(job_id, return_code)
 
+def zip_results(job_id):
+    base = os.path.join(LOGGING_BASE_DIR, job_id)
+    cmd = ["zip", "-r", os.path.join(base, "results", f"{job_id}.zip"), os.path.join(base, "results")]
+    run_command(cmd, os.path.join(base, "logs", f"{job_id}_zip.txt"))
+
+
 def pre_job_formalities(job_id):
     add_time_to_db(job_id, "start", db)
     mutate_status(job_id, "start", db)
@@ -229,3 +235,5 @@ def pre_job_formalities(job_id):
 def post_job_formalities(job_id, return_code):
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
+
+    zip_results(job_id)
