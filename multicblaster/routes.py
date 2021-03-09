@@ -155,6 +155,13 @@ def extract_sequence():
     # TODO
     return 404
 
+@app.route("/results", methods=["GET", "POST"])
+def show_results():
+    if request.method == "GET":
+        return render_template("show_results.xhtml", serv_info=ut.get_server_info(q, r))
+    else: # method is POST
+        return redirect(url_for('show_result', job_id=request.form["job_id"]))
+
 @app.route("/neighbourhood")
 def calculate_neighbourhood():
     return render_template("neighbourhood.xhtml",
