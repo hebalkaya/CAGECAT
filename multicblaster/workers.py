@@ -162,9 +162,6 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     if "sortClusters" in options:
         cmd.append("--sort_clusters")
 
-    if "generatePlot" in options:
-        cmd.extend([])
-
     program = cmd[0]
 
     # with open(f"{logs_path}huh.txt", "w") as outf:
