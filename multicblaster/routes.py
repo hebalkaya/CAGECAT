@@ -6,10 +6,12 @@ from multicblaster import db
 import multicblaster.workers as rf
 import os
 
+@app.route("/rerun/<prev_run_id>")
 @app.route("/")
-def home_page():
+def home_page(prev_run_id=None):
+    print(prev_run_id)
     return render_template("index.xhtml", submit_url=ut.SUBMIT_URL,
-                           serv_info=ut.get_server_info(q, r))
+                           serv_info=ut.get_server_info(q, r), prev_run_id=prev_run_id)
 
 
 @app.route("/new_job", methods=["GET"])
@@ -85,7 +87,6 @@ def submit_job():
 @app.route("/results/<job_id>")
 def show_result(job_id):
     job = Job.query.filter_by(id=job_id).first()
-
 
     if job is not None:
         settings = ut.load_settings(job_id)

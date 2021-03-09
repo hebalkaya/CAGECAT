@@ -26,4 +26,8 @@
 <div>
     <iframe srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
+<hr/>
+<div>
+    <a href="{{url_for('home_page', prev_run_id=job_id)}}"><button>Reanalyze</button></a>
+</div>
 {% endblock %}

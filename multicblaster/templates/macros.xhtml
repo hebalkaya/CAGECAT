@@ -1,6 +1,6 @@
 <!--Here we can have code block which are used more than once-->
 
-{% macro prev_session(module, mainInput) %}
+{% macro prev_session(module, mainInput, job_id) %}
     <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">
         <div>
@@ -15,7 +15,8 @@
         <label for="{{ '%sEnteredJobId' % module }}">Previous job
             ID</label>
         <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}"
-               placeholder="AAAAA" {{ '' if mainInput else 'disabled="disabled"'}}/>
+               placeholder="AAAAA" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
+
         <span>or</span>
         <label for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
         <input type="file"
