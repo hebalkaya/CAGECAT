@@ -5,7 +5,7 @@ from multicblaster.models import Job, Statistic
 from datetime import datetime
 import re
 
-LOGGING_BASE_DIR = "jobs"
+LOGGING_BASE_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
 SEP = os.sep

@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect, send_from_directory
+from flask import render_template, request, url_for, redirect, send_from_directory, send_file
 from multicblaster import app, q, r
 import multicblaster.utils as ut
 from multicblaster.models import Job
@@ -8,7 +8,6 @@ import os
 
 @app.route("/")
 def home_page():
-    # TODO: create function to fetch server info
     return render_template("index.xhtml", submit_url=ut.SUBMIT_URL,
                            serv_info=ut.get_server_info(q, r))
 
@@ -72,7 +71,7 @@ def submit_job():
     ut.save_settings(request.form, os.path.join(ut.LOGGING_BASE_DIR, job_id, "logs", job_id))
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
-        "file_path": file_path, # TODO for uploaded files
+        "file_path": file_path,
         "prev_page": "/" + request.referrer.split("/")[-1]
     }, result_ttl=86400)
 
@@ -85,7 +84,6 @@ def submit_job():
 
 @app.route("/results/<job_id>")
 def show_result(job_id):
-    #TODO: search for job ID
     job = Job.query.filter_by(id=job_id).first()
 
 
@@ -94,6 +92,7 @@ def show_result(job_id):
         status = job.status
 
         if status == "finished" or status == "failed":
+            # TODO: create template for failed job
             with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
                 plot_contents = inf.read()
 
@@ -123,21 +122,15 @@ def return_user_download(job_id):
         # flash("Invalid post attributes") # TODO: should show them on the page
         return redirect(url_for("home_page"))
 
-    # job_id = submitted_data["job_id"]
     compr_type = submitted_data["compression_type"]
 
     # TODO: first, execute compression_conversion script
     # to go from ours server-default compression to the desired compresion
     # format
 
-    # print("-"*50)
-    # print(job_id, compr_type)
-    print("We're heree")
-    # a = os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}.tar")
-    return send_from_directory(os.path.join("static"), "styles.css", as_attachment=True)
-    # TODO: make functional when deploying
-
-    # return "Hello there"
+    # TODO: send_from_directory is a safer approach, but this suits for now
+    # as Flask should not be serving files when deployed
+    return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"], job_id, "results", f"{job_id}.zip"))
 
 
 @app.route("/create-database")
@@ -156,20 +149,15 @@ def extract_sequence():
     return 404
 
 @app.route("/results", methods=["GET", "POST"])
-def show_results():
+def result_from_jobid():
     if request.method == "GET":
-        return render_template("show_results.xhtml", serv_info=ut.get_server_info(q, r))
+        return render_template("result_from_jobid.xhtml", serv_info=ut.get_server_info(q, r))
     else: # method is POST
-        return redirect(url_for('show_result', job_id=request.form["job_id"]))
-
-@app.route("/neighbourhood")
-def calculate_neighbourhood():
-    return render_template("neighbourhood.xhtml",
-                           submit_url=ut.SUBMIT_URL,
-                           serv_info=ut.get_server_info(q, r),
-                           session_file_upload=ut.htmlg.SESSION_FILE_UPLOAD,
-                           outf_name=ut.htmlg.generate_output_filename_form(
-                               "output_name"))
+        job_id = request.form["job_id"]
+        if Job.query.filter_by(id=job_id).first() is not None:
+            return redirect(url_for('show_result', job_id=job_id))
+        else:
+            return "No job known with that ID" #TODO: create invalid job ID template
 
 # Error handlers
 @app.errorhandler(404)

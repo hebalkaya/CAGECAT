@@ -1,7 +1,7 @@
 from datetime import datetime
 from multicblaster import db
 
-## SQLAlchemy database classes #TODO: move it to another file
+## SQLAlchemy database classes
 class Job(db.Model):
     id = db.Column(db.String(15), primary_key=True)
     job_type = db.Column(db.String(10), nullable=False)
