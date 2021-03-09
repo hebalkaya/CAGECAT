@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, send_from_directory
 from multicblaster import app, q, r
 import multicblaster.utils as ut
 from multicblaster.models import Job
@@ -110,20 +110,10 @@ def show_result(job_id):
         return render_template("not_found.xhtml", job_id=job_id,
                                serv_info=ut.get_server_info(q, r))
 
-    # TODO: get status of the job
-    status = "running"
-
-    # if found:
-    #     return render_template("result_page.xhtml", job_id=job_id,
-    #                            status=status, serv_info=ut.get_server_info(q, r),
-    #                            compr_formats=ut.COMPRESSION_FORMATS)
-        # TODO: create status template
-
-
     # TODO: create not_found template
 
-@app.route("/download-results", methods=["POST"])
-def return_user_download():
+@app.route("/download-results/<job_id>", methods=["POST"])
+def return_user_download(job_id):
     print(request.form)
 
     # execute convert_compression.py
@@ -133,7 +123,7 @@ def return_user_download():
         # flash("Invalid post attributes") # TODO: should show them on the page
         return redirect(url_for("home_page"))
 
-    job_id = submitted_data["job_id"]
+    # job_id = submitted_data["job_id"]
     compr_type = submitted_data["compression_type"]
 
     # TODO: first, execute compression_conversion script
@@ -142,7 +132,10 @@ def return_user_download():
 
     # print("-"*50)
     # print(job_id, compr_type)
-    return "Example" # TODO: use send_from_directory to return file
+    print("We're heree")
+    # a = os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}.tar")
+    return send_from_directory(os.path.join("static"), "styles.css", as_attachment=True)
+    # TODO: make functional when deploying
 
     # return "Hello there"
 
