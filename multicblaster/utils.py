@@ -141,6 +141,8 @@ def save_file(file_obj, job_id):
 
 
 def get_server_info(q, redis_conn) -> dict:
+    # TODO: maybe we can instantiate this registry once instead of every time
+    # we want some server info
     start_registry = StartedJobRegistry('default', connection=redis_conn)
     # above registry has the jobs in it which have been started, but are not
     # finished yet: running jobs.

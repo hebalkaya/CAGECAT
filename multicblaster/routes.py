@@ -9,14 +9,10 @@ import os
 @app.route("/rerun/<prev_run_id>")
 @app.route("/")
 def home_page(prev_run_id=None):
-    print(prev_run_id)
-    return render_template("index.xhtml", submit_url=ut.SUBMIT_URL,
-                           serv_info=ut.get_server_info(q, r), prev_run_id=prev_run_id)
 
-
-@app.route("/new_job", methods=["GET"])
-def new_job():
-    return render_template("new_job.xhtml", serv_info=ut.get_server_info(q, r))
+    return show_template("index.xhtml", submit_url=ut.SUBMIT_URL, prev_run_id=prev_run_id)
+    # return render_template("index.xhtml", submit_url=ut.SUBMIT_URL,
+    #                        serv_info=ut.get_server_info(q, r), prev_run_id=prev_run_id)
 
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
@@ -97,18 +93,21 @@ def show_result(job_id):
             with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
                 plot_contents = inf.read()
 
-            return render_template("result_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
-                                   compr_formats=ut.COMPRESSION_FORMATS, status=status, plot_contents=plot_contents)
+            return show_template("result_page.xhtml", job_id=job_id, status=status, compr_formats=ut.COMPRESSION_FORMATS, plot_contents=plot_contents)
+            # return render_template("result_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
+            #                        compr_formats=ut.COMPRESSION_FORMATS, status=status, plot_contents=plot_contents)
             # show results page
         elif status == "queued" or status == "running":
-            return render_template("status_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
-                                   status=status, settings=settings)
+            return show_template("status_page.xhtml", job_id=job_id, status=status, settings=settings)
+            # return render_template("status_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
+            #                        status=status, settings=settings)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
     else: # indicates no such job exists in the database
-        return render_template("not_found.xhtml", job_id=job_id,
-                               serv_info=ut.get_server_info(q, r))
+        return show_template("not_found.xhtml", job_id=job_id)
+        # return render_template("not_found.xhtml", job_id=job_id,
+        #                        serv_info=ut.get_server_info(q, r))
 
     # TODO: create not_found template
 
@@ -133,17 +132,6 @@ def return_user_download(job_id):
     # as Flask should not be serving files when deployed
     return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"], job_id, "results", f"{job_id}.zip"))
 
-
-@app.route("/create-database")
-def create_database():
-    # submitted_data
-
-    return render_template("create_database.xhtml", submit_url=ut.SUBMIT_URL,
-                           serv_info=ut.get_server_info(q, r),
-                           outf_name=ut.htmlg.generate_output_filename_form(
-                               "database_name"))
-
-
 @app.route("/extract-sequence")
 def extract_sequence():
     # TODO
@@ -152,7 +140,8 @@ def extract_sequence():
 @app.route("/results", methods=["GET", "POST"])
 def result_from_jobid():
     if request.method == "GET":
-        return render_template("result_from_jobid.xhtml", serv_info=ut.get_server_info(q, r))
+        return show_template("result_from_jobid.xhtml")
+        # return render_template("result_from_jobid.xhtml", serv_info=ut.get_server_info(q, r))
     else: # method is POST
         job_id = request.form["job_id"]
         if ut.fetch_job_from_db(job_id) is not None:
@@ -162,16 +151,31 @@ def result_from_jobid():
 
 # Error handlers
 @app.errorhandler(404)
-def invalid_method(error):
-    #logging.error(utils.fetch_base_error_message(error, request))
-    # return redirect(url_for("home_page"))
-    return render_template("page_not_found.xhtml",
-                           serv_info=ut.get_server_info(q, r)), 404
+def page_not_found(error):
+    return show_template("page_not_found.xhtml", stat_code=404)
 
 
 @app.errorhandler(405)
-def page_not_found(error):
-    base = ut.fetch_base_error_message(error, request)
-    #logging.error(f"{base}, METHOD: {request.method}")
+def invalid_method(error):
     return redirect(url_for("home_page"))
 
+
+def show_template(template_name: str, stat_code=None, **kwargs):
+    """Returns rendered templates to the client
+
+    Input:
+        - template_name: name of template to be rendered. By default,
+            templates should be located in the templates/ folder
+        - stat_code, int: HTTP status code to be returned to the client
+        - kwargs: keyword arguments used during rendering of the template
+
+    Output:
+        - rendered template
+
+    Function was created to prevent redundancy when getting the server info
+    and uses Flask's render_template function to actually render the templates
+    """
+    if stat_code is None:
+        return render_template(template_name, serv_info=ut.get_server_info(q, r), **kwargs)
+    else:
+        return render_template(template_name, serv_info=ut.get_server_info(q, r), **kwargs), stat_code
