@@ -42,7 +42,7 @@ def submit_job():
             if file_type == "jobID":
                 prev_job_id = request.form["searchEnteredJobId"]
 
-                if Job.query.filter_by(id=prev_job_id).first() is None:
+                if ut.fetch_job_from_db(prev_job_id) is None:
                     # TODO: create invalid job ID template
                     # TODO: OR let JS check job ID on front-end
                     raise NotImplementedError("Invalid job ID. Template should be created")
@@ -86,7 +86,7 @@ def submit_job():
 
 @app.route("/results/<job_id>")
 def show_result(job_id):
-    job = Job.query.filter_by(id=job_id).first()
+    job = ut.fetch_job_from_db(job_id)
 
     if job is not None:
         settings = ut.load_settings(job_id)
@@ -155,7 +155,7 @@ def result_from_jobid():
         return render_template("result_from_jobid.xhtml", serv_info=ut.get_server_info(q, r))
     else: # method is POST
         job_id = request.form["job_id"]
-        if Job.query.filter_by(id=job_id).first() is not None:
+        if ut.fetch_job_from_db(job_id) is not None:
             return redirect(url_for('show_result', job_id=job_id))
         else:
             return "No job known with that ID" #TODO: create invalid job ID template
