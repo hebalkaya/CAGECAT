@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect, send_from_directory, send_file
+from flask import render_template, request, url_for, redirect, send_file
 from multicblaster import app, q, r
 import multicblaster.utils as ut
 from multicblaster.models import Job
@@ -6,14 +6,11 @@ from multicblaster import db
 import multicblaster.workers as rf
 import os
 
+
 @app.route("/rerun/<prev_run_id>")
 @app.route("/")
 def home_page(prev_run_id=None):
-
     return show_template("index.xhtml", submit_url=ut.SUBMIT_URL, prev_run_id=prev_run_id)
-    # return render_template("index.xhtml", submit_url=ut.SUBMIT_URL,
-    #                        serv_info=ut.get_server_info(q, r), prev_run_id=prev_run_id)
-
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():
@@ -34,20 +31,17 @@ def submit_job():
             file_path = None
         elif input_type == "prev_session":
             file_type = request.form["searchPreviousType"]
+            job_type = "recompute"
 
             if file_type == "jobID":
                 prev_job_id = request.form["searchEnteredJobId"]
 
-                if ut.fetch_job_from_db(prev_job_id) is None:
-                    # TODO: create invalid job ID template
-                    # TODO: OR let JS check job ID on front-end
-                    raise NotImplementedError("Invalid job ID. Template should be created")
+                ut.check_valid_job(prev_job_id, job_type)
+
                 file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
 
-                print(file_path)
             elif file_type == "sessionFile":
                 file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
-                # print(file_path)
             else:
                 raise IOError("Not valid file type")
         else: # future input types and prev_session
@@ -59,10 +53,12 @@ def submit_job():
 
         if file_type == "jobID":
             prev_job_id = request.form["gneEnteredJobId"]
+
+            ut.check_valid_job(prev_job_id, job_type)
+
             file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
         elif file_type == "sessionFile":
             file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
-            # print(file_path)
         else:
             raise IOError("Not valid file type")
 
@@ -72,7 +68,6 @@ def submit_job():
         "file_path": file_path,
         "prev_page": "/" + request.referrer.split("/")[-1]
     }, result_ttl=86400)
-
 
     j = Job(id=job_id, status="queued", job_type=job_type)
     db.session.add(j)
@@ -94,13 +89,8 @@ def show_result(job_id):
                 plot_contents = inf.read()
 
             return show_template("result_page.xhtml", job_id=job_id, status=status, compr_formats=ut.COMPRESSION_FORMATS, plot_contents=plot_contents)
-            # return render_template("result_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
-            #                        compr_formats=ut.COMPRESSION_FORMATS, status=status, plot_contents=plot_contents)
-            # show results page
         elif status == "queued" or status == "running":
             return show_template("status_page.xhtml", job_id=job_id, status=status, settings=settings)
-            # return render_template("status_page.xhtml", job_id=job_id, serv_info=ut.get_server_info(q, r),
-            #                        status=status, settings=settings)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
@@ -109,7 +99,7 @@ def show_result(job_id):
         # return render_template("not_found.xhtml", job_id=job_id,
         #                        serv_info=ut.get_server_info(q, r))
 
-    # TODO: create not_found template
+        # TODO: create not_found template
 
 @app.route("/download-results/<job_id>", methods=["POST"])
 def return_user_download(job_id):

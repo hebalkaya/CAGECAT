@@ -10,6 +10,7 @@ FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
 SEP = os.sep
 PATTERN = "\('(.+?)', '(.*?)'\)"
+INVALID_JOB_COMBINATIONS = [("recompute", "recompute"), ("recompute", "gne")]
 
 PRETTY_TRANSLATION = {"job_type": "Job type",
                       "inputType": "Input type",
@@ -244,3 +245,23 @@ def fetch_job_from_db(job_id: str) -> Job:
         - None if no job with the given ID was found in the database
     """
     return Job.query.filter_by(id=job_id).first()
+
+def check_valid_job(prev_job_id: str, job_type: str):
+    """Checks if a submitted job, relying on a previous job is valid
+
+    :param prev_job_id: ID of the user-submitted previous job
+    :param job_type: type of the submitted job e.g. "search" or "gne"
+
+    Output: # TODO: might change into rendering templates
+        - raises errors if the previous_job_id was not found in the database
+            or the combinations of job types is invalid, which would cause
+            multicblaster to crash
+    """
+    if fetch_job_from_db(prev_job_id) is None:
+        # TODO: create invalid job ID template
+        # TODO: OR let JS check job ID on front-end
+        raise NotImplementedError("Invalid job ID. Template should be created")
+    if (fetch_job_from_db(prev_job_id).job_type, job_type) in INVALID_JOB_COMBINATIONS:
+        # TODO: should create template
+        raise NotImplementedError(
+            f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
