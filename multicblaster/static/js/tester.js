@@ -1,3 +1,6 @@
+var ncbi_pattern = "^[A-Z]{3}[0-9]{5,7}\\.?[0-9]{0,3}$"
+//TODO: pattern is not 100% correct yet
+
 function enableOrDisableOption(id, enable) {
     // For checkboxes
     var elem = document.getElementById(id);
@@ -152,6 +155,45 @@ function changePrevSessionType(){
         removeRequiredAndEnabled(module + "UploadedSessionFile")
         setRequiredAndEnabled(module + "EnteredJobId")
     }
+}
+
+function validateNCBIEntries(){
+    let incorrectAcc = []
+    let textArea = document.getElementById("ncbiEntriesTextArea");
+    let errorBox = document.getElementById("accessionsError")
+    let lines = textArea.value.split("\n");
+
+
+    for (let i=0; i < lines.length; i++){
+        if(!lines[i].match(ncbi_pattern)){
+            incorrectAcc.push(lines[i]);
+            errorBox.style.display = "block";
+        }
+    }
+
+    if (incorrectAcc.length === 0){
+        textArea.classList.remove("invalid");
+        errorBox.style.display = "none";
+    }
+    else if (incorrectAcc.length === 1 && incorrectAcc[0] === ""){
+        textArea.classList.remove("invalid");
+        errorBox.style.display = "none";
+    }
+    else {
+        textArea.classList.add("invalid");
+        document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
+    }
+
+
+
+    // for(var i = 0; i < lines.length; i++)
+    // {
+    //     if(!lines[i].match(usernamecheck))
+    //     {
+    //         alert ('Invalid input: ' + lines[i] + '.  Please write the usernames in the correct format (with a full stop between first and last name).');
+    //         return false;
+    //     }
+    // }
 }
 
 

@@ -246,11 +246,12 @@ def fetch_job_from_db(job_id: str) -> Job:
     """
     return Job.query.filter_by(id=job_id).first()
 
-def check_valid_job(prev_job_id: str, job_type: str):
+def check_valid_job(prev_job_id: str, job_type: str) -> None:
     """Checks if a submitted job, relying on a previous job is valid
 
-    :param prev_job_id: ID of the user-submitted previous job
-    :param job_type: type of the submitted job e.g. "search" or "gne"
+    Input:
+        - prev_job_id: ID of the user-submitted previous job
+        - job_type: type of the submitted job e.g. "search" or "gne"
 
     Output: # TODO: might change into rendering templates
         - raises errors if the previous_job_id was not found in the database
