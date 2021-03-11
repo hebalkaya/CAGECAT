@@ -18,12 +18,11 @@ function option5change(){
 }
 
 function validateForm(){
-    var x = document.forms["optionForm"]["e-value"];
-    console.log(x.value);
     // TODO
 
-    // return validateNCBIEntries()
-    return true; // Accepts form (and therefore continues to next page if true
+    return validateNCBIEntries();
+    // Is now executed twice: when submitting the form, and onfocusout of text area
+    // Accepts form (and therefore continues to next page if true
     // is returned)
 }
 function changeFooterVisibility(){
@@ -183,7 +182,6 @@ function validateNCBIEntries(){
         textArea.classList.add("invalid");
         document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
     }
-    console.log(valid);
     return valid;
 
     // example:
