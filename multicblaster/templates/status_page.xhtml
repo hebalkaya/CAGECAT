@@ -2,7 +2,7 @@
 
 {% block title %}Status: {{job_id}}{% endblock %}
 {% block content %}
-<p>Job {{job_id}} is currently {{status}}</p>
+<p>Job <span id="givenJobID">{{job_id}}</span> is currently {{status}}</p>
 
 <label for="optionsList">Selected options</label>
 <ul id="optionsList">
