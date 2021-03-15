@@ -1,6 +1,5 @@
 var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7}) *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
-//TODO: pattern is not 100% correct yet
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -147,14 +146,18 @@ function changePrevSessionType(){
     let clickedButton = event.target;
     let module = clickedButton.id.split("Prev")[0];
     // console.log(module);
+    let uploadSessionID = module + "UploadedSessionFile";
+    let jobIDElementID = module + "EnteredJobId";
 
     if (clickedButton.value === "sessionFile"){
-        setRequiredAndEnabled(module + "UploadedSessionFile")
-        removeRequiredAndEnabled(module + "EnteredJobId")
+        setRequiredAndEnabled(uploadSessionID)
+        removeRequiredAndEnabled(jobIDElementID)
+        document.getElementById(jobIDElementID).classList.remove("invalid")
+        enableOrDisableSubmitButtons(false);
     }
     else if (clickedButton.value === "jobID"){
-        removeRequiredAndEnabled(module + "UploadedSessionFile")
-        setRequiredAndEnabled(module + "EnteredJobId")
+        removeRequiredAndEnabled(uploadSessionID)
+        setRequiredAndEnabled(jobIDElementID)
     }
 }
 
@@ -193,8 +196,6 @@ function validateNCBIEntries() {
 function validateJobID(){
     let shouldDisable;
     let elem = event.target;
-    let buttons = document.getElementsByClassName("submit_button");
-    console.log(buttons);
 
     if(!elem.value.match(jobIDPattern)){
         elem.classList.add("invalid");
@@ -203,11 +204,16 @@ function validateJobID(){
     else {
         elem.classList.remove("invalid");
         shouldDisable = false;
-        document.getElementById("submitSearchForm").disabled = false;
     }
+
+    enableOrDisableSubmitButtons(shouldDisable)
+
+}
+
+function enableOrDisableSubmitButtons(disable){
+    let buttons = document.getElementsByClassName("submit_button");
 
     for (let i=0; i < buttons.length; i++){
-        buttons[i].disabled = shouldDisable;
+        buttons[i].disabled = disable;
     }
-
 }
