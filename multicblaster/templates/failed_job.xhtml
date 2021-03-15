@@ -1,0 +1,23 @@
+{% extends "base.xhtml" %}
+{% from "macros.xhtml" import show_options %}
+
+{% block title %}Job failed{% endblock %}
+{% block content %}
+
+<p>Job {{job_id}} has failed during execution.</p>
+
+<label>Program execution log:
+<p class="log">
+{{log_contents|safe}}
+</p>
+</label>
+
+<p>The following settings were submitted:</p>
+{{show_options(settings)}}
+{% endblock %}
+
+
+<!--{% for label, option in settings.items() %}-->
+<!--<li>{{label}}: {{option}}</li>-->
+
+<!--{% endfor %}-->

@@ -1,15 +1,10 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import show_options %}
 
 {% block title %}Status: {{job_id}}{% endblock %}
 {% block content %}
 <p>Job <span id="givenJobID">{{job_id}}</span> is currently {{status}}</p>
 
-<label for="optionsList">Selected options</label>
-<ul id="optionsList">
-    {% for label, option in settings.items() %}
-    <li>{{label}}: {{option}}</li>
-
-    {% endfor %}
-</ul>
+{{ show_options(settings) }}
 
 {% endblock %}

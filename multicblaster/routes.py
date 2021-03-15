@@ -90,8 +90,10 @@ def show_result(job_id):
 
             return show_template("result_page.xhtml", job_id=job_id, status=status, compr_formats=ut.COMPRESSION_FORMATS, plot_contents=plot_contents)
         elif status == "failed":
-            # TODO: create template for failed job
-            raise NotImplementedError("Should create failed job template")
+            with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "logs", f"{job_id}_cblaster.log")) as inf:
+                log_contents = "<br/>".join(inf.readlines())
+
+            return show_template("failed_job.xhtml", settings=settings, job_id=job_id, log_contents=log_contents)
         elif status == "queued" or status == "running":
             return show_template("status_page.xhtml", job_id=job_id, status=status, settings=settings)
         else:

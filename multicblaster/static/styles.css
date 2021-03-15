@@ -141,3 +141,9 @@ span.smallertext {
 /*    background: coral;*/
 /*    color: black;*/
 /*}*/
+
+.log{
+    border: solid dodgerblue 2px;
+    background: darkgrey;
+    font-family: "Courier New";
+}

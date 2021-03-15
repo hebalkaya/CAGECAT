@@ -77,3 +77,13 @@
     </fieldset>
 </div>
 {% endmacro %}
+
+{% macro show_options(settings) %}
+<label for="optionsList">Selected options</label>
+<ul id="optionsList">
+{% for label, option in settings.items() %}
+<li>{{label}}: {{option}}</li>
+
+{% endfor %}
+</ul>
+{% endmacro %}
