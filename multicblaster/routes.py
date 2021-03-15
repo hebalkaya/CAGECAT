@@ -98,8 +98,8 @@ def show_result(job_id):
             raise IOError(f"Incorrect status of job {job_id} in database")
 
     else: # indicates no such job exists in the database
-        return show_template("not_found.xhtml", job_id=job_id)
-        # return render_template("not_found.xhtml", job_id=job_id,
+        return show_template("job_not_found.xhtml", job_id=job_id)
+        # return render_template("job_not_found.xhtml", job_id=job_id,
         #                        serv_info=ut.get_server_info(q, r))
 
         # TODO: create not_found template
@@ -140,7 +140,8 @@ def result_from_jobid():
         if ut.fetch_job_from_db(job_id) is not None:
             return redirect(url_for('show_result', job_id=job_id))
         else:
-            return "No job known with that ID" #TODO: create invalid job ID template
+            return show_template("job_not_found.xhtml", job_id=job_id)
+            # return "No job known with that ID" #TODO: create invalid job ID template
 
 # Error handlers
 @app.errorhandler(404)

@@ -3,8 +3,8 @@
 {% block content %}
 <div>
     <form method="post" action="/results">
-        <input type="text" value="E739O929N455T90" placeholder="E739O929N455T90" name="job_id"/>
-        <input type="submit" value="Show"/>
+        <input type="text" value="E739O929N455T90" placeholder="E739O929N455T90" name="job_id" onfocusout="validateJobID()"/>
+        <input type="submit" class="submit_button" value="Show"/>
     </form>
 </div>
 {% endblock %}
