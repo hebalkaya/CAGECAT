@@ -83,12 +83,15 @@ def show_result(job_id):
         settings = ut.load_settings(job_id)
         status = job.status
 
-        if status == "finished" or status == "failed":
-            # TODO: create template for failed job
+        if status == "finished":
+
             with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
                 plot_contents = inf.read()
 
             return show_template("result_page.xhtml", job_id=job_id, status=status, compr_formats=ut.COMPRESSION_FORMATS, plot_contents=plot_contents)
+        elif status == "failed":
+            # TODO: create template for failed job
+            raise NotImplementedError("Should create failed job template")
         elif status == "queued" or status == "running":
             return show_template("status_page.xhtml", job_id=job_id, status=status, settings=settings)
         else:
