@@ -14,7 +14,7 @@
         </div>
         <label for="{{ '%sEnteredJobId' % module }}">Previous job
             ID</label>
-        <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}"
+        <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
                placeholder="AAAAA" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
 
         <span>or</span>

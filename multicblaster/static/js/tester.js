@@ -1,4 +1,5 @@
-var ncbi_pattern = "^[A-Z]{3}(\\d{5}|\\d{7})\\.?[0-9]{0,3} *$"
+var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7}) *$"
+var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 //TODO: pattern is not 100% correct yet
 
 function enableOrDisableOption(id, enable) {
@@ -145,7 +146,7 @@ function changeHitAttribute(){
 function changePrevSessionType(){
     let clickedButton = event.target;
     let module = clickedButton.id.split("Prev")[0];
-    console.log(module);
+    // console.log(module);
 
     if (clickedButton.value === "sessionFile"){
         setRequiredAndEnabled(module + "UploadedSessionFile")
@@ -157,16 +158,16 @@ function changePrevSessionType(){
     }
 }
 
-function validateNCBIEntries(){
+function validateNCBIEntries() {
     let incorrectAcc = []
     let textArea = document.getElementById("ncbiEntriesTextArea");
     let errorBox = document.getElementById("accessionsError")
     let lines = textArea.value.split("\n");
     let valid = true;
 
-    for (let i=0; i < lines.length; i++){
-        if(!lines[i].match(ncbi_pattern)) {
-            if (lines[i] !== ""){
+    for (let i = 0; i < lines.length; i++) {
+        if (!lines[i].match(ncbiPattern)) {
+            if (lines[i] !== "") {
                 incorrectAcc.push(lines[i]);
                 errorBox.style.display = "block";
                 valid = false;
@@ -174,16 +175,39 @@ function validateNCBIEntries(){
         }
     }
 
-    if (valid){
+    if (valid) {
         textArea.classList.remove("invalid");
         errorBox.style.display = "none";
-    }
-    else {
+        document.getElementById("submitSearchForm").disabled = false;
+    } else {
         textArea.classList.add("invalid");
         document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
+        document.getElementById("submitSearchForm").disabled = true;
     }
     return valid;
 
     // example:
     // https://stackoverflow.com/questions/16465325/regular-expression-on-textarea
+}
+
+function validateJobID(){
+    let shouldDisable;
+    let elem = event.target;
+    let buttons = document.getElementsByClassName("submit_button");
+    console.log(buttons);
+
+    if(!elem.value.match(jobIDPattern)){
+        elem.classList.add("invalid");
+        shouldDisable = true;
+    }
+    else {
+        elem.classList.remove("invalid");
+        shouldDisable = false;
+        document.getElementById("submitSearchForm").disabled = false;
+    }
+
+    for (let i=0; i < buttons.length; i++){
+        buttons[i].disabled = shouldDisable;
+    }
+
 }
