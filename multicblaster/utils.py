@@ -1,6 +1,10 @@
+"""Utility module to support the multicblaster web service
+
+Author: Matthias van den Belt
+"""
 import os
 import random
-from rq.registry import StartedJobRegistry, FinishedJobRegistry
+from rq.registry import StartedJobRegistry
 from multicblaster.models import Job, Statistic
 from datetime import datetime
 import re
@@ -12,11 +16,11 @@ import redis
 import typing as t
 from flask_sqlalchemy import SQLAlchemy
 
+# create final variables
 LOGGING_BASE_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
-SEP = os.sep
-PATTERN = "\('(.+?)', '(.*?)'\)"
+PATTERN = r"'(.+?)', '(.*?)'"
 # INVALID_JOB_COMBINATIONS = []
 INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
                             ("gne", "gne"),
@@ -80,19 +84,20 @@ def generate_job_id(id_len: int = 15) -> str:
         - job_id, str: a randomly generated job ID
     """
     characters = []
-    id = 0
+    existing_job = 0
 
-    while id is not None:
+    while existing_job is not None:
         for i in range(id_len):
             if i % 4 == 0:
-                min, max = 65, 90
+                min_ord, max_ord = 65, 90
             else:
-                min, max = 48, 57
+                min_ord, max_ord = 48, 57
 
-            characters.append(chr(random.randint(min, max)))
+            characters.append(chr(random.randint(min_ord, max_ord)))
 
         job_id = "".join(characters)
-        id = fetch_job_from_db(job_id)  # becomes None if no such job exists
+        existing_job = fetch_job_from_db(job_id)
+        # existing_job becomes None if no such job exists
 
     return job_id
 
@@ -118,7 +123,8 @@ def save_file(file_obj: werkzeug.datastructures.FileStorage,
     return file_path
 
 
-def get_server_info(q: rq.Queue, redis_conn: redis.Redis) -> t.Dict[str, t.Union[str, int]]:
+def get_server_info(q: rq.Queue, redis_conn: redis.Redis) \
+        -> t.Dict[str, t.Union[str, int]]:
     """Returns current server statistics and information
 
     Input:
@@ -181,7 +187,7 @@ def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
     Output:
         - None
         - Stored time at given column in the SQL database
-"""
+    """
     job = fetch_job_from_db(job_id)
 
     if time_type == "start":
@@ -248,8 +254,8 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
     """
     settings_dict = {}
 
-    file_path = f"{LOGGING_BASE_DIR}{SEP}{job_id}{SEP}logs{SEP}{job_id}_options.txt"
-    with open(file_path) as inf:
+    with open(os.path.join(LOGGING_BASE_DIR, job_id, "logs",
+                           f"{job_id}_options.txt")) as inf:
         settings = inf.read()
 
     matches = re.findall(PATTERN, settings[20:-2])
