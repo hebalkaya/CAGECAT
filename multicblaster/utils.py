@@ -5,12 +5,24 @@ from multicblaster.models import Job, Statistic
 from datetime import datetime
 import re
 
+# typing imports
+import werkzeug.datastructures
+import rq
+import redis
+import typing as t
+
 LOGGING_BASE_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
 SEP = os.sep
 PATTERN = "\('(.+?)', '(.*?)'\)"
-INVALID_JOB_COMBINATIONS = [("recompute", "recompute"), ("recompute", "gne")]
+# INVALID_JOB_COMBINATIONS = []
+INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
+                            ("gne", "gne"),
+                            ("recompute", "gne"),
+                            ("gne", "recompute")]
+# TODO: really check if above combinations are not valid, and document what
+# kind of errors they produce
 
 PRETTY_TRANSLATION = {"job_type": "Job type",
                       "inputType": "Input type",
@@ -57,12 +69,15 @@ COMPRESSION_FORMATS = [".tar", ".tar.gz", ".gz", ".7z", ".zip", ".rar"]
 TEST_PATH = ".."
 
 
-class StatusException(Exception):
-    def __init__(self, msg):
-        super(StatusException, self).__init__(msg)
+def generate_job_id(id_len: int = 15) -> str:
+    """Generates a numeric job ID with each 4th character being a letter
 
+    Input:
+        - id_len, int: length of the job ID to be generated
 
-def generate_job_id(id_len=15):
+    Output:
+        - job_id, str: a randomly generated job ID
+    """
     characters = []
     id = 0
 
@@ -91,22 +106,20 @@ def fetch_base_error_message(error, request):
     return f"CODE:{parse_error(error)}, URL:{request.url}"
 
 
-def format_status_message(status):  # TODO: can probably be removed
-    msg = ["Job status:"]
-    if status == "queued":
-        pass
-    elif status == "running":
-        pass
-    elif status == "finished":
-        pass
-    else:
-        raise StatusException()
+def save_file(file_obj: werkzeug.datastructures.FileStorage,
+              job_id: str) -> str:
+    """Saves file in specific job uploads folder using the provided filename
 
-    return msg
+    Input:
+        - file_obj: via HTTP form user submitted file. Given like:
+            request.form[filename]
+        - job_id, str: ID corresponding to the job the function is called for
 
+    Output:
+        - file_path, str: path where the file has been saved
 
-def save_file(file_obj, job_id):
-    # TODO: make filename safe
+    # TODO: should make filename safe (e.g. secure_filename function of Flask)
+    """
     file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
                              "uploads", file_obj.filename)
     file_obj.save(file_path)
@@ -114,64 +127,58 @@ def save_file(file_obj, job_id):
     return file_path
 
 
-# def save_file(posted_files, app):
-#     for file in posted_files:
-#         path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-#         if os.path.exists(path):
-#             print("Overwriting...")
-#             #raise FileExistsError("There already is a file at that path")
-#         # We can return false here, indicating that something went wrong.
-#         # The client side can then react by giving an error
-#         # Maybe flashing messages?
-#         file.save(path)
-#         print(f"File: {file.filename} has been saved at {path}")
+def get_server_info(q: rq.Queue, redis_conn: redis.Redis) -> t.Dict[str, t.Union[str, int]]:
+    """Returns current server statistics and information
 
-# def save_file(directory: str, posted_files: dict, app) -> None:
-#     print(posted_files)
-#     print(list(posted_files.keys()))
-#     print(list(posted_files.values()))
-#     print("-============================================")
-#     # print(os.path.join(app.config['UPLOAD_FOLDER'], "temper"))
-#     file = posted_files[POSTED_FILE_TRANSLATION[directory]]
-#     print(file)
-#     # print(file)
-#     # print(filename)
-#     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-#
-#     print(f"File: {file.filename} has been saved at ")
+    Input:
+        - q, rq.Queue: connection to queue of jobs waiting to be executed
+        - redis_conn, redis.Redis: instance of Redis server. Used to connect
+            to Redis
 
-
-def get_server_info(q, redis_conn) -> dict:
+    Output:
+        - dict: info about the current status of the server and queued
+            or running jobs
+    """
     # TODO: maybe we can instantiate this registry once instead of every time
-    # we want some server info
+
     start_registry = StartedJobRegistry('default', connection=redis_conn)
     # above registry has the jobs in it which have been started, but are not
     # finished yet: running jobs.
     queued = len(q)
     running = len(start_registry)
-    status = "idle" if queued == 0 and running == 0 else "active"
 
-    data = {"server_status": status,
+    if queued == 0:
+        if running == 0:
+            status = "idle"
+        else:
+            status = "running"
+    else:
+        status = "waiting"
+
+    return {"server_status": status,
             "queued": queued,
             "running": running,
             "completed": Statistic.query.filter_by(
                 name="finished").first().count}
 
-    return data
 
+def create_directories(job_id: str) -> None:
+    """Creates directories for a job ID
 
-def create_directories(job_id):
+    Input:
+        - job_id, str: ID corresponding to the job the function is called for
+
+    Output:
+        - None
+        - Creation of directories
+    """
     base_path = f"{LOGGING_BASE_DIR}/{job_id}"
     os.mkdir(base_path)
     for folder in FOLDERS_TO_CREATE:
         os.mkdir(f"{base_path}/{folder}")
-    # with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
-    #     # outf.write(f"{job_id}\n")
-    #     cmd = ["pip3", "freeze"]
-    #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
 
-def add_time_to_db(job_id, time_to_add, db):
+def add_time_to_db(job_id: str, time_to_add, db):
     """
 
     :param job_id:
@@ -246,6 +253,7 @@ def fetch_job_from_db(job_id: str) -> Job:
     """
     return Job.query.filter_by(id=job_id).first()
 
+
 def check_valid_job(prev_job_id: str, job_type: str) -> None:
     """Checks if a submitted job, relying on a previous job is valid
 
@@ -261,8 +269,9 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
     if fetch_job_from_db(prev_job_id) is None:
         # TODO: create invalid job ID template
         # TODO: OR let JS check job ID on front-end
-        raise NotImplementedError("Invalid job ID. Template should be created")
-    if (fetch_job_from_db(prev_job_id).job_type, job_type) in INVALID_JOB_COMBINATIONS:
+        raise NotImplementedError("Unknown job ID. Template should be created")
+    if (fetch_job_from_db(prev_job_id).job_type,
+        job_type) in INVALID_JOB_COMBINATIONS:
         # TODO: should create template
         raise NotImplementedError(
             f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
