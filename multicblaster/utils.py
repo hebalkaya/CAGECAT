@@ -10,6 +10,7 @@ import werkzeug.datastructures
 import rq
 import redis
 import typing as t
+from flask_sqlalchemy import SQLAlchemy
 
 LOGGING_BASE_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
@@ -96,16 +97,6 @@ def generate_job_id(id_len: int = 15) -> str:
     return job_id
 
 
-def parse_error(error_msg):
-    # print(error_msg)
-    # print(type(error_msg))
-    return str(error_msg).split()[0]
-
-
-def fetch_base_error_message(error, request):
-    return f"CODE:{parse_error(error)}, URL:{request.url}"
-
-
 def save_file(file_obj: werkzeug.datastructures.FileStorage,
               job_id: str) -> str:
     """Saves file in specific job uploads folder using the provided filename
@@ -166,11 +157,11 @@ def create_directories(job_id: str) -> None:
     """Creates directories for a job ID
 
     Input:
-        - job_id, str: ID corresponding to the job the function is called for
+        - job_id: ID corresponding to the job the function is called for
 
     Output:
         - None
-        - Creation of directories
+        - Created directories
     """
     base_path = f"{LOGGING_BASE_DIR}/{job_id}"
     os.mkdir(base_path)
@@ -178,18 +169,24 @@ def create_directories(job_id: str) -> None:
         os.mkdir(f"{base_path}/{folder}")
 
 
-def add_time_to_db(job_id: str, time_to_add, db):
-    """
+def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
+    """Adds timestamp to job entry with given ID in SQL database
 
-    :param job_id:
-    :param time_to_add:
-    :return:
-    """
+    Input:
+        - job_id: ID corresponding to the job the function is called for
+        - time_type: column in the SQL table to which a timestamp should be
+            added. Available options are: ["start", "finish"]
+        - db: SQL database connection with the Flask application
+
+    Output:
+        - None
+        - Stored time at given column in the SQL database
+"""
     job = fetch_job_from_db(job_id)
-    print(job)
-    if time_to_add == "start":
+
+    if time_type == "start":
         job.start_time = datetime.utcnow()
-    elif time_to_add == "finish":
+    elif time_type == "finish":
         job.finish_time = datetime.utcnow()
     else:
         raise IOError("Invalid time type")
@@ -197,7 +194,25 @@ def add_time_to_db(job_id: str, time_to_add, db):
     db.session.commit()
 
 
-def mutate_status(job_id, stage, db, return_code=None):
+def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
+                  return_code: t.Optional[int] = None) -> None:
+    """Mutates status of job entry with given ID in SQL database
+
+    Input:
+        - job_id: ID corresponding to the job the function is called for
+        - stage: stage the job has entered. Available options are:
+            ["start", "finish"]
+        - db: SQL database connection with the Flask application
+        - return_code: exit code of the command ran. 0 indicates command
+            execution without errors
+
+    Output:
+        - None
+        - Mutated job status in the SQL database
+
+    Raises:
+        - IOError: when the given stage is invalid
+    """
     job = fetch_job_from_db(job_id)
 
     if stage == "start":
@@ -216,11 +231,21 @@ def mutate_status(job_id, stage, db, return_code=None):
         raise IOError("Invalid stage")
 
     job.status = new_status
-
     db.session.commit()
 
 
-def load_settings(job_id):
+def load_settings(job_id: str) -> t.Dict[str, str]:
+    """Loads settings with which a job was submitted by a user from a file
+
+    Input:
+        - job_id: ID corresponding to the job the function is called for
+
+    Output:
+        - settings_dict: to be used when generating HTML. With the format
+            {pretty_label_of_setting : submitted_value}
+
+    Loads file written by the [save_settings] function
+    """
     settings_dict = {}
 
     file_path = f"{LOGGING_BASE_DIR}{SEP}{job_id}{SEP}logs{SEP}{job_id}_options.txt"
@@ -237,16 +262,32 @@ def load_settings(job_id):
     return settings_dict
 
 
-def save_settings(options, base_path):
-    with open(f"{base_path}_options.txt", "w") as outf:
+def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
+                  job_id: str) -> None:
+    """Writes job settings to a file with which the job was submitted
+
+    Input:
+        - options: user submitted options (values) via HTTP form of front-end
+        - job_id: ID corresponding to the job the function is called for
+
+    Output:
+        - None
+        - New file with options written to it
+
+    Function created for logging purposes. Writes to a file, which will be
+    used by the [load_settings] function.
+    """
+    with open(f"{os.path.join(LOGGING_BASE_DIR, job_id, 'logs', job_id)}"
+              f"_options.txt", "w") as outf:
         outf.write(str(options))
 
 
-def fetch_job_from_db(job_id: str) -> Job:
+def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
     """Checks if a job with a specific job ID exists in the database
 
     Input:
         - job_id: ID of a job to search for
+
     Output:
         - Job instance if present in the database OR
         - None if no job with the given ID was found in the database
@@ -262,16 +303,20 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         - job_type: type of the submitted job e.g. "search" or "gne"
 
     Output: # TODO: might change into rendering templates
-        - raises errors if the previous_job_id was not found in the database
-            or the combinations of job types is invalid, which would cause
-            multicblaster to crash
+        - None
+
+    Raises:
+        - NotImplementedError: when previous_job_id was not found in
+            the database
+        - NotImplementedError: when the combination of the previous job type
+            and the new job type is invalid (would cause multicblaster
+            to crash)
     """
     if fetch_job_from_db(prev_job_id) is None:
         # TODO: create invalid job ID template
         # TODO: OR let JS check job ID on front-end
         raise NotImplementedError("Unknown job ID. Template should be created")
-    if (fetch_job_from_db(prev_job_id).job_type,
-        job_type) in INVALID_JOB_COMBINATIONS:
+    if (fetch_job_from_db(prev_job_id).job_type, job_type) in \
+            INVALID_JOB_COMBINATIONS:
         # TODO: should create template
-        raise NotImplementedError(
-            f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
+        raise NotImplementedError(f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
