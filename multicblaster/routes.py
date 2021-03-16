@@ -1,3 +1,9 @@
+"""Stores routes for Flask web application
+
+Author: Matthias van den Belt
+"""
+
+# import statements
 from flask import render_template, request, url_for, redirect, send_file
 from multicblaster import app, q, r
 import multicblaster.utils as ut
@@ -6,7 +12,7 @@ from multicblaster import db
 import multicblaster.workers as rf
 import os
 
-
+# route definitions
 @app.route("/rerun/<prev_run_id>")
 @app.route("/")
 def home_page(prev_run_id=None):
@@ -17,7 +23,6 @@ def submit_job():
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
 
-    print(request.form)
     ut.create_directories(job_id)
 
     if job_type == "search":
@@ -62,7 +67,7 @@ def submit_job():
         else:
             raise IOError("Not valid file type")
 
-    ut.save_settings(request.form, os.path.join(ut.LOGGING_BASE_DIR, job_id, "logs", job_id))
+    ut.save_settings(request.form, job_id)
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
         "file_path": file_path,

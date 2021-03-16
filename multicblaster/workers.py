@@ -1,42 +1,36 @@
-from time import sleep
-from random import randint
+"""Stores (helper) functions to execute when a submitted job will be executed
+
+Author: Matthias van den Belt
+"""
+
+# import statements
 import subprocess
 import os
 from multicblaster.utils import LOGGING_BASE_DIR, add_time_to_db, mutate_status
 from multicblaster import db
-
-
-sep = os.sep
+import werkzeug.datastructures
+import typing as t
 
 # Whenever a CMD is ran from a function, all print statements within that
 # same function are performed when the CMD has finished
 
 
-# Redis functions
-def dummy_sleeping(msg):
-    to_sleep = randint(2, 6)
-    with open(f"id1.txt", "w") as outf:
-        outf.write(f"We are going to sleep for {to_sleep} seconds")
-        outf.write("Zzzzz...")
-        print("Is this also shown?")
+# redis-queue functions
+def create_summary_table_commands(module: str,
+        options: werkzeug.datastructures.ImmutableMultiDict) -> t.List[str]:
+    """Generates commands for creating a summary table
 
-    sleep(to_sleep)
-    print(f"Wakey wakey! - Job finished. Msg: ({msg})")
+    Input:
+        - module: name of used multicblaster module to create commands for.
+            Currently available are: ["search", "gne"]
+        - options: user submitted options (values) via HTTP form of front-end
 
-# def create_directories(job_id):
-#     base_path = f"{LOGGING_BASE_DIR}/{job_id}"
-#     os.mkdir(base_path)
-#     for folder in FOLDERS_TO_CREATE:
-#         os.mkdir(f"{base_path}/{folder}")
-#     # with open(f"{base_path}/logs/{job_id}.log", "w") as outf:
-#     #     # outf.write(f"{job_id}\n")
-#     #     cmd = ["pip3", "freeze"]
-#     #     subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
-#
-#     return base_path
+    Output:
+        - summary_cmds: commands to enable creation of a custom-defined
+            summary table
 
-
-def create_summary_table_commands(module, options):
+    Depending on the module, a prefix is required for the commands to work.
+    """
     summary_cmds = []
 
     if module == "search":
@@ -61,24 +55,14 @@ def create_summary_table_commands(module, options):
 def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     pre_job_formalities(job_id)
 
-    BASE_PATH = f"{LOGGING_BASE_DIR}{sep}{job_id}"
-    RESULTS_PATH = f"{BASE_PATH}{sep}results{sep}"
-    LOG_PATH = f"{BASE_PATH}{sep}logs{sep}"
+    LOG_PATH, RESULTS_PATH = generate_paths(job_id)
     recompute = False
-
-    #base_path = create_directories(job_id) # should probably be done when
-    # getting the request to store the uploaded files
-
-    # cmd = ["cblaster", "search", "-qf", "A0A411L027.1.fasta", "-o",
-    #        f"{base_path}/results/{job_id}_cblaster.json"]
 
     # TODO: change -qf to uploaded file
     # create the basic command, with all required fields
     cmd = ["cblaster", "search",
            "--output", f"{RESULTS_PATH}{job_id}_summary.txt",
-           "--plot", f"{RESULTS_PATH}{job_id}_plot.html"
-           # TODO: or add creating plot to standard options
-           ]
+           "--plot", f"{RESULTS_PATH}{job_id}_plot.html"]
 
     # add input options
     input_type = options["inputType"]
@@ -175,6 +159,14 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
 
     post_job_formalities(job_id, return_code)
 
+
+def generate_paths(job_id):
+    base = os.path.join(LOGGING_BASE_DIR, job_id)
+    results = os.path.join(base, "results")
+    logs = os.path.join(base, "logs")
+    return logs, results
+
+
 def run_command(cmd, log_path):
     # TODO: add graceful termination handling by SIGTERM. When terminated
     # status should be changed to "failed" and "finish" time should be added
@@ -200,9 +192,7 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     """
     pre_job_formalities(job_id)
 
-    BASE_PATH = f"{LOGGING_BASE_DIR}{sep}{job_id}"
-    RESULTS_PATH = f"{BASE_PATH}{sep}results{sep}"
-    LOG_PATH = f"{BASE_PATH}{sep}logs{sep}"
+    LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     session_path = file_path
 

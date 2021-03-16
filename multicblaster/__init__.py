@@ -1,3 +1,18 @@
+"""Initializes multicblaster web service
+
+Main module of the multicblaster web service
+
+Ran services:
+    - Redis-server
+    - Flask
+    - SQLAlchemy
+
+# TODO: extensive description
+
+Author: Matthias van den Belt
+"""
+
+# import statements
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -19,12 +34,10 @@ db = SQLAlchemy(app)
 UPLOAD_FOLDER = os.path.join("multicblaster/static", "uploads")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-#logging.basicConfig(filename="logs.log", level=logging.INFO)
 
 from multicblaster import routes
 import multicblaster.models as m
 
-# app.config["DOWNLOAD_FOLDER"] = os.path.join("multicblaster", ut.LOGGING_BASE_DIR)
 app.config["DOWNLOAD_FOLDER"] = "jobs" # multicblaster not required in front of jobs
 
 db.create_all()
