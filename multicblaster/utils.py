@@ -8,6 +8,7 @@ from rq.registry import StartedJobRegistry
 from multicblaster.models import Job, Statistic
 from datetime import datetime
 import re
+import signal
 
 # typing imports
 import werkzeug.datastructures
@@ -326,3 +327,11 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
             INVALID_JOB_COMBINATIONS:
         # TODO: should create template
         raise NotImplementedError(f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
+
+def handle_soft_interrupt(signalNumber, frame):
+    print(f"Terminated by signal {signalNumber}")
+    print(frame)
+
+
+signal.signal(signal.SIGTERM, handle_soft_interrupt)
+

@@ -176,6 +176,9 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     post_job_formalities(job_id, return_code)
 
 def run_command(cmd, log_path):
+    # TODO: add graceful termination handling by SIGTERM. When terminated
+    # status should be changed to "failed" and "finish" time should be added
+
     with open(log_path, "w") as outf:
         res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
