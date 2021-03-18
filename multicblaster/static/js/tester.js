@@ -150,14 +150,15 @@ function changePrevSessionType(){
     let jobIDElementID = module + "EnteredJobId";
 
     if (clickedButton.value === "sessionFile"){
-        setRequiredAndEnabled(uploadSessionID)
-        removeRequiredAndEnabled(jobIDElementID)
-        document.getElementById(jobIDElementID).classList.remove("invalid")
+        setRequiredAndEnabled(uploadSessionID);
+        removeRequiredAndEnabled(jobIDElementID);
+        document.getElementById(jobIDElementID).classList.remove("invalid");
         enableOrDisableSubmitButtons(false);
     }
     else if (clickedButton.value === "jobID"){
-        removeRequiredAndEnabled(uploadSessionID)
-        setRequiredAndEnabled(jobIDElementID)
+        removeRequiredAndEnabled(uploadSessionID);
+        setRequiredAndEnabled(jobIDElementID);
+        validateJobID(jobIDElementID);
     }
 }
 
@@ -193,9 +194,16 @@ function validateNCBIEntries() {
     // https://stackoverflow.com/questions/16465325/regular-expression-on-textarea
 }
 
-function validateJobID(){
+function validateJobID(target){
+    let elem;
     let shouldDisable;
-    let elem = event.target;
+
+    if (typeof target === "undefined"){
+        elem = event.target;
+    }
+    else {
+        elem = document.getElementById(target);
+    }
 
     if(!elem.value.match(jobIDPattern)){
         elem.classList.add("invalid");
@@ -205,9 +213,7 @@ function validateJobID(){
         elem.classList.remove("invalid");
         shouldDisable = false;
     }
-
     enableOrDisableSubmitButtons(shouldDisable)
-
 }
 
 function enableOrDisableSubmitButtons(disable){
