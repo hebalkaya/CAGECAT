@@ -1,5 +1,7 @@
 var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7}) *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
+var selectedClusters = []
+
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -223,3 +225,21 @@ function enableOrDisableSubmitButtons(disable){
         buttons[i].disabled = disable;
     }
 }
+
+function initializeEventHandlers(){
+    let clusters = document.getElementsByClassName("result-cluster");
+    for (let i=0; i < clusters.length; i++){
+        clusters[i].addEventListener("click", function(){
+            selectedClusters.push(clusters[i].value);
+            console.log(selectedClusters);
+        });
+    }
+}
+
+// After loading, initialize
+document.addEventListener('DOMContentLoaded', function() {
+    initializeEventHandlers()
+}, false);
+
+
+

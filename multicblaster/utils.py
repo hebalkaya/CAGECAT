@@ -328,6 +328,7 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         # TODO: should create template
         raise NotImplementedError(f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
 
+# Below are experimental functions
 def handle_soft_interrupt(signalNumber, frame):
     print(f"Terminated by signal {signalNumber}")
     print(frame)
