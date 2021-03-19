@@ -18,7 +18,7 @@ import typing as t
 from flask_sqlalchemy import SQLAlchemy
 
 # create final variables
-LOGGING_BASE_DIR = os.path.join("multicblaster", "jobs")
+JOBS_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
 PATTERN = r"'(.+?)', '(.*?)'"
@@ -117,7 +117,7 @@ def save_file(file_obj: werkzeug.datastructures.FileStorage,
 
     # TODO: should make filename safe (e.g. secure_filename function of Flask)
     """
-    file_path = os.path.join(f"{LOGGING_BASE_DIR}", job_id,
+    file_path = os.path.join(f"{JOBS_DIR}", job_id,
                              "uploads", file_obj.filename)
     file_obj.save(file_path)
 
@@ -170,7 +170,7 @@ def create_directories(job_id: str) -> None:
         - None
         - Created directories
     """
-    base_path = f"{LOGGING_BASE_DIR}/{job_id}"
+    base_path = f"{JOBS_DIR}/{job_id}"
     os.mkdir(base_path)
     for folder in FOLDERS_TO_CREATE:
         os.mkdir(f"{base_path}/{folder}")
@@ -255,7 +255,7 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
     """
     settings_dict = {}
 
-    with open(os.path.join(LOGGING_BASE_DIR, job_id, "logs",
+    with open(os.path.join(JOBS_DIR, job_id, "logs",
                            f"{job_id}_options.txt")) as inf:
         settings = inf.read()
 
@@ -284,8 +284,9 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     Function created for logging purposes. Writes to a file, which will be
     used by the [load_settings] function.
     """
-    with open(f"{os.path.join(LOGGING_BASE_DIR, job_id, 'logs', job_id)}"
+    with open(f"{os.path.join(JOBS_DIR, job_id, 'logs', job_id)}"
               f"_options.txt", "w") as outf:
+    # TODO: check if we can replace this with os.path.join(log_base, f"{job_id}_cmd.txt"), "w"
         outf.write(str(options))
 
 

@@ -43,7 +43,7 @@ def submit_job():
 
                 ut.check_valid_job(prev_job_id, job_type)
 
-                file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+                file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
 
             elif file_type == "sessionFile":
                 file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
@@ -61,7 +61,7 @@ def submit_job():
 
             ut.check_valid_job(prev_job_id, job_type)
 
-            file_path = os.path.join(ut.LOGGING_BASE_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+            file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
         elif file_type == "sessionFile":
             file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
         else:
@@ -90,12 +90,12 @@ def show_result(job_id):
 
         if status == "finished":
 
-            with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
+            with open(os.path.join(ut.JOBS_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
                 plot_contents = inf.read()
 
             return show_template("result_page.xhtml", job_id=job_id, status=status, compr_formats=ut.COMPRESSION_FORMATS, plot_contents=plot_contents)
         elif status == "failed":
-            with open(os.path.join(ut.LOGGING_BASE_DIR, job_id, "logs", f"{job_id}_cblaster.log")) as inf:
+            with open(os.path.join(ut.JOBS_DIR, job_id, "logs", f"{job_id}_cblaster.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
 
             return show_template("failed_job.xhtml", settings=settings, job_id=job_id, log_contents=log_contents)
