@@ -21,26 +21,25 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     LOG_PATH, RESULTS_PATH = generate_paths(job_id)
     recompute = False
 
-    # TODO: change -qf to uploaded file
-    # create the basic command, with all required fields
+    # create the base command, with all required fields
     cmd = ["cblaster", "search",
-           "--output", f"{RESULTS_PATH}{job_id}_summary.txt",
-           "--plot", f"{RESULTS_PATH}{job_id}_plot.html"]
+           "--output", os.path.join(RESULTS_PATH, f"{job_id}_summary.txt"),
+           "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
 
     # add input options
     input_type = options["inputType"]
 
     if input_type == "fasta":
         cmd.extend(["--query_file", file_path])
-        session_path = f"{RESULTS_PATH}{job_id}_session.json"
+        session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
     elif input_type == "ncbi_entries":
         cmd.append("--query_ids")
         cmd.extend(options["ncbiEntriesTextArea"].split())
-        session_path = f"{RESULTS_PATH}{job_id}_session.json"
+        session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
     elif input_type == "prev_session":
         recompute = True
-        # TODO: maybe the if's below are not required as the file path is given
-        cmd.extend(["--recompute", f"{RESULTS_PATH}{job_id}_recomputed.json"])
+        cmd.extend(["--recompute",
+                    os.path.join(RESULTS_PATH, f"{job_id}_recomputed.json")])
         session_path = file_path
 
     else:  # future input types and prev_session
@@ -73,7 +72,8 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     cmd.extend(create_summary_table_commands('search', options))
 
     # add binary table
-    cmd.extend(["--binary", f"{RESULTS_PATH}{job_id}_binary.txt"])
+    cmd.extend(["--binary",
+                os.path.join(RESULTS_PATH, f"{job_id}_binary.txt")])
 
     bin_table_delim = options["searchBinTableDelim"]
     if bin_table_delim:
