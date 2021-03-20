@@ -18,7 +18,7 @@ import typing as t
 def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     pre_job_formalities(job_id)
 
-    LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
     recompute = False
 
     # create the base command, with all required fields
@@ -109,7 +109,7 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     """
     pre_job_formalities(job_id)
 
-    log_path, results_path = generate_paths(job_id)
+    _, log_path, results_path = generate_paths(job_id)
 
     session_path = file_path
 
@@ -186,7 +186,7 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
     # TODO: add graceful termination handling by SIGTERM. When terminated
     # status should be changed to "failed" and "finish" time should be added
     """
-    log_settings(cmd, log_base, job_id)
+    log_command(cmd, log_base, job_id)
 
     with open(os.path.join(log_base, f"{job_id}_{cmd[0]}.log"), "w") as outf:
         res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
@@ -194,18 +194,19 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
     return res.returncode
 
 
-def generate_paths(job_id: str) -> t.Tuple[str, str]:
+def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
     """Returns paths for logging and result directories
 
     Input:
         - job_id: ID corresponding to the job the function is called for
 
     Output:
-        - [0]: path for the logging directory
-        - [1]: path for the results directory
+        - [0]: base path for the job
+        - [1]: path for the logging directory
+        - [2]: path for the results directory
     """
     base = os.path.join(JOBS_DIR, job_id)
-    return os.path.join(base, "logs"), os.path.join(base, "results")
+    return base, os.path.join(base, "logs"), os.path.join(base, "results")
 
 
 def zip_results(job_id: str) -> None:
@@ -222,17 +223,19 @@ def zip_results(job_id: str) -> None:
     1. logs; 2. results; 3. uploads; Therefore, the paths used in this
     function are relative to the {job_id} folder.
     """
-    log_dir, results_dir = generate_paths(job_id)
-    os.chdir(os.path.join(log_dir, ".."))  # go 1 level up
+    base, log_dir, results_dir = generate_paths(job_id)
+    os.chdir(base)  # go 1 level up
 
     cmd = ["zip", "-r", os.path.join("results", f"{job_id}.zip"), "."]
     # all files and folders in the current directory
     # (multicblaster/jobs/{job_id}/ under the base folder
 
-    run_command(cmd, os.path.join("logs", f"{job_id}_zip.txt"), job_id)
+    run_command(cmd, "logs", job_id)
+    # invalid path: 'logs/U812J131P392S71_zip.txt/U812J131P392S71_cmd.txt'
+    # something is going wrong
 
 
-def log_settings(cmd: t.List[str], log_base: str, job_id: str) -> None:
+def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
     """Logs the executed command to a file
 
     Input:
@@ -246,7 +249,8 @@ def log_settings(cmd: t.List[str], log_base: str, job_id: str) -> None:
         - None
         - .txt file with the executed command
     """
-    with open(os.path.join(log_base, f"{job_id}_cmd.txt"), "w") as outf:
+    with open(os.path.join(log_base,
+                           f"{job_id}_{cmd[0]}_cmd.txt"), "w") as outf:
         outf.write(" ".join(cmd))
 
 
