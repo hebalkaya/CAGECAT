@@ -1,4 +1,5 @@
-var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7}) *$"
+var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
+// Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 
