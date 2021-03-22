@@ -91,6 +91,9 @@ function showInputOptions(selectionOption){
 
         enableOrDisableOption('searchSection', true);
 
+        document.getElementById("accessionsError").style.display = "none";
+        document.getElementById("submitSearchForm").removeAttribute("disabled");
+
     }
     else if (selectionOption === 'ncbi_entries'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
@@ -106,6 +109,7 @@ function showInputOptions(selectionOption){
         removeRequiredAndEnabled('searchUploadedSessionFile');
 
         enableOrDisableOption('searchSection', true);
+        validateNCBIEntries();
 
     } else if (selectionOption === 'prev_session'){
         document.getElementById('genomeFileUploadDiv').style.display = 'none';
@@ -120,6 +124,9 @@ function showInputOptions(selectionOption){
         removeRequiredAndEnabled('ncbiEntriesTextArea');
 
         enableOrDisableOption('searchSection', false);
+
+        document.getElementById("accessionsError").style.display = "none";
+        document.getElementById("submitSearchForm").removeAttribute("disabled");
     }
 }
 
