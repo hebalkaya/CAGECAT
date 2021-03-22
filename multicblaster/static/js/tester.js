@@ -229,7 +229,10 @@ function enableOrDisableSubmitButtons(disable){
 function initializeEventHandlers(){
     let clusters = document.getElementsByClassName("result-cluster");
     for (let i=0; i < clusters.length; i++){
-        clusters[i].addEventListener("click", function(){
+        // the type: "contextmenu" evaluates to a right-click of the mouse
+        // and the contextmenu is not surpressed. Could be changed to a different
+        // selection method in the future
+        clusters[i].addEventListener("contextmenu", function(event){
             selectedClusters.push(clusters[i].value);
             console.log(selectedClusters);
         });

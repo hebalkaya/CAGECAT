@@ -117,9 +117,8 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
            "--max_gap", options["max_intergenic_distance"],
            "--samples", options["sample_number"],
            "--scale", options["sampling_space"],
-           "--plot", f"{results_path}{job_id}_plot.html",
-           "--output", f"{results_path}{job_id}_summary.txt"
-           ]
+           "--plot", os.path.join(results_path, f"{job_id}_plot.html"),
+           "--output", os.path.join(results_path, f"{job_id}_summary.txt")]
 
     # TODO: test if gne also works with a job_id
     cmd.extend(create_summary_table_commands('gne', options))
