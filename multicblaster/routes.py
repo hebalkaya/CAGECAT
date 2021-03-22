@@ -12,16 +12,50 @@ from multicblaster import db
 import multicblaster.workers as rf
 import os
 
+# type imports
+import flask.wrappers
+import typing as t
+
+# !!!! TODO: Note that the return types could change when deploying Flask !!!!
+
 # route definitions
 @app.route("/rerun/<prev_run_id>")
 @app.route("/")
-def home_page(prev_run_id=None):
+def home_page(prev_run_id: str = None) -> str:
+    """Shows home page to the user
+
+    Input:
+        - prev_run_id: job ID of a previous run.
+
+    Output:
+        - HTML represented in string format
+
+    When the /rerun/<prev_run_id> is visited, the input fields where the user
+    can enter previous job IDs are pre-filled with the given job ID
+    """
     return show_template("index.xhtml", submit_url=ut.SUBMIT_URL, prev_run_id=prev_run_id)
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
-def submit_job():
+def submit_job():  # return type: werkzeug.wrappers.response.Response:
+    """Handles job submissions by putting it onto the Redis queue
+
+    Input:
+        No inputs
+
+    Output:
+        - redirect to results page of the generated job ID
+
+    Raises:
+        - NotImplementedError: when functionality that has not been implented
+            yet is called.
+        - IOError: failsafe for when for some reason no jobID or sessionFile
+            was given
+    """
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
+
+    # Note that the "{module}PreviousType" is submitted via the form, but is
+    # only used if a previous job ID or previous session file will be used
 
     ut.create_directories(job_id)
 
@@ -49,7 +83,7 @@ def submit_job():
                 file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
             else:
                 raise IOError("Not valid file type")
-        else: # future input types and prev_session
+        else: # future input types
             raise NotImplementedError()
     elif job_type == "gne":
         f = rf.cblaster_gne
@@ -81,7 +115,24 @@ def submit_job():
     return redirect(url_for("show_result", job_id=job_id))
 
 @app.route("/results/<job_id>")
-def show_result(job_id):
+def show_result(job_id: str) -> str:
+    """Shows the results page for the given job ID
+
+    Input:
+        - job_id: job ID for a previously submitted job for which the user
+            would like to view the results
+
+    Output:
+        - HTML represented in string format. Renders different templates based
+            on the status of the given job ID
+
+    Raises:
+        - IOError: when for some reason a job's status is not valid. Currently
+            valid options are: ["finished", "failed", "queued", "running"]
+
+    Shows the "job_not_found.xhtml" template when the given job ID was not
+    found in the SQL database
+    """
     job = ut.fetch_job_from_db(job_id)
 
     if job is not None:
@@ -90,36 +141,50 @@ def show_result(job_id):
 
         if status == "finished":
 
-            with open(os.path.join(ut.JOBS_DIR, job_id, "results", f"{job_id}_plot.html")) as inf:
+            with open(os.path.join(ut.JOBS_DIR, job_id,
+                                   "results", f"{job_id}_plot.html")) as inf:
                 plot_contents = inf.read()
 
-            return show_template("result_page.xhtml", job_id=job_id, status=status, compr_formats=ut.COMPRESSION_FORMATS, plot_contents=plot_contents)
+            return show_template("result_page.xhtml", job_id=job_id,
+                                 status=status,
+                                 compr_formats=ut.COMPRESSION_FORMATS,
+                                 plot_contents=plot_contents)
         elif status == "failed":
-            with open(os.path.join(ut.JOBS_DIR, job_id, "logs", f"{job_id}_cblaster.log")) as inf:
+            with open(os.path.join(ut.JOBS_DIR, job_id,
+                                   "logs", f"{job_id}_cblaster.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
 
-            return show_template("failed_job.xhtml", settings=settings, job_id=job_id, log_contents=log_contents)
+            return show_template("failed_job.xhtml", settings=settings,
+                                 job_id=job_id, log_contents=log_contents)
         elif status == "queued" or status == "running":
-            return show_template("status_page.xhtml", job_id=job_id, status=status, settings=settings)
+            return show_template("status_page.xhtml", job_id=job_id,
+                                 status=status, settings=settings)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
     else: # indicates no such job exists in the database
         return show_template("job_not_found.xhtml", job_id=job_id)
-        # return render_template("job_not_found.xhtml", job_id=job_id,
-        #                        serv_info=ut.get_server_info(q, r))
-
         # TODO: create not_found template
 
 @app.route("/download-results/<job_id>", methods=["POST"])
-def return_user_download(job_id):
-    print(request.form)
+def return_user_download(job_id: str) -> flask.wrappers.Response:
+    """Returns zipped file to client, enabling the user to download the file
 
+    Input:
+        - job_id: job ID for which the results are requested
+
+    Output:
+        - Downloads zipped file to the client's side. Therefore, the files
+            stored on the server are transferred to the client
+
+    Currently only supports downloading of the .zip file. No other
+    compression formats are currently supported, even though the user has the
+    ability to select a different compression format.
+    """
     # execute convert_compression.py
     submitted_data = request.form
-    print(submitted_data)
+
     if len(submitted_data) != 2: # should be job_id and compression_type
-        # flash("Invalid post attributes") # TODO: should show them on the page
         return redirect(url_for("home_page"))
 
     compr_type = submitted_data["compression_type"]
@@ -130,15 +195,24 @@ def return_user_download(job_id):
 
     # TODO: send_from_directory is a safer approach, but this suits for now
     # as Flask should not be serving files when deployed
-    return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"], job_id, "results", f"{job_id}.zip"))
+    return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"],
+                                  job_id, "results", f"{job_id}.zip"))
 
-@app.route("/extract-sequence")
-def extract_sequence():
-    # TODO
-    return 404
 
 @app.route("/results", methods=["GET", "POST"])
-def result_from_jobid():
+def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
+    # is: werkzeug.wrappers.response.Response # TODO: fix this
+    """Shows page for navigating to results page of job ID or that page itself
+
+    Input:
+        No inputs
+
+    Output:
+        - HTML represented in string format. Renders different templates
+            whether the job ID is present in the SQL database or not ("POST"
+            request), or the page for entered a job ID is requested ("GET"
+            request).
+    """
     if request.method == "GET":
         return show_template("result_from_jobid.xhtml")
         # return render_template("result_from_jobid.xhtml", serv_info=ut.get_server_info(q, r))
@@ -148,7 +222,7 @@ def result_from_jobid():
             return redirect(url_for('show_result', job_id=job_id))
         else:
             return show_template("job_not_found.xhtml", job_id=job_id)
-            # return "No job known with that ID" #TODO: create invalid job ID template
+            #TODO: create invalid job ID template
 
 # Error handlers
 @app.errorhandler(404)
@@ -161,7 +235,9 @@ def invalid_method(error):
     return redirect(url_for("home_page"))
 
 
-def show_template(template_name: str, stat_code=None, **kwargs):
+# auxiliary functions
+def show_template(template_name: str, stat_code=None, **kwargs) \
+        -> t.Union[str, t.Tuple[str, int]]:
     """Returns rendered templates to the client
 
     Input:
@@ -171,12 +247,15 @@ def show_template(template_name: str, stat_code=None, **kwargs):
         - kwargs: keyword arguments used during rendering of the template
 
     Output:
-        - rendered template
+        - rendered template (HTML code) represented in string format
 
     Function was created to prevent redundancy when getting the server info
     and uses Flask's render_template function to actually render the templates
     """
     if stat_code is None:
-        return render_template(template_name, serv_info=ut.get_server_info(q, r), **kwargs)
+        return render_template(template_name,
+                               serv_info=ut.get_server_info(q, r), **kwargs)
     else:
-        return render_template(template_name, serv_info=ut.get_server_info(q, r), **kwargs), stat_code
+        return render_template(template_name,
+                               serv_info=ut.get_server_info(q, r),
+                               **kwargs), stat_code
