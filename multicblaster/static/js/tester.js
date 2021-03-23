@@ -233,8 +233,8 @@ function enableOrDisableSubmitButtons(disable){
     }
 }
 
-function initializeEventHandlers(){
-    let clusters = document.getElementsByClassName("result-cluster");
+function initializeEventHandlers(){ // Probably this should be in the child HTML
+    let clusters = document.getElementsByClassName("tickTextGroup");
     for (let i=0; i < clusters.length; i++){
         // the type: "contextmenu" evaluates to a right-click of the mouse
         // and the contextmenu is not surpressed. Could be changed to a different
@@ -248,8 +248,35 @@ function initializeEventHandlers(){
 
 // After loading, initialize
 document.addEventListener('DOMContentLoaded', function() {
-    initializeEventHandlers()
+    let fd = document.getElementById("newWindow");
+    // console.log(fd);
+    console.log(fd.contentWindow.document);
+    console.log(fd.contentDocument);
+    // var doc = (frame.contentWindow || frame.contentDocument);
+    // if (doc.document)doc = doc.document;
+    // doc.body.style.backgroundColor = "red";
+    //
+    // console.log(frame.contentDocument);
+    // // let doc = frame.contentDocument || frame.contentWindow.document;
+    //
+    // // console.log(frame);
+    // console.log(doc);
+    // let clusters = doc.getElementsByClassName("tickTextGroup");
+    // console.log(clusters.length);
+    // console.log(clusters);
+    // console.log("We are here no");
+    // initializeEventHandlers();
 }, false);
+
+// document.addEventListener("DOMContentLoaded", function jalala(){
+//     let elements = document.getElementsByClassName("tickTextGroup");
+//
+//     for(let i=0; i < elements.length; i++){
+//         elements[i].addEventListener("contextmenu", function esther(){
+//             parent.window.postMessage("oepsie", "*");
+//         }, false)
+//     }
+// }, false);
 
 
 window.addEventListener("message", function(e){

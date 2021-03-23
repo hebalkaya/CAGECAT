@@ -266,10 +266,11 @@ def testing():
     <button id="TestingSomething" onclick="a()">Testerrr</>
     """
 
-    html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1;parent.window.postMessage("this will be geneCluster name", "*");}</script><span id="counter" style="color: white">0</span>
+    html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1;parent.window.postMessage("how should", "*");}</script><span id="counter" style="color: white">0</span>
     <button id="TestingSomething" onclick="a()">Testerrr</>
     """
 
-
+    with open(r"test_runs\tester.html") as inf:
+        html = inf.read()
 
     return show_template("testing.xhtml", html_contents=html)
