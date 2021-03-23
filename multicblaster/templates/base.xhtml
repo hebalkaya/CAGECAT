@@ -17,8 +17,8 @@
 </head>
 <body>
 <a href="{{url_for('home_page')}}"><p>Home</p></a>
-<a href="{{url_for('result_from_jobid')}}"><span>Results</span></a>
-    <p class="server-status">Server satus:<span class="important">
+<a href="{{url_for('result_from_job_id')}}"><span>Results</span></a>
+    <p class="server-status" id="serverStatus">Server satus:<span class="important">
         {{serv_info["server_status"]}}</span> Queued:
         <span class="important">{{serv_info["queued"]}}</span>    Running:
         <span class="important">{{serv_info["running"]}}</span>

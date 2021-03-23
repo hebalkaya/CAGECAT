@@ -223,7 +223,6 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
         else:
             return show_template("job_not_found.xhtml", job_id=job_id)
             #TODO: create invalid job ID template
-
 # Error handlers
 @app.errorhandler(404)
 def page_not_found(error):
@@ -259,3 +258,18 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
         return render_template(template_name,
                                serv_info=ut.get_server_info(q, r),
                                **kwargs), stat_code
+
+@app.route("/testing")
+def testing():
+    html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1; console.log(document.getElementById('counter'));
+    console.log("hi");window.postMessage("This is the actual message", "*");}</script><span id="counter" style="color: white">0</span>
+    <button id="TestingSomething" onclick="a()">Testerrr</>
+    """
+
+    html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1;parent.window.postMessage("this will be geneCluster name", "*");}</script><span id="counter" style="color: white">0</span>
+    <button id="TestingSomething" onclick="a()">Testerrr</>
+    """
+
+
+
+    return show_template("testing.xhtml", html_contents=html)

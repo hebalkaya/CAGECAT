@@ -3,7 +3,6 @@ var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 
-
 function enableOrDisableOption(id, enable) {
     // For checkboxes
     var elem = document.getElementById(id);
@@ -253,4 +252,29 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 
+window.addEventListener("message", function(e){
+    let text;
+    let message = e.data; // e.data represents the message posted by the child
+    // TODO: check if the gene cluster is already selected. If so, remove it
+    let index = selectedClusters.indexOf(message);
+    if (index === -1){
+        selectedClusters.push(message);
+    }
+    else {
+        selectedClusters.splice(index, 1);
+    }
+    if (selectedClusters.length === 0){
+        text = "No clusters selected";
+    }
+    else {
+        text = selectedClusters.join(" ");
+    }
 
+    console.log(selectedClusters);
+
+    document.getElementById("selectedClustersOverview").innerText = text;
+}, false)
+
+
+// document.scripts[0].valueOf()
+// parent.postMessage("clustName", ".")
