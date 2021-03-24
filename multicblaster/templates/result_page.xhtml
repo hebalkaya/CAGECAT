@@ -24,8 +24,17 @@
     </form>
 <hr/>
 <div>
-    <iframe srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+
+
+<!--    Onload should only happen when the module is search -->
+    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
+{% if module in select_cluster_modules %}
+    <p id="selectedClustersOverview">No clusters selected</p>
+
+{% endif %}
+        <!--    line below should only happen when the module is search -->
+
 <hr/>
 <div>
     <a href="{{url_for('home_page', prev_run_id=job_id)}}"><button>Reanalyze</button></a>

@@ -27,6 +27,8 @@ INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
                             ("gne", "gne"),
                             ("recompute", "gne"),
                             ("gne", "recompute")]
+
+MODULES_CLUSTER_SELECTION = ["search", "recompute"]
 # TODO: really check if above combinations are not valid, and document what
 # kind of errors they produce
 

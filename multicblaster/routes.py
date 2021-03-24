@@ -140,6 +140,7 @@ def show_result(job_id: str) -> str:
         status = job.status
 
         if status == "finished":
+            module = job.job_type
 
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "results", f"{job_id}_plot.html")) as inf:
@@ -148,7 +149,7 @@ def show_result(job_id: str) -> str:
             return show_template("result_page.xhtml", job_id=job_id,
                                  status=status,
                                  compr_formats=ut.COMPRESSION_FORMATS,
-                                 plot_contents=plot_contents)
+                                 plot_contents=plot_contents, module=module, select_cluster_modules=ut.MODULES_CLUSTER_SELECTION)
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:
