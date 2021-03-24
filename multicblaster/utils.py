@@ -170,10 +170,10 @@ def create_directories(job_id: str) -> None:
         - None
         - Created directories
     """
-    base_path = f"{JOBS_DIR}/{job_id}"
+    base_path = os.path.join(JOBS_DIR, job_id)
     os.mkdir(base_path)
     for folder in FOLDERS_TO_CREATE:
-        os.mkdir(f"{base_path}/{folder}")
+        os.mkdir(os.path.join(base_path, folder))
 
 
 def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
