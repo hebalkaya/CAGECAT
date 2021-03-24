@@ -24,8 +24,16 @@
     </form>
 <hr/>
         {% if module in select_cluster_modules %}
+<div>
+<form action="/downstream/extract" method="post" onsubmit="addSelectedToForm()">
+    <input type="hidden" name="jobId" value="{{job_id}}"/>
+    <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
+    <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
+    <button type="submit">Extract sequences</button>
+</div>
 <p id="selectedQueriesOverview">No queries selected</p>
 <p id="selectedClustersOverview">No clusters selected</p>
+        </form>
         {% endif %}
 <div>
     <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>

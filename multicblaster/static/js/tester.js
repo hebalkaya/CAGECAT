@@ -236,10 +236,38 @@ function enableOrDisableSubmitButtons(disable){
 
 window.addEventListener("message", function(e){
     let text;
+    // const array;
     let src = e.data[0];
     let message = e.data[1]; // e.data represents the message posted by the child
 
-    if (src === "cluster") {
+    // -------------- TODO: check if we can generalize this function. Below
+    // -------------- was a trial, but variable referencing is not supported in JS
+    // if (src === "Clusters") {
+    //     const array = selectedClusters;
+    // }
+    // else if (src === "Queries"){
+    //     const array = selectedQueries;
+    // }
+    // else {
+    //     console.log("Invalid src type");
+    // }
+    //
+    // let index = array.indexOf(message);
+    // if (index === 1){
+    //     array.push(message);
+    // } else {
+    //     array.splice(index, 1);
+    // }
+    // if (array.length === 0){
+    //     text = "No " + src.toLowerCase() + " selected";
+    // }
+    // else {
+    //     text = array.join("\n")
+    // }
+    // document.getElementById("selected" + src + "Overview").innerText = text;
+    // ----------------------------------------------------------------------
+
+    if (src === "Clusters"){
         let index = selectedClusters.indexOf(message);
         if (index === -1) {
             selectedClusters.push(message);
@@ -253,10 +281,9 @@ window.addEventListener("message", function(e){
         }
         document.getElementById("selectedClustersOverview").innerText = text;
     }
-    else if (src === "ticker"){
-        console.log("it is the ticker");
+    else if (src === "Queries"){
         let index = selectedQueries.indexOf(message);
-        if(index === -1){
+        if (index === -1){
             selectedQueries.push(message);
         } else {
             selectedQueries.splice(index, 1);
@@ -289,7 +316,7 @@ function loadedIframe(){
             let childs = clusters[i].firstChild.childNodes;
             // childs[0] represents organism and cluster # + score
             // childs[1] indicates accession number and range
-            parent.window.postMessage(["cluster", childs[0].textContent + "~" + childs[1].textContent], "*");
+            parent.window.postMessage(["Clusters", childs[0].textContent + "~" + childs[1].textContent], "*");
         });
     }
 
@@ -299,7 +326,15 @@ function loadedIframe(){
             event.preventDefault();
             let query_name = ticks[i].childNodes[1];
             // console.log();
-            parent.window.postMessage(["ticker", query_name.textContent], "*");
+            parent.window.postMessage(["Queries", query_name.textContent], "*");
         })
     }
 }
+function getValue(){
+    return document.getElementById("selectedQueriesOverview").innerText;
+}
+
+function addSelectedToForm(){
+    document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
+    document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
+    }

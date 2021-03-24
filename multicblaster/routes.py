@@ -147,9 +147,9 @@ def show_result(job_id: str) -> str:
                 plot_contents = inf.read()
 
             return show_template("result_page.xhtml", job_id=job_id,
-                                 status=status,
-                                 compr_formats=ut.COMPRESSION_FORMATS,
-                                 plot_contents=plot_contents, module=module, select_cluster_modules=ut.MODULES_CLUSTER_SELECTION)
+                    status=status, compr_formats=ut.COMPRESSION_FORMATS,
+                    plot_contents=plot_contents, module=module,
+                    select_cluster_modules=ut.MODULES_CLUSTER_SELECTION)
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:
@@ -259,6 +259,11 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
         return render_template(template_name,
                                serv_info=ut.get_server_info(q, r),
                                **kwargs), stat_code
+
+@app.route("/downstream/extract", methods=["GET", "POST"])
+def extract_sequences():
+    print(request.form)
+    return show_template("extract-sequences.xhtml")
 
 @app.route("/testing")
 def testing():
