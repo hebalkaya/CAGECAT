@@ -2,6 +2,7 @@ var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
+var selectedQueries = []
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -235,22 +236,42 @@ function enableOrDisableSubmitButtons(disable){
 
 window.addEventListener("message", function(e){
     let text;
-    let message = e.data; // e.data represents the message posted by the child
+    let src = e.data[0];
+    let message = e.data[1]; // e.data represents the message posted by the child
 
-    let index = selectedClusters.indexOf(message);
-    if (index === -1){
-        selectedClusters.push(message);
+    if (src === "cluster") {
+        let index = selectedClusters.indexOf(message);
+        if (index === -1) {
+            selectedClusters.push(message);
+        } else {
+            selectedClusters.splice(index, 1);
+        }
+        if (selectedClusters.length === 0) {
+            text = "No clusters selected";
+        } else {
+            text = selectedClusters.join("\n");
+        }
+        document.getElementById("selectedClustersOverview").innerText = text;
+    }
+    else if (src === "ticker"){
+        console.log("it is the ticker");
+        let index = selectedQueries.indexOf(message);
+        if(index === -1){
+            selectedQueries.push(message);
+        } else {
+            selectedQueries.splice(index, 1);
+        }
+        if (selectedQueries.length === 0){
+            text = "No queries selected";
+        }
+        else {
+            text = selectedQueries.join("\n");
+        }
+        document.getElementById("selectedQueriesOverview").innerText = text;
     }
     else {
-        selectedClusters.splice(index, 1);
+        console.log("Invalid src type");
     }
-    if (selectedClusters.length === 0){
-        text = "No clusters selected";
-    }
-    else {
-        text = selectedClusters.join("\n");
-    }
-    document.getElementById("selectedClustersOverview").innerText = text;
 }, false)
 
 
@@ -258,7 +279,6 @@ function loadedIframe(){
     let frame = document.getElementById("newWindow");
     let doc = frame.contentDocument || frame.contentWindow.document;
     let clusters = doc.getElementsByClassName("tickTextGroup");
-
 
     for (let i=0; i < clusters.length; i++){
         // the type: "contextmenu" evaluates to a right-click of the mouse
@@ -269,7 +289,17 @@ function loadedIframe(){
             let childs = clusters[i].firstChild.childNodes;
             // childs[0] represents organism and cluster # + score
             // childs[1] indicates accession number and range
-            parent.window.postMessage(childs[0].textContent + "~" + childs[1].textContent, "*");
+            parent.window.postMessage(["cluster", childs[0].textContent + "~" + childs[1].textContent], "*");
         });
+    }
+
+    let ticks = doc.getElementsByClassName("tick");
+    for (let i=0; i < ticks.length; i++){
+        ticks[i].addEventListener("contextmenu", function(event){
+            event.preventDefault();
+            let query_name = ticks[i].childNodes[1];
+            // console.log();
+            parent.window.postMessage(["ticker", query_name.textContent], "*");
+        })
     }
 }

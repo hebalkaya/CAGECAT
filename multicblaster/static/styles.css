@@ -9,6 +9,7 @@ input::-webkit-inner-spin-button {
 }
 
 iframe {
+    background: white;
     border: none;
     width: 100%;
 }

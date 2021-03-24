@@ -23,17 +23,16 @@
     <input type="submit" value="Download"/>
     </form>
 <hr/>
+        {% if module in select_cluster_modules %}
+<p id="selectedQueriesOverview">No queries selected</p>
+<p id="selectedClustersOverview">No clusters selected</p>
+        {% endif %}
 <div>
-
-
-<!--    Onload should only happen when the module is search -->
-    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
-{% if module in select_cluster_modules %}
-    <p id="selectedClustersOverview">No clusters selected</p>
 
-{% endif %}
-        <!--    line below should only happen when the module is search -->
+
+<iframe height="800"></iframe>
 
 <hr/>
 <div>
