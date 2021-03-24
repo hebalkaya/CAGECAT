@@ -233,56 +233,10 @@ function enableOrDisableSubmitButtons(disable){
     }
 }
 
-function initializeEventHandlers(){ // Probably this should be in the child HTML
-    let clusters = document.getElementsByClassName("tickTextGroup");
-    for (let i=0; i < clusters.length; i++){
-        // the type: "contextmenu" evaluates to a right-click of the mouse
-        // and the contextmenu is not surpressed. Could be changed to a different
-        // selection method in the future
-        clusters[i].addEventListener("contextmenu", function(event){
-            selectedClusters.push(clusters[i].value);
-            console.log(selectedClusters);
-        });
-    }
-}
-
-// After loading, initialize
-document.addEventListener('DOMContentLoaded', function() {
-    let fd = document.getElementById("newWindow");
-    // console.log(fd);
-    console.log(fd.contentWindow.document);
-    console.log(fd.contentDocument);
-    // var doc = (frame.contentWindow || frame.contentDocument);
-    // if (doc.document)doc = doc.document;
-    // doc.body.style.backgroundColor = "red";
-    //
-    // console.log(frame.contentDocument);
-    // // let doc = frame.contentDocument || frame.contentWindow.document;
-    //
-    // // console.log(frame);
-    // console.log(doc);
-    // let clusters = doc.getElementsByClassName("tickTextGroup");
-    // console.log(clusters.length);
-    // console.log(clusters);
-    // console.log("We are here no");
-    // initializeEventHandlers();
-}, false);
-
-// document.addEventListener("DOMContentLoaded", function jalala(){
-//     let elements = document.getElementsByClassName("tickTextGroup");
-//
-//     for(let i=0; i < elements.length; i++){
-//         elements[i].addEventListener("contextmenu", function esther(){
-//             parent.window.postMessage("oepsie", "*");
-//         }, false)
-//     }
-// }, false);
-
-
 window.addEventListener("message", function(e){
     let text;
     let message = e.data; // e.data represents the message posted by the child
-    // TODO: check if the gene cluster is already selected. If so, remove it
+
     let index = selectedClusters.indexOf(message);
     if (index === -1){
         selectedClusters.push(message);
@@ -294,14 +248,28 @@ window.addEventListener("message", function(e){
         text = "No clusters selected";
     }
     else {
-        text = selectedClusters.join(" ");
+        text = selectedClusters.join("\n");
     }
-
-    console.log(selectedClusters);
-
     document.getElementById("selectedClustersOverview").innerText = text;
 }, false)
 
 
-// document.scripts[0].valueOf()
-// parent.postMessage("clustName", ".")
+function loadedIframe(){
+    let frame = document.getElementById("newWindow");
+    let doc = frame.contentDocument || frame.contentWindow.document;
+    let clusters = doc.getElementsByClassName("tickTextGroup");
+
+
+    for (let i=0; i < clusters.length; i++){
+        // the type: "contextmenu" evaluates to a right-click of the mouse
+        // and the contextmenu is not surpressed. Could be changed to a different
+        // selection method in the future
+        clusters[i].addEventListener("contextmenu", function(event){
+            event.preventDefault();
+            let childs = clusters[i].firstChild.childNodes;
+            // childs[0] represents organism and cluster # + score
+            // childs[1] indicates accession number and range
+            parent.window.postMessage(childs[0].textContent + "~" + childs[1].textContent, "*");
+        });
+    }
+}
