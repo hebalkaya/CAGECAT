@@ -316,8 +316,9 @@ function loadedIframe(){
             let childs = clusters[i].firstChild.childNodes;
             // childs[0] represents organism and cluster # + score
             // childs[1] indicates accession number and range
-            parent.window.postMessage(["Clusters", childs[0].textContent + "~" + childs[1].textContent], "*");
-        });
+            parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
+        }); // space in line above is a non-breaking space:
+            // not a regular space. " "
     }
 
     let ticks = doc.getElementsByClassName("tick");

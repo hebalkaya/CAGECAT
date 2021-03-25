@@ -11,15 +11,15 @@
             <fieldset id="filteringSection">
                 <div>
                     <label for="selectedQueries">Queries</label>
-                    <textarea id="selectedQueries" name="selectedQueries"></textarea>
+                    <textarea cols="20" rows="8" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries if selected_queries is not none}}</textarea>
                 </div>
                 <div>
                     <label for="selectedOrganisms">Organisms</label>
-                    <input type="text" id="selectedOrganisms" name="selectedOrganisms"/>
+                    <input type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
                 </div>
                 <div>
                     <label for="selectedScaffolds">Scaffolds</label>
-                    <textarea id="selectedScaffolds" name="selectedScaffolds"></textarea>
+                    <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
                 </div>
             </fieldset>
         </div>

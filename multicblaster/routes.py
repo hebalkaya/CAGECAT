@@ -51,6 +51,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    print(request.form)
+
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
 
@@ -83,8 +85,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                 file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
             else:
                 raise IOError("Not valid file type")
-        else: # future input types
-            raise NotImplementedError()
     elif job_type == "gne":
         f = rf.cblaster_gne
 
@@ -100,6 +100,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
             file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
         else:
             raise IOError("Not valid file type")
+    else: # future input types
+        raise NotImplementedError("Module is not yet implemented yet")
 
     ut.save_settings(request.form, job_id)
     job = q.enqueue(f, args=(job_id,),kwargs={
@@ -260,10 +262,32 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
                                serv_info=ut.get_server_info(q, r),
                                **kwargs), stat_code
 
+
 @app.route("/downstream/extract", methods=["GET", "POST"])
 def extract_sequences():
     print(request.form)
-    return show_template("extract-sequences.xhtml")
+    selected_queries = request.form["selectedQueries"]
+    selected_clusters = request.form["selectedClusters"]
+
+    if selected_queries == "No queries selected":
+        selected_queries = None
+    if selected_clusters != "No clusters selected":
+        selected_scaffolds = []
+
+        for cluster in selected_clusters.split("\n"):
+            sep_index = cluster.find(")") + 1 # due to excluding last index
+            organism = cluster[:sep_index].split("(")[0].strip()
+            selected_scaffolds.append(cluster[sep_index+1:].strip()) # due to separation character
+            # between organism and scaffold
+
+        selected_scaffolds = "\n".join(selected_scaffolds)
+    else:
+        selected_scaffolds = None
+
+
+
+    return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
+                         selected_queries=selected_queries, selected_scaffolds=selected_scaffolds)
 
 @app.route("/testing")
 def testing():
@@ -280,3 +304,30 @@ def testing():
         html = inf.read()
 
     return show_template("testing.xhtml", html_contents=html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
