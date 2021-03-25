@@ -330,9 +330,7 @@ function loadedIframe(){
         })
     }
 }
-function getValue(){
-    return document.getElementById("selectedQueriesOverview").innerText;
-}
+
 
 function addSelectedToForm(){
     document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;

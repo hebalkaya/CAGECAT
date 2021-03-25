@@ -3,6 +3,44 @@
 {% block title %}Extract{% endblock %}
 
 {% block content %}
-<p>Extracting..</p>
-
+<div>
+    <form action="{{submit_url}}" method="post">
+        <input type="hidden" name="job_type" value="extract_sequences"/>
+        <div>
+            <label for="filteringSection">Filtering</label>
+            <fieldset id="filteringSection">
+                <div>
+                    <label for="selectedQueries">Queries</label>
+                    <textarea id="selectedQueries" name="selectedQueries"></textarea>
+                </div>
+                <div>
+                    <label for="selectedOrganisms">Organisms</label>
+                    <input type="text" id="selectedOrganisms" name="selectedOrganisms"/>
+                </div>
+                <div>
+                    <label for="selectedScaffolds">Scaffolds</label>
+                    <textarea id="selectedScaffolds" name="selectedScaffolds"></textarea>
+                </div>
+            </fieldset>
+        </div>
+        <br/>
+            <label for="outputSection">Output</label>
+            <fieldset id="outputSection">
+                <div>
+                    <label for="outputDelimiter">Delimiter</label>
+                    <input type="text" id="outputDelimiter" name="outputDelimiter" maxlength="1"/>
+                </div>
+                <div>
+                    <label><input type="checkbox" name="downloadSeqs"/>Download sequences</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" name="nameOnly"/>Name only</label>
+                </div>
+            </fieldset>
+        <br/>
+            <div>
+                <button type="submit">Extract!</button>
+            </div>
+    </form>
+</div>
 {% endblock %}
