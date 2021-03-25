@@ -132,10 +132,13 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=N
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    cmd = ["cblaster", "extract", file_path,
-           "--output", os.path.join(RESULTS_PATH, f"{job_id}_sequences.txt")]
+    extension = "txt"
+    if "downloadSeqs" in options:
+        extension = "fasta"
 
-    # TODO: if download sequences, maybe change extension to .fasta
+    cmd = ["cblaster", "extract", file_path,
+           "--output", os.path.join(RESULTS_PATH, f"{job_id}_sequences.{extension}")]
+
     if options["selectedQueries"]:
         cmd.append("--queries")
         cmd.extend(options["selectedQueries"].split())
@@ -152,8 +155,8 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=N
     if "nameOnly" in options:
         cmd.append("--name_only")
 
-    # TODO: add downloading sequences
-
+    if "downloadSeqs" in options:
+        cmd.append("--extract_sequences")
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
