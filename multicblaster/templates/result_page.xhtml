@@ -26,15 +26,23 @@
         {% if module in select_cluster_modules %}
 <hr/>
 <div>
-<form action="/downstream/extract" method="post" onsubmit="addSelectedToForm()">
-    <input type="hidden" name="job_id" value="{{job_id}}"/>
-    <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
-    <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
-    <button type="submit">Extract sequences</button>
+    <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm()">
+        <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
+        <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
+        <button type="submit">Extract sequences</button>
+    </form>
+    <br/>
+
+    <form action="{{url_for('extract_clusters')}}" method="post">
+        <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <button type="submit">Extract clusters</button>
+    </form>
+
 </div>
 <p id="selectedQueriesOverview">No queries selected</p>
 <p id="selectedClustersOverview">No clusters selected</p>
-        </form>
+
 
 <div>
     <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>

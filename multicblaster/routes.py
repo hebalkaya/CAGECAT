@@ -276,8 +276,9 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
                                **kwargs), stat_code
 
 
-@app.route("/downstream/extract", methods=["GET", "POST"])
+@app.route("/downstream/extract-sequences", methods=["GET", "POST"])
 def extract_sequences():
+    # TODO: documentation
     print(request.form)
     selected_queries = request.form["selectedQueries"]
     selected_clusters = request.form["selectedClusters"]
@@ -297,10 +298,17 @@ def extract_sequences():
     else:
         selected_scaffolds = None
 
-
-
     return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
                          selected_queries=selected_queries, selected_scaffolds=selected_scaffolds, prev_job_id=request.form["job_id"])
+
+
+@app.route("/downstream/extract-clusters", methods=["GET", "POST"])
+def extract_clusters():
+    # TODO: documentation
+
+    print(request.form)
+    return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL)
+
 
 @app.route("/testing")
 def testing():
