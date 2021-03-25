@@ -51,7 +51,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    print(request.form)
+    # print(request.form)
 
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
@@ -100,8 +100,16 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
             file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
         else:
             raise IOError("Not valid file type")
+    elif job_type == "extract_sequences":
+        # For now, only when coming from a results page (using a previous job
+        # id) is supported
+        f = rf.cblaster_extract_sequences
+
+        prev_job_id = request.form["prev_job_id"]
+        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                 f"{prev_job_id}_session.json")
     else: # future input types
-        raise NotImplementedError("Module is not yet implemented yet")
+        raise NotImplementedError(f"Module {job_type} is not implemented yet")
 
     ut.save_settings(request.form, job_id)
     job = q.enqueue(f, args=(job_id,),kwargs={
@@ -144,9 +152,14 @@ def show_result(job_id: str) -> str:
         if status == "finished":
             module = job.job_type
 
-            with open(os.path.join(ut.JOBS_DIR, job_id,
-                                   "results", f"{job_id}_plot.html")) as inf:
-                plot_contents = inf.read()
+            if module == "extract_sequences":
+                plot_contents = None
+            elif module == "search" or module == "recompute":
+                with open(os.path.join(ut.JOBS_DIR, job_id,
+                                       "results", f"{job_id}_plot.html")) as inf:
+                    plot_contents = inf.read()
+            else:
+                raise NotImplementedError(f"Module {module} has not been implemented yet")
 
             return show_template("result_page.xhtml", job_id=job_id,
                     status=status, compr_formats=ut.COMPRESSION_FORMATS,
@@ -287,7 +300,7 @@ def extract_sequences():
 
 
     return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_queries=selected_queries, selected_scaffolds=selected_scaffolds)
+                         selected_queries=selected_queries, selected_scaffolds=selected_scaffolds, prev_job_id=request.form["job_id"])
 
 @app.route("/testing")
 def testing():

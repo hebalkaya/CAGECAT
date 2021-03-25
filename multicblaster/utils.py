@@ -65,7 +65,15 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "gneSumTableHideHeaders": "Summary hide headers",
                       "max_intergenic_distance": "Maximum intergenic distance",
                       "sample_number": "Sample size",
-                      "sampling_space": "Sampling space"
+                      "sampling_space": "Sampling space",
+                      "prev_job_id": "Previous job ID",
+                      "selectedQueries": "Selected queries",
+                      "selectedOrganisms": "Selected organisms",
+                      "selectedScaffolds": "Selected scaffolds",
+                      "outputDelimiter": "Delimiter",
+                      "downloadSeqs": "Download sequences",
+                      "nameOnly": "Name only"
+                      # "selectedClusters":
                       }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",

@@ -128,6 +128,37 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     post_job_formalities(job_id, return_code)
 
 
+def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=None):
+    pre_job_formalities(job_id)
+    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+
+    cmd = ["cblaster", "extract", file_path,
+           "--output", os.path.join(RESULTS_PATH, f"{job_id}_sequences.txt")]
+
+    # TODO: if download sequences, maybe change extension to .fasta
+    if options["selectedQueries"]:
+        cmd.append("--queries")
+        cmd.extend(options["selectedQueries"].split())
+
+    # TODO: add organism filtering
+
+    if options["selectedScaffolds"]:
+        cmd.append("--scaffolds")
+        cmd.extend(options["selectedScaffolds"].split())
+
+    if "outputDelimiter" in options:
+        cmd.extend(["--delimiter", options["outputDelimiter"]])
+
+    if "nameOnly" in options:
+        cmd.append("--name_only")
+
+    # TODO: add downloading sequences
+
+
+    return_code = run_command(cmd, LOG_PATH, job_id)
+    post_job_formalities(job_id, return_code)
+
+
 # auxiliary functions
 def create_summary_table_commands(
         module: str, options: werkzeug.datastructures.ImmutableMultiDict) \
