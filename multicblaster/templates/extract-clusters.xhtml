@@ -1,8 +1,36 @@
 {% extends "base.xhtml" %}
 
-        {% block title %}Extract{% endblock %}
+        {% block title %}Extract clusters{% endblock %}
 
         {% block content %}
 <p>Extracting clusters...</p>
 <!--TODO: add all input forms here-->
+
+<form action="{{submit_url}}" method="post">
+<!--    TODO: add macro-->
+
+    <label for="outputSection">Output</label>
+    <fieldset id="outputSection">
+        <div>
+            <label for="prefix">Prefix</label>
+            <input type="text" id="prefix" name="prefix" maxlength="15"/>
+        </div>
+        <div>
+            <label for="format">Format</label>
+            <select name="format" id="format" required="required">
+                <option value="genbank">Genbank</option>
+                <option value="bigscape">BiG-SCAPE</option>
+            </select>
+        </div>
+        <div>
+            <label for="maxclusters">Maximum clusters</label>
+            <input type="number" step="1" id="maxclusters"/>
+        </div>
+
+    </fieldset>
+
+    <div>
+        <input type="submit" value="Extract!"/>
+    </div>
+</form>
         {% endblock %}
