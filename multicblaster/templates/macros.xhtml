@@ -88,7 +88,7 @@
 </ul>
 {% endmacro %}
 
-{% macro filtering_section(extraction_type) %}
+{% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
 <div>
 <label for="filteringSection">Filtering</label>
 <fieldset id="filteringSection">
@@ -104,17 +104,17 @@
     {% if extraction_type == 'sequences' %}
     <div>
         <label for="selectedQueries">Queries</label>
-        <textarea cols="20" rows="8" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries if selected_queries is not none}}</textarea>
+        <textarea cols="20" rows="8" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
     </div>
     {% elif extraction_type == 'clusters' %}
     <div>
         <label for="clusterNumbers">Clusters</label>
-        <input type="text" name="clusterNumbers" id="clusterNumbers"/>
+        <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
 <!--        TODO: add pattern for clusternumbers (either separated by space or via stripes)-->
 <!--        TODO: check if 1-3 and 6-8 works-->
         <div>
             <label for="clusterScoreThreshold">Score threshold</label>
-            <input type="number" step="0.01" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
+            <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
         </div>
     </div>
 

@@ -333,7 +333,15 @@ function loadedIframe(){
 }
 
 
-function addSelectedToForm(){
-    document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
-    document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
+function addSelectedToForm(extracting_type) {
+    if (extracting_type === "sequences") {
+        document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
+        document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
     }
+    else if (extracting_type === "clusters"){
+        document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
+    }
+    else {
+        console.log("Invalid extraction type");
+    }
+}

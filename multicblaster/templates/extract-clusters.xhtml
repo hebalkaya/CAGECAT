@@ -11,7 +11,7 @@
 
     <input type="hidden" name="job_type" value="extract_clusters"/>
 <!--    TODO: add macro-->
-    {{ filtering_section('clusters') }}
+    {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}
 
     <label for="outputSection">Output</label>
     <fieldset id="outputSection">

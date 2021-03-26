@@ -11,6 +11,8 @@ from multicblaster.models import Job
 from multicblaster import db
 import multicblaster.workers as rf
 import os
+import re
+from more_itertools import consecutive_groups
 
 # type imports
 import flask.wrappers
@@ -281,33 +283,66 @@ def extract_sequences():
     # TODO: documentation
     print(request.form)
     selected_queries = request.form["selectedQueries"]
-    selected_clusters = request.form["selectedClusters"]
+    selected_scaffolds = parse_selected_scaffolds(request.form["selectedClusters"])
 
     if selected_queries == "No queries selected":
         selected_queries = None
-    if selected_clusters != "No clusters selected":
-        selected_scaffolds = []
 
-        for cluster in selected_clusters.split("\n"):
-            sep_index = cluster.find(")") + 1 # due to excluding last index
-            organism = cluster[:sep_index].split("(")[0].strip()
-            selected_scaffolds.append(cluster[sep_index+1:].strip()) # due to separation character
-            # between organism and scaffold
-
-        selected_scaffolds = "\n".join(selected_scaffolds)
-    else:
-        selected_scaffolds = None
 
     return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
                          selected_queries=selected_queries, selected_scaffolds=selected_scaffolds, prev_job_id=request.form["job_id"])
 
 
+def parse_selected_scaffolds(selected_clusters):
+    if selected_clusters != "No clusters selected":
+        selected_scaffolds = []
+
+        for cluster in selected_clusters.split("\n"):
+            # TODO: maybe we can use regex here
+            sep_index = cluster.find(")") + 1  # due to excluding last index
+            organism = cluster[:sep_index].split("(")[0].strip()
+            selected_scaffolds.append(
+                cluster[sep_index + 1:].strip())  # due to separation character
+            # between organism and scaffold
+
+        selected_scaffolds = "\n".join(selected_scaffolds)
+    else:
+        selected_scaffolds = None
+    return selected_scaffolds
+
+
+def format_cluster_numbers(cluster_numbers):
+    cluster_numbers.sort()
+    groups = [list(g) for g in consecutive_groups(cluster_numbers)]
+    return [f"{g[0]}-{g[-1]}" if len(g) != 1 else str(g[0]) for g in groups]
+
+
+def parse_selected_cluster_numbers(selected_clusters):
+    if selected_clusters != "No clusters selected":
+        cluster_numbers = []
+
+        for cluster in selected_clusters.split("\n"):
+            cluster_numbers.append(int(re.findall(ut.CLUST_NUMBER_PATTERN, cluster)[0]))
+
+        cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
+
+    else:
+        cluster_numbers = None
+
+    return cluster_numbers
+
+
 @app.route("/downstream/extract-clusters", methods=["GET", "POST"])
 def extract_clusters():
+    selected_clusters = request.form["selectedClusters"]
     # TODO: documentation
+    selected_scaffolds = parse_selected_scaffolds(selected_clusters)
+    cluster_numbers = parse_selected_cluster_numbers(selected_clusters)
+
 
     print(request.form)
-    return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL)
+    return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
+                         selected_scaffolds=selected_scaffolds, cluster_numbers=cluster_numbers)
 
 
 @app.route("/testing")

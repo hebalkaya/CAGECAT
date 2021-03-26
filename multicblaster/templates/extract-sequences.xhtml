@@ -8,7 +8,7 @@
     <form action="{{submit_url}}" method="post">
         <input type="hidden" name="job_type" value="extract_sequences"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
-        {{ filtering_section('sequences') }}
+        {{ filtering_section('sequences', selected_scaffolds, selected_queries) }}
         <br/>
             <label for="outputSection">Output</label>
             <fieldset id="outputSection">

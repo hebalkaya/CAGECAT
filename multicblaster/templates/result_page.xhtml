@@ -26,7 +26,7 @@
         {% if module in select_cluster_modules %}
 <hr/>
 <div>
-    <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm()">
+    <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{job_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
         <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
@@ -34,8 +34,9 @@
     </form>
     <br/>
 
-    <form action="{{url_for('extract_clusters')}}" method="post">
+    <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
         <button type="submit">Extract clusters</button>
     </form>
 
@@ -54,3 +55,13 @@
     <a href="{{url_for('home_page', prev_run_id=job_id)}}"><button>Reanalyze</button></a>
 </div>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
