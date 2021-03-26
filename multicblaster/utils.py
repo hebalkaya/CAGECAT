@@ -277,6 +277,7 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
         settings = inf.read()
 
     matches = re.findall(PATTERN, settings[20:-2])
+    print(matches)
     for key, value in matches:
         label = PRETTY_TRANSLATION[key]
 

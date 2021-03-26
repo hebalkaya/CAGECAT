@@ -164,7 +164,7 @@ def show_result(job_id: str) -> str:
         if status == "finished":
             module = job.job_type
 
-            if module == "extract_sequences":
+            if module == "extract_sequences" or module == "extract_clusters":
                 plot_contents = None
             elif module == "search" or module == "recompute":
                 with open(os.path.join(ut.JOBS_DIR, job_id,
@@ -335,7 +335,6 @@ def parse_selected_cluster_numbers(selected_clusters):
             cluster_numbers.append(int(re.findall(ut.CLUST_NUMBER_PATTERN, cluster)[0]))
 
         cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
-
     else:
         cluster_numbers = None
 
@@ -348,7 +347,8 @@ def extract_clusters():
     # TODO: documentation
     selected_scaffolds = parse_selected_scaffolds(selected_clusters)
     cluster_numbers = parse_selected_cluster_numbers(selected_clusters)
-
+    print(cluster_numbers)
+    print(type(cluster_numbers))
 
     print(request.form)
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,

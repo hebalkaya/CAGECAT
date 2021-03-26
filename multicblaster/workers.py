@@ -161,10 +161,43 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=N
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
-def cblaster_extract_clusters(job_id, options=None, file_path=None):
+def cblaster_extract_clusters(job_id, options=None, file_path=None, prev_page=None):
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
+    cluster_dir = os.path.join(RESULTS_PATH, "clusters")
+    os.mkdir(cluster_dir)
+
+    cmd = ["cblaster", "extract_clusters", file_path,
+           "--output", cluster_dir]
+
+    # TODO: add organism filtering
+
+    if options["selectedScaffolds"]:
+        cmd.append("--scaffolds")
+        cmd.extend(options["selectedScaffolds"].split())
+
+    print(options["clusterNumbers"])
+    print(type(options["clusterNumbers"]))
+    if options["clusterNumbers"]:
+        # TODO: fix error: WARNING - Cannot extract cluster '2 7': number is not a valid integer
+        # cmd.append("--clusters")
+        # cmd.extend(options["clusterNumbers"])
+        cmd.extend(["--clusters", options["clusterNumbers"].strip()])
+
+
+    if options["clusterScoreThreshold"]:
+        cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
+
+    if options["prefix"]:
+        cmd.extend(["--prefix", options["prefix"]])
+
+    cmd.extend(["--format", options["format"]])
+    cmd.extend(["--maximum_clusters", options["maxclusters"]])
+
+    for a in cmd:
+        print(a, type(a))
+        # print(type(a))
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
