@@ -87,3 +87,49 @@
 {% endfor %}
 </ul>
 {% endmacro %}
+
+{% macro filtering_section(extraction_type) %}
+<div>
+<label for="filteringSection">Filtering</label>
+<fieldset id="filteringSection">
+    <div>
+        <label for="selectedOrganisms">Organisms</label>
+        <input type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
+    </div>
+    <div>
+        <label for="selectedScaffolds">Scaffolds</label>
+        <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
+    </div>
+
+    {% if extraction_type == 'sequences' %}
+    <div>
+        <label for="selectedQueries">Queries</label>
+        <textarea cols="20" rows="8" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries if selected_queries is not none}}</textarea>
+    </div>
+    {% elif extraction_type == 'clusters' %}
+    <div>
+        <label for="clusterNumbers">Clusters</label>
+        <input type="text" name="clusterNumbers" id="clusterNumbers"/>
+<!--        TODO: add pattern for clusternumbers (either separated by space or via stripes)-->
+<!--        TODO: check if 1-3 and 6-8 works-->
+        <div>
+            <label for="clusterScoreThreshold">Score threshold</label>
+            <input type="number" step="0.01" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
+        </div>
+    </div>
+
+    {% endif %}
+</fieldset>
+</div>
+{% endmacro %}
+
+
+
+
+
+
+
+
+
+
+

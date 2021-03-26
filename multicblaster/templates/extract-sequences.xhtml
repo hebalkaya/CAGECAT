@@ -1,4 +1,5 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import filtering_section %}
 
 {% block title %}Extract sequences{% endblock %}
 
@@ -7,23 +8,7 @@
     <form action="{{submit_url}}" method="post">
         <input type="hidden" name="job_type" value="extract_sequences"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
-        <div>
-            <label for="filteringSection">Filtering</label>
-            <fieldset id="filteringSection">
-                <div>
-                    <label for="selectedQueries">Queries</label>
-                    <textarea cols="20" rows="8" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries if selected_queries is not none}}</textarea>
-                </div>
-                <div>
-                    <label for="selectedOrganisms">Organisms</label>
-                    <input type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
-                </div>
-                <div>
-                    <label for="selectedScaffolds">Scaffolds</label>
-                    <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
-                </div>
-            </fieldset>
-        </div>
+        {{ filtering_section('sequences') }}
         <br/>
             <label for="outputSection">Output</label>
             <fieldset id="outputSection">

@@ -1,13 +1,17 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import filtering_section %}
 
-        {% block title %}Extract clusters{% endblock %}
+{% block title %}Extract clusters{% endblock %}
 
-        {% block content %}
+{% block content %}
 <p>Extracting clusters...</p>
 <!--TODO: add all input forms here-->
 
 <form action="{{submit_url}}" method="post">
+
+    <input type="hidden" name="job_type" value="extract_clusters"/>
 <!--    TODO: add macro-->
+    {{ filtering_section('clusters') }}
 
     <label for="outputSection">Output</label>
     <fieldset id="outputSection">
@@ -28,7 +32,7 @@
         </div>
 
     </fieldset>
-
+    <br/>
     <div>
         <input type="submit" value="Extract!"/>
     </div>
