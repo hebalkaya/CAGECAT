@@ -10,7 +10,8 @@
 <form action="{{submit_url}}" method="post">
 
     <input type="hidden" name="job_type" value="extract_clusters"/>
-<!--    TODO: add macro-->
+    <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
+
     {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}
 
     <label for="outputSection">Output</label>
@@ -28,7 +29,7 @@
         </div>
         <div>
             <label for="maxclusters">Maximum clusters</label>
-            <input type="number" step="1" id="maxclusters"/>
+            <input type="number" name="maxclusters" step="1" id="maxclusters"/>
         </div>
 
     </fieldset>

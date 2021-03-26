@@ -161,6 +161,13 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=N
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
+def cblaster_extract_clusters(job_id, options=None, file_path=None):
+    pre_job_formalities(job_id)
+    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+
+    return_code = run_command(cmd, LOG_PATH, job_id)
+    post_job_formalities(job_id, return_code)
+
 
 # auxiliary functions
 def create_summary_table_commands(
@@ -319,3 +326,5 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     zip_results(job_id)
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
+
+

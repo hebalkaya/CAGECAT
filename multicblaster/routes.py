@@ -110,6 +110,16 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         prev_job_id = request.form["prev_job_id"]
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
+
+    elif job_type == "extract_clusters":
+        print(request.form)
+        f = rf.cblaster_extract_clusters
+
+        prev_job_id = request.form["prev_job_id"]
+        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                 f"{prev_job_id}_session.json")
+        # For now, only when coming from a results page (using a previous job
+        # id) is supported
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet")
 
@@ -342,7 +352,7 @@ def extract_clusters():
 
     print(request.form)
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_scaffolds=selected_scaffolds, cluster_numbers=cluster_numbers)
+                         selected_scaffolds=selected_scaffolds, cluster_numbers=cluster_numbers, prev_job_id=request.form["job_id"])
 
 
 @app.route("/testing")

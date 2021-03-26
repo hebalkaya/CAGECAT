@@ -74,7 +74,12 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "selectedScaffolds": "Selected scaffolds",
                       "outputDelimiter": "Delimiter",
                       "downloadSeqs": "Download sequences",
-                      "nameOnly": "Name only"
+                      "nameOnly": "Name only",
+                      "clusterNumbers": "Selected clusters",
+                      "clusterScoreThreshold": "Score threshold",
+                      "prefix": "File prefix",
+                      "format": "Output format",
+                      "maxclusters": "Maximum clusters"
                       # "selectedClusters":
                       }
 
