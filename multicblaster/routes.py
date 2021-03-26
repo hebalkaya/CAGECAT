@@ -173,10 +173,14 @@ def show_result(job_id: str) -> str:
             else:
                 raise NotImplementedError(f"Module {module} has not been implemented yet")
 
+            with open(os.path.join(ut.JOBS_DIR, job_id,
+                                       "logs", f"{job_id}_cblaster.log")) as inf:
+                log_contents = "<br/>".join(inf.readlines())
+
             return show_template("result_page.xhtml", job_id=job_id,
                     status=status, compr_formats=ut.COMPRESSION_FORMATS,
                     plot_contents=plot_contents, module=module,
-                    select_cluster_modules=ut.MODULES_CLUSTER_SELECTION)
+                    select_cluster_modules=ut.MODULES_CLUSTER_SELECTION, log_contents=log_contents)
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:

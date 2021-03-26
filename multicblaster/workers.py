@@ -165,11 +165,11 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None, prev_page=No
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    cluster_dir = os.path.join(RESULTS_PATH, "clusters")
-    os.mkdir(cluster_dir)
+    # cluster_dir = os.path.join(RESULTS_PATH, "clusters")
+    # os.mkdir(cluster_dir)
 
     cmd = ["cblaster", "extract_clusters", file_path,
-           "--output", cluster_dir]
+           "--output", RESULTS_PATH]
 
     # TODO: add organism filtering
 
@@ -177,13 +177,9 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None, prev_page=No
         cmd.append("--scaffolds")
         cmd.extend(options["selectedScaffolds"].split())
 
-    print(options["clusterNumbers"])
-    print(type(options["clusterNumbers"]))
     if options["clusterNumbers"]:
-        # TODO: fix error: WARNING - Cannot extract cluster '2 7': number is not a valid integer
-        # cmd.append("--clusters")
-        # cmd.extend(options["clusterNumbers"])
-        cmd.extend(["--clusters", options["clusterNumbers"].strip()])
+        cmd.extend(["--clusters"])
+        cmd.extend(options["clusterNumbers"].strip().split())
 
 
     if options["clusterScoreThreshold"]:
