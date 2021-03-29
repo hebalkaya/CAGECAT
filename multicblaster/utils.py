@@ -278,7 +278,6 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
 
     matches = re.findall(PATTERN, settings[20:-2])
     for key, value in matches:
-        print(key, value)
         label = PRETTY_TRANSLATION[key]
 
         if label is not None:

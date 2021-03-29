@@ -112,7 +112,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                                  f"{prev_job_id}_session.json")
 
     elif job_type == "extract_clusters":
-        print(request.form)
+        # print(request.form)
         f = rf.cblaster_extract_clusters
 
         prev_job_id = request.form["prev_job_id"]
@@ -295,7 +295,7 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
 @app.route("/downstream/extract-sequences", methods=["GET", "POST"])
 def extract_sequences():
     # TODO: documentation
-    print(request.form)
+    # print(request.form)
     selected_queries = request.form["selectedQueries"]
     selected_scaffolds = parse_selected_scaffolds(request.form["selectedClusters"])
 
@@ -351,10 +351,10 @@ def extract_clusters():
     # TODO: documentation
     selected_scaffolds = parse_selected_scaffolds(selected_clusters)
     cluster_numbers = parse_selected_cluster_numbers(selected_clusters)
-    print(cluster_numbers)
-    print(type(cluster_numbers))
-
-    print(request.form)
+    # print(cluster_numbers)
+    # print(type(cluster_numbers))
+    #
+    # print(request.form)
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
                          selected_scaffolds=selected_scaffolds, cluster_numbers=cluster_numbers, prev_job_id=request.form["job_id"])
 

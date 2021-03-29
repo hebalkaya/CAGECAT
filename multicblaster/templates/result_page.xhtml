@@ -24,6 +24,10 @@
     </form>
 
 <div>
+<label>
+    <input onclick="toggleElementVisibility('logSection')" type="checkbox"/>Show log</label>
+</div>
+<div id="logSection" style="display: none">
     <p class="log">{{log_contents|safe}}</p>
 </div>
 
@@ -52,12 +56,12 @@
 <div>
     <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
-        {% endif %}
 
 <hr/>
 <div>
     <a href="{{url_for('home_page', prev_run_id=job_id)}}"><button>Reanalyze</button></a>
 </div>
+        {% endif %}
 {% endblock %}
 
 

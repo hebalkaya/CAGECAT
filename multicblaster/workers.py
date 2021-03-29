@@ -178,9 +178,8 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None, prev_page=No
         cmd.extend(options["selectedScaffolds"].split())
 
     if options["clusterNumbers"]:
-        cmd.extend(["--clusters"])
+        cmd.append("--clusters")
         cmd.extend(options["clusterNumbers"].strip().split())
-
 
     if options["clusterScoreThreshold"]:
         cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])

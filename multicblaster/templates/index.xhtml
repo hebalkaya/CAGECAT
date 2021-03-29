@@ -14,9 +14,9 @@
     <button class="moduleSelector" id="showGNE"
             onclick="showModule(event, 'gneModuleContent')">Neighbourhood
     </button>
-    <button class="moduleSelector"
-            onclick="showModule(event, 'extractModuleContent')">Extract
-    </button>
+<!--    <button class="moduleSelector"-->
+<!--            onclick="showModule(event, 'extractModuleContent')">Extract-->
+<!--    </button>-->
 </div>
 <br/>
 
@@ -192,23 +192,22 @@
                 </select>
             </div>
         </fieldset>
-pa
         <br/>
         <input type="submit" class="submit_button" id="submitGNEForm"  value="Run"/>
     </form>
 </div>
 
 
-<div id="extractModuleContent" class="moduleContent" style="display: none">
-    <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
-          onsubmit="return validateForm()" name="extractOptionForm">
-        <input type="hidden" name="job_type" value="extract"
-               required="required"/>
+<!--<div id="extractModuleContent" class="moduleContent" style="display: none">-->
+<!--    <form method="post" enctype="multipart/form-data" action="{{submit_url}}"-->
+<!--          onsubmit="return validateForm()" name="extractOptionForm">-->
+<!--        <input type="hidden" name="job_type" value="extract"-->
+<!--               required="required"/>-->
 
-        {{ prev_session('extract', true, prev_run_id) }}
-        <input type="submit" class="submit_button" value="Run"/>
-    </form>
-</div>
+<!--        {{ prev_session('extract', true, prev_run_id) }}-->
+<!--        <input type="submit" class="submit_button" value="Run"/>-->
+<!--    </form>-->
+<!--</div>-->
 </div>
 
 
