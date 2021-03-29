@@ -7,12 +7,11 @@ Author: Matthias van den Belt
 from flask import render_template, request, url_for, redirect, send_file
 from multicblaster import app, q, r
 import multicblaster.utils as ut
+import multicblaster.parsers as pa
 from multicblaster.models import Job
 from multicblaster import db
 import multicblaster.workers as rf
 import os
-import re
-from more_itertools import consecutive_groups
 
 # type imports
 import flask.wrappers
@@ -21,6 +20,9 @@ import typing as t
 # !!!! TODO: Note that the return types could change when deploying Flask !!!!
 
 # route definitions
+
+
+
 @app.route("/rerun/<prev_run_id>")
 @app.route("/")
 def home_page(prev_run_id: str = None) -> str:
@@ -255,6 +257,53 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
         else:
             return show_template("job_not_found.xhtml", job_id=job_id)
             #TODO: create invalid job ID template
+
+
+@app.route("/downstream/extract-sequences", methods=["GET", "POST"])
+def extract_sequences() -> str:
+    """Shows page for extracting sequences from a previous job
+
+    Input:
+        No inputs
+
+    Output:
+        - HTML represented in string format showing options for extracting
+            sequences in the client's browser
+    """
+    selected_queries = request.form["selectedQueries"]
+    selected_scaffolds = pa.parse_selected_scaffolds(
+        request.form["selectedClusters"])
+
+    if selected_queries == "No queries selected":
+        selected_queries = None
+
+    return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
+                         selected_queries=selected_queries,
+                         selected_scaffolds=selected_scaffolds,
+                         prev_job_id=request.form["job_id"])
+
+
+@app.route("/downstream/extract-clusters", methods=["GET", "POST"])
+def extract_clusters() -> str:
+    """Shows page for extracting clusters from a previous job
+
+    Input:
+        No inputs
+
+    Output:
+        - HTML represented in string format showing options for extracting
+            clusters in the client's browser
+    """
+    selected_clusters = request.form["selectedClusters"]
+    selected_scaffolds = pa.parse_selected_scaffolds(selected_clusters)
+    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters)
+
+    return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
+                         selected_scaffolds=selected_scaffolds,
+                         cluster_numbers=cluster_numbers,
+                         prev_job_id=request.form["job_id"])
+
+
 # Error handlers
 @app.errorhandler(404)
 def page_not_found(error):
@@ -290,73 +339,6 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
         return render_template(template_name,
                                serv_info=ut.get_server_info(q, r),
                                **kwargs), stat_code
-
-
-@app.route("/downstream/extract-sequences", methods=["GET", "POST"])
-def extract_sequences():
-    # TODO: documentation
-    # print(request.form)
-    selected_queries = request.form["selectedQueries"]
-    selected_scaffolds = parse_selected_scaffolds(request.form["selectedClusters"])
-
-    if selected_queries == "No queries selected":
-        selected_queries = None
-
-
-    return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_queries=selected_queries, selected_scaffolds=selected_scaffolds, prev_job_id=request.form["job_id"])
-
-
-def parse_selected_scaffolds(selected_clusters):
-    if selected_clusters != "No clusters selected":
-        selected_scaffolds = []
-
-        for cluster in selected_clusters.split("\n"):
-            # TODO: maybe we can use regex here
-            sep_index = cluster.find(")") + 1  # due to excluding last index
-            organism = cluster[:sep_index].split("(")[0].strip()
-            selected_scaffolds.append(
-                cluster[sep_index + 1:].strip())  # due to separation character
-            # between organism and scaffold
-
-        selected_scaffolds = "\n".join(selected_scaffolds)
-    else:
-        selected_scaffolds = None
-    return selected_scaffolds
-
-
-def format_cluster_numbers(cluster_numbers):
-    cluster_numbers.sort()
-    groups = [list(g) for g in consecutive_groups(cluster_numbers)]
-    return [f"{g[0]}-{g[-1]}" if len(g) != 1 else str(g[0]) for g in groups]
-
-
-def parse_selected_cluster_numbers(selected_clusters):
-    if selected_clusters != "No clusters selected":
-        cluster_numbers = []
-
-        for cluster in selected_clusters.split("\n"):
-            cluster_numbers.append(int(re.findall(ut.CLUST_NUMBER_PATTERN, cluster)[0]))
-
-        cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
-    else:
-        cluster_numbers = None
-
-    return cluster_numbers
-
-
-@app.route("/downstream/extract-clusters", methods=["GET", "POST"])
-def extract_clusters():
-    selected_clusters = request.form["selectedClusters"]
-    # TODO: documentation
-    selected_scaffolds = parse_selected_scaffolds(selected_clusters)
-    cluster_numbers = parse_selected_cluster_numbers(selected_clusters)
-    # print(cluster_numbers)
-    # print(type(cluster_numbers))
-    #
-    # print(request.form)
-    return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_scaffolds=selected_scaffolds, cluster_numbers=cluster_numbers, prev_job_id=request.form["job_id"])
 
 
 @app.route("/testing")
