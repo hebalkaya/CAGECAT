@@ -239,55 +239,53 @@ window.addEventListener("message", function(e){
     // const array;
     let src = e.data[0];
     let message = e.data[1]; // e.data represents the message posted by the child
-
-    // -------------- TODO: check if we can generalize this function. Below
-    // -------------- was a trial, but variable referencing is not supported in JS
-    // if (src === "Clusters") {
-    //     const array = selectedClusters;
+    //
+    // // -------------- TODO: check if we can generalize this function. Below
+    // // -------------- was a trial, but variable referencing is not supported in JS
+    // // if (src === "Clusters") {
+    // //     const array = selectedClusters;
+    // // }
+    // // else if (src === "Queries"){
+    // //     const array = selectedQueries;
+    // // }
+    // // else {
+    // //     console.log("Invalid src type");
+    // // }
+    // //
+    // // let index = array.indexOf(message);
+    // // if (index === 1){
+    // //     array.push(message);
+    // // } else {
+    // //     array.splice(index, 1);
+    // // }
+    // // if (array.length === 0){
+    // //     text = "No " + src.toLowerCase() + " selected";
+    // // }
+    // // else {
+    // //     text = array.join("\n")
+    // // }
+    // // document.getElementById("selected" + src + "Overview").innerText = text;
+    // // ----------------------------------------------------------------------
+    //
+    // if (src === "Clusters"){
+    //     let index = selectedClusters.indexOf(message);
+    //     if (index === -1) {
+    //         selectedClusters.push(message);
+    //     } else {
+    //         selectedClusters.splice(index, 1);
+    //     }
+    //     if (selectedClusters.length === 0) {
+    //         text = "No clusters selected";
+    //     } else {
+    //         text = selectedClusters.join("\n");
+    //     }
+    //     document.getElementById("selectedClustersOverview").innerText = text;
     // }
     // else if (src === "Queries"){
-    //     const array = selectedQueries;
-    // }
-    // else {
-    //     console.log("Invalid src type");
-    // }
-    //
-    // let index = array.indexOf(message);
-    // if (index === 1){
-    //     array.push(message);
-    // } else {
-    //     array.splice(index, 1);
-    // }
-    // if (array.length === 0){
-    //     text = "No " + src.toLowerCase() + " selected";
-    // }
-    // else {
-    //     text = array.join("\n")
-    // }
-    // document.getElementById("selected" + src + "Overview").innerText = text;
-    // ----------------------------------------------------------------------
-
-    if (src === "Clusters"){
-        let index = selectedClusters.indexOf(message);
-        if (index === -1) {
-            selectedClusters.push(message);
-        } else {
-            selectedClusters.splice(index, 1);
-        }
-        if (selectedClusters.length === 0) {
-            text = "No clusters selected";
-        } else {
-            text = selectedClusters.join("\n");
-        }
-        document.getElementById("selectedClustersOverview").innerText = text;
-    }
-    else if (src === "Queries"){
-        let reset = false;
-        let resetMessage = "No queries selected";
-        let new_message;
+        let resetMessage = "No " + src.toLowerCase() + " selected";
         let toRemoveIndex = undefined;
 
-        let overview = document.getElementById("selectedQueriesOverview");
+        let overview = document.getElementById("selected" + src + "Overview");
 
         if (overview.children[0].textContent === resetMessage ){
             overview.removeChild(overview.children[0]);
@@ -318,42 +316,10 @@ window.addEventListener("message", function(e){
                 overview.appendChild(newNode);
             }
         }
-
-
-        // let newNode = document.createElement("LI");
-        // newNode.appendChild(document.createTextNode(message));
-        // overview.appendChild(newNode);
-
-
-
-
-        // if (reset){
-        //
-        // }
-        // let newNode = document.createElement("LI");
-        // newNode.appendChild(document.createTextNode(message));
-        //
-        // overview.appendChild(newNode);
-
-        // console.log(overview);
-
-        // let index = selectedQueries.indexOf(message);
-        // if (index === -1){
-        //     selectedQueries.push(message);
-        // } else {
-        //     selectedQueries.splice(index, 1);
-        // }
-        // if (selectedQueries.length === 0){
-        //     text = "No queries selected";
-        // }
-        // else {
-        //     text = selectedQueries.join("\n");
-        // }
-        // document.getElementById("selectedQueriesOverview").innerText = text;
-    }
-    else {
-        console.log("Invalid src type");
-    }
+    // }
+    // else {
+    //     console.log("Invalid src type");
+    // }
     console.log("Check corason button");
 }, false)
 
