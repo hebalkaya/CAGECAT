@@ -245,7 +245,6 @@ function checkCorasonButton() {
     let clusters = document.getElementById("selectedClustersOverview")
     let referenceCluster = document.getElementById("selectedReferenceCluster");
 
-    // console.log(queries.children[0].textContent.startsWith("No"));
     if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
         elem.removeAttribute("disabled");
     }
@@ -314,9 +313,7 @@ window.addEventListener("message", function(e){
         for (let i=0; i < overview.children.length; i++) {
             if (overview.children[i].textContent === message) {
                 toRemoveIndex = i;
-                // overview.removeChild(overview.children[i])
                 break;
-                // reset = true;
             }
         }
 
@@ -325,24 +322,10 @@ window.addEventListener("message", function(e){
             newNode.appendChild(document.createTextNode(message));
 
             if (src === "Clusters") {
-
                 newNode.addEventListener("contextmenu", function (event) {
                     event.preventDefault();
                     let newOverview = document.getElementById("selectedReferenceCluster");
-                    // console.log(this);
-                    // console.log(newOverview);
-                    // if (overview.children.length === 1){
-                    //
-                    //     let newNode = document.createElement("LI");
-                    //     newNode.appendChild(document.createTextNode(resetMessage));
-                    //     overview.appendChild(newNode);
-                    //
-                    //
-                    //     if (overview.children[0].textContent === "No reference cluster selected"){
-                    //         overview.removeChild(overview.children[0]);
-                    //     }
-                    // }
-                    // OOPS: && overview.children[0].textContent !== resetMessage
+
                     if (overview.children.length === 1 && overview.children[0].textContent !== resetMessage && this.parentElement === overview){
                         let newNode = document.createElement("LI");
                         newNode.appendChild(document.createTextNode(resetMessage));
@@ -353,14 +336,6 @@ window.addEventListener("message", function(e){
                     if (newOverview.children[0].textContent === newResetMessage){
                         newOverview.removeChild(newOverview.children[0]);
                     }
-                    // else {
-                    //     let newNode = document.createElement("LI");
-                    //     newNode.appendChild(document.createTextNode(newResetMessage));
-                    //     overview.appendChild(newNode);
-                    // }
-                    // console.log(parent);
-                    // console.log(this.parentElement);
-                    // console.log(this.parentNode);
 
                     if (this.parentElement === overview){
                         overview.removeChild(this);
@@ -376,7 +351,6 @@ window.addEventListener("message", function(e){
                         newOverview.removeChild(this);
                     }
 
-                    // console.log("check corason button");
                     checkCorasonButton();
                 })
             }
@@ -384,21 +358,15 @@ window.addEventListener("message", function(e){
             overview.appendChild(newNode);
         }
         else {
-            // console.log("we should rmeove");
             overview.removeChild(overview.children[toRemoveIndex]);
 
             if (overview.children.length === 0){
-                // console.log("add reset");
                 let newNode = document.createElement("LI");
                 newNode.appendChild(document.createTextNode(resetMessage));
                 overview.appendChild(newNode);
             }
         }
-    // }
-    // else {
-    //     console.log("Invalid src type");
-    // }
-    // console.log("Check corason button");
+
     checkCorasonButton()
 }, false)
 
