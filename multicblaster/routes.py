@@ -304,6 +304,12 @@ def extract_clusters() -> str:
                          prev_job_id=request.form["job_id"])
 
 
+@app.route("/downstream/corason", methods=["POST"])
+def corason():
+    print(request.form)
+    return show_template("corason.xhtml")
+
+
 # Error handlers
 @app.errorhandler(404)
 def page_not_found(error):

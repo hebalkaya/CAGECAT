@@ -282,23 +282,79 @@ window.addEventListener("message", function(e){
         document.getElementById("selectedClustersOverview").innerText = text;
     }
     else if (src === "Queries"){
-        let index = selectedQueries.indexOf(message);
-        if (index === -1){
-            selectedQueries.push(message);
-        } else {
-            selectedQueries.splice(index, 1);
+        let reset = false;
+        let resetMessage = "No queries selected";
+        let new_message;
+        let toRemoveIndex = undefined;
+
+        let overview = document.getElementById("selectedQueriesOverview");
+
+        if (overview.children[0].textContent === resetMessage ){
+            overview.removeChild(overview.children[0]);
         }
-        if (selectedQueries.length === 0){
-            text = "No queries selected";
+
+        for (let i=0; i < overview.children.length; i++) {
+            if (overview.children[i].textContent === message) {
+                toRemoveIndex = i;
+                // overview.removeChild(overview.children[i])
+                break;
+                // reset = true;
+            }
+        }
+
+        if (toRemoveIndex === undefined){
+            let newNode = document.createElement("LI");
+            newNode.appendChild(document.createTextNode(message));
+            overview.appendChild(newNode);
         }
         else {
-            text = selectedQueries.join("\n");
+            // console.log("we should rmeove");
+            overview.removeChild(overview.children[toRemoveIndex]);
+
+            if (overview.children.length === 0){
+                // console.log("add reset");
+                let newNode = document.createElement("LI");
+                newNode.appendChild(document.createTextNode(resetMessage));
+                overview.appendChild(newNode);
+            }
         }
-        document.getElementById("selectedQueriesOverview").innerText = text;
+
+
+        // let newNode = document.createElement("LI");
+        // newNode.appendChild(document.createTextNode(message));
+        // overview.appendChild(newNode);
+
+
+
+
+        // if (reset){
+        //
+        // }
+        // let newNode = document.createElement("LI");
+        // newNode.appendChild(document.createTextNode(message));
+        //
+        // overview.appendChild(newNode);
+
+        // console.log(overview);
+
+        // let index = selectedQueries.indexOf(message);
+        // if (index === -1){
+        //     selectedQueries.push(message);
+        // } else {
+        //     selectedQueries.splice(index, 1);
+        // }
+        // if (selectedQueries.length === 0){
+        //     text = "No queries selected";
+        // }
+        // else {
+        //     text = selectedQueries.join("\n");
+        // }
+        // document.getElementById("selectedQueriesOverview").innerText = text;
     }
     else {
         console.log("Invalid src type");
     }
+    console.log("Check corason button");
 }, false)
 
 
@@ -333,15 +389,20 @@ function loadedIframe(){
 }
 
 
-function addSelectedToForm(extracting_type) {
-    if (extracting_type === "sequences") {
+function addSelectedToForm(downstream_prog) {
+    if (downstream_prog === "sequences") {
         document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
         document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
     }
-    else if (extracting_type === "clusters"){
+    else if (downstream_prog === "clusters"){
         document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
     }
+    else if (downstream_prog === "corason"){
+        document.getElementById("selectedQuery").value = document.getElementById("selectedQueriesOverview").innerText;
+        document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
+        document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
+    }
     else {
-        console.log("Invalid extraction type");
+        console.log("Invalid  type");
     }
 }

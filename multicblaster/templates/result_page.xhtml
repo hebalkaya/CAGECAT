@@ -49,8 +49,22 @@
     </form>
 
 </div>
-<p id="selectedQueriesOverview">No queries selected</p>
+
+<div>
+    <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
+        <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
+        <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>
+        <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>
+        <button type="submit">Use CORASON</button>
+    </form>
+</div>
+<ul id="selectedQueriesOverview">
+    <li id="emptyCluster">No queries selected</li>
+
+</ul>
 <p id="selectedClustersOverview">No clusters selected</p>
+<p id="selectedReferenceCluster">No reference cluster selected</p>
 
 
 <div>

@@ -73,7 +73,6 @@ def parse_selected_cluster_numbers(selected_clusters: str) -> str:
             this value is used to set the value of the input area of
             cluster numbers in HTML.
     """
-    print(selected_clusters, type(selected_clusters))
     if selected_clusters != "No clusters selected":
         cluster_numbers = []
 
