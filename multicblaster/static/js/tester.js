@@ -234,6 +234,26 @@ function enableOrDisableSubmitButtons(disable){
     }
 }
 
+function hasOneElementSelected(overview){
+    return overview.children.length === 1 && !overview.children[0].textContent.startsWith("No");
+}
+
+function checkCorasonButton() {
+    // TODO: implement that a cluster cannot be in in the cluster section and be the reference cluster at the same time
+    let elem = document.getElementById("corasonSubmit");
+    let queries = document.getElementById("selectedQueriesOverview");
+    let clusters = document.getElementById("selectedClustersOverview")
+    let referenceCluster = document.getElementById("selectedReferenceCluster");
+
+    // console.log(queries.children[0].textContent.startsWith("No"));
+    if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
+        elem.removeAttribute("disabled");
+    }
+    else {
+        elem.setAttribute("disabled", "disabled");
+    }
+}
+
 window.addEventListener("message", function(e){
     let text;
     // const array;
@@ -303,6 +323,64 @@ window.addEventListener("message", function(e){
         if (toRemoveIndex === undefined){
             let newNode = document.createElement("LI");
             newNode.appendChild(document.createTextNode(message));
+
+            if (src === "Clusters") {
+
+                newNode.addEventListener("contextmenu", function (event) {
+                    event.preventDefault();
+                    let newOverview = document.getElementById("selectedReferenceCluster");
+                    // console.log(this);
+                    // console.log(newOverview);
+                    // if (overview.children.length === 1){
+                    //
+                    //     let newNode = document.createElement("LI");
+                    //     newNode.appendChild(document.createTextNode(resetMessage));
+                    //     overview.appendChild(newNode);
+                    //
+                    //
+                    //     if (overview.children[0].textContent === "No reference cluster selected"){
+                    //         overview.removeChild(overview.children[0]);
+                    //     }
+                    // }
+                    // OOPS: && overview.children[0].textContent !== resetMessage
+                    if (overview.children.length === 1 && overview.children[0].textContent !== resetMessage && this.parentElement === overview){
+                        let newNode = document.createElement("LI");
+                        newNode.appendChild(document.createTextNode(resetMessage));
+                        overview.appendChild(newNode);
+                    }
+
+                    let newResetMessage = "No reference cluster selected";
+                    if (newOverview.children[0].textContent === newResetMessage){
+                        newOverview.removeChild(newOverview.children[0]);
+                    }
+                    // else {
+                    //     let newNode = document.createElement("LI");
+                    //     newNode.appendChild(document.createTextNode(newResetMessage));
+                    //     overview.appendChild(newNode);
+                    // }
+                    // console.log(parent);
+                    // console.log(this.parentElement);
+                    // console.log(this.parentNode);
+
+                    if (this.parentElement === overview){
+                        overview.removeChild(this);
+                        newOverview.appendChild(this);
+                    }
+                    else {
+                        if (newOverview.children.length === 1) {
+                            let newNode = document.createElement("LI");
+                            newNode.appendChild(document.createTextNode(newResetMessage));
+                            newOverview.appendChild(newNode);
+                        }
+
+                        newOverview.removeChild(this);
+                    }
+
+                    // console.log("check corason button");
+                    checkCorasonButton();
+                })
+            }
+
             overview.appendChild(newNode);
         }
         else {
@@ -320,7 +398,8 @@ window.addEventListener("message", function(e){
     // else {
     //     console.log("Invalid src type");
     // }
-    console.log("Check corason button");
+    // console.log("Check corason button");
+    checkCorasonButton()
 }, false)
 
 
