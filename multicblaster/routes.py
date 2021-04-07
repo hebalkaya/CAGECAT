@@ -55,7 +55,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    # print(request.form)
+    print(request.form)
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
 
@@ -304,11 +304,24 @@ def extract_clusters() -> str:
 
 
 @app.route("/downstream/corason", methods=["POST"])
-def corason():
-    print(request.form)
+def corason() -> str:
+    """Shows page for selecting settings for running Corason
+
+    Input:
+        No inputs
+
+    Output:
+        - HTML represented in string format showing options for running
+            Corason in the client's browser
+    """
+    # print(request.form)
     cluster_to_search_in = pa.parse_selected_cluster_names(request.form["selectedClusters"])
+    query = request.form["selectedQuery"]
+    reference_cluster = pa.parse_selected_cluster_names(request.form["selectedReferenceCluster"])
+
     return show_template("corason.xhtml", submit_url=ut.SUBMIT_URL,
-                        cluster_to_search_in=cluster_to_search_in,
+                         query=query, reference_cluster=reference_cluster,
+                         cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
 
 
