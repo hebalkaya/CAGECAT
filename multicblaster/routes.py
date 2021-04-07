@@ -69,7 +69,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     # only used if a previous job ID or previous session file will be used
 
     ut.create_directories(job_id) # should be done if user uploads files
-
+    # TODO: BIG ONE: make every job_type functional by appending it to the job list
     if job_type == "search":
         f = rf.cblaster_search
 
@@ -138,16 +138,17 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                                  f"{prev_job_id}_session.json")
 
         new_jobs.append((rf.cblaster_extract_clusters, job_id, co.EXTRACT_CLUSTERS_OPTIONS, file_path_extract_clust, None, "extract_clusters"))
-        new_jobs.append((rf.second, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
+        new_jobs.append((rf.corason, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
         # TODO's:
             # 1. extract clusters in it's own job
             # 2. run (for now: compose) corason command. Making this fn
             # dependent on #1.
         # return "TODO"
     else: # future input types
-        raise NotImplementedError(f"Module {job_type} is not implemented yet")
+        raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
-    for new_job in new_jobs:
+    created_redis_jobs_ids = []
+    for i, new_job in enumerate(new_jobs):
         ut.create_directories(new_job[1])
         ut.save_settings(new_job[2], new_job[1])
 
@@ -158,17 +159,25 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         #                      result_ttl=86400, connection=r)
         # else:
         print(f"4th index is: {new_job[4]}")
+
         # depends_on kwarg could be None if it is not dependent.
+        depending_job = None if new_job[4] is None else created_redis_jobs_ids[i-1]
+        print(f"Depending job: {depending_job}")
         job = Job.create(new_job[0], args=(new_job[1],),
                          kwargs={"options": new_job[2],
-                                 "file_path": new_job[3]}, depends_on=new_job[4],
+                                 "file_path": new_job[3]}, depends_on=depending_job,
                          result_ttl=86400, connection=r)
 
-        q.enqueue_job(job)
+
 
         j = dbJob(id=new_job[1], status="queued", job_type=new_job[5])
         db.session.add(j)
         db.session.commit()
+
+        created_redis_jobs_ids.append(job.id)
+        q.enqueue_job(job)
+
+        last_job_id = new_job[1]
 
     # ut.save_settings(request.form, job_id)
     # job = q.enqueue(f, args=(job_id,),kwargs={
@@ -180,7 +189,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     # db.session.add(j)
     # db.session.commit()
 
-    return redirect(url_for("show_result", job_id=job_id))
+    return redirect(url_for("show_result", job_id=last_job_id))
 
 @app.route("/results/<job_id>")
 def show_result(job_id: str) -> str:
@@ -212,15 +221,20 @@ def show_result(job_id: str) -> str:
 
             if module == "extract_sequences" or module == "extract_clusters":
                 plot_contents = None
+                program = "cblaster"
             elif module == "search" or module == "recompute":
+                program = "cblaster"
                 with open(os.path.join(ut.JOBS_DIR, job_id,
                                        "results", f"{job_id}_plot.html")) as inf:
                     plot_contents = inf.read()
+            elif module == "corason":
+                program = "echo" # TODO: will be someting else later
+                plot_contents = None # TODO: for now
             else:
-                raise NotImplementedError(f"Module {module} has not been implemented yet")
+                raise NotImplementedError(f"Module {module} has not been implemented yet in results")
 
             with open(os.path.join(ut.JOBS_DIR, job_id,
-                                       "logs", f"{job_id}_cblaster.log")) as inf:
+                                       "logs", f"{job_id}_{program}.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
 
             return show_template("result_page.xhtml", job_id=job_id,
