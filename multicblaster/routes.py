@@ -55,7 +55,9 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    print("-------------------------------")
     print(request.form)
+    print("-------------------------------")
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
 
@@ -121,6 +123,14 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                                  f"{prev_job_id}_session.json")
         # For now, only when coming from a results page (using a previous job
         # id) is supported
+
+    elif job_type == "corason":
+        # print()
+        # TODO's:
+            # 1. extract clusters in it's own job
+            # 2. run (for now: compose) corason command. Making this fn
+            # dependent on #1.
+        return "TODO"
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet")
 
