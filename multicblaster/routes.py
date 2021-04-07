@@ -8,10 +8,11 @@ from flask import render_template, request, url_for, redirect, send_file
 from multicblaster import app, q, r
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
-from multicblaster.models import Job
+from multicblaster.models import Job as dbJob
 from multicblaster import db
 import multicblaster.workers as rf
 import os
+from rq.job import Job
 
 # type imports
 import flask.wrappers
@@ -55,6 +56,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    new_jobs = []
+
     print("-------------------------------")
     print(request.form)
     print("-------------------------------")
@@ -64,7 +67,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     # Note that the "{module}PreviousType" is submitted via the form, but is
     # only used if a previous job ID or previous session file will be used
 
-    ut.create_directories(job_id)
+    ut.create_directories(job_id) # should be done if user uploads files
 
     if job_type == "search":
         f = rf.cblaster_search
@@ -90,6 +93,10 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                 file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
             else:
                 raise IOError("Not valid file type")
+        else:
+            raise NotImplementedError(f"Input type {input_type} has not been implemented yet")
+
+        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "gne":
         f = rf.cblaster_gne
 
@@ -125,24 +132,51 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         # id) is supported
 
     elif job_type == "corason":
+        # TODO: we need options for extracting clusters
+        # order: (function, job_id, options, depending_job_id, job_type)
+        new_jobs.append((rf.first, job_id, {"TODO": "TODO"}, "FILEPATHTODO", None, "extract_clusters"))
+        new_jobs.append((rf.second, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
         # print()
         # TODO's:
             # 1. extract clusters in it's own job
             # 2. run (for now: compose) corason command. Making this fn
             # dependent on #1.
-        return "TODO"
+        # return "TODO"
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet")
 
-    ut.save_settings(request.form, job_id)
-    job = q.enqueue(f, args=(job_id,),kwargs={
-        "options": request.form,
-        "file_path": file_path
-    }, result_ttl=86400)
+    print("------+++++++++++++++++------------------")
+    print(new_jobs)
+    for new_job in new_jobs:
+        # TODO: create directories. Edit function to check if dirs already exist?
+        ut.save_settings(request.form, job_id)
+        job = Job.create(new_job[0], args=(new_job[1],),
+                    kwargs={"options": new_job[2],
+                            "file_path": new_job[3]}, result_ttl=86400, connection=r)
+        if new_job[4] is not None:
+            job.kwargs["depends_on"] = new_job[4]
+        print("Belowww")
+        print(job)
+        print(job.kwargs)
+        print("Aboveee")
+        q.enqueue_job(job)
 
-    j = Job(id=job_id, status="queued", job_type=job_type)
-    db.session.add(j)
-    db.session.commit()
+        print("jajajaja")
+        print(len(new_job))
+        print(new_job)
+        j = dbJob(id=new_job[1], status="queued", job_type=new_job[5])
+        db.session.add(j)
+        db.session.commit()
+
+    # ut.save_settings(request.form, job_id)
+    # job = q.enqueue(f, args=(job_id,),kwargs={
+    #     "options": request.form,
+    #     "file_path": file_path
+    # }, result_ttl=86400)
+    #
+    # j = Job(id=job_id, status="queued", job_type=job_type)
+    # db.session.add(j)
+    # db.session.commit()
 
     return redirect(url_for("show_result", job_id=job_id))
 

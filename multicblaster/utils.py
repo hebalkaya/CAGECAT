@@ -79,7 +79,10 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "clusterScoreThreshold": "Score threshold",
                       "prefix": "File prefix",
                       "format": "Output format",
-                      "maxclusters": "Maximum clusters"
+                      "maxclusters": "Maximum clusters",
+                      "selectedQuery": "Query",
+                      "selectedReferenceCluster": "Reference cluster",
+                      "selectedClustersToSearch": "Clusters to search in"
                       # "selectedClusters":
                       }
 
