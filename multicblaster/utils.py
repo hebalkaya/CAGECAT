@@ -23,7 +23,8 @@ CLUST_NUMBER_PATTERN = r"\(Cluster (\d+), score: \d+\.\d+\)"
 JOBS_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
-PATTERN = r"'(.+?)', '(.*?)'"
+PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
+
 # INVALID_JOB_COMBINATIONS = []
 INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
                             ("gne", "gne"),

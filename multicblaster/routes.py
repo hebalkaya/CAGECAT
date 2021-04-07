@@ -8,6 +8,7 @@ from flask import render_template, request, url_for, redirect, send_file
 from multicblaster import app, q, r
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
+import multicblaster.const as co
 from multicblaster.models import Job as dbJob
 from multicblaster import db
 import multicblaster.workers as rf
@@ -132,11 +133,12 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         # id) is supported
 
     elif job_type == "corason":
-        # TODO: we need options for extracting clusters
-        # order: (function, job_id, options, depending_job_id, job_type)
-        new_jobs.append((rf.first, job_id, {"TODO": "TODO"}, "FILEPATHTODO", None, "extract_clusters"))
+        prev_job_id = request.form["prev_job_id"]
+        file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                 f"{prev_job_id}_session.json")
+
+        new_jobs.append((rf.cblaster_extract_clusters, job_id, co.EXTRACT_CLUSTERS_OPTIONS, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.second, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
-        # print()
         # TODO's:
             # 1. extract clusters in it's own job
             # 2. run (for now: compose) corason command. Making this fn
@@ -145,25 +147,25 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet")
 
-    print("------+++++++++++++++++------------------")
-    print(new_jobs)
     for new_job in new_jobs:
-        # TODO: create directories. Edit function to check if dirs already exist?
-        ut.save_settings(request.form, job_id)
+        ut.create_directories(new_job[1])
+        ut.save_settings(new_job[2], new_job[1])
+
+        # if new_job[4] is not None:
+        #     job = Job.create(new_job[0], args=(new_job[1],),
+        #                 kwargs={"options": new_job[2],
+        #                         "file_path": new_job[3]}, depends_on=new_job[4],
+        #                      result_ttl=86400, connection=r)
+        # else:
+        print(f"4th index is: {new_job[4]}")
+        # depends_on kwarg could be None if it is not dependent.
         job = Job.create(new_job[0], args=(new_job[1],),
-                    kwargs={"options": new_job[2],
-                            "file_path": new_job[3]}, result_ttl=86400, connection=r)
-        if new_job[4] is not None:
-            job.kwargs["depends_on"] = new_job[4]
-        print("Belowww")
-        print(job)
-        print(job.kwargs)
-        print("Aboveee")
+                         kwargs={"options": new_job[2],
+                                 "file_path": new_job[3]}, depends_on=new_job[4],
+                         result_ttl=86400, connection=r)
+
         q.enqueue_job(job)
 
-        print("jajajaja")
-        print(len(new_job))
-        print(new_job)
         j = dbJob(id=new_job[1], status="queued", job_type=new_job[5])
         db.session.add(j)
         db.session.commit()

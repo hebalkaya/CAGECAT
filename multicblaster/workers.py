@@ -197,9 +197,6 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
     cmd.extend(["--format", options["format"]])
     cmd.extend(["--maximum_clusters", options["maxclusters"]])
 
-    for a in cmd:
-        print(a, type(a))
-        # print(type(a))
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
