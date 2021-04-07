@@ -15,11 +15,13 @@ import typing as t
 # same function are performed when the CMD has finished
 
 # redis-queue functions
-def first():
-    print("This is the first function")
+def first(job_id, options=None, file_path=None):
+    print(f"This is the first function. JID: {job_id}")
+    post_job_formalities(job_id, 0)
 
-def second():
-    print("Second function?!!!?!")
+def second(job_id, options=None, file_path=None):
+    print(f"Second function?!!!?! JID: {job_id}")
+    post_job_formalities(job_id, 0)
 
 def cblaster_search(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)

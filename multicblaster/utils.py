@@ -191,9 +191,14 @@ def create_directories(job_id: str) -> None:
         - Created directories
     """
     base_path = os.path.join(JOBS_DIR, job_id)
-    os.mkdir(base_path)
-    for folder in FOLDERS_TO_CREATE:
-        os.mkdir(os.path.join(base_path, folder))
+
+    if not os.path.exists(base_path): # directories are attempted to
+        # be created again when jobs depending on each other are executed
+        os.mkdir(base_path)
+        for folder in FOLDERS_TO_CREATE:
+            os.mkdir(os.path.join(base_path, folder))
+    else:
+        print(f"Directory {base_path} already exists. Skipped")
 
 
 def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
