@@ -15,7 +15,7 @@ import typing as t
 # same function are performed when the CMD has finished
 
 # redis-queue functions
-def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
+def cblaster_search(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
 
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
@@ -98,13 +98,12 @@ def cblaster_search(job_id, options=None, file_path=None, prev_page=None):
     post_job_formalities(job_id, return_code)
 
 
-def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
+def cblaster_gne(job_id, options=None, file_path=None):
     """
 
     :param job_id:
     :param options:
     :param file_path: session file path
-    :param prev_page:
     :return:
     """
     pre_job_formalities(job_id)
@@ -128,7 +127,7 @@ def cblaster_gne(job_id, options=None, file_path=None, prev_page=None):
     post_job_formalities(job_id, return_code)
 
 
-def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=None):
+def cblaster_extract_sequences(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
@@ -161,7 +160,7 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None, prev_page=N
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
-def cblaster_extract_clusters(job_id, options=None, file_path=None, prev_page=None):
+def cblaster_extract_clusters(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 

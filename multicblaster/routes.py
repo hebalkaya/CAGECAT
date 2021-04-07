@@ -137,8 +137,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     ut.save_settings(request.form, job_id)
     job = q.enqueue(f, args=(job_id,),kwargs={
         "options": request.form,
-        "file_path": file_path,
-        "prev_page": "/" + request.referrer.split("/")[-1]
+        "file_path": file_path
     }, result_ttl=86400)
 
     j = Job(id=job_id, status="queued", job_type=job_type)
