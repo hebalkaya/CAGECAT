@@ -147,6 +147,10 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
+
+    if len(new_jobs) == 0:
+        raise IOError("Submitted a job, but no job added to the list")
+
     created_redis_jobs_ids = []
     for i, new_job in enumerate(new_jobs):
         ut.create_directories(new_job[1])
@@ -158,24 +162,41 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         #                         "file_path": new_job[3]}, depends_on=new_job[4],
         #                      result_ttl=86400, connection=r)
         # else:
-        print(f"4th index is: {new_job[4]}")
+        # print(f"4th index is: {new_job[4]}")
 
         # depends_on kwarg could be None if it is not dependent.
         depending_job = None if new_job[4] is None else created_redis_jobs_ids[i-1]
-        print(f"Depending job: {depending_job}")
-        job = Job.create(new_job[0], args=(new_job[1],),
-                         kwargs={"options": new_job[2],
-                                 "file_path": new_job[3]}, depends_on=depending_job,
-                         result_ttl=86400, connection=r)
+        # print(f"Depending job: {depending_job}")
+        # job = Job.create(new_job[0], args=(new_job[1],),
+        #                  kwargs={"options": new_job[2],
+        #                          "file_path": new_job[3]}, depends_on=depending_job,
+        #                  result_ttl=86400, connection=r)
+        #
+        job = q.enqueue(new_job[0], args=(new_job[1],),
+                        kwargs={"options": new_job[2],
+                                "file_path": new_job[3]}, depends_on=depending_job,
+                        result_ttl=86400)
+        # print("---+++++++++++------")
+        # print(job.id)
+        # print(job.args)
+        # print(job.kwargs)
+        # # print(job.dependent_ids)
+        # # print(job.dependency_ids)
+        # print(job.dependency)
+        # print(job.dependencies_key)
+        # print(job._dependency_id)
+        # print(job)
 
+        # print(job.dependencies[0])
+        print("-----------End")
+        status = "queued" if depending_job is None else "waiting" # for parent job to finish
 
-
-        j = dbJob(id=new_job[1], status="queued", job_type=new_job[5])
+        j = dbJob(id=new_job[1], status=status, job_type=new_job[5])
         db.session.add(j)
         db.session.commit()
 
         created_redis_jobs_ids.append(job.id)
-        q.enqueue_job(job)
+        # q.enqueue_job(job)
 
         last_job_id = new_job[1]
 
@@ -240,7 +261,8 @@ def show_result(job_id: str) -> str:
             return show_template("result_page.xhtml", job_id=job_id,
                     status=status, compr_formats=ut.COMPRESSION_FORMATS,
                     plot_contents=plot_contents, module=module,
-                    select_cluster_modules=ut.MODULES_CLUSTER_SELECTION, log_contents=log_contents)
+                    select_cluster_modules=ut.MODULES_CLUSTER_SELECTION,
+                                 log_contents=log_contents)
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:
@@ -251,6 +273,10 @@ def show_result(job_id: str) -> str:
         elif status == "queued" or status == "running":
             return show_template("status_page.xhtml", job_id=job_id,
                                  status=status, settings=settings)
+        elif status == "waiting":
+            return show_template("status_page.xhtml", job_id=job_id,
+                                 status="waiting for preceding job to finish",
+                                 settings=settings)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
