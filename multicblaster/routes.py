@@ -156,39 +156,14 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         ut.create_directories(new_job[1])
         ut.save_settings(new_job[2], new_job[1])
 
-        # if new_job[4] is not None:
-        #     job = Job.create(new_job[0], args=(new_job[1],),
-        #                 kwargs={"options": new_job[2],
-        #                         "file_path": new_job[3]}, depends_on=new_job[4],
-        #                      result_ttl=86400, connection=r)
-        # else:
-        # print(f"4th index is: {new_job[4]}")
-
         # depends_on kwarg could be None if it is not dependent.
         depending_job = None if new_job[4] is None else created_redis_jobs_ids[i-1]
-        # print(f"Depending job: {depending_job}")
-        # job = Job.create(new_job[0], args=(new_job[1],),
-        #                  kwargs={"options": new_job[2],
-        #                          "file_path": new_job[3]}, depends_on=depending_job,
-        #                  result_ttl=86400, connection=r)
-        #
+
         job = q.enqueue(new_job[0], args=(new_job[1],),
                         kwargs={"options": new_job[2],
                                 "file_path": new_job[3]}, depends_on=depending_job,
                         result_ttl=86400)
-        # print("---+++++++++++------")
-        # print(job.id)
-        # print(job.args)
-        # print(job.kwargs)
-        # # print(job.dependent_ids)
-        # # print(job.dependency_ids)
-        # print(job.dependency)
-        # print(job.dependencies_key)
-        # print(job._dependency_id)
-        # print(job)
 
-        # print(job.dependencies[0])
-        print("-----------End")
         status = "queued" if depending_job is None else "waiting" # for parent job to finish
 
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5])
@@ -196,21 +171,11 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         db.session.commit()
 
         created_redis_jobs_ids.append(job.id)
-        # q.enqueue_job(job)
 
         last_job_id = new_job[1]
 
-    # ut.save_settings(request.form, job_id)
-    # job = q.enqueue(f, args=(job_id,),kwargs={
-    #     "options": request.form,
-    #     "file_path": file_path
-    # }, result_ttl=86400)
-    #
-    # j = Job(id=job_id, status="queued", job_type=job_type)
-    # db.session.add(j)
-    # db.session.commit()
-
     return redirect(url_for("show_result", job_id=last_job_id))
+
 
 @app.route("/results/<job_id>")
 def show_result(job_id: str) -> str:
@@ -235,6 +200,8 @@ def show_result(job_id: str) -> str:
 
     if job is not None:
         settings = ut.load_settings(job_id)
+        print("BELOW YOU FIND SOME SETTINGS")
+        print(settings)
         status = job.status
 
         if status == "finished":

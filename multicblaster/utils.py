@@ -9,6 +9,7 @@ from multicblaster.models import Job, Statistic
 from datetime import datetime
 import re
 import signal
+import pickle
 
 # typing imports
 import werkzeug.datastructures
@@ -283,10 +284,27 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
 
     with open(os.path.join(JOBS_DIR, job_id, "logs",
                            f"{job_id}_options.txt")) as inf:
-        settings = inf.read()
+        settings = inf.readlines()
 
-    matches = re.findall(PATTERN, settings[20:-2])
-    for key, value in matches:
+    rewritten_settings = {}
+    for line in settings:
+        splitted = line.strip().split(",")
+        rewritten_settings[splitted[0]] = splitted[1]
+        # print(line.strip())
+    # print("Settings: -----------")
+    # print(settings)
+    # print("End of settingsss")
+
+    # settings = dict(settings)
+    # print("BELOW ARE SETTINGS FROM UTILS")
+    # print(settings)
+    # matches = re.findall(PATTERN, settings[20:-2])
+    #
+    # print(settings[20:-2])
+    # print(len(matches))
+    # print(matches)
+
+    for key, value in rewritten_settings.items():
         label = PRETTY_TRANSLATION[key]
 
         if label is not None:
@@ -313,7 +331,10 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     with open(f"{os.path.join(JOBS_DIR, job_id, 'logs', job_id)}"
               f"_options.txt", "w") as outf:
     # TODO: check if we can replace this with os.path.join(log_base, f"{job_id}_cmd.txt"), "w"
-        outf.write(str(options))
+    #     outf.write(str(dict(options)))
+        for key, value in options.items():
+            outf.write(f"{key},{value}\n")
+
 
 
 def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
