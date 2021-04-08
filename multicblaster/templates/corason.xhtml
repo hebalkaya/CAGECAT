@@ -6,7 +6,7 @@
 
         {% block content %}
 <div>
-    <form action="{{submit_url}}" method="post">
+    <form action="{{submit_url}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="job_type" value="corason"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
@@ -28,7 +28,39 @@
             </div>
 <!--            <br/>-->
         </fieldset>
+
         <br/>
+        <label for="optionsSection">Options</label>
+        <fieldset id="optionsSection">
+<!--            TODO: e-value-->
+            <div>
+                <label>Bitscore
+                    <input type="checkbox" name="bitscore"/>
+                </label>
+            </div>
+            <div>
+                <label for="clusterRadio">Cluster radio?</label>
+                <input type="number" value="10" id="clusterRadio" name="clusterRadio" required="required"/>
+            <div>
+
+            <!--            TODO: e_cluster-->
+<!--            TODO: e_code-->
+<!--            TODO: list-->
+            <div>
+                <label for="rescale">Rescale</label>
+                <input type="number" id="rescale" name="rescale" value="85000" step="1" required="required"/>
+            </div>
+            <div>
+                <label for="antismashFile">Antismash file</label>
+                <input type="file" name="antismashFile" id="antismashFile"/>
+            </div>
+
+
+
+        </fieldset>
+        <br/>
+
+
         <input type="submit" value="Run Corason!"/>
     </form>
 </div>

@@ -14,6 +14,7 @@ class Job(db.Model):
     """
     id = db.Column(db.String(15), primary_key=True)
     job_type = db.Column(db.String(10), nullable=False)
+    depending_on = db.Column(db.String(10))
     redis_id = db.Column(db.String(80))
     post_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     start_time = db.Column(db.DateTime)

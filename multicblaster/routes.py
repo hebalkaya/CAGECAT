@@ -137,6 +137,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
 
+        print(file_path_extract_clust)
         new_jobs.append((rf.cblaster_extract_clusters, job_id, co.EXTRACT_CLUSTERS_OPTIONS, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
         # TODO's:
@@ -157,7 +158,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         ut.save_settings(new_job[2], new_job[1])
 
         # depends_on kwarg could be None if it is not dependent.
-        depending_job = None if new_job[4] is None else created_redis_jobs_ids[i-1]
+        depending_job = None if new_job[4] is None else created_redis_jobs_ids[i-1][1]
 
         job = q.enqueue(new_job[0], args=(new_job[1],),
                         kwargs={"options": new_job[2],
@@ -166,19 +167,22 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
         status = "queued" if depending_job is None else "waiting" # for parent job to finish
 
-        j = dbJob(id=new_job[1], status=status, job_type=new_job[5])
+        j = dbJob(id=new_job[1], status=status, job_type=new_job[5], redis_id=job.id,
+                  depending_on="null" if depending_job is None else new_job[4]) # is our own job ID
+
         db.session.add(j)
         db.session.commit()
 
-        created_redis_jobs_ids.append(job.id)
+        created_redis_jobs_ids.append((new_job[1], job.id)) # own ID, redis id
 
         last_job_id = new_job[1]
-
-    return redirect(url_for("show_result", job_id=last_job_id))
+    # new_job is still in memory
+    print("last parent job:", ut.fetch_job_from_db(last_job_id).depending_on)
+    return redirect(url_for("show_result", job_id=last_job_id, pj=ut.fetch_job_from_db(last_job_id).depending_on))
 
 
 @app.route("/results/<job_id>")
-def show_result(job_id: str) -> str:
+def show_result(job_id: str, pj=None) -> str: # parent_job should be
     """Shows the results page for the given job ID
 
     Input:
@@ -197,12 +201,14 @@ def show_result(job_id: str) -> str:
     found in the SQL database
     """
     job = ut.fetch_job_from_db(job_id)
+    # print("PARENT JOB=", pj)
 
     if job is not None:
         settings = ut.load_settings(job_id)
-        print("BELOW YOU FIND SOME SETTINGS")
-        print(settings)
+        # print("BELOW YOU FIND SOME SETTINGS")
+        # print(settings)
         status = job.status
+        # print("HERE IS PARENT JOB", request.args["pj"])
 
         if status == "finished":
             module = job.job_type
@@ -225,7 +231,7 @@ def show_result(job_id: str) -> str:
                                        "logs", f"{job_id}_{program}.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
 
-            return show_template("result_page.xhtml", job_id=job_id,
+            return show_template("result_page.xhtml", j_id=job_id,
                     status=status, compr_formats=ut.COMPRESSION_FORMATS,
                     plot_contents=plot_contents, module=module,
                     select_cluster_modules=ut.MODULES_CLUSTER_SELECTION,
@@ -236,14 +242,16 @@ def show_result(job_id: str) -> str:
                 log_contents = "<br/>".join(inf.readlines())
 
             return show_template("failed_job.xhtml", settings=settings,
-                                 job_id=job_id, log_contents=log_contents)
+                                 j_id=job_id, log_contents=log_contents)
         elif status == "queued" or status == "running":
-            return show_template("status_page.xhtml", job_id=job_id,
+
+            return show_template("status_page.xhtml", j_id=job_id,
                                  status=status, settings=settings)
         elif status == "waiting":
-            return show_template("status_page.xhtml", job_id=job_id,
+            # print("HERE IS PARENT JOB", request.args["pj"])
+            return show_template("status_page.xhtml", j_id=job_id,
                                  status="waiting for preceding job to finish",
-                                 settings=settings)
+                                 settings=settings, parent_job=request.args["pj"])
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 

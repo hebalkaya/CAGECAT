@@ -1,9 +1,16 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import show_options %}
 
-{% block title %}Status: {{job_id}}{% endblock %}
+{% block title %}Status: {{j_id}}{% endblock %}
 {% block content %}
-<p>Job <span id="givenJobID">{{job_id}}</span> is currently {{status}}</p>
+<p>Job <span id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
+
+<!--         TODO: now, parent job: is shown when no parent job is given-->
+{% if parent_job != "null" or parent_job is none %}
+<p>Parent job: <a href="{{url_for('show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
+
+{% endif %}
+
 
 {{ show_options(settings) }}
 

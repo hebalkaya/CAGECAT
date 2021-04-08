@@ -8,11 +8,11 @@
 <!--        the job (job finished)-->
 
 {% block content %}
-    <p>The status of job: <b>{{ job_id }}</b> is: {{ status }}</p>
+    <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
 
-    <form action="/download-results/{{job_id}}" method="post"
+    <form action="/download-results/{{j_id}}" method="post"
           enctype="multipart/form-data" name="download_settings">
-    <input name="job_id" type="hidden" value="{{job_id}}"/>
+    <input name="job_id" type="hidden" value="{{j_id}}"/>
     <select name="compression_type">
         {% for compr in compr_formats %}
         <option name="{{compr}}" value="{{compr}}">{{compr}}</option>
@@ -35,7 +35,7 @@
 <hr/>
 <div>
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
-        <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
         <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
         <button type="submit">Extract sequences</button>
@@ -43,7 +43,7 @@
     <br/>
 
     <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
-        <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
         <button type="submit">Extract clusters</button>
     </form>
@@ -52,7 +52,7 @@
 <br/>
 <div>
     <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
-        <input type="hidden" name="job_id" value="{{job_id}}"/>
+        <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
         <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>
         <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>
