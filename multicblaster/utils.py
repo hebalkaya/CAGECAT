@@ -84,7 +84,12 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "maxclusters": "Maximum clusters",
                       "selectedQuery": "Query",
                       "selectedReferenceCluster": "Reference cluster",
-                      "selectedClustersToSearch": "Clusters to search in"
+                      "selectedClustersToSearch": "Clusters to search in",
+                      "clusterRadio": "Cluster radio",
+                      "bitscore": "Bitscore",
+                      "rescale": "Rescale",
+                      "antismashFile": "antiSmash file:"
+
                       # "selectedClusters":
                       }
 
@@ -289,7 +294,13 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
     rewritten_settings = {}
     for line in settings:
         splitted = line.strip().split(",")
-        rewritten_settings[splitted[0]] = splitted[1]
+        # print(splitted)
+        if len(splitted) == 2:
+            rewritten_settings[splitted[0]] = splitted[1]
+        elif len(splitted) > 2:
+            rewritten_settings[splitted[0]] = ", ".join(splitted[1:])
+        else:
+            raise IOError("Invalid setting length")
         # print(line.strip())
     # print("Settings: -----------")
     # print(settings)
@@ -328,11 +339,19 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     Function created for logging purposes. Writes to a file, which will be
     used by the [load_settings] function.
     """
+    print("Save settings: ")
+    print(options)
     with open(f"{os.path.join(JOBS_DIR, job_id, 'logs', job_id)}"
               f"_options.txt", "w") as outf:
     # TODO: check if we can replace this with os.path.join(log_base, f"{job_id}_cmd.txt"), "w"
     #     outf.write(str(dict(options)))
+
+
         for key, value in options.items():
+            if "\r\n" in value:
+                value = ','.join(value.split('\r\n'))
+
+            # new_val =
             outf.write(f"{key},{value}\n")
 
 
