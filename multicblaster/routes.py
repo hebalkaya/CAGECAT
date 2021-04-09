@@ -69,47 +69,13 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     # TODO: BIG ONE: make every job_type functional by appending it to the job list
     if job_type == "search":
         f = rf.cblaster_search
-
-        # save the files
-        input_type = request.form["inputType"]
-        if input_type == 'fasta':
-            file_path = ut.save_file(request.files["genomeFiles"], job_id)
-        elif input_type == "ncbi_entries":
-            file_path = None
-        elif input_type == "prev_session":
-            file_type = request.form["searchPreviousType"]
-            job_type = "recompute"
-
-            if file_type == "jobID":
-                prev_job_id = request.form["searchEnteredJobId"]
-
-                ut.check_valid_job(prev_job_id, job_type)
-
-                file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
-
-            elif file_type == "sessionFile":
-                file_path = ut.save_file(request.files["searchUploadedSessionFile"], job_id)
-            else:
-                raise IOError("Not valid file type")
-        else:
-            raise NotImplementedError(f"Input type {input_type} has not been implemented yet")
+        file_path, job_type = prepare_search(job_id, job_type)
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "gne":
         f = rf.cblaster_gne
 
-        file_type = request.form["gnePreviousType"]
-
-        if file_type == "jobID":
-            prev_job_id = request.form["gneEnteredJobId"]
-
-            ut.check_valid_job(prev_job_id, job_type)
-
-            file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
-        elif file_type == "sessionFile":
-            file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
-        else:
-            raise IOError("Not valid file type")
+        file_path = get_previous_job_properties(job_id, job_type, "gne")
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "extract_sequences":
@@ -418,6 +384,64 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
         return render_template(template_name,
                                serv_info=ut.get_server_info(q, r),
                                **kwargs), stat_code
+
+
+def get_previous_job_properties(job_id: str, job_type: str,
+                                module: str) -> str:
+    """Returns appropriate file path of previous job
+
+    Input:
+        - job_id: ID corresponding to the job the properties are asked for
+        - job_type: type of job (e.g. search, recomputation or extraction)
+        - module: name of module for which the properties are asked for
+
+    Output:
+        - file_path: appropriate file path to be used in the next steps
+    """
+    file_type = request.form[f"{module}PreviousType"]
+    if file_type == "jobID":
+        prev_job_id = request.form[f"{module}EnteredJobId"]
+
+        ut.check_valid_job(prev_job_id, job_type)
+
+        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                 f"{prev_job_id}_session.json")
+    elif file_type == "sessionFile":
+        file_path = ut.save_file(request.files[f"{module}UploadedSessionFile"],
+                                 job_id)
+    else:
+        raise IOError("Not valid file type")
+
+    return file_path
+
+
+def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
+    """Parses input type for search module
+
+    Input:
+        - job_id: ID corresponding to the job the properties are asked for
+        - job_type: type of job (e.g. search, recomputation or extraction)
+
+    Output:
+        - file_path: appropriate file path to be used in the next steps
+        - job_type: type of job (e.g. search, recomputation or extraction)
+            is changed when the the user asked for a recomputation
+    """
+    # save the files
+    input_type = request.form["inputType"]
+
+    if input_type == 'fasta':
+        file_path = ut.save_file(request.files["genomeFiles"], job_id)
+    elif input_type == "ncbi_entries":
+        file_path = None
+    elif input_type == "prev_session":
+        job_type = "recompute"
+        file_path = get_previous_job_properties(job_id, job_type, "search")
+    else:
+        raise NotImplementedError(
+            f"Input type {input_type} has not been implemented yet")
+
+    return file_path, job_type
 
 
 @app.route("/testing")
