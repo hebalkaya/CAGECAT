@@ -6,7 +6,7 @@
 
         {% block content %}
 <div>
-    <form action="{{submit_url}}" method="post" enctype="multipart/form-data">
+    <form action="{{submit_url}}" method="post" enctype="multipart/form-data" onsubmit="mergeExponentials()">
         <input type="hidden" name="job_type" value="corason"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
@@ -33,6 +33,18 @@
         <label for="optionsSection">Options</label>
         <fieldset id="optionsSection">
 <!--            TODO: e-value-->
+            <div>
+                <input type="hidden" name="evalue" id="evalue" value=""/>
+
+                <label for="baseEvalue">e-value</label>
+                <input type="number" id="baseEvalue" step="0.01" min="1" max="9.99" value="1"/>
+                <span> E<sup><span id="powerEvalue">-15</span></sup></span>
+                <button type="button" class="scientificnotation" onclick="changePower(-1, 'powerEvalue')">&#9660</button>
+                <button type="button" class="scientificnotation" onclick="changePower(1, 'powerEvalue')">&#9650</button>
+
+                <!--                TODO: format it such that numbers are merged together-->
+
+            </div>
             <div>
                 <label>Bitscore
                     <input type="checkbox" name="bitscore"/>

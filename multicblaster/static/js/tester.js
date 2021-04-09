@@ -419,3 +419,16 @@ function addSelectedToForm(downstream_prog) {
         console.log("Invalid  type");
     }
 }
+
+function changePower(value, elemToChange){
+    let elem = document.getElementById(elemToChange);
+    elem.innerText = parseInt(elem.innerText) + value;
+
+    mergeExponentials()
+}
+
+function mergeExponentials(){
+    let merged = document.getElementById("baseEvalue").value + "E" + document.getElementById("powerEvalue").innerText;
+    document.getElementById("evalue").value = merged;
+
+}
