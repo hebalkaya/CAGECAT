@@ -59,9 +59,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     """
     new_jobs = []
 
-    print("-------------------------------")
-    print(request.form)
-    print("-------------------------------")
     job_type = request.form["job_type"]
     job_id = ut.generate_job_id()
 
@@ -137,14 +134,12 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
 
-        print(file_path_extract_clust)
+        # print(file_path_extract_clust)
+        # TODO: add selected clusters to extract with extract cluster options
         new_jobs.append((rf.cblaster_extract_clusters, job_id, co.EXTRACT_CLUSTERS_OPTIONS, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
-        # TODO's:
-            # 1. extract clusters in it's own job
-            # 2. run (for now: compose) corason command. Making this fn
-            # dependent on #1.
-        # return "TODO"
+        # TODO: file path corason
+
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
