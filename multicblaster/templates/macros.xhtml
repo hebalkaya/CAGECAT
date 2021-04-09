@@ -123,6 +123,20 @@
 </div>
 {% endmacro %}
 
+    {% macro create_scientific_input(label, type, default_value) %}
+
+<div>
+    <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
+
+    <label for="base{{type}}">{{label}}</label>
+    <input type="number" id="base{{type}}" step="0.01" min="1" max="9.99" value="1"/>
+    <span> E<sup><span id="power{{type}}">{{default_value}}</span></sup></span>
+    <button type="button" class="scientificnotation" onclick="changePower(-1, 'power{{type}}')">&#9660</button>
+    <button type="button" class="scientificnotation" onclick="changePower(1, 'power{{type}}')">&#9650</button>
+</div>
+
+        {% endmacro %}
+
 
 
 

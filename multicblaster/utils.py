@@ -89,7 +89,9 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "bitscore": "Bitscore",
                       "rescale": "Rescale",
                       "antismashFile": "antiSmash file:",
-                      "evalue": "e-value"
+                      "evalue": "e-value",
+                      "ecluster": "e-cluster",
+                      "ecore": "e-core"
 
                       # "selectedClusters":
                       }

@@ -423,12 +423,12 @@ function addSelectedToForm(downstream_prog) {
 function changePower(value, elemToChange){
     let elem = document.getElementById(elemToChange);
     elem.innerText = parseInt(elem.innerText) + value;
-
-    mergeExponentials()
 }
 
 function mergeExponentials(){
-    let merged = document.getElementById("baseEvalue").value + "E" + document.getElementById("powerEvalue").innerText;
-    document.getElementById("evalue").value = merged;
+    let allEs = ["Evalue", "Ecluster", "Ecore"]
 
+    for (let i=0; i < allEs.length; i++){
+        document.getElementById(allEs[i].toLowerCase()).value = document.getElementById("base" + allEs[i]).value + "E" + document.getElementById("power" + allEs[i]).innerText;;
+    }
 }

@@ -1,4 +1,5 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import create_scientific_input %}
 
         {% block title %}
         Job status
@@ -32,19 +33,17 @@
         <br/>
         <label for="optionsSection">Options</label>
         <fieldset id="optionsSection">
-<!--            TODO: e-value-->
-            <div>
-                <input type="hidden" name="evalue" id="evalue" value=""/>
 
-                <label for="baseEvalue">e-value</label>
-                <input type="number" id="baseEvalue" step="0.01" min="1" max="9.99" value="1"/>
-                <span> E<sup><span id="powerEvalue">-15</span></sup></span>
-                <button type="button" class="scientificnotation" onclick="changePower(-1, 'powerEvalue')">&#9660</button>
-                <button type="button" class="scientificnotation" onclick="changePower(1, 'powerEvalue')">&#9650</button>
+            {{ create_scientific_input('e-value', 'Evalue', -15) }}
+<!--            <div>-->
+<!--                <input type="hidden" name="evalue" id="evalue" value=""/>-->
 
-                <!--                TODO: format it such that numbers are merged together-->
-
-            </div>
+<!--                <label for="baseEvalue">e-value</label>-->
+<!--                <input type="number" id="baseEvalue" step="0.01" min="1" max="9.99" value="1"/>-->
+<!--                <span> E<sup><span id="powerEvalue">-15</span></sup></span>-->
+<!--                <button type="button" class="scientificnotation" onclick="changePower(-1, 'powerEvalue')">&#9660</button>-->
+<!--                <button type="button" class="scientificnotation" onclick="changePower(1, 'powerEvalue')">&#9650</button>-->
+<!--            </div>-->
             <div>
                 <label>Bitscore
                     <input type="checkbox" name="bitscore"/>
@@ -54,6 +53,9 @@
                 <label for="clusterRadio">Cluster radio?</label>
                 <input type="number" value="10" id="clusterRadio" name="clusterRadio" required="required"/>
             <div>
+
+            {{ create_scientific_input('e-cluster', 'Ecluster', -3) }}
+            {{ create_scientific_input('e-core', 'Ecore', -3) }}
 
             <!--            TODO: e_cluster-->
 <!--            TODO: e_code-->
