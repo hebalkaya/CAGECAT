@@ -294,26 +294,13 @@ def load_settings(job_id: str) -> t.Dict[str, str]:
     rewritten_settings = {}
     for line in settings:
         splitted = line.strip().split(",")
-        # print(splitted)
+
         if len(splitted) == 2:
             rewritten_settings[splitted[0]] = splitted[1]
         elif len(splitted) > 2:
             rewritten_settings[splitted[0]] = ", ".join(splitted[1:])
         else:
             raise IOError("Invalid setting length")
-        # print(line.strip())
-    # print("Settings: -----------")
-    # print(settings)
-    # print("End of settingsss")
-
-    # settings = dict(settings)
-    # print("BELOW ARE SETTINGS FROM UTILS")
-    # print(settings)
-    # matches = re.findall(PATTERN, settings[20:-2])
-    #
-    # print(settings[20:-2])
-    # print(len(matches))
-    # print(matches)
 
     for key, value in rewritten_settings.items():
         label = PRETTY_TRANSLATION[key]
