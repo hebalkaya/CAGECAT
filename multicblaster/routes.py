@@ -110,6 +110,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
             file_path = ut.save_file(request.files["gneUploadedSessionFile"], job_id)
         else:
             raise IOError("Not valid file type")
+
+        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "extract_sequences":
         # For now, only when coming from a results page (using a previous job
         # id) is supported
@@ -119,6 +121,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
 
+        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "extract_clusters":
         # print(request.form)
         f = rf.cblaster_extract_clusters
@@ -129,6 +132,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         # For now, only when coming from a results page (using a previous job
         # id) is supported
 
+        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "corason":
         prev_job_id = request.form["prev_job_id"]
         file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
@@ -142,7 +146,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
-
 
     if len(new_jobs) == 0:
         raise IOError("Submitted a job, but no job added to the list")
