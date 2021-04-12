@@ -1,5 +1,22 @@
 <!--Here we can have code block which are used more than once-->
 
+{% macro prev_session_bs(module, mainInput, job_id) %}
+    <div id="{{ '%sPrevJobOptions' % module }}" class="tab-pane fade form-group" >
+        <label class="radio-inline"><input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevJobId' % module}}" value="jobID" checked/>Job ID</label>
+        <label class="radio-inline"><input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile"/>Session file</label>
+        <div class="form-group form-inline"> {# TODO: style it better with has-succes and has-error #}
+            <label for="{{ '%sEnteredJobId' % module }}">Previous job ID</label>
+            <input class="form-control" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}"/>
+{#            TODO: onfocusout validate entered job ID#}
+            <span> or </span>
+            <label for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
+            <input type="file" id="{{ '%sUploadedSessionFile' % module }}" name="{{ '%sUploadedSessionFile' % module }}" disabled/>
+{#            TODO: put session file in same block as previous job ID input#}
+        </div>
+    </div>
+
+{% endmacro %}
+
 {% macro prev_session(module, mainInput, job_id) %}
     <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">

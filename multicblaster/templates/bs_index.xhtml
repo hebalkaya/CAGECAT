@@ -1,0 +1,55 @@
+    {% extends "bs_base.xhtml" %}
+    {% from "macros.xhtml" import prev_session_bs %}
+
+    {% block title %}
+multicblaster
+    {% endblock %}
+    {% block content%}
+<ul class="nav nav-pills nav-fill" style="margin-left: 2%">
+    <li class="active"><a data-toggle="pill" href="#searchModuleContent">Search</a></li>
+    <li><a data-toggle="pill" href="#gneModuleContent">Neighbourhood</a></li>
+</ul>
+
+        <div class="tab-content">
+            <div id="searchModuleContent" class="tab-pane fade in active">
+                <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
+                      onsubmit="return validateForm()" name="searchOptionForm">
+                    <input type="hidden" name="job_type" value="search" required="required"/>
+
+                    <fieldset>
+                        <ul class="nav nav-pills">
+                            <li class="active"><a data-toggle="pill" href="#genomeFileUploadDiv">FASTA</a></li>
+                            <li><a data-toggle="pill" href="#ncbiEntriesDiv">NCBI identifiers</a></li>
+                            <li><a data-toggle="pill" href="#searchPrevJobOptions">Recompute</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="genomeFileUploadDiv" class="tab-pane fade in active form-group">
+                                <label for="genomeFiles">Query</label>
+                                <input type="file" id="genomeFiles" name="genomeFiles"></input>
+{#                                TODO: style file upload #}
+                            </div>
+                            <div id="ncbiEntriesDiv" class="tab-pane fade form-group">
+                                <label for="ncbiEntriesTextArea">NCBI identifiers</label>
+                                <textarea class="form-control" rows="6" id="ncbiEntriesTextArea" name="ncbiEntriesTextArea" placeholder="NCBI accessions"></textarea>
+{#                                TODO: change width to not be full#}
+                            </div>
+{#                            <div id=""></div>#}
+                            {{ prev_session_bs('search', false, prev_run_id) }}
+{#                            TODO: maybe the boolean could be removed#}
+
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div></div>
+                    </fieldset>
+
+                    <input type="submit" class="btn btn-lg" id="submitSearchForm" value="Run"/>
+                </form>
+            </div>
+
+            <div id="gneModuleContent" class="tab-pane fade">
+                Hello2
+            </div>
+        </div>
+    {% endblock %}
