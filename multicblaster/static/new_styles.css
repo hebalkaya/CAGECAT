@@ -7,9 +7,10 @@ input::-webkit-inner-spin-button {
 
 body{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 }
 
-
+/*button section*/
 .button {
     color: white;
     border: solid #0000dd;
@@ -22,13 +23,105 @@ body{
     background-color: #0000dd;
 }
 
+input[type="submit"]{
+    width: 140px;
+    height: 30px;
+    font-size: 20px;
+    border-radius: 8px;
+    background-color: #6aabd7;
+    border-color: #444444;
+    color: white;
+    /*margin: auto;*/
+    /*width: 50%;*/
+}
+/*input[type="submit"]::before {*/
+/*    content: "<br/>"*/
+/*}*/
+
 input, select {
     margin: 3px;
 }
 
+.important {
+    font-weight: bold;
+}
+
+.smaller {
+    font-size: 15px;
+}
+
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #6aabd7;
+}
+
+ul.nav li {
+    float: left;
+}
+
+ul.nav li a, ul.nav li.status {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+ul.status {
+    background-color: white;
+}
+
+ul.nav li a:hover {
+    background-color: #333;
+}
+
+ul.nav li.right-nav {
+    float:right;
+}
+
+.status {
+    list-style-type: none;
+    background-color: gray;
+    /*margin: auto;*/
+    width: 20%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 0 0 3px 3px;
+}
+
+p.server-status {
+    margin: auto;
+    background: gray;
+    padding-left: 16px;
+    /*padding-top: 8px;*/
+    font-size: 15px;
+    width: 30%;
+    height: 50px;
+    color: white;
+    text-align: center;
+    border-radius: 0 0 3px 3px;
+    border: 2px solid white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.center-status {
+    /*TODO: make it so thatm middle one lookes better*/
+}
+
+.larger-font{
+    font-size: 18px;
+}
+
 .input-label{
+    font-size: 15px;
     margin-left: 0.5%;
     color: red;
+    font-weight: bold;
 }
 
 /*.hidden {*/
@@ -47,6 +140,14 @@ label.disabled{
     background-color: #cccccc;
 }
 
+
+
+iframe {
+    background: white;
+    border: none;
+    width: 100%;
+}
+
 .file-upload-lbl{
     margin-top: 3px;
     border: 1px solid #cccccc;
@@ -56,7 +157,7 @@ label.disabled{
 }
 
 .fieldset-label {
-    font-size: 17px;
+    font-size: 18px;
     margin-left: 10px;
     font-weight: bold;
 }

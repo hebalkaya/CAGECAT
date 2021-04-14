@@ -13,6 +13,7 @@ from multicblaster.models import Job as dbJob
 from multicblaster import db
 import multicblaster.workers as rf
 import os
+import copy
 from rq.job import Job
 
 # type imports
@@ -106,8 +107,9 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         # print(file_path_extract_clust)
         # TODO: add selected clusters to extract with extract cluster options
         new_jobs.append((rf.cblaster_extract_clusters, job_id, co.EXTRACT_CLUSTERS_OPTIONS, file_path_extract_clust, None, "extract_clusters"))
-        new_jobs.append((rf.corason, ut.generate_job_id(), request.form, "FILEPATHTODOCORASON", job_id, "corason"))
-        # TODO: file path corason
+        new_jobs.append((rf.corason, ut.generate_job_id(), request.form, file_path_extract_clust, job_id, "corason"))
+
+        # TODO: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
@@ -302,6 +304,11 @@ def corason() -> str:
                          query=query, reference_cluster=reference_cluster,
                          cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
+
+@app.route("/help")
+def help_page():
+    # TODO: actually create
+    return "Help page"
 
 
 # Error handlers
