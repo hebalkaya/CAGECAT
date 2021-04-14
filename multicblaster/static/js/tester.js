@@ -158,15 +158,19 @@ function changePrevSessionType(){
     // console.log(module);
     let uploadSessionID = module + "UploadedSessionFile";
     let jobIDElementID = module + "EnteredJobId";
+    let labelSession = module + "LabelSessionFile"
 
     if (clickedButton.value === "sessionFile"){
         setRequiredAndEnabled(uploadSessionID);
+        document.getElementById(labelSession).classList.remove("disabled");
+
         removeRequiredAndEnabled(jobIDElementID);
         document.getElementById(jobIDElementID).classList.remove("invalid");
         enableOrDisableSubmitButtons(false);
     }
     else if (clickedButton.value === "jobID"){
         removeRequiredAndEnabled(uploadSessionID);
+        document.getElementById(labelSession).classList.add("disabled");
         setRequiredAndEnabled(jobIDElementID);
         validateJobID(jobIDElementID);
     }

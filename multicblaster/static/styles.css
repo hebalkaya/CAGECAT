@@ -4,6 +4,9 @@ input::-webkit-inner-spin-button {
     margin: 0;
     /*Remove arrows from number inputs*/
 }
+
+
+
 .invalid {
     border: solid orangered 2px;
 }
@@ -80,9 +83,9 @@ p.footer {
 }
 
 body {
-    background-color: black;
+    background-color: white;
     /*text-align: center;*/
-    color: white;
+    color: black;
     font-family: "Cambria Math";
 }
 

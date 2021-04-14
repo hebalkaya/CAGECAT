@@ -1,0 +1,67 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    /*Remove arrows from number inputs*/
+}
+
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+.button {
+    color: white;
+    border: solid #0000dd;
+    border-radius: 8px;
+    background-color: cornflowerblue;
+    font-size: 18px;
+}
+
+.button:hover {
+    background-color: #0000dd;
+}
+
+input, select {
+    margin: 3px;
+}
+
+.input-label{
+    margin-left: 0.5%;
+    color: red;
+}
+
+/*.hidden {*/
+/*    display: none;*/
+/*}*/
+
+input[type="file"] {
+    display: none;
+}
+
+input:disabled, textarea:disabled, label.disabled {
+    cursor: not-allowed;
+}
+.file-upload-lbl{
+    margin-top: 3px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    padding: 5px;
+
+}
+
+.fieldset-label {
+    font-size: 17px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+fieldset {
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+}
+
+textarea {
+    resize: none;
+}
