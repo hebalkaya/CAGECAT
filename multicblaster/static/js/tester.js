@@ -120,9 +120,12 @@ function showInputOptions(selectionOption){
         //enable
         setRequiredAndEnabled('searchEnteredJobId');
 
+
         // disable elements
         removeRequiredAndEnabled('genomeFile');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
+        document.getElementById("searchLabelSessionFile").classList.add("disabled");
+        removeRequiredAndEnabled("searchUploadedSessionFile");
 
         enableOrDisableOption('searchSection', false);
 
