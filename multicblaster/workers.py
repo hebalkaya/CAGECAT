@@ -202,10 +202,32 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
 
 
 def corason(job_id, options=None, file_path=None):
+
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     cmd = ["echo", "we should execute corason here"]
+
+    cmd.extend(["queryfile", "tmpQUERYFILEPATH",
+                "special_org", "tmpREFERENCECLUSTERPATH",
+                "e_value", options["evalue"],
+                "e_core", options["ecore"]])
+
+
+
+    if "bitscore" in options:
+        cmd.append("bitscore") # TODO: check if this is really the way, or an integer should be provided (true/false)
+
+    cmd.extend(["cluster_radio", options["clusterRadio"],
+                "e_cluster", options["ecluster"]])
+
+    # TODO: check list option out
+
+    cmd.extend(["rescale", options["rescale"]])
+    # TODO: do antiSmash file
+
+    if "antismashFile" in options:
+        cmd.extend(["antismash", options["antismashFile"]])
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)

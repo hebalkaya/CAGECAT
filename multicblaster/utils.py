@@ -89,7 +89,7 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "clusterRadio": "Cluster radio",
                       "bitscore": "Bitscore",
                       "rescale": "Rescale",
-                      "antismashFile": "antiSmash file:",
+                      "antismashFile": "antiSmash file",
                       "evalue": "e-value",
                       "ecluster": "e-cluster",
                       "ecore": "e-core"
