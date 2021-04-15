@@ -105,8 +105,22 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                                  f"{prev_job_id}_session.json")
 
         # print(file_path_extract_clust)
+        options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
+
+        # TODO: extract sequences
+        # TODO: extract clusters
+        print(request.form["selectedClustersToSearch"])
+        print(request.form["selectedReferenceCluster"])
+
+        merged = "\r\n".join([request.form["selectedClustersToSearch"], request.form["selectedReferenceCluster"]])
+        options["clusterNumbers"] = pa.parse_selected_cluster_numbers(merged, ut.CLUST_NUMBER_PATTERN_WITHOUT_SCORE)
+        # pa.parse_selected_cluster_numbers("\r\n".join([request.form]))
+        # cluster_numbers = pa.format_cluster_numbers()
+        # pa.parse_selected_cluster_numbers()
+
         # TODO: add selected clusters to extract with extract cluster options
-        new_jobs.append((rf.cblaster_extract_clusters, job_id, co.EXTRACT_CLUSTERS_OPTIONS, file_path_extract_clust, None, "extract_clusters"))
+        # new_jobs.append((rf.cblaster_extract_sequences))
+        new_jobs.append((rf.cblaster_extract_clusters, ut.generate_job_id(), options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, ut.generate_job_id(), request.form, file_path_extract_clust, job_id, "corason"))
 
         # TODO: file path corason --> for corason, the file path is the path to where the extracted clusters will be
@@ -276,7 +290,7 @@ def extract_clusters() -> str:
     """
     selected_clusters = request.form["selectedClusters"]
     selected_scaffolds = pa.parse_selected_scaffolds(selected_clusters)
-    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters)
+    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters, ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
                          selected_scaffolds=selected_scaffolds,

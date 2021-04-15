@@ -19,7 +19,8 @@ import typing as t
 from flask_sqlalchemy import SQLAlchemy
 
 # create final variables
-CLUST_NUMBER_PATTERN = r"\(Cluster (\d+), score: \d+\.\d+\)"
+CLUST_NUMBER_PATTERN_W_SCORE = r"\(Cluster (\d+), score: \d+\.\d+\)"
+CLUST_NUMBER_PATTERN_WITHOUT_SCORE = r"\(Cluster (\d+)"
 
 JOBS_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]

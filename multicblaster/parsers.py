@@ -32,7 +32,7 @@ def parse_selected_cluster_names(selected_clusters: str) -> t.Union[str, None]:
         for cluster in selected_clusters.split("\n"):
             sep_index = cluster.find(")") + 1
             organism = cluster[:sep_index].split("(")[0].strip()
-            clust_num = int(re.findall(ut.CLUST_NUMBER_PATTERN, cluster)[0])
+            clust_num = int(re.findall(ut.CLUST_NUMBER_PATTERN_W_SCORE, cluster)[0])
             # print(organism, clust_num)
 
             cluster_names.append(f"{organism} (Cluster {clust_num})")
@@ -87,7 +87,8 @@ def format_cluster_numbers(cluster_numbers: t.List[int]) -> t.List[str]:
     return [f"{g[0]}-{g[-1]}" if len(g) != 1 else str(g[0]) for g in groups]
 
 
-def parse_selected_cluster_numbers(selected_clusters: str) -> str:
+def parse_selected_cluster_numbers(selected_clusters: str, pattern) -> str:
+    # TODO: pattern documentation
     """Parses the cluster numbers of the user-selected clusters
 
     Input:
@@ -106,7 +107,7 @@ def parse_selected_cluster_numbers(selected_clusters: str) -> str:
         cluster_numbers = []
 
         for cluster in selected_clusters.split("\n"):
-            cluster_numbers.append(int(re.findall(ut.CLUST_NUMBER_PATTERN,
+            cluster_numbers.append(int(re.findall(pattern,
                                                   cluster)[0]))
 
         cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
