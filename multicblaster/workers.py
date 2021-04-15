@@ -70,10 +70,8 @@ def cblaster_search(job_id, options=None, file_path=None):
     # add clustering options
     cmd.extend(["--gap", options["max_intergenic_gap"],
                 "--unique", options["min_unique_query_hits"],
-                "--min_hits", options["min_hits_in_clusters"]])
-
-    if options["percentageQueryGenes"] != "":
-        cmd.extend(["--percentage", options["percentageQueryGenes"]])
+                "--min_hits", options["min_hits_in_clusters"],
+                "--percentage", options["percentageQueryGenes"]])
 
     if "requiredSequences" in options:
         cmd.append("--require")
