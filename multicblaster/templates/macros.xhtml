@@ -62,6 +62,7 @@
                    name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0"
                    required="required"/>
         </div>
+    {% if type == 'Bin' or type == 'Sum' %}
         <div>
             <label>
                 <input type="checkbox"
@@ -69,6 +70,10 @@
                        name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
             </label>
         </div>
+    {% elif type == '' %}
+        <h1>JALALA</h1>
+
+    {% endif %}
 
         {% if type == 'Bin' %}
         <div>

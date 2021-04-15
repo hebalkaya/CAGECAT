@@ -136,6 +136,7 @@ function showInputOptions(selectionOption){
 
 function showModule(ev, moduleName){
     var i, moduleSelector, moduleContent;
+    // console.log(moduleName);
 
     moduleContent = document.getElementsByClassName('moduleContent');
     for (i=0; i < moduleContent.length; i++){

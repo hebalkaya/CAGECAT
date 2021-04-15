@@ -52,8 +52,9 @@
 <br/>
 
 <div>
-    <button><a href="{{ url_for('full_clinker')}}">Visualize everything</a></button>
+<a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visalize everything</button></a>
 </div>
+            <br/>
 <div>
     <form action="{{ url_for('partly_clinker')}}" method="post">
 {#        TODO: clusters, queries to visalize#}
@@ -95,6 +96,7 @@
     <a href="{{url_for('home_page', prev_run_id=j_id)}}"><button>Reanalyze</button></a>
 </div>
         {% endif %}
+
 {% endblock %}
 
 

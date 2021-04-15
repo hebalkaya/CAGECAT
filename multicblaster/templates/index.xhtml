@@ -6,6 +6,12 @@
 {% block title %}
     multicblaster
 {% endblock %}
+{% block scripts %}
+    {% if module_to_show == 'visualization' %}
+showModule(undefined, 'clinkerContent')
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 
 <!--Module buttons-->
@@ -182,7 +188,7 @@
 
         {{ result_table('gne', 'Sum') }}
         <br/>
-        <label for="gneOptions">Extra options</label>
+        <label class="fieldset-label" for="gneOptions">Extra options</label>
         <fieldset id="gneOptions">
             <div>
                 <label for="max_intergenic_distance">Max. intergenic distance</label>
@@ -210,8 +216,49 @@
         <input type="hidden" name="job_type" value="clinker"/>
         <label class="fieldset-label" for="clinkerInputSection">Input</label>
         <fieldset id="clinkerInputSection">
-            {{ prev_session('clinker', true, None, true) }}
+            {{ prev_session('clinker', true, prev_run_id, true) }}
         </fieldset>
+        <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
+        <fieldset id="clinkerAlignmentSection">
+            <label>
+                <input type="checkbox" name="noAlign"/>Don't align clusters
+            </label>
+            <div>
+                <label class="input-label" for="identity">Min. alignment sequence identity</label>
+                <input type="number" id="identity" name="identity" value="0.3"/>
+{#                TODO check which values are valid for identity#}
+    {#            TODO number of CPU's --> add in workers.py#}
+            </div>
+
+        </fieldset>
+        <label class="fieldset-label" for="clinkerOutputSection">Output</label>
+        <fieldset id="clinkerOutputSection">
+            <div>
+                <label class="input-label"
+                       for="clinkerDelim">Delimiter</label>
+                <input type="text" id="clinkerDelim" name="clinkerDelim" maxlength="1"/>
+            </div>
+            <div>
+                <label class="input-label"
+                       for="clinkerDecimals">Decimal places</label>
+                <input type="number" id="clinkerDecimals" name="clinkerDecimals}" value="2" step="1" min="0"
+                       required="required"/>
+            </div>
+            <label>
+            <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers</label>
+
+            <div>
+            <label>
+                <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers</label>
+{#            {{ result_table('clinker', '') }}#}
+            </div>
+        </fieldset>
+        <label class="fieldset-label" for="clinkerVisualiationSection">Additional options</label>
+        <fieldset id="clinkerVisualiationSection">
+            <label>
+            <input type="checkbox" name="useFileOrder"/>Maintain order of input files</label>
+        </fieldset>
+
 
         <input type="submit" value="Visualize!"/>
     </form>
