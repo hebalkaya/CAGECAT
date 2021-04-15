@@ -164,12 +164,17 @@ label.disabled{
     background-color: #cccccc;
 }
 
-
+.centered {
+    display: grid;
+    place-items: center;
+}
 
 iframe {
     background: white;
-    border: none;
-    width: 100%;
+    border: 1px solid #555555;
+    border-radius: 2px;
+    width: 90%;
+    margin: auto;
 }
 
 .file-upload-lbl{

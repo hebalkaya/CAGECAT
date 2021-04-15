@@ -16,6 +16,8 @@
     <button class="button moduleSelector" id="showGNE"
             onclick="showModule(event, 'gneModuleContent')">Neighbourhood
     </button>
+
+    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>
 <!--    <button class="moduleSelector"-->
 <!--            onclick="showModule(event, 'extractModuleContent')">Extract-->
 <!--    </button>-->
@@ -60,7 +62,7 @@
     <div id="accessionsError" style="display: none">
         <span id="accessionsErrorText"></span>
     </div>
-    {{ prev_session('search', false, prev_run_id) }}
+    {{ prev_session('search', false, prev_run_id, false) }}
 
 </fieldset>
     <br/>
@@ -175,7 +177,7 @@
 
         <input type="hidden" name="job_type" value="gne" required="required"/>
 
-        {{ prev_session('gne', true, prev_run_id) }}
+        {{ prev_session('gne', true, prev_run_id, false) }}
         <br/>
 
         {{ result_table('gne', 'Sum') }}
@@ -203,6 +205,17 @@
     </form>
 </div>
 
+<div id="clinkerContent" class="moduleContent" style="display: none">
+    <form action="{{submit_url}}" method="post">
+        <input type="hidden" name="job_type" value="clinker"/>
+        <label class="fieldset-label" for="clinkerInputSection">Input</label>
+        <fieldset id="clinkerInputSection">
+            {{ prev_session('clinker', true, None, true) }}
+        </fieldset>
+
+        <input type="submit" value="Visualize!"/>
+    </form>
+</div>
 
 <!--<div id="extractModuleContent" class="moduleContent" style="display: none">-->
 <!--    <form method="post" enctype="multipart/form-data" action="{{submit_url}}"-->

@@ -17,7 +17,7 @@
 
 {% endmacro %}
 
-{% macro prev_session(module, mainInput, job_id) %}
+{% macro prev_session(module, mainInput, job_id, allow_multiple) %}
     <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">
         <div>
@@ -38,7 +38,7 @@
         <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
         <input type="file"
                id="{{ '%sUploadedSessionFile' % module }}"
-               name="{{ '%sUploadedSessionFile' % module }}" disabled="disabled"/>
+               name="{{ '%sUploadedSessionFile' % module }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>
     </div>
 {% endmacro %}
 

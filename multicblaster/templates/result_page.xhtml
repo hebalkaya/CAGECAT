@@ -50,6 +50,17 @@
 
 </div>
 <br/>
+
+<div>
+    <button><a href="{{ url_for('full_clinker')}}">Visualize everything</a></button>
+</div>
+<div>
+    <form action="{{ url_for('partly_clinker')}}" method="post">
+{#        TODO: clusters, queries to visalize#}
+
+{#        <input type="submit">Visualize selected clusters</input>#}
+    </form>
+</div>
 <div>
     <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
@@ -76,7 +87,7 @@
 
 
 <div>
-    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} class="centered" height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
 
 <hr/>
