@@ -35,10 +35,10 @@
                placeholder="AAAAA" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
 
         <span>or</span>
-        <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
+        <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ '%sUploadedSessionFile' % module }}">
         <input type="file"
                id="{{ '%sUploadedSessionFile' % module }}"
-               name="{{ '%sUploadedSessionFile' % module }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>
+               name="{{ '%sUploadedSessionFile' % module }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
     </div>
 {% endmacro %}
 
@@ -62,7 +62,6 @@
                    name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0"
                    required="required"/>
         </div>
-    {% if type == 'Bin' or type == 'Sum' %}
         <div>
             <label>
                 <input type="checkbox"
@@ -70,10 +69,6 @@
                        name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
             </label>
         </div>
-    {% elif type == '' %}
-        <h1>JALALA</h1>
-
-    {% endif %}
 
         {% if type == 'Bin' %}
         <div>

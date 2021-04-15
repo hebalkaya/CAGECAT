@@ -153,7 +153,9 @@ p.server-status {
 /*}*/
 
 input[type="file"] {
-    display: none;
+    opacity: 0; /* make transparent */
+    z-index: -1; /* move under anything else */
+    position: absolute; /* don't let it take up space */
 }
 
 input:disabled, textarea:disabled, label.disabled {
@@ -181,7 +183,7 @@ iframe {
     margin-top: 3px;
     border: 1px solid #cccccc;
     border-radius: 3px;
-    padding: 5px;
+    padding: 5px 10px;
 
 }
 
