@@ -213,18 +213,17 @@ def corason(job_id, options=None, file_path=None):
                 "e_value", options["evalue"],
                 "e_core", options["ecore"]])
 
-
-
     if "bitscore" in options:
         cmd.append("bitscore") # TODO: check if this is really the way, or an integer should be provided (true/false)
 
     cmd.extend(["cluster_radio", options["clusterRadio"],
                 "e_cluster", options["ecluster"]])
 
-    # TODO: check list option out
+    # list functionality intentionally left out, as clusters to search in
+    # are already selected and therefore all clusters in the GENOME directory
+    # should be searched
 
     cmd.extend(["rescale", options["rescale"]])
-    # TODO: do antiSmash file
 
     if "antismashFile" in options:
         cmd.extend(["antismash", options["antismashFile"]])

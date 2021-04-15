@@ -14,8 +14,8 @@ d = webdriver.Chrome(ChromeDriverManager().install())
 #                                      options=options)
 settings = {}
 
-PREV_SEARCH_ID = "W137W090H746A21"
-PREV_SESSION_FILE = r"C:\Users\matth\OneDrive\Opleidingen\Master_WUR\__Thesis\thesis_repo\test_runs\W137W090H746A21_session.json"
+PREV_SEARCH_ID = "K149K560H721G19 "
+PREV_SESSION_FILE = r"C:\Users\matth\OneDrive\Opleidingen\Master_WUR\__Thesis\thesis_repo\test_runs\K149K560H721G19_session.json"
 new_job_ids = []
 # break clustering
 def send_chars(elem_id, chars):
@@ -83,14 +83,11 @@ def test_recompute():
     pass
 
 
-
-
-
 if __name__ == "__main__":
     try:
         for _ in range(20):
             test_gne_module()
-            time.sleep(2)
+            time.sleep(10)
 
     # for _ in range(10):
     #     test_search_module()
