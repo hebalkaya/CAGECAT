@@ -8,8 +8,13 @@
 {% endblock %}
 {% block scripts %}
     {% if module_to_show == 'visualization' %}
-showModule(undefined, 'clinkerContent')
+showModule(undefined, 'clinkerContent');
+    {% elif module_to_show == 'gne' %}
+showModule(undefined, 'gneModuleContent');
+    {% elif module_to_show == 'recompute' %}
+document.getElementById('radioPrevSession').click();
     {% endif %}
+
 {% endblock %}
 
 {% block content %}

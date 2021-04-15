@@ -52,7 +52,15 @@
 <br/>
 
 <div>
-<a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visalize everything</button></a>
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visualize everything</button></a>
+</div>
+            <br/>
+<div>
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button>Recompute</button></a>
+</div>
+            <br/>
+<div>
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button>Neighbourhood</button></a>
 </div>
             <br/>
 <div>
@@ -92,9 +100,7 @@
 </div>
 
 <hr/>
-<div>
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}"><button>Reanalyze</button></a>
-</div>
+
         {% endif %}
 
 {% endblock %}
