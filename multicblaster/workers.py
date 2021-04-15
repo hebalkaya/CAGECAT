@@ -72,6 +72,9 @@ def cblaster_search(job_id, options=None, file_path=None):
                 "--unique", options["min_unique_query_hits"],
                 "--min_hits", options["min_hits_in_clusters"]])
 
+    if "percentageQueryGenes" in options:
+        cmd.extend(["--percentage", options["percentageQueryGenes"]])
+
     if "requiredSequences" in options:
         cmd.append("--require")
         cmd.extend(options["requiredSequences"].split())
