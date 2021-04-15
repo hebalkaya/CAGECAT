@@ -105,23 +105,19 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                                  f"{prev_job_id}_session.json")
 
         # print(file_path_extract_clust)
-        options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-
-        # TODO: extract sequences
-        # TODO: extract clusters
-        print(request.form["selectedClustersToSearch"])
-        print(request.form["selectedReferenceCluster"])
+        extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
 
         merged = "\r\n".join([request.form["selectedClustersToSearch"], request.form["selectedReferenceCluster"]])
-        options["clusterNumbers"] = pa.parse_selected_cluster_numbers(merged, ut.CLUST_NUMBER_PATTERN_WITHOUT_SCORE)
-        # pa.parse_selected_cluster_numbers("\r\n".join([request.form]))
-        # cluster_numbers = pa.format_cluster_numbers()
-        # pa.parse_selected_cluster_numbers()
+        extr_clust_options["clusterNumbers"] = pa.parse_selected_cluster_numbers(merged, ut.CLUST_NUMBER_PATTERN_WITHOUT_SCORE)
+
+        # TODO: extract sequences
+        # query = request.form["selectedQuery"]
+        # print(query)
+        # new_jobs.append((rf.cblaster_extract_sequences, ut.generate_job_id(), "tmp", file_path_extract_clust, None, "extract_sequences"))
 
         # TODO: add selected clusters to extract with extract cluster options
-        # new_jobs.append((rf.cblaster_extract_sequences))
-        new_jobs.append((rf.cblaster_extract_clusters, ut.generate_job_id(), options, file_path_extract_clust, None, "extract_clusters"))
-        new_jobs.append((rf.corason, ut.generate_job_id(), request.form, file_path_extract_clust, job_id, "corason"))
+        new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
+        new_jobs.append((rf.corason, ut.generate_job_id(), request.form, "CORASONPATHTODO", job_id, "corason"))
 
         # TODO: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
