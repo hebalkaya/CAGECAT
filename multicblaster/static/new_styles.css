@@ -62,7 +62,7 @@ ul.nav li {
     float: left;
 }
 
-ul.nav li a, ul.nav li.status {
+ul.nav li a {
     display: block;
     color: white;
     text-align: center;
@@ -71,8 +71,22 @@ ul.nav li a, ul.nav li.status {
     font-size: 18px;
 }
 
+ul.nav li.status {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    width: 20%;
+
+}
+
 ul.status {
     background-color: white;
+    margin: auto;
+    /*width: 100%;*/
+    /*text-align: center;*/
 }
 
 ul.nav li a:hover {
@@ -81,6 +95,11 @@ ul.nav li a:hover {
 
 ul.nav li.right-nav {
     float:right;
+}
+
+.medium {
+    width: 30%;
+    margin:auto;
 }
 
 .status {
@@ -92,20 +111,25 @@ ul.nav li.right-nav {
     padding: 0;
     overflow: hidden;
     border-radius: 0 0 3px 3px;
+    color:white;
+}
+
+ul li.status {
+    border: 1px solid red;
 }
 
 p.server-status {
-    margin: auto;
+    margin: 0 auto;
     background: gray;
-    padding-left: 16px;
+    /*padding-left: 16px;*/
     /*padding-top: 8px;*/
-    font-size: 15px;
-    width: 30%;
-    height: 50px;
+    font-size: 17px;
+    width: 20%;
+    /*height: 50px;*/
     color: white;
     text-align: center;
-    border-radius: 0 0 3px 3px;
-    border: 2px solid white;
+    /*border-radius: 0 0 3px 3px;*/
+    /*border: 2px solid white;*/
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 

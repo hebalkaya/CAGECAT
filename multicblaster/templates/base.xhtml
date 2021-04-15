@@ -27,21 +27,23 @@
         <li><a href="{{url_for('result_from_job_id')}}">Results</a></li>
         <li class="right-nav"><a href="{{ url_for('help_page') }}">Help</a></li>
     </ul>
-    <br/>
+{#    <br/>#}
 </div>
 {#<a class="" href="{{url_for('home_page')}}"><p>Home</p></a>#}
 {#<a href="{{url_for('result_from_job_id')}}"><span>Results</span></a>#}
-<p class="server-status" id="serverStatus">Server satus:<span class="important">
-    {{serv_info["server_status"]}}</span> Queued:
-    <span class="important">{{serv_info["queued"]}}</span>    Running:
-    <span class="important">{{serv_info["running"]}}</span>
-        Completed:
-    <span class="important">{{serv_info["completed"]}}</span>
-</p>
+{#<p class="server-status" id="serverStatus">Server status: <span class="important">#}
+{#    {{serv_info["server_status"]}}</span> Queued:#}
+{#    <span class="important">{{serv_info["queued"]}}</span>    Running:#}
+{#    <span class="important">{{serv_info["running"]}}</span>#}
+{#        Completed:#}
+{#    <span class="important">{{serv_info["completed"]}}</span>#}
+{#</p>#}
+<p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>
+
 <ul class="nav status">
-    <li class="status"><span class="important">A</span><p class="smaller">B</p></li>
-    <li class="status center-status"><span class="important">A</span> <p class="smaller">B</p></li>
-    <li class="status"><span class="important">A</span> <p class="smaller">B</p></li>
+    <li class="status"><span class="important">{{serv_info["queued"]}}<br/></span><span class="smaller">queued</span></li>
+    <li class="status"><span class="important">{{serv_info["running"]}}<br/></span><span class="smaller">running</span></li>
+    <li class="status"><span class="important">{{serv_info["completed"]}}<br/></span><span class="smaller">completed</span></li>
 </ul>
 
 {% block content %}{% endblock %}
