@@ -158,7 +158,7 @@ input[type="file"] {
     position: absolute; /* don't let it take up space */
 }
 
-input:disabled, textarea:disabled, label.disabled {
+input:disabled, textarea:disabled, label.disabled, select:disabled {
     cursor: not-allowed;
 }
 

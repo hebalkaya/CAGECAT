@@ -92,7 +92,8 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "antismashFile": "antiSmash file",
                       "evalue": "e-value",
                       "ecluster": "e-cluster",
-                      "ecore": "e-core"
+                      "ecore": "e-core",
+                      "percentageQueryGenes":  "Percentage query genes"
 
                       # "selectedClusters":
                       }
