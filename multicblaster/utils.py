@@ -84,6 +84,7 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "format": "Output format",
                       "maxclusters": "Maximum clusters",
                       "selectedQuery": "Query",
+                      # corason labels
                       "selectedReferenceCluster": "Reference cluster",
                       "selectedClustersToSearch": "Clusters to search in",
                       "clusterRadio": "Cluster radio",
@@ -93,9 +94,17 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "evalue": "e-value",
                       "ecluster": "e-cluster",
                       "ecore": "e-core",
-                      "percentageQueryGenes":  "Percentage query genes"
-
-                      # "selectedClusters":
+                      "percentageQueryGenes":  "Percentage query genes",
+                      # clinker labels
+                      "clinkerPreviousType": "Previous session type",
+                      "clinkerEnteredJobId": "Previous job ID",
+                      "noAlign": "Don't align clusters",
+                      "identity": "Min. alignment sequence identity",
+                      "clinkerDelim": "Delimiter",
+                      "clinkerDecimals": "Decimals",
+                      "hideLinkHeaders": "Hide alignment column headers",
+                      "hideAlignHeaders": "Hide alignment cluster name headers",
+                      "useFileOrder": "Maintain order of input files"
                       }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",

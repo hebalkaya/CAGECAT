@@ -232,6 +232,19 @@ def corason(job_id, options=None, file_path=None):
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
+
+def clinker_full(job_id, options=None, file_path=None):
+    pre_job_formalities(job_id)
+    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+
+    cmd = ["clinker"]
+
+    print("We are in clinker")
+
+    return_code = run_command(cmd, LOG_PATH, job_id)
+
+    post_job_formalities(job_id, return_code)
+
 # auxiliary functions
 def create_summary_table_commands(
         module: str, options: werkzeug.datastructures.ImmutableMultiDict) \

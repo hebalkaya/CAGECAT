@@ -64,6 +64,9 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    print("==========IN SUBMIT JOB===========")
+    print(request.form)
+
     new_jobs = []
 
     job_type = request.form["job_type"]
@@ -135,7 +138,17 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
 
         # TODO: file path corason --> for corason, the file path is the path to where the extracted clusters will be
+    elif job_type == "clinker_full":
+        prev_job_id = request.form["clinkerEnteredJobId"]
+        extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
+        # TODO: change options?
 
+        file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                               f"{prev_job_id}_session.json")
+
+        new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
+        new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, file_path_extract_clust, job_id, "clinker_full"))
+        # TODO: add actual clinker
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
@@ -143,6 +156,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
     return redirect(url_for("show_result", job_id=last_job_id,
                         pj=ut.fetch_job_from_db(last_job_id).depending_on))
+
 
 @app.route("/results/<job_id>")
 def show_result(job_id: str, pj=None) -> str: # parent_job should be
