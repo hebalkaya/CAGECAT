@@ -423,6 +423,9 @@ function addSelectedToForm(downstream_prog) {
         document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
         document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
     }
+    else if (downstream_prog === "clinker_full"){
+        document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;
+    }
     else {
         console.log("Invalid  type");
     }
