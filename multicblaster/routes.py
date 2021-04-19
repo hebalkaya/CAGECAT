@@ -421,8 +421,8 @@ def get_previous_job_properties(job_id: str, job_type: str,
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
     elif file_type == "sessionFile":
-        file_path = ut.save_file(request.files[f"{module}UploadedSessionFile"],
-                                 job_id)
+        file_path = ut.save_file(
+            request.files[f"{module}UploadedSessionFile"], job_id)
     else:
         raise IOError("Not valid file type")
 
