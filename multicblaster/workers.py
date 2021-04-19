@@ -234,12 +234,50 @@ def corason(job_id, options=None, file_path=None):
 
 
 def clinker_full(job_id, options=None, file_path=None):
+    """
+
+    :param job_id:
+    :param options:
+    :param file_path: is path with following structure: multicblaster/jobs/prev_job_id/results/*.gbk to select all gbk files
+
+    :return:
+    """
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    cmd = ["clinker"]
+    cmd = ["clinker", file_path,
+           "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
+           "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
+           "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
+    # TODO: implement ranges
 
-    print("We are in clinker")
+    if "noAlign" in options:
+        cmd.append("--no_align")
+
+    cmd.extend(["--identity", options["identity"]])
+
+    if options["clinkerDelim"]:  # empty string evaluates to false
+        cmd.extend(["--delimiter", options["clinkerDelim"]])
+
+    cmd.extend(["--decimals", options["clinkerDecimals"]])
+
+    if "hideLinkHeaders" in options:
+        cmd.append("--hide_link_headers")
+
+    if "hideAlignHeaders" in options:
+        cmd.append("--hide_aln_headers")
+
+    if "useFileOrder" in options:
+        cmd.append("--use_file_order")
+
+    print("======== WORKERS.PY ========")
+    print("File path:", file_path)
+    print(options)
+
+    print("COMMAND:", cmd)
+    print()
+    print("FORGED CMD", " ".join(cmd))
+    # print("We are in clinker")
 
     return_code = run_command(cmd, LOG_PATH, job_id)
 

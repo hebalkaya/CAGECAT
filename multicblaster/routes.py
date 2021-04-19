@@ -145,9 +145,10 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
         file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                                f"{prev_job_id}_session.json")
+        genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
 
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
-        new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, file_path_extract_clust, job_id, "clinker_full"))
+        new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, job_id, "clinker_full"))
         # TODO: add actual clinker
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
@@ -470,19 +471,26 @@ def prepare_finished_result(job_id: str,
         - plot_contents: HTML code of a plot
         - program: the program that was executed by this job
     """
+    plot_path = os.path.join(ut.JOBS_DIR, job_id,
+                             "results", f"{job_id}_plot.html")
+
     if module == "extract_sequences" or module == "extract_clusters":
         program = "cblaster"
         plot_contents = None
 
     elif module == "search" or module == "recompute":
         program = "cblaster"
-        with open(os.path.join(ut.JOBS_DIR, job_id,
-                               "results", f"{job_id}_plot.html")) as inf:
+        with open(plot_path) as inf:
             plot_contents = inf.read()
 
     elif module == "corason":
         program = "echo"  # TODO: will be someting else later
         plot_contents = None  # TODO: for now
+
+    elif module == "clinker_full":
+        program = "clinker"
+        with open(plot_path) as inf:
+            plot_contents = inf.read()
 
     else:
         raise NotImplementedError(
