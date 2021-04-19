@@ -352,10 +352,19 @@ def full_clinker() -> str:
     return show_template("full_clinker.xhtml", submit_url=ut.SUBMIT_URL)
 
 
-@app.route("/downstream/clinker_query")
-def partly_clinker() -> str:
+@app.route("/downstream/clinker_query", methods=["POST"])
+def clinker_query() -> str:
+    print("===== ROUTES.PY CLINKER_QUERY.PY =====")
+    print(request.form)
+    selected_scaffolds = pa.parse_selected_scaffolds(
+        request.form["selectedClusters"])
 
-    return show_template("partly_clinker.xhtml")
+    clusters = pa.parse_selected_cluster_numbers(request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
+
+
+    return show_template("clinker_query.xhtml", submit_url=ut.SUBMIT_URL,
+                         selected_scaffolds=selected_scaffolds,
+                         selected_clusters= clusters)
 
 @app.route("/help")
 def help_page():

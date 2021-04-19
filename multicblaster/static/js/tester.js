@@ -426,6 +426,9 @@ function addSelectedToForm(downstream_prog) {
     else if (downstream_prog === "clinker_full"){
         document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;
     }
+    else if (downstream_prog === "clinker_query"){
+        document.getElementById("selectedClusters3").value = document.getElementById("selectedClustersOverview").innerText;
+    }
     else {
         console.log("Invalid  type");
     }

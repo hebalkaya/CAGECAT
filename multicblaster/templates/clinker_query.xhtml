@@ -1,0 +1,16 @@
+{% extends "base.xhtml" %}
+{% from "macros.xhtml" import filtering_section %}
+
+{% block title %}clinker query{% endblock %}
+
+{% block content %}
+    <form action="{{ submit_url }}" method="post">
+    {{ filtering_section('clusters', selected_scaffolds, selected_clusters) }}
+    <label class="fieldset-label" for="outputSection">Output</label>
+    <fieldset>
+        <label class="input-label" for="maxclusters">Maximum clusters</label>
+        <input type="number" name="maxclusters" value="50" step="1" id="maxclusters" required="required"/>
+    </fieldset>
+    <input type="submit" value="Visualize"/>
+    </form>
+{% endblock %}
