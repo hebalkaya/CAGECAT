@@ -26,7 +26,7 @@ import typing as t
 
 
 
-@app.route("/rerun/<prev_run_id>")
+@app.route("/rerun/<prev_run_id>", methods=["GET", "POST"])
 @app.route("/")
 def home_page(prev_run_id: str = None) -> str:
     """Shows home page to the user
@@ -41,12 +41,16 @@ def home_page(prev_run_id: str = None) -> str:
     can enter previous job IDs are pre-filled with the given job ID
     """
 
-    print(request.args["type"] if
-          "type" in request.args else None)
+    # print(request.args["type"] if
+    #       "type" in request.args else None)
+    print(request.form["selectedClustersFullClinker"])
+    selected_clusters = pa.parse_selected_cluster_numbers(request.form["selectedClustersFullClinker"], ) if request.method == "POST" else None
+
     return show_template("index.xhtml", submit_url=ut.SUBMIT_URL,
                          prev_run_id=prev_run_id,
                          module_to_show=request.args["type"] if
-                         "type" in request.args else None)
+                         "type" in request.args else None,
+                         selected_clusters=selected_clusters)
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():  # return type: werkzeug.wrappers.response.Response:
