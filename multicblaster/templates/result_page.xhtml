@@ -51,14 +51,15 @@
 </div>
 <br/>
 
-            <div>
-            <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
-                <input type="hidden" name="job_id" value="{{j_id}}"/>
-                <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
-                <button type="submit">Visualize with query clusters</button>
-            </form>
+    <div>
+    <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
+        <input type="hidden" name="job_id" value="{{j_id}}"/>
+        <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
+        <button type="submit">Visualize with query clusters</button>
+    </form>
 
-            </div>
+    </div>
+            <br/>
 
 <div>
     <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visualize everything</button></a>

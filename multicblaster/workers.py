@@ -208,6 +208,7 @@ def corason(job_id, options=None, file_path=None):
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     cmd = ["echo", "we should execute corason here"]
+    # TODO: implement CORASON
 
     cmd.extend(["queryfile", "tmpQUERYFILEPATH",
                 "special_org", "tmpREFERENCECLUSTERPATH",
@@ -281,6 +282,19 @@ def clinker_full(job_id, options=None, file_path=None):
 
     return_code = run_command(cmd, LOG_PATH, job_id)
 
+    post_job_formalities(job_id, return_code)
+
+
+def clinker_query(job_id, options=None, file_path=None):
+    pre_job_formalities(job_id)
+    # print("We are in clinker_query")
+    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+
+    cmd = ["cblaster", "plot_clusters"]
+
+    # TODO: forge command
+
+    return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
 # auxiliary functions

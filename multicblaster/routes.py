@@ -64,7 +64,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    print("==========IN SUBMIT JOB===========")
+    print("==== SUBMIT_JOB in ROUTES.PY ====")
     print(request.form)
 
     new_jobs = []
@@ -149,7 +149,12 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, job_id, "clinker_full"))
-        # TODO: add actual clinker
+
+    elif job_type == "clinker_query":
+        fp = None # TODO
+        new_jobs.append((rf.clinker_query, job_id, request.form, fp, None, "clinker_query"))# TODO: depending job could change in future
+                # return "should do"
+
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
@@ -354,15 +359,15 @@ def full_clinker() -> str:
 
 @app.route("/downstream/clinker_query", methods=["POST"])
 def clinker_query() -> str:
-    print("===== ROUTES.PY CLINKER_QUERY.PY =====")
-    print(request.form)
+    # print("===== ROUTES.PY CLINKER_QUERY.PY =====")
+    # print(request.form)
     selected_scaffolds = pa.parse_selected_scaffolds(
         request.form["selectedClusters"])
 
     clusters = pa.parse_selected_cluster_numbers(request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
-
     return show_template("clinker_query.xhtml", submit_url=ut.SUBMIT_URL,
+                         prev_job_id=request.form["job_id"],
                          selected_scaffolds=selected_scaffolds,
                          selected_clusters= clusters)
 
