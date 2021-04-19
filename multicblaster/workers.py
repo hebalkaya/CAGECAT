@@ -290,7 +290,8 @@ def clinker_query(job_id, options=None, file_path=None):
     # print("We are in clinker_query")
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    cmd = ["cblaster", "plot_clusters"]
+    cmd = ["cblaster", "plot_clusters", file_path,
+           "--output", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
 
     # TODO: forge command
 

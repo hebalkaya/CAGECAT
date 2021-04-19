@@ -151,8 +151,10 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, job_id, "clinker_full"))
 
     elif job_type == "clinker_query":
-        fp = None # TODO
-        new_jobs.append((rf.clinker_query, job_id, request.form, fp, None, "clinker_query"))# TODO: depending job could change in future
+        prev_job_id = request.form["prev_job_id"]
+        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
+
+        new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))# TODO: depending job could change in future
                 # return "should do"
 
     else: # future input types
@@ -505,7 +507,10 @@ def prepare_finished_result(job_id: str,
         program = "clinker"
         with open(plot_path) as inf:
             plot_contents = inf.read()
-
+    elif module == "clinker_query":
+        program = "cblaster"  # as it uses plot_clusters functionality of cblaster
+        with open(plot_path) as inf:
+            plot_contents = inf.read()
     else:
         raise NotImplementedError(
             f"Module {module} has not been implemented yet in results")

@@ -33,7 +33,8 @@ INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
                             ("recompute", "gne"),
                             ("gne", "recompute")]
 
-MODULES_CLUSTER_SELECTION = ["search", "recompute", "clinker_full"] # TODO: add gne?
+MODULES_CLUSTER_SELECTION = ["search", "recompute",
+                             "clinker_full", "clinker_query"] # TODO: add gne?
 # TODO: really check if above combinations are not valid, and document what
 # kind of errors they produce
 
