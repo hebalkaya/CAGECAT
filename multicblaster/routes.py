@@ -26,7 +26,7 @@ import typing as t
 
 
 
-@app.route("/rerun/<prev_run_id>", methods=["GET", "POST"])
+@app.route("/rerun/<prev_run_id>")
 @app.route("/")
 def home_page(prev_run_id: str = None) -> str:
     """Shows home page to the user
@@ -41,16 +41,12 @@ def home_page(prev_run_id: str = None) -> str:
     can enter previous job IDs are pre-filled with the given job ID
     """
 
-    # print(request.args["type"] if
-    #       "type" in request.args else None)
-    print(request.form["selectedClustersFullClinker"])
-    selected_clusters = pa.parse_selected_cluster_numbers(request.form["selectedClustersFullClinker"], ) if request.method == "POST" else None
-
+    print(request.args["type"] if
+          "type" in request.args else None)
     return show_template("index.xhtml", submit_url=ut.SUBMIT_URL,
                          prev_run_id=prev_run_id,
                          module_to_show=request.args["type"] if
-                         "type" in request.args else None,
-                         selected_clusters=selected_clusters)
+                         "type" in request.args else None)
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():  # return type: werkzeug.wrappers.response.Response:
@@ -115,7 +111,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     elif job_type == "corason":
         prev_job_id = request.form["prev_job_id"]
         file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                                 f"{prev_job_id}_session.json")
+                               f"{prev_job_id}_session.json")
 
         # print(file_path_extract_clust)
 
@@ -197,10 +193,10 @@ def show_result(job_id: str, pj=None) -> str: # parent_job should be
                 log_contents = "<br/>".join(inf.readlines())
 
             return show_template("result_page.xhtml", j_id=job_id,
-                    status=status, compr_formats=ut.COMPRESSION_FORMATS,
-                    plot_contents=plot_contents, module=module,
-                    select_cluster_modules=ut.MODULES_CLUSTER_SELECTION,
-                                 log_contents=log_contents)
+                 status=status, compr_formats=ut.COMPRESSION_FORMATS,
+                 plot_contents=plot_contents, module=module,
+                 select_cluster_modules=ut.MODULES_CLUSTER_SELECTION,
+                 log_contents=log_contents)
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:
@@ -545,7 +541,7 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
                         result_ttl=86400)
 
         status = "queued" if depending_job is None else "waiting"
-            # for parent job to finish
+        # for parent job to finish
 
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
                   redis_id=job.id,

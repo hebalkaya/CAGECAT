@@ -52,11 +52,7 @@
 <br/>
 
 <div>
-<form action="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization" method="post" onsubmit="addSelectedToForm('clinker_full')">
-    <input type="hidden" name="selectedClustersFullClinker"/>
-    <input type="submit" value="Visualize everything"/>
-</form>
-{#    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visualize everything</button></a>#}
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visualize everything</button></a>
 </div>
             <br/>
 <div>
