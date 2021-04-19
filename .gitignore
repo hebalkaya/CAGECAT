@@ -6,3 +6,5 @@ multicblaster/static/images/*
 /multicblaster/static/uploads/
 /test_runs/
 /jobs/
+todo_found_things.txt
+multicblaster/status.db

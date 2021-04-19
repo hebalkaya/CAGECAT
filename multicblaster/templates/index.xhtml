@@ -222,8 +222,6 @@ document.getElementById('radioPrevSession').click();
         <label class="fieldset-label" for="clinkerInputSection">Input</label>
         <fieldset id="clinkerInputSection">
             {{ prev_session('clinker', true, prev_run_id, true) }}
-            <label class="input-label" for="selectedClusters">Selected clusters</label>
-            <input type="text" name="selectedClusters" id="selectedClusters" value="{{ '' if selected_clusters is none else selected_clusters }}"/>
         </fieldset>
         <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
         <fieldset id="clinkerAlignmentSection">
