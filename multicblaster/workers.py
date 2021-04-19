@@ -247,6 +247,7 @@ def clinker_full(job_id, options=None, file_path=None):
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     cmd = ["clinker", file_path,
+           "--jobs", "1",
            "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
            "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
            "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
@@ -275,9 +276,6 @@ def clinker_full(job_id, options=None, file_path=None):
     print("File path:", file_path)
     print(options)
 
-    print("COMMAND:", cmd)
-    print()
-    print("FORGED CMD", " ".join(cmd))
     # print("We are in clinker")
 
     return_code = run_command(cmd, LOG_PATH, job_id)
