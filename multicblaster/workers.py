@@ -293,7 +293,23 @@ def clinker_query(job_id, options=None, file_path=None):
     cmd = ["cblaster", "plot_clusters", file_path,
            "--output", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
 
-    # TODO: forge command
+    # TODO: check section below. Is almost equivalent to cblaster_extract_clusters (and maybe more)
+    # ==== section start ============
+    # TODO: organism
+
+    if options["selectedScaffolds"]:
+        cmd.append("--scaffolds")
+        cmd.extend(options["selectedScaffolds"].split())
+
+    if options["clusterNumbers"]:
+        cmd.append("--clusters")
+        cmd.extend(options["clusterNumbers"].strip().split())
+
+    if options["clusterScoreThreshold"]:
+        cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
+
+    cmd.extend(["--maximum_clusters", options["maxclusters"]])
+    # ==== section end ============
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)

@@ -341,8 +341,6 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     Function created for logging purposes. Writes to a file, which will be
     used by the [load_settings] function.
     """
-    print("Save settings: ")
-    print(options)
     with open(f"{os.path.join(JOBS_DIR, job_id, 'logs', job_id)}"
               f"_options.txt", "w") as outf:
     # TODO: check if we can replace this with os.path.join(log_base, f"{job_id}_cmd.txt"), "w"
