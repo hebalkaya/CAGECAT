@@ -51,7 +51,8 @@ def cblaster_search(job_id, options=None, file_path=None):
         session_path = file_path
 
     else:  # future input types and prev_session
-        raise NotImplementedError()
+        raise NotImplementedError(f"Input type {input_type} is not supported "
+                                  f"in cblaster_search")
 
     cmd.extend(["--session_file", session_path])
 
@@ -59,8 +60,10 @@ def cblaster_search(job_id, options=None, file_path=None):
     if not recompute:
         cmd.extend([
             "--database", options["database_type"],
-            "--entrez_query", options["entrez_query"],
             "--hitlist_size", options["max_hits"]])
+
+        if options["entrez_query"]:
+            cmd.extend(["--entrez_query", options["entrez_query"]])
 
     # add filtering options
     cmd.extend(["--max_evalue", options["max_evalue"],

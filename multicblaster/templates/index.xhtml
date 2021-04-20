@@ -82,13 +82,18 @@ document.getElementById('radioPrevSession').click();
 <fieldset id="searchSection">
     <div>
         <label class="input-label" for="database_type">Database</label>
-        <input type="text" required="required" name="database_type"
-               id="database_type" value="nr"/>
+        <select id="database_type" name="database_type" required="required">
+            <option value="nr">nr</option>
+            <option value="refseq_protein">refseq_protein</option>
+            <option value="swissprot">swissprot</option>
+            <option value="pdb">pdb</option>
+        </select>
     </div>
     <div>
+
         <label class="input-label" for="entrez_query">Entrez query</label>
-        <input type="text" required="required" name="entrez_query"
-               id="entrez_query" value="Aspergillus[organism]"/>
+        <input type="text" name="entrez_query"
+               id="entrez_query" placeholder="Aspergillus[organism]"/>
     </div>
     <div>
         <label class="input-label" for="max_hits">Maximum hits</label>
@@ -187,8 +192,10 @@ document.getElementById('radioPrevSession').click();
           onsubmit="return validateForm()" name="gneOptionForm">
 
         <input type="hidden" name="job_type" value="gne" required="required"/>
-
+        <label class="fieldset-label" for="gneInputSection">Input</label>
+        <fieldset id="gneInputSection">
         {{ prev_session('gne', true, prev_run_id, false) }}
+        </fieldset>
         <br/>
 
         {{ result_table('gne', 'Sum') }}
