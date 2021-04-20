@@ -38,8 +38,19 @@ input[type="submit"]{
 /*    content: "<br/>"*/
 /*}*/
 
+.select-options {
+    border-radius: 3px;
+    box-shadow: 0 0.5px 0 0.5px #777777;
+
+    /*Border shadow?*/
+}
+
 input, select {
     margin: 3px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    /*border-radius: 1px;*/
+
 }
 
 .important {
@@ -151,6 +162,10 @@ p.server-status {
 /*.hidden {*/
 /*    display: none;*/
 /*}*/
+select {
+
+}
+
 
 input[type="file"] {
     opacity: 0; /* make transparent */

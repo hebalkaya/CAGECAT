@@ -73,7 +73,7 @@
         {% if type == 'Bin' %}
         <div>
             <label for="keyFunction">Key function</label>
-                <select name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
+                <select class="select-options" name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
                     <option name="functionLen" value="len">len</option>
                     <option name="functionSum" value="sum">sum</option>
                     <option name="functionMax" value="max">max</option>
@@ -82,7 +82,7 @@
 
         <div>
             <label for="hitAttribute">Hit attribute</label>
-            <select name="hitAttribute" id="hitAttribute" disabled="disabled">
+            <select class="select-options" name="hitAttribute" id="hitAttribute" disabled="disabled">
                 <option name="hitAttrIdentity" value="identity">identity</option>
                 <option name="hitAttrCoverage" value="coverage">coverage</option>
                 <option name="hitAttrBitscore" value="bitscore">bitscore</option>
