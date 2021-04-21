@@ -40,7 +40,7 @@ input[type="submit"]{
 
 .select-options {
     border-radius: 3px;
-    box-shadow: 0 0.5px 0 0.5px #777777;
+    box-shadow: 0 0.5px 0 0.5px #a3a2a2;
 
     /*Border shadow?*/
 }
@@ -212,8 +212,34 @@ fieldset {
     border-left-style: none;
     border-right-style: none;
     border-bottom-style: none;
+    border-color: #6aabd7;
 }
 
 textarea {
     resize: none;
 }
+
+input[type="checkbox"] {
+    transform: scale(1.4);
+    cursor: pointer;
+    /*filter: invert(100%) hue-rotate(18deg) brightness(1.7)*/
+}
+
+input[type="radio"]{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+label input[type="checkbox"] {
+    margin-right: 8px;
+    margin-left: 0.8%;
+}
+
+label input[type="radio"]{
+    margin-right: 6px;
+}
+
+
+/*in*/
+/*.checkbox-label {*/
+/*    padding-left: 20px;*/
+/*}*/
