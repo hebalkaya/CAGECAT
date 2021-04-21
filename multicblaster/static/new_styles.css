@@ -12,15 +12,17 @@ body{
 
 /*button section*/
 .button {
+    margin-right: 20px;
     color: white;
-    border: solid #0000dd;
-    border-radius: 8px;
-    background-color: cornflowerblue;
+    border: 2px solid #5284a7;
+    border-radius: 6px;
+    background-color: #6aabd7;
     font-size: 18px;
+    padding: 2px 8px;
 }
 
 .button:hover {
-    background-color: #0000dd;
+    background-color: #5284a7;
 }
 
 input[type="submit"]{
@@ -195,11 +197,17 @@ iframe {
 }
 
 .file-upload-lbl{
-    margin-top: 3px;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    padding: 5px 10px;
+    margin-top: 0px;
+    border: 1px solid #5284a7;
+    border-radius: 5px;
+    padding: 5px 15px;
+    background-color: #6aabd7;
+    color: white;
+    cursor: pointer;
+}
 
+.file-upload-lbl:hover{
+    background-color: #5284a7;
 }
 
 .fieldset-label {
@@ -217,7 +225,10 @@ fieldset {
 
 textarea {
     resize: none;
+    margin: 4px;
 }
+
+
 
 input[type="checkbox"] {
     transform: scale(1.4);
@@ -238,8 +249,23 @@ label input[type="radio"]{
     margin-right: 6px;
 }
 
+.invalid {
+    border: 2px solid #ff6f6f;
+    border-radius: 2px;
+}
 
+input[type="number"], input[type="text"]{
+
+}
+
+/*.fieldset-label:after{*/
+/*    content: " -";*/
+/*}*/
 /*in*/
 /*.checkbox-label {*/
 /*    padding-left: 20px;*/
 /*}*/
+
+div.div-margin {
+    margin: 10px 0 0;
+}

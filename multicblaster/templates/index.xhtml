@@ -60,13 +60,13 @@ document.getElementById('radioPrevSession').click();
                 onclick="showInputOptions('prev_session')"/>Recompute
         </label>
 
-    <div id="genomeFileUploadDiv">
+    <div class="div-margin" id="genomeFileUploadDiv">
         <label class="file-upload-lbl" for="genomeFile">
         <input type="file" id="genomeFile" name="genomeFiles"
                required="required"/>Query</label>
     </div>
     <div id="ncbiEntriesDiv" style="display: none">
-        <label for="ncbiEntriesTextArea">NCBI identifiers</label>
+{#        <label for="ncbiEntriesTextArea">NCBI identifiers</label>#}
         <textarea rows="6" cols="25" id="ncbiEntriesTextArea"
                   name="ncbiEntriesTextArea" placeholder="NCBI accessions" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
     </div>
@@ -196,7 +196,7 @@ document.getElementById('radioPrevSession').click();
         <fieldset id="gneInputSection">
         {{ prev_session('gne', true, prev_run_id, false) }}
         </fieldset>
-        <br/>
+{#        <br/>#}
 
         {{ result_table('gne', 'Sum') }}
         <br/>
