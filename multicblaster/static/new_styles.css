@@ -25,17 +25,21 @@ body{
     background-color: #5284a7;
 }
 
-input[type="submit"]{
-    width: 140px;
-    height: 30px;
-    font-size: 20px;
-    border-radius: 8px;
-    background-color: #6aabd7;
-    border-color: #444444;
-    color: white;
-    /*margin: auto;*/
-    /*width: 50%;*/
+.button:active{
+    background-color: #304f63;
 }
+
+/*input[type="submit"]{*/
+/*    width: 140px;*/
+/*    height: 30px;*/
+/*    font-size: 20px;*/
+/*    border-radius: 8px;*/
+/*    background-color: #6aabd7;*/
+/*    border-color: #444444;*/
+/*    color: white;*/
+/*    !*margin: auto;*!*/
+/*    !*width: 50%;*!*/
+/*}*/
 /*input[type="submit"]::before {*/
 /*    content: "<br/>"*/
 /*}*/
@@ -179,9 +183,10 @@ input:disabled, textarea:disabled, label.disabled, select:disabled {
     cursor: not-allowed;
 }
 
-label.disabled{
+label.disabled, label.disabled:hover{
     background-color: #cccccc;
 }
+
 
 .centered {
     display: grid;
@@ -206,8 +211,17 @@ iframe {
     cursor: pointer;
 }
 
+
 .file-upload-lbl:hover{
     background-color: #5284a7;
+}
+
+.file-upload-lbl:active{
+    background-color: #304f63;;
+}
+
+.file-upload-lbl:disabled{
+    background-color: inherit;
 }
 
 .fieldset-label {
@@ -241,8 +255,10 @@ input[type="radio"]{
     cursor: pointer;
 }
 label input[type="checkbox"] {
-    margin-right: 8px;
-    margin-left: 0.8%;
+    margin: 6px 8px 6px 0.8%;
+    /*margin-top: 6px;*/
+    /*margin-right: 8px;*/
+    /*margin-left: 0.8%;*/
 }
 
 label input[type="radio"]{
