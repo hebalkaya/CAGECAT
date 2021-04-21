@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import prev_session %}
 {% from "macros.xhtml" import result_table %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 
 {% block title %}
@@ -17,7 +18,13 @@ document.getElementById('radioPrevSession').click();
 
 {% endblock %}
 
+{% block navigationBar %}
+    {{ showNavigationBar('home') }}
+{% endblock %}
+
+
 {% block content %}
+
 
 <!--Module buttons-->
 <div class="modules">

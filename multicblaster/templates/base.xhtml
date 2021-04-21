@@ -21,14 +21,8 @@
 {#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>#}
 </head>
 <body onload="{% block scripts %}{% endblock %}">
-<div>
-    <ul class="nav">
-        <li><a href="{{url_for('home_page')}}">Home</a></li>
-        <li><a href="{{url_for('result_from_job_id')}}">Results</a></li>
-        <li class="right-nav"><a href="{{ url_for('help_page') }}">Help</a></li>
-    </ul>
-{#    <br/>#}
-</div>
+
+{% block navigationBar %}{% endblock %}
 {#<a class="" href="{{url_for('home_page')}}"><p>Home</p></a>#}
 {#<a href="{{url_for('result_from_job_id')}}"><span>Results</span></a>#}
 {#<p class="server-status" id="serverStatus">Server status: <span class="important">#}

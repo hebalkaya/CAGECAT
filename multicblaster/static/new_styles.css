@@ -107,7 +107,14 @@ ul.status {
 }
 
 ul.nav li a:hover {
-    background-color: #333;
+    background-color: #5284a7;
+}
+ul.nav li a:active{
+    background-color: #304f63;
+}
+
+ul.nav li a.active {
+    background-color: #5284a7;
 }
 
 ul.nav li.right-nav {

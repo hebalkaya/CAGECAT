@@ -1,7 +1,12 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}
     Job status
+{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('results') }}
 {% endblock %}
 
 <!--This page will show the status of the job (job unfinished), or the results of -->

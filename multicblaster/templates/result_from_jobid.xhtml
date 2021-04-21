@@ -1,6 +1,11 @@
 {% extends 'base.xhtml' %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}Results{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('results') }}
+{% endblock %}
 
 {% block content %}
 <div>
