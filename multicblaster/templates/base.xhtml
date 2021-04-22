@@ -32,15 +32,15 @@
 {#        Completed:#}
 {#    <span class="important">{{serv_info["completed"]}}</span>#}
 {#</p>#}
-
-<div class="column leftColumn">
-
+<div class="flexbox-wrapper">
+<div class="column leftColumn non-scrollable">
     <ul class="statuscorrect">
         <li>Server status: <span class="rightAligned">{{serv_info["server_status"]}}</span></li>
         <li>Queued:  <span class="rightAligned">{{serv_info["queued"]}}</span></li>
         <li>Running:  <span class="rightAligned">{{serv_info["running"]}}</span></li>
         <li>Completed:  <span class="rightAligned">{{serv_info["completed"]}}</span></li>
     </ul>
+
 
 {#    <table>#}
 {#        <tr class="important-row">#}
@@ -62,6 +62,7 @@
 {#    </table>#}
 </div>
 <div class="column rightColumn">{% block content %}{% endblock %}</div>
+</div>
 {#<p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>#}
 {##}
 {#<div class="">#}
