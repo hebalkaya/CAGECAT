@@ -310,3 +310,76 @@ div.div-margin {
 .select-label{
     color: chocolate;
 }
+
+.leftColumn {
+    width: 15%;
+}
+
+.rightColumn{
+    width: 85%;
+}
+
+.column {
+    float: left;
+    padding: 10px;
+}
+
+.statuscorrect {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.status-info {
+    text-align: right;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 100%;
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.important-row {
+    border: 2px solid black;
+    border-radius: 20px 20px 0 0 ;
+}
+
+
+/*.allColumns:after{*/
+/*    content: "";*/
+/*    display: table;*/
+/*    clear: both;*/
+/*}*/
+
+.rightAligned {
+    float: right;
+    font-weight: bold;
+}
+
+ul.statuscorrect li {
+    border: 1px solid gray;
+    margin: 0 4px;
+    padding: 6px;
+}
+
+ul.statuscorrect > :first-child {
+    border-radius: 5px 5px 0 0;
+}
+
+ul.statuscorrect > :last-child {
+    border-radius: 0 0 5px 5px
+}
+

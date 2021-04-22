@@ -32,35 +32,65 @@
 {#        Completed:#}
 {#    <span class="important">{{serv_info["completed"]}}</span>#}
 {#</p>#}
-<p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>
 
-<div class="">
-    <ul class="status centered">
-        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["queued"]}}<br/></span><span class="smaller">queued</span></li>
-        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["running"]}}<br/></span><span class="smaller">running</span></li>
-        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["completed"]}}<br/></span><span class="smaller">completed</span></li>
+<div class="column leftColumn">
+
+    <ul class="statuscorrect">
+        <li>Server status: <span class="rightAligned">{{serv_info["server_status"]}}</span></li>
+        <li>Queued:  <span class="rightAligned">{{serv_info["queued"]}}</span></li>
+        <li>Running:  <span class="rightAligned">{{serv_info["running"]}}</span></li>
+        <li>Completed:  <span class="rightAligned">{{serv_info["completed"]}}</span></li>
     </ul>
+
+{#    <table>#}
+{#        <tr class="important-row">#}
+{#            <td>Server status</td>#}
+{#            <td class="status-info">{{serv_info["server_status"]}}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td>Queued</td>#}
+{#            <td class="status-info">{{serv_info["queued"]}}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td>Running</td>#}
+{#            <td class="status-info">{{serv_info["running"]}}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td>Completed</td>#}
+{#            <td class="status-info">{{serv_info["completed"]}}</td>#}
+{#        </tr>#}
+{#    </table>#}
 </div>
+<div class="column rightColumn">{% block content %}{% endblock %}</div>
+{#<p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>#}
+{##}
+{#<div class="">#}
+{#    <ul class="status centered">#}
+{#        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["queued"]}}<br/></span><span class="smaller">queued</span></li>#}
+{#        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["running"]}}<br/></span><span class="smaller">running</span></li>#}
+{#        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["completed"]}}<br/></span><span class="smaller">completed</span></li>#}
+{#    </ul>#}
+{#</div>#}
 
-{% block content %}{% endblock %}
 
-        <hr/>
-    <div id="custom_footer">
-        <p style="text-align: center" class="footer">This work has been created
-            by the <a
-                href="https://www.wur.nl/en/Research-Results/Chair-groups/Plant-Sciences/Bioinformatics.htm">BIF</a></>
-            group
-            of
-            Wageningen University and Research</p>
-        <a href="https://www.wur.nl/en.htm"><img class="centerrrr"
-                src="{{url_for('static', filename='images/wur_logo.png')}}"
-                alt="WUR logo"/></a>
-</div>
-    <div style="margin: auto; width: 10%">
-        <label for="showFooterCheckbox">Show footer</label>
-        <input type="checkbox" onclick="changeFooterVisibility()"
-               id="showFooterCheckbox" name="showFooterCheckbox" checked="checked"/>
 
-    </div>
+{#        <hr/>#}
+{#    <div id="custom_footer">#}
+{#        <p style="text-align: center" class="footer">This work has been created#}
+{#            by the <a#}
+{#                href="https://www.wur.nl/en/Research-Results/Chair-groups/Plant-Sciences/Bioinformatics.htm">BIF</a></>#}
+{#            group#}
+{#            of#}
+{#            Wageningen University and Research</p>#}
+{#        <a href="https://www.wur.nl/en.htm"><img class="centerrrr"#}
+{#                src="{{url_for('static', filename='images/wur_logo.png')}}"#}
+{#                alt="WUR logo"/></a>#}
+{#</div>#}
+{#    <div style="margin: auto; width: 10%">#}
+{#        <label for="showFooterCheckbox">Show footer</label>#}
+{#        <input type="checkbox" onclick="changeFooterVisibility()"#}
+{#               id="showFooterCheckbox" name="showFooterCheckbox" checked="checked"/>#}
+{##}
+{#    </div>#}
 </body>
 </html>
