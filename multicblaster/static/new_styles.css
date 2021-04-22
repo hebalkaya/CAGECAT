@@ -12,7 +12,7 @@ body{
 
 /*button section*/
 .button {
-    margin-right: 20px;
+    margin: 10px auto;
     color: white;
     border: 2px solid #5284a7;
     border-radius: 6px;
@@ -89,20 +89,21 @@ ul.nav li a {
 }
 
 ul.nav li.status {
-    display: inline-block;
+    /*display: inline-block;*/
+    margin: 0 auto;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 18px;
-    width: 20%;
+    width: 40%;
 
 }
 
 ul.status {
     background-color: white;
-    margin: auto;
-    /*width: 100%;*/
+    margin: 0 auto;
+    width: 40%;
     /*text-align: center;*/
 }
 
@@ -139,7 +140,7 @@ ul.nav li.right-nav {
 }
 
 ul li.status {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 p.server-status {
@@ -196,8 +197,8 @@ label.disabled, label.disabled:hover{
 
 
 .centered {
-    display: grid;
-    place-items: center;
+    text-align: center;
+    position: relative;
 }
 
 iframe {
@@ -229,6 +230,10 @@ iframe {
 
 .file-upload-lbl:disabled{
     background-color: inherit;
+
+}
+.file-upload-lbl.disabled{
+    border-color: #afafaf;
 }
 
 .fieldset-label {
@@ -247,6 +252,7 @@ fieldset {
 textarea {
     resize: none;
     margin: 4px;
+    font-size: 15px;
 }
 
 
@@ -291,4 +297,16 @@ input[type="number"], input[type="text"]{
 
 div.div-margin {
     margin: 10px 0 0;
+}
+
+.radioLabel{
+    color: limegreen;
+}
+
+.checkbox-label{
+    color: blue;
+}
+
+.select-label{
+    color: chocolate;
 }

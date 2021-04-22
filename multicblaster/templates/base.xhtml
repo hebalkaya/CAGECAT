@@ -34,11 +34,11 @@
 {#</p>#}
 <p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>
 
-<div class="centered">
-    <ul class="nav status">
-        <li class="status"><span class="important">{{serv_info["queued"]}}<br/></span><span class="smaller">queued</span></li>
-        <li class="status"><span class="important">{{serv_info["running"]}}<br/></span><span class="smaller">running</span></li>
-        <li class="status"><span class="important">{{serv_info["completed"]}}<br/></span><span class="smaller">completed</span></li>
+<div class="">
+    <ul class="status centered">
+        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["queued"]}}<br/></span><span class="smaller">queued</span></li>
+        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["running"]}}<br/></span><span class="smaller">running</span></li>
+        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["completed"]}}<br/></span><span class="smaller">completed</span></li>
     </ul>
 </div>
 

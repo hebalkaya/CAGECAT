@@ -21,15 +21,15 @@
     <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">
         <div>
-            <label>
+            <label class="radioLabel">
             <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
             </label>
 
-            <label>
+            <label class="radioLabel">
                 <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile" onclick="changePrevSessionType()">Session file</input>
             </label>
         </div>
-        <label for="{{ '%sEnteredJobId' % module }}">Previous job
+        <label class="input-label" for="{{ '%sEnteredJobId' % module }}">Previous job
             ID</label>
         <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
                placeholder="AAAAA" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
@@ -63,7 +63,7 @@
                    required="required"/>
         </div>
         <div>
-            <label>
+            <label class="checkbox-label">
                 <input type="checkbox"
                        id="{{ '%s%sTableHideHeaders' % (module, type) }}"
                        name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
@@ -72,7 +72,7 @@
 
         {% if type == 'Bin' %}
         <div>
-            <label for="keyFunction">Key function</label>
+            <label class="select-label" for="keyFunction">Key function</label>
                 <select class="select-options" name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
                     <option name="functionLen" value="len">len</option>
                     <option name="functionSum" value="sum">sum</option>
@@ -81,7 +81,7 @@
         </div>
 
         <div>
-            <label for="hitAttribute">Hit attribute</label>
+            <label class="select-label" for="hitAttribute">Hit attribute</label>
             <select class="select-options" name="hitAttribute" id="hitAttribute" disabled="disabled">
                 <option name="hitAttrIdentity" value="identity">identity</option>
                 <option name="hitAttrCoverage" value="coverage">coverage</option>

@@ -25,9 +25,8 @@ document.getElementById('radioPrevSession').click();
 
 {% block content %}
 
-
 <!--Module buttons-->
-<div class="modules">
+<div class="modules centered">
     <button class="button moduleSelector" onclick="showModule(event,
     'searchModuleContent')">Search
     </button>
@@ -40,7 +39,6 @@ document.getElementById('radioPrevSession').click();
 <!--            onclick="showModule(event, 'extractModuleContent')">Extract-->
 <!--    </button>-->
 </div>
-<br/>
 
 <!--Module contents-->
 <div>
@@ -53,15 +51,15 @@ document.getElementById('radioPrevSession').click();
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
 
-        <label>
+        <label class="radioLabel">
         <input type="radio" value="fasta" checked="checked" id="radioFasta"
                name="inputType" onclick="showInputOptions('fasta')"/>FASTA</label>
-        <label>
+        <label class="radioLabel">
         <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
                name="inputType"
                onclick="showInputOptions('ncbi_entries')"/>NCBI entries
         </label>
-        <label>
+        <label class="radioLabel">
         <input type="radio" value="prev_session" id="radioPrevSession"
                name="inputType"
                 onclick="showInputOptions('prev_session')"/>Recompute
@@ -156,7 +154,7 @@ document.getElementById('radioPrevSession').click();
             <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
         </div>
         <div>
-            <label>
+            <label class="checkbox-label">
                 <input type="checkbox" id="requiredSequencesCheckbox"
                        name="requiredSequencesCheckbox"
                        onclick="toggleDisabled('requiredSequences')">Required sequences</input>
@@ -176,7 +174,7 @@ document.getElementById('radioPrevSession').click();
 
     <label class="fieldset-label" for="generalOptionSection">Additional options</label>
     <fieldset id="generalOptionSection">
-        <label>
+        <label class="checkbox-label">
             <input type="checkbox" id="sortClusters" name="sortClusters">Sort
                 clusters
             </input>
@@ -210,15 +208,15 @@ document.getElementById('radioPrevSession').click();
         <label class="fieldset-label" for="gneOptions">Extra options</label>
         <fieldset id="gneOptions">
             <div>
-                <label for="max_intergenic_distance">Max. intergenic distance</label>
+                <label class="input-label" for="max_intergenic_distance">Max. intergenic distance</label>
                 <input type="number" id="max_intergenic_distance" name="max_intergenic_distance" value="100000" required="required" step="1" min="0"/>
             </div>
             <div>
-                <label for="sample_number">Number of samples</label>
+                <label class="input-label" for="sample_number">Number of samples</label>
                 <input type="number" id="sample_number" name="sample_number" value="100" step="1" min="1" required="required"/>
             </div>
             <div>
-                <label for="sampling_space">Sampling space</label>
+                <label class="select-label" for="sampling_space">Sampling space</label>
                 <select class="select-options" name="sampling_space" id="sampling_space" required="required">
                     <option name="spaceLinear" value="linear">linear</option>
                     <option name="spaceLog" value="log">log</option>
@@ -239,7 +237,7 @@ document.getElementById('radioPrevSession').click();
         </fieldset>
         <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
         <fieldset id="clinkerAlignmentSection">
-            <label>
+            <label class="checkbox-label">
                 <input type="checkbox" name="noAlign"/>Don't align clusters
             </label>
             <div>
@@ -263,18 +261,18 @@ document.getElementById('radioPrevSession').click();
                 <input type="number" id="clinkerDecimals" name="clinkerDecimals" value="2" step="1" min="0"
                        required="required"/>
             </div>
-            <label>
+            <label class="checkbox-label">
             <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers</label>
 
             <div>
-            <label>
+            <label class="checkbox-label">
                 <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers</label>
 {#            {{ result_table('clinker', '') }}#}
             </div>
         </fieldset>
         <label class="fieldset-label" for="clinkerVisualiationSection">Additional options</label>
         <fieldset id="clinkerVisualiationSection">
-            <label>
+            <label class="checkbox-label">
             <input type="checkbox" name="useFileOrder"/>Maintain order of input files</label>
         </fieldset>
 
