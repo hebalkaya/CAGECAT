@@ -18,14 +18,15 @@
     <form action="/download-results/{{j_id}}" method="post"
           enctype="multipart/form-data" name="download_settings">
     <input name="job_id" type="hidden" value="{{j_id}}"/>
-    <select name="compression_type">
+    <select class="select-options" name="compression_type">
         {% for compr in compr_formats %}
         <option name="{{compr}}" value="{{compr}}">{{compr}}</option>
 
         {% endfor %}
     </select>
 <!--    <input name=""/>-->
-    <input type="submit" value="Download"/>
+    <label class="button enlarge" for="download-button"><i class="fa fa-download"><span> Download</span></i></label>
+    <input id="download-button" class="download-button" type="submit"></input>
     </form>
 
 <div>
@@ -105,8 +106,8 @@
 </ul>
 
 
-<div>
-    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} class="centered" height="600" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+<div class="centered">
+    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
 
 <hr/>

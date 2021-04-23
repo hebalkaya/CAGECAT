@@ -19,6 +19,7 @@ body{
     background-color: #6aabd7;
     font-size: 18px;
     padding: 2px 8px;
+    font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .button:hover {
@@ -384,6 +385,7 @@ ul.statuscorrect li {
 
 ul.statuscorrect > :first-child {
     border-radius: 5px 5px 0 0;
+    font-weight: bold;
 }
 
 ul.statuscorrect > :last-child {
@@ -393,4 +395,19 @@ ul.statuscorrect > :last-child {
 div.non-scrollable {
     /*TODO: make it nonscrollable*/
     /*top: 0;*/
+}
+
+.download-button {
+    display: none;
+}
+
+.enlarge {
+    transform: scale(1.4);
+
+    /*font-size: 18px;*/
+
+}
+
+i.fa.fa-download span {
+    font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
