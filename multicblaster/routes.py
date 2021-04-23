@@ -212,9 +212,14 @@ def show_result(job_id: str, pj=None) -> str: # parent_job should be
             return show_template("failed_job.xhtml", settings=settings,
                                  j_id=job_id, log_contents=log_contents)
         elif status == "queued" or status == "running":
+
+            if "pj" not in request.args:
+                pj = "null"
+            else:
+                pj = request.args["pj"]
+
             return show_template("status_page.xhtml", j_id=job_id,
-                                 parent_job=request.args["pj"],
-                                 status=status, settings=settings)
+                                 parent_job=pj, status=status, settings=settings)
         elif status == "waiting":
             return show_template("status_page.xhtml", j_id=job_id,
                                  status="waiting for preceding job to finish",
