@@ -13,7 +13,7 @@
 <!--        the job (job finished)-->
 
 {% block content %}
-    <div style="border-bottom: 2px solid #6aabd7">
+    <div style="border-bottom: 2px solid #5284a7">
     <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
 
     <form action="/download-results/{{j_id}}" method="post"
@@ -40,7 +40,7 @@
 
         {% if module in select_cluster_modules %}
             <div class="partly-height">
-            <div class="column leftColumn" style="border-bottom: 2px solid #6aabd7;border-bottom-right-radius: 5px;">
+            <div class="column leftColumn" style="border-bottom: 2px solid #5284a7;border-bottom-right-radius: 5px;">
 
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
