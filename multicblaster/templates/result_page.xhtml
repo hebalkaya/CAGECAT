@@ -38,7 +38,7 @@
 </div>
 
         {% if module in select_cluster_modules %}
-<hr/>
+            <div class="column leftColumn">
 <div>
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
@@ -91,6 +91,8 @@
     </form>
 </div>
 <br/>
+            </div>
+            <div class="column rightColumn">
 <label for="selectedQueriesOverview">Selected queries</label>
 <ul id="selectedQueriesOverview">
     <li>No queries selected</li>
@@ -104,13 +106,14 @@
 <ul id="selectedReferenceCluster">
     <li>No reference cluster selected</li>
 </ul>
+            </div>
 
 
 <div class="centered">
     <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
 
-<hr/>
+
 
         {% endif %}
 

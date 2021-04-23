@@ -205,11 +205,12 @@ label.disabled, label.disabled:hover{
 }
 
 iframe {
+    margin: 30px;
     background: white;
     border: 1px solid #555555;
     border-radius: 2px;
     width: 90%;
-    margin: auto;
+    /*margin: auto;*/
 }
 
 .file-upload-lbl{
