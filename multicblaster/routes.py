@@ -213,6 +213,7 @@ def show_result(job_id: str, pj=None) -> str: # parent_job should be
                                  j_id=job_id, log_contents=log_contents)
         elif status == "queued" or status == "running":
             return show_template("status_page.xhtml", j_id=job_id,
+                                 parent_job=request.args["pj"],
                                  status=status, settings=settings)
         elif status == "waiting":
             return show_template("status_page.xhtml", j_id=job_id,
