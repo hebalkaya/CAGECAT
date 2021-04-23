@@ -46,38 +46,38 @@
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
         <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
-        <button type="submit">Extract sequences</button>
+        <button class="button button-small" type="submit">Extract sequences</button>
     </form>
 
     <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
-        <button type="submit">Extract clusters</button>
+        <button class="button button-small" type="submit">Extract clusters</button>
     </form>
 
 
     <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
-        <button type="submit">Visualize with query clusters</button>
+        <button class="button button-small" type="submit">Visualize with query clusters</button>
     </form>
 
 
 
 
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visualize everything</button></a>
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>
 
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button>Recompute</button></a>
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button class="button button-small">Recompute</button></a>
 
 
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button>Neighbourhood</button></a>
+    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button class="button button-small">Neighbourhood</button></a>
 
     <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
         <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>
         <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>
-        <button type="submit" id="corasonSubmit" disabled="disabled">Use CORASON</button>
+        <button class="button button-small" type="submit" id="corasonSubmit" disabled="disabled">Use CORASON</button>
     </form>
 
 

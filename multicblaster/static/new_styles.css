@@ -190,11 +190,11 @@ input[type="file"] {
     position: absolute; /* don't let it take up space */
 }
 
-input:disabled, textarea:disabled, label.disabled, select:disabled {
+input:disabled, textarea:disabled, label.disabled, select:disabled, form button:disabled {
     cursor: not-allowed;
 }
 
-label.disabled, label.disabled:hover{
+label.disabled, label.disabled:hover, form button:disabled.hover{
     background-color: #cccccc;
 }
 
@@ -232,11 +232,15 @@ iframe {
     background-color: #304f63;;
 }
 
+form button:disabled, form button:disabled:hover {
+    background-color: #cccccc;
+}
+
 .file-upload-lbl:disabled{
     background-color: inherit;
-
 }
-.file-upload-lbl.disabled{
+
+.file-upload-lbl.disabled, form button:disabled{
     border-color: #afafaf;
 }
 
@@ -364,6 +368,7 @@ table {
 .important-row {
     border: 2px solid black;
     border-radius: 20px 20px 0 0 ;
+    border-radius: 20px 20px 0 0 ;
 }
 
 
@@ -413,5 +418,16 @@ i.fa.fa-download span {
     font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.partly-height {
+/*div.column.leftColumn form button, div.column.leftColumn a button {*/
+/*    color: red;*/
+/*}*/
+
+.button-small {
+    margin: 5px;
+    font-size: 15px;
+    width: 90%;
+}
+
+.nopadding {
+    padding: 0;
 }
