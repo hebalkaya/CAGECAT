@@ -13,6 +13,7 @@
 <!--        the job (job finished)-->
 
 {% block content %}
+    <div style="border-bottom: 2px solid #6aabd7">
     <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
 
     <form action="/download-results/{{j_id}}" method="post"
@@ -29,24 +30,24 @@
     <input id="download-button" class="download-button" type="submit"></input>
     </form>
 
-<div>
-<label>
+
+<label class="checkbox-label">
     <input onclick="toggleElementVisibility('logSection')" type="checkbox"/>Show log</label>
-</div>
 <div id="logSection" style="display: none">
     <p class="log">{{log_contents|safe}}</p>
 </div>
+    </div>
 
         {% if module in select_cluster_modules %}
+            <div class="partly-height">
             <div class="column leftColumn">
-<div>
+
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
         <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
         <button type="submit">Extract sequences</button>
     </form>
-    <br/>
 
     <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
@@ -54,34 +55,23 @@
         <button type="submit">Extract clusters</button>
     </form>
 
-</div>
-<br/>
 
-    <div>
     <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
         <button type="submit">Visualize with query clusters</button>
     </form>
 
-    </div>
-            <br/>
 
-<div>
+
+
     <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button>Visualize everything</button></a>
-</div>
-            <br/>
-<div>
+
     <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button>Recompute</button></a>
-</div>
-            <br/>
-<div>
+
+
     <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button>Neighbourhood</button></a>
-</div>
-            <br/>
-<div>
-</div>
-<div>
+
     <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
@@ -89,8 +79,8 @@
         <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>
         <button type="submit" id="corasonSubmit" disabled="disabled">Use CORASON</button>
     </form>
-</div>
-<br/>
+
+
             </div>
             <div class="column rightColumn">
 <label for="selectedQueriesOverview">Selected queries</label>
@@ -107,13 +97,12 @@
     <li>No reference cluster selected</li>
 </ul>
             </div>
+            </div>
 
-
-<div class="centered">
+{#            TODO: center the iframe and still be able to click the downstream buttons#}
+<div>
     <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
-
-
 
         {% endif %}
 
