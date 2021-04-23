@@ -40,7 +40,7 @@
 
         {% if module in select_cluster_modules %}
             <div class="partly-height">
-            <div class="column leftColumn">
+            <div class="column leftColumn" style="border-bottom: 2px solid #6aabd7;border-bottom-right-radius: 5px;">
 
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>

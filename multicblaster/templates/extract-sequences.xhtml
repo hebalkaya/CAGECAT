@@ -22,16 +22,13 @@
                     <input type="text" id="outputDelimiter" name="outputDelimiter" maxlength="1"/>
                 </div>
                 <div>
-                    <label><input type="checkbox" name="downloadSeqs"/>Download sequences</label>
+                    <label class="checkbox-label"><input type="checkbox" name="downloadSeqs"/>Download sequences</label>
                 </div>
                 <div>
-                    <label><input type="checkbox" name="nameOnly" onclick="toggleDisabled('outputDelimiter')"/>Name only</label>
+                    <label class="checkbox-label"><input type="checkbox" name="nameOnly" onclick="toggleDisabled('outputDelimiter')"/>Name only</label>
                 </div>
             </fieldset>
-        <br/>
-            <div>
                 <button type="submit">Extract!</button>
-            </div>
     </form>
 </div>
 {% endblock %}
