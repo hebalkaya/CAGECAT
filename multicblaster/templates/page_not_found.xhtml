@@ -1,8 +1,14 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}
         Oops...
 {% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('') }}
+{% endblock %}
+
 {% block content %}
     <p class="error-message">The page you tried to reach was not found</p>
 

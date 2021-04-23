@@ -1,7 +1,12 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import filtering_section %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}clinker query{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('post-analysis') }}
+{% endblock %}
 
 {% block content %}
     <form action="{{ submit_url }}" method="post">

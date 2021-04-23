@@ -1,6 +1,10 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import create_scientific_input %}
+{% from "macros.xhtml" import showNavigationBar %}
 
+{% block navigationBar %}
+    {{ showNavigationBar('post-analysis') }}
+{% endblock %}
         {% block title %}
         Job status
         {% endblock %}

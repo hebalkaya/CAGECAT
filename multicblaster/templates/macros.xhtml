@@ -160,6 +160,7 @@
 <ul class="nav">
     <li><a {{ '' if page != 'home' else 'class=active' }} href="{{url_for('home_page')}}">Home</a></li>
     <li><a {{ '' if page != 'results' else 'class=active' }} href="{{url_for('result_from_job_id')}}">Results</a></li>
+    <li><a {{ '' if page != 'post-analysis' else 'class=active' }} href="{{ url_for('post_analysis_explanation') }}">Post-analysis</a></li>
     <li class="right-nav"><a {{ '' if page != 'help' else 'class=active' }} href="{{ url_for('help_page') }}">Help</a></li>
 </ul>
 </div>

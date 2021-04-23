@@ -373,6 +373,10 @@ def clinker_query() -> str:
                          selected_scaffolds=selected_scaffolds,
                          selected_clusters= clusters)
 
+@app.route("/downstream")
+def post_analysis_explanation() -> str:
+    return show_template("post_analysis_explanation.xhtml")
+
 @app.route("/help")
 def help_page():
     # TODO: actually create
