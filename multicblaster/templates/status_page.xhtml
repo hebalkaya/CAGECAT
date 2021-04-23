@@ -1,7 +1,13 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import show_options %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}Status: {{j_id}}{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('results') }}
+{% endblock %}
+
 {% block content %}
 <p>Job <span id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 

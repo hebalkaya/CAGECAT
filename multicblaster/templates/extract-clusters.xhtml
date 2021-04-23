@@ -1,7 +1,12 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import filtering_section %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}Extract clusters{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('') }}
+{% endblock %}
 
 {% block content %}
 <form action="{{submit_url}}" method="post">
@@ -11,14 +16,14 @@
 
     {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}
 
-    <label for="outputSection">Output</label>
+    <label class="fieldset-label" for="outputSection">Output</label>
     <fieldset id="outputSection">
         <div>
-            <label for="prefix">Prefix</label>
+            <label class="input-label" for="prefix">Prefix</label>
             <input type="text" id="prefix" name="prefix" maxlength="15"/>
         </div>
         <div>
-            <label for="format">Format</label>
+            <label class="select-label" for="format">Format</label>
             <select name="format" id="format" required="required">
                 <option value="genbank">Genbank</option>
                 <option value="bigscape">BiG-SCAPE</option>

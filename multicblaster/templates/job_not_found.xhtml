@@ -1,6 +1,11 @@
 {% extends "base.xhtml" %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}Not found{% endblock %}
+{% block navigationBar %}
+    {{ showNavigationBar('results') }}
+{% endblock %}
+
 {% block content %}
 
 <p>Job {{job_id}} was not found in the database.</p>

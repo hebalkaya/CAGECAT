@@ -1,7 +1,12 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import filtering_section %}
+{% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}Extract sequences{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('') }}
+{% endblock %}
 
 {% block content %}
 <div>
@@ -10,10 +15,10 @@
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
         {{ filtering_section('sequences', selected_scaffolds, selected_queries) }}
         <br/>
-            <label for="outputSection">Output</label>
+            <label class="fieldset-label" for="outputSection">Output</label>
             <fieldset id="outputSection">
                 <div>
-                    <label for="outputDelimiter">Delimiter</label>
+                    <label class="input-label" for="outputDelimiter">Delimiter</label>
                     <input type="text" id="outputDelimiter" name="outputDelimiter" maxlength="1"/>
                 </div>
                 <div>
