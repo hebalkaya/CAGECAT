@@ -32,7 +32,8 @@ def cblaster_search(job_id, options=None, file_path=None):
     # create the base command, with all required fields
     cmd = ["cblaster", "search",
            "--output", os.path.join(RESULTS_PATH, f"{job_id}_summary.txt"),
-           "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
+           "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
+           "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt")]
 
     # add input options
     input_type = options["inputType"]
@@ -105,6 +106,13 @@ def cblaster_search(job_id, options=None, file_path=None):
     # add additional options
     if "sortClusters" in options:
         cmd.append("--sort_clusters")
+
+    # add intermediate genes options
+    if "intermediate_genes" in options:
+        cmd.extend(["--intermediate_genes",
+                "--max_distance", options["intermediate_max_distance"],
+                "--maximum_clusters", options["intermediate_max_clusters"],
+                "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)

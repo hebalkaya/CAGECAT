@@ -106,7 +106,10 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "clinkerDecimals": "Decimals",
                       "hideLinkHeaders": "Hide alignment column headers",
                       "hideAlignHeaders": "Hide alignment cluster name headers",
-                      "useFileOrder": "Maintain order of input files"
+                      "useFileOrder": "Maintain order of input files",
+                      "intermediate_genes": "Show intermediate genes",
+                      "intermediate_max_distance": "Max. distance between cluster and intermediate gene",
+                      "intermediate_max_clusters": "Max. amount of clusters to search intermediate genes for"
                       }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
@@ -188,13 +191,11 @@ def get_server_info(q: rq.Queue, redis_conn: redis.Redis) \
     queued = len(q)
     running = len(start_registry)
 
-    if queued == 0:
-        if running == 0:
-            status = "idle"
-        else:
-            status = "running"
+
+    if running == 0:
+        status = "idle"
     else:
-        status = "waiting"
+        status = "running"
 
     return {"server_status": status,
             "queued": queued,

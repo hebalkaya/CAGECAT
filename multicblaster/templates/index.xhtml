@@ -80,7 +80,6 @@ document.getElementById('radioPrevSession').click();
     {{ prev_session('search', false, prev_run_id, false) }}
 
 </fieldset>
-    <br/>
 
     <label class="fieldset-label" for="searchSection">Search</label>
 <fieldset id="searchSection">
@@ -106,7 +105,6 @@ document.getElementById('radioPrevSession').click();
                value="5000"/>
     </div>
 </fieldset>
-    <br/>
     <label class="fieldset-label" for="filteringSection">Filtering</label>
 <fieldset id="filteringSection">
     <div>
@@ -128,7 +126,6 @@ document.getElementById('radioPrevSession').click();
 
 </fieldset>
 
-    <br/>
     <label class="fieldset-label" for="clusteringSection">Clustering</label>
     <fieldset id="clusteringSection">
         <div>
@@ -165,11 +162,8 @@ document.getElementById('radioPrevSession').click();
             </div>
         </div>
     </fieldset>
-    <br/>
     {{ result_table('search', "Sum") }}
-    <br/>
     {{ result_table('search', "Bin") }}
-    <br/>
 
     <label class="fieldset-label" for="generalOptionSection">Additional options</label>
     <fieldset id="generalOptionSection">
@@ -185,7 +179,21 @@ document.getElementById('radioPrevSession').click();
 <!--        </label>-->
     </fieldset>
 
-    <br/>
+    <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
+    <fieldset id="intermediateGenesSection">
+
+        <label class="checkbox-label">
+            <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes</label>
+        <div>
+            <label class="input-label" for="intermediate_max_distance">Max. distance</label>
+            <input type="number" min="0" value="5000" disabled="disabled" id="intermediate_max_distance" name="intermediate_max_distance"/>
+        </div>
+        <div>
+            <label class="input-label" for="intermediate_max_clusters">Max. clusters</label>
+            <input type="number" min="1" max="250" value="100" disabled="disabled" id="intermediate_max_clusters" name="intermediate_max_clusters"/>
+        </div>
+    </fieldset>
+
     <input type="submit" id="submitSearchForm" value="Submit"/>
 
     </form>
@@ -200,10 +208,9 @@ document.getElementById('radioPrevSession').click();
         <fieldset id="gneInputSection">
         {{ prev_session('gne', true, prev_run_id, false) }}
         </fieldset>
-{#        <br/>#}
 
         {{ result_table('gne', 'Sum') }}
-        <br/>
+
         <label class="fieldset-label" for="gneOptions">Extra options</label>
         <fieldset id="gneOptions">
             <div>
@@ -222,7 +229,7 @@ document.getElementById('radioPrevSession').click();
                 </select>
             </div>
         </fieldset>
-        <br/>
+
         <input type="submit" class="submit_button" id="submitGNEForm"  value="Run"/>
     </form>
 </div>

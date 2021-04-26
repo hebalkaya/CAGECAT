@@ -55,14 +55,17 @@ function toggleElementVisibility(id) {
     }
 }
 
-function toggleDisabled(id){
-    var elem = document.getElementById(id);
+function toggleDisabled(){
+    for (let i=0; i< arguments.length; i++){
+        var id = arguments[i];
+        var elem = document.getElementById(id);
 
-    if (elem.disabled === false){
-        removeRequiredAndEnabled(id);
-    }
-    else {
-        setRequiredAndEnabled(id);
+        if (elem.disabled === false){
+            removeRequiredAndEnabled(id);
+        }
+        else {
+            setRequiredAndEnabled(id);
+        }
     }
 }
 
