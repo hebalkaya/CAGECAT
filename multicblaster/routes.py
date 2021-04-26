@@ -198,12 +198,13 @@ def show_result(job_id: str, pj=None) -> str: # parent_job should be
             with open(os.path.join(ut.JOBS_DIR, job_id, "logs",
                                    f"{job_id}_{program}.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
-
+            print(ut.get_available_downstream_modules(module))
             return show_template("result_page.xhtml", j_id=job_id,
-                 status=status, compr_formats=ut.COMPRESSION_FORMATS,
-                 plot_contents=plot_contents, module=module,
-                 select_cluster_modules=ut.MODULES_CLUSTER_SELECTION,
-                 log_contents=log_contents)
+                                 status=status, compr_formats=ut.COMPRESSION_FORMATS,
+                                 plot_contents=plot_contents, module=module,
+                                 select_cluster_modules=ut.MODULES_WHICH_HAVE_PLOTS,
+                                 log_contents=log_contents,
+                                 downstream_modules=ut.get_available_downstream_modules(module))
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:

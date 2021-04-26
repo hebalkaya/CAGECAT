@@ -34,7 +34,7 @@ INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
                             ("gne", "recompute")]
 INVALID_JOB_COMBINATIONS = [] # TODO: update when we found the invalid combinations
 
-MODULES_CLUSTER_SELECTION = ["search", "recompute", "gne",
+MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
                              "clinker_full", "clinker_query"] # TODO: add gne?
 # TODO: really check if above combinations are not valid, and document what
 # kind of errors they produce
@@ -396,6 +396,25 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         # TODO: should create template
         # TODO: can maybe be removed as not all module buttons are available anymore from every job_type
         raise NotImplementedError(f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
+
+
+def get_available_downstream_modules(module):
+    available_modules = []
+    if module == "search":
+        available_modules.append("recompute")
+
+    if module in ("search", "recompute"):
+        available_modules.extend(["gne", "extract_sequences",
+                                  "extract_clusters", "corason",
+                                  "clinker_full", "clinker_query"])
+
+    if module == "extract_clusters":
+        available_modules.extend(["corason", "clinker_full", "clinker_query"])
+
+    if module in ("clinker_full", "clinker_query"):
+        available_modules.append("extract_clusters")
+    # TODO: for corason
+    return available_modules
 
 # Below are experimental functions
 def handle_soft_interrupt(signalNumber, frame):

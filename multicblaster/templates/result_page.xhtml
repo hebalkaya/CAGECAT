@@ -2,7 +2,7 @@
 {% from "macros.xhtml" import showNavigationBar %}
 
 {% block title %}
-    Job status
+    Status: {{ status }}
 {% endblock %}
 
 {% block navigationBar %}
@@ -41,13 +41,15 @@
         {% if module in select_cluster_modules %}
             <div class="partly-height">
             <div class="column leftColumn" style="border-bottom: 2px solid #5284a7;border-bottom-right-radius: 5px;">
-
+    {% if 'extract_sequences' in downstream_modules %}
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
         <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
         <button class="button button-small" type="submit">Extract sequences</button>
     </form>
+        {% endif %}
+
 
     <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
