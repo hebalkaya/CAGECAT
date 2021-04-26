@@ -58,7 +58,7 @@
             <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button class="button button-small">Neighbourhood</button></a>
         {% endif %}
 
-                {% if 'extract_sequences' in downstream_modules %}
+        {% if 'extract_sequences' in downstream_modules %}
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
@@ -67,15 +67,15 @@
     </form>
         {% endif %}
 
-                {% if 'extract_clusters' in downstream_modules %}
+        {% if 'extract_clusters' in downstream_modules %}
     <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
         <button class="button button-small" type="submit">Extract clusters</button>
     </form>
-                {% endif %}
+        {% endif %}
 
-                {% if 'corason' in downstream_modules %}
+        {% if 'corason' in downstream_modules %}
     <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
@@ -83,7 +83,7 @@
         <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>
         <button class="button button-small" type="submit" id="corasonSubmit" disabled="disabled">Use CORASON</button>
     </form>
-                {% endif %}
+        {% endif %}
 
         {% if 'recompute' in downstream_modules %}
             <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button class="button button-small">Recompute</button></a>
@@ -110,7 +110,8 @@
 {#            TODO: center the iframe and still be able to click the downstream buttons#}
     {% if module in modules_with_plots %}
 <div>
-    <iframe {{'onload=loadedIframe(this)' if module in modules_with_plots}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+{#TODO: lazy loading doesnt work yet#}
+    <iframe loading="lazy" {{'onload=loadedIframe(this)' if module in ['search', 'recompute']}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
 
         {% endif %}
