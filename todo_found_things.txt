@@ -1,5 +1,0 @@
-when a cluster is left-clicked, it disappears. after resetting using button the eventlistener is gone
-use corason button is disabled when no cluster is selected, while no cluster selected means: use all clusters at extract_clusters
-no regex pattern at extract-clusters - scaffolds
-entering scaffolds only makes sense when they are changed (so not left unchanged). otherwise the result is the same as entering no scaffolds
-when a function fails to execute properly, its status is not set to failed, but still: "running"

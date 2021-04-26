@@ -504,7 +504,7 @@ def prepare_finished_result(job_id: str,
         program = "cblaster"
         plot_contents = None
 
-    elif module == "search" or module == "recompute":
+    elif module == "search" or module == "recompute" or module == "gne":
         program = "cblaster"
         with open(plot_path) as inf:
             plot_contents = inf.read()

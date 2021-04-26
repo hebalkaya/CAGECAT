@@ -32,8 +32,9 @@ INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
                             ("gne", "gne"),
                             ("recompute", "gne"),
                             ("gne", "recompute")]
+INVALID_JOB_COMBINATIONS = [] # TODO: update when we found the invalid combinations
 
-MODULES_CLUSTER_SELECTION = ["search", "recompute",
+MODULES_CLUSTER_SELECTION = ["search", "recompute", "gne",
                              "clinker_full", "clinker_query"] # TODO: add gne?
 # TODO: really check if above combinations are not valid, and document what
 # kind of errors they produce
@@ -393,6 +394,7 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
     if (fetch_job_from_db(prev_job_id).job_type, job_type) in \
             INVALID_JOB_COMBINATIONS:
         # TODO: should create template
+        # TODO: can maybe be removed as not all module buttons are available anymore from every job_type
         raise NotImplementedError(f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
 
 # Below are experimental functions

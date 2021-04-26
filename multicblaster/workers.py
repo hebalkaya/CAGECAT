@@ -47,7 +47,7 @@ def cblaster_search(job_id, options=None, file_path=None):
     elif input_type == "prev_session":
         recompute = True
         cmd.extend(["--recompute",
-                    os.path.join(RESULTS_PATH, f"{job_id}_recomputed.json")])
+                    os.path.join(RESULTS_PATH, f"{job_id}_session.json")])
         session_path = file_path
 
     else:  # future input types and prev_session
