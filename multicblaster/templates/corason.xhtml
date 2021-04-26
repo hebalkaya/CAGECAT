@@ -15,37 +15,37 @@
         <input type="hidden" name="job_type" value="corason"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
-        <label for="inputSection">Input</label>
+        <label class="fieldset-label" for="inputSection">Input</label>
         <fieldset id="inputSection">
             <div>
-                <label for="selectedQuery">Query</label>
+                <label class="input-label" for="selectedQuery">Query</label>
                 <input type="text" id="selectedQuery" name="selectedQuery" required="required" value="{{query}}"/>
             </div>
             <div>
-                <label for="selectedReferenceCluster">Reference cluster</label>
+                <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>
                 <input type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>
             </div>
 
             <div>
-                <label for="selectedClustersToSearch">Selected clusters</label>
+                <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
                 <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>
             </div>
 
         </fieldset>
 
         <br/>
-        <label for="optionsSection">Options</label>
+        <label class="fieldset-label" for="optionsSection">Options</label>
         <fieldset id="optionsSection">
 
             {{ create_scientific_input('e-value', 'Evalue', -15) }}
 
             <div>
-                <label>Bitscore
+                <label class="checkbox-label">Bitscore
                     <input type="checkbox" name="bitscore"/>
                 </label>
             </div>
             <div>
-                <label for="clusterRadio">Cluster radio?</label>
+                <label class="input-label" for="clusterRadio">Cluster radio?</label>
                 <input type="number" value="10" id="clusterRadio" name="clusterRadio" required="required"/>
             <div>
 
@@ -55,11 +55,11 @@
 {#            Intentionally no list. See workers.py function corason#}
 
             <div>
-                <label for="rescale">Rescale</label>
+                <label class="input-label" for="rescale">Rescale</label>
                 <input type="number" id="rescale" name="rescale" value="85000" step="1" required="required"/>
             </div>
             <div>
-                <label for="antismashFile">Antismash file</label>
+                <label class="file-upload-lbl" for="antismashFile">Antismash file</label>
                 <input type="file" name="antismashFile" id="antismashFile"/>
             </div>
 

@@ -176,6 +176,10 @@ p.server-status {
     font-weight: bold;
 }
 
+.textarea-label {
+    color: darkcyan;
+}
+
 /*.hidden {*/
 /*    display: none;*/
 /*}*/
