@@ -41,8 +41,8 @@ def home_page(prev_run_id: str = None) -> str:
     can enter previous job IDs are pre-filled with the given job ID
     """
 
-    # print(request.args["type"] if
-    #       "type" in request.args else None)
+    print(request.args["type"] if
+          "type" in request.args else None)
     return show_template("index.xhtml", submit_url=ut.SUBMIT_URL,
                          prev_run_id=prev_run_id,
                          module_to_show=request.args["type"] if
@@ -93,7 +93,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         f = rf.cblaster_extract_sequences
 
         prev_job_id = request.form["prev_job_id"]
-        file_path = create_correct_filepath(prev_job_id)
+        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                 f"{prev_job_id}_session.json")
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
     elif job_type == "extract_clusters":
@@ -439,25 +440,18 @@ def get_previous_job_properties(job_id: str, job_type: str,
     """
     file_type = request.form[f"{module}PreviousType"]
     if file_type == "jobID":
-
         prev_job_id = request.form[f"{module}EnteredJobId"]
 
         ut.check_valid_job(prev_job_id, job_type)
-        file_path = create_correct_filepath(prev_job_id)
+
+        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                 f"{prev_job_id}_session.json")
     elif file_type == "sessionFile":
         file_path = ut.save_file(
             request.files[f"{module}UploadedSessionFile"], job_id)
     else:
         raise IOError("Not valid file type")
 
-    return file_path
-
-
-def create_correct_filepath(prev_job_id):
-    suffix = "recomputed" if ut.fetch_job_from_db(prev_job_id).job_type == "recompute" else "session"
-
-    file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                             f"{prev_job_id}_{suffix}.json")
     return file_path
 
 
@@ -510,7 +504,7 @@ def prepare_finished_result(job_id: str,
         program = "cblaster"
         plot_contents = None
 
-    elif module == "search" or module == "recompute" or module == "gne":
+    elif module == "search" or module == "recompute":
         program = "cblaster"
         with open(plot_path) as inf:
             plot_contents = inf.read()
