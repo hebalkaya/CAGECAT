@@ -38,10 +38,27 @@
 </div>
     </div>
 
-        {% if module in select_cluster_modules %}
+{% if downstream_modules %}
             <div class="partly-height">
             <div class="column leftColumn" style="border-bottom: 2px solid #5284a7;border-bottom-right-radius: 5px;">
-    {% if 'extract_sequences' in downstream_modules %}
+
+        {% if 'clinker_query' in downstream_modules %}
+            <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
+                <input type="hidden" name="job_id" value="{{j_id}}"/>
+                <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
+                <button class="button button-small" type="submit">Visualize with query clusters</button>
+            </form>
+        {% endif %}
+
+        {% if 'clinker_full' in downstream_modules %}
+            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>
+        {% endif %}
+
+        {% if 'gne' in downstream_modules %}
+            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button class="button button-small">Neighbourhood</button></a>
+        {% endif %}
+
+                {% if 'extract_sequences' in downstream_modules %}
     <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
@@ -50,30 +67,15 @@
     </form>
         {% endif %}
 
-
+                {% if 'extract_clusters' in downstream_modules %}
     <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
         <button class="button button-small" type="submit">Extract clusters</button>
     </form>
+                {% endif %}
 
-
-    <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
-        <input type="hidden" name="job_id" value="{{j_id}}"/>
-        <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
-        <button class="button button-small" type="submit">Visualize with query clusters</button>
-    </form>
-
-
-
-
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>
-
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button class="button button-small">Recompute</button></a>
-
-
-    <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button class="button button-small">Neighbourhood</button></a>
-
+                {% if 'corason' in downstream_modules %}
     <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
@@ -81,7 +83,11 @@
         <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>
         <button class="button button-small" type="submit" id="corasonSubmit" disabled="disabled">Use CORASON</button>
     </form>
+                {% endif %}
 
+        {% if 'recompute' in downstream_modules %}
+            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button class="button button-small">Recompute</button></a>
+        {% endif %}
 
             </div>
             <div class="column rightColumn">
@@ -100,10 +106,11 @@
 </ul>
             </div>
             </div>
-
+    {% endif %}
 {#            TODO: center the iframe and still be able to click the downstream buttons#}
+    {% if module in modules_with_plots %}
 <div>
-    <iframe {{'onload=loadedIframe(this)' if module in select_cluster_modules}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+    <iframe {{'onload=loadedIframe(this)' if module in modules_with_plots}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
 </div>
 
         {% endif %}

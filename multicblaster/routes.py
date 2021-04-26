@@ -202,7 +202,7 @@ def show_result(job_id: str, pj=None) -> str: # parent_job should be
             return show_template("result_page.xhtml", j_id=job_id,
                                  status=status, compr_formats=ut.COMPRESSION_FORMATS,
                                  plot_contents=plot_contents, module=module,
-                                 select_cluster_modules=ut.MODULES_WHICH_HAVE_PLOTS,
+                                 modules_with_plots=ut.MODULES_WHICH_HAVE_PLOTS,
                                  log_contents=log_contents,
                                  downstream_modules=ut.get_available_downstream_modules(module))
         elif status == "failed":

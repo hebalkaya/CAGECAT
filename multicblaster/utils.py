@@ -399,6 +399,11 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
 
 
 def get_available_downstream_modules(module):
+    """TODO
+
+    :param module:
+    :return:
+    """
     available_modules = []
     if module == "search":
         available_modules.append("recompute")
@@ -413,7 +418,10 @@ def get_available_downstream_modules(module):
 
     if module in ("clinker_full", "clinker_query"):
         available_modules.append("extract_clusters")
-    # TODO: for corason
+
+    # at the moment, corason has no downstream modules. Downstream modules
+    # can be added here when that becomes the case
+
     return available_modules
 
 # Below are experimental functions
