@@ -387,7 +387,7 @@ def post_analysis_explanation() -> str:
 @app.route("/help")
 def help_page():
     # TODO: actually create
-    return "Help page"
+    return show_template("help.xhtml")
 
 
 # Error handlers

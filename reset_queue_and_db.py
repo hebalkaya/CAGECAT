@@ -31,6 +31,7 @@ while result not in ("y", "n", "yes", "no"):
             for job_id in reg.get_job_ids():
                 print(f"Deleted job {job_id} from the {reg}")
                 reg.remove(job_id, delete_job=True)
+
     elif result in ("n", "no"):
         print("Nothing has been emptied or removed. Exiting..")
 
