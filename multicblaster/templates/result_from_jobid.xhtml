@@ -8,9 +8,11 @@
 {% endblock %}
 
 {% block content %}
+    <h2>Enter your job ID</h2>
+    <p>Show the status or results of a previously submitted job.</p>
 <div>
     <form method="post" action="/results">
-        <input type="text" value="E739O929N455T90" placeholder="E739O929N455T90" name="job_id" onfocusout="validateJobID()"/>
+        <input type="text" placeholder="A123B456C789D01" name="job_id" onfocusout="validateJobID()" maxlength="15" size="15"/>
         <input type="submit" class="submit_button" value="Show"/>
     </form>
 </div>

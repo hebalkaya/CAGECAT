@@ -31,8 +31,8 @@
         </div>
         <label class="input-label" for="{{ '%sEnteredJobId' % module }}">Previous job
             ID</label>
-        <input type="text" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
-               placeholder="AAAAA" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
+        <input type="text"  id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
+               placeholder="A123B456C789D01" size="15" maxlength="15" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
 
         <span>or</span>
         <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ '%sUploadedSessionFile' % module }}">
@@ -47,19 +47,19 @@
     <label class="fieldset-label"  for="{{ '%s%sTableSection' % (module, type) }}">
         {{ 'Summary table' if type == 'Sum' else 'Binary table'}}</label>
     <fieldset id="{{ '%s%sTableSection' % (module, type) }}">
-        <div>
+        <div class="input-layer">
             <label class="input-label"
                    for="{{ '%s%sTableDelim' % (module, type) }}">Delimiter</label>
-            <input type="text"
+            <input class="short" type="text"
                    id="{{ '%s%sTableDelim' % (module, type) }}"
-                   name="{{ '%s%sTableDelim' % (module, type) }}" maxlength="1"/>
+                   name="{{ '%s%sTableDelim' % (module, type) }}" size="1" maxlength="1"/>
         </div>
-        <div>
+        <div class="input-layer">
             <label class="input-label"
                    for="{{ '%s%sTableDecimals' % (module, type) }}">Decimal places</label>
-            <input type="number"
+            <input class="short"  type="number"
                    id="{{ '%s%sTableDecimals' % (module, type) }}"
-                   name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0"
+                   name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0" max="9"
                    required="required"/>
         </div>
         <div>
@@ -71,7 +71,7 @@
         </div>
 
         {% if type == 'Bin' %}
-        <div>
+        <div class="input-layer">
             <label class="select-label" for="keyFunction">Key function</label>
                 <select class="select-options" name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
                     <option name="functionLen" value="len">len</option>
@@ -80,7 +80,7 @@
                 </select>
         </div>
 
-        <div>
+        <div class="input-layer">
             <label class="select-label" for="hitAttribute">Hit attribute</label>
             <select class="select-options" name="hitAttribute" id="hitAttribute" disabled="disabled">
                 <option name="hitAttrIdentity" value="identity">identity</option>

@@ -174,6 +174,7 @@ p.server-status {
     margin-left: 0.5%;
     color: red;
     font-weight: bold;
+    vertical-align: middle;
 }
 
 .textarea-label {
@@ -296,7 +297,7 @@ label input[type="radio"]{
 }
 
 input[type="number"], input[type="text"]{
-
+    display: inline-block;
 }
 
 /*.fieldset-label:after{*/
@@ -434,4 +435,50 @@ i.fa.fa-download span {
 
 .nopadding {
     padding: 0;
+}
+
+div.input-layer {
+    display: table;
+    width: 25%;
+}
+
+
+div.input-layer label{
+    float: left
+}
+div.input-layer input, div.input-layer select{
+    float: right
+}
+
+div.input-layer input[type="number"]{
+    width: 23%;
+    direction: rtl;
+}
+
+div.input-layer input[type="number"].short, div.input-layer input[type="text"].short {
+    width: 10%;
+}
+
+div.input-layer select {
+    width: 28%;
+}
+
+input, div.input-layer select{
+    padding: 2px;
+}
+div.input-layer{
+    margin-left: 1%;
+}
+
+div.input-layer label {
+    margin-top: 6px;
+    /*TODO: change that it is automatically aligned. not using px*/
+}
+
+#entrez_query{
+    width: 50%;
+
+}
+#database_type {
+    width: 40%;
 }
