@@ -109,30 +109,30 @@
 <div>
 <label class="fieldset-label" for="filteringSection">Filtering</label>
 <fieldset id="filteringSection">
-    <div>
+    <div class="input-layer">
         <label class="input-label" for="selectedOrganisms">Organisms</label>
-        <input type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
+        <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
     </div>
-    <div>
-        <label class="input-label" for="selectedScaffolds">Scaffolds</label>
+    <div class="input-layer">
+        <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>
         <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
     </div>
 
     {% if extraction_type == 'sequences' %}
-    <div>
-        <label class="input-label" for="selectedQueries">Queries</label>
-        <textarea cols="20" rows="8" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
+    <div class="input-layer">
+        <label class="textarea-label" for="selectedQueries">Queries</label>
+        <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
     </div>
     {% elif extraction_type == 'clusters' %}
-    <div>
+    <div class="input-layer">
         <label class="input-label" for="clusterNumbers">Clusters</label>
         <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
 <!--        TODO: add pattern for clusternumbers (either separated by space or via stripes)-->
 <!--        TODO: check if 1-3 and 6-8 works-->
-        <div>
-            <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
-            <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
-        </div>
+    </div>
+    <div class="input-layer">
+        <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
+        <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
     </div>
 
     {% endif %}

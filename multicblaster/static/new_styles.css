@@ -264,7 +264,7 @@ fieldset {
 
 textarea {
     resize: none;
-    margin: 4px;
+    margin: 3px;
     font-size: 15px;
 }
 
@@ -446,7 +446,7 @@ div.input-layer {
 div.input-layer label{
     float: left
 }
-div.input-layer input, div.input-layer select{
+div.input-layer input, div.input-layer select, div.input-layer textarea{
     float: right
 }
 
@@ -475,10 +475,15 @@ div.input-layer label {
     /*TODO: change that it is automatically aligned. not using px*/
 }
 
-#entrez_query{
+.bigger {
     width: 50%;
-
 }
+
 #database_type {
     width: 40%;
+}
+
+
+#outputSectionExtractClusters div.input-layer input.custom-width, #outputSectionExtractClusters div.input-layer select.custom-width {
+    width: 34%;
 }
