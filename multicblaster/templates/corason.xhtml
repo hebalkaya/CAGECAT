@@ -5,9 +5,9 @@
 {% block navigationBar %}
     {{ showNavigationBar('post-analysis') }}
 {% endblock %}
-        {% block title %}
-        Job status
-        {% endblock %}
+{% block title %}
+Corason
+{% endblock %}
 
         {% block content %}
 <div>
@@ -17,44 +17,43 @@
 
         <label class="fieldset-label" for="inputSection">Input</label>
         <fieldset id="inputSection">
-            <div>
+            <div class="input-layer bigger">
                 <label class="input-label" for="selectedQuery">Query</label>
                 <input type="text" id="selectedQuery" name="selectedQuery" required="required" value="{{query}}"/>
             </div>
-            <div>
+            <div class="input-layer">
                 <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>
                 <input type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>
             </div>
 
-            <div>
+            <div class="input-layer">
                 <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
                 <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>
             </div>
 
         </fieldset>
 
-        <br/>
         <label class="fieldset-label" for="optionsSection">Options</label>
         <fieldset id="optionsSection">
 
             {{ create_scientific_input('e-value', 'Evalue', -15) }}
 
             <div>
-                <label class="checkbox-label">Bitscore
-                    <input type="checkbox" name="bitscore"/>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="bitscore"/>Bitscore
                 </label>
             </div>
-            <div>
+            <div class="input-layer">
                 <label class="input-label" for="clusterRadio">Cluster radio?</label>
                 <input type="number" value="10" id="clusterRadio" name="clusterRadio" required="required"/>
-            <div>
+            </div>
 
             {{ create_scientific_input('e-cluster', 'Ecluster', -3) }}
             {{ create_scientific_input('e-core', 'Ecore', -3) }}
 
 {#            Intentionally no list. See workers.py function corason#}
 
-            <div>
+            <div class="input-layer">
                 <label class="input-label" for="rescale">Rescale</label>
                 <input type="number" id="rescale" name="rescale" value="85000" step="1" required="required"/>
             </div>

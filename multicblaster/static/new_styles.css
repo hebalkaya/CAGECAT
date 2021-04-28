@@ -377,7 +377,7 @@ table {
 }
 
 
-/*.allColumns:after{*/
+/*.allColumnsd{*/
 /*    content: "";*/
 /*    display: table;*/
 /*    clear: both;*/
@@ -440,6 +440,14 @@ i.fa.fa-download span {
 div.input-layer {
     display: table;
     width: 25%;
+    margin-left: 1%;
+}
+
+div.input-layer-cust {
+    /*same as div.input-layer, but child element styling should be different*/
+    display: table;
+    width: 25%;
+    margin-left: 1%
 }
 
 
@@ -466,9 +474,6 @@ div.input-layer select {
 input, div.input-layer select{
     padding: 2px;
 }
-div.input-layer{
-    margin-left: 1%;
-}
 
 div.input-layer label {
     margin-top: 6px;
@@ -487,3 +492,14 @@ div.input-layer label {
 #outputSectionExtractClusters div.input-layer input.custom-width, #outputSectionExtractClusters div.input-layer select.custom-width {
     width: 34%;
 }
+
+div.scientificnotation-div {
+    float: right;
+    display: inherit;
+    margin-right: 3px;
+}
+
+.spaced::after, .spaced::before{
+    content: " ";
+}
+
