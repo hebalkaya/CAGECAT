@@ -166,11 +166,11 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     last_job_id = enqueue_jobs(new_jobs)
 
     return redirect(url_for("show_result", job_id=last_job_id,
-                        pj=ut.fetch_job_from_db(last_job_id).depending_on))
+                        pj=ut.fetch_job_from_db(last_job_id).depending_on, store_job_id=True))
 
 
 @app.route("/results/<job_id>")
-def show_result(job_id: str, pj=None) -> str: # parent_job should be
+def show_result(job_id: str, pj=None, store_job_id=False) -> str: # parent_job should be
     """Shows the results page for the given job ID
 
     Input:
@@ -223,12 +223,12 @@ def show_result(job_id: str, pj=None) -> str: # parent_job should be
                 pj = request.args["pj"]
 
             return show_template("status_page.xhtml", j_id=job_id,
-                                 parent_job=pj, status=status, settings=settings)
+                                 parent_job=pj, status=status, settings=settings, store_job_id=store_job_id)
         elif status == "waiting":
             return show_template("status_page.xhtml", j_id=job_id,
                                  status="waiting for preceding job to finish",
                                  settings=settings,
-                                 parent_job=request.args["pj"])
+                                 parent_job=request.args["pj"], store_job_id=store_job_id)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 

@@ -537,3 +537,7 @@ function addRequiredSeqs(){
 
     document.getElementById("requiredSequences").value = selected.join(";");
 }
+
+function storeJobId(id){
+    console.log(id);
+}

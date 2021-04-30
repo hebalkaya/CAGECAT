@@ -8,10 +8,20 @@
     {{ showNavigationBar('results') }}
 {% endblock %}
 
+{#{% if store_job_id %}#}
+
+
+{#{% endif %}#}
+{% block scripts %}
+    {% if request.args.get('store_job_id') == "True" %}
+storeJobId('{{ j_id }}');
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 
-<!--         TODO: now, parent job: is shown when no parent job is given-->
+
 {% if parent_job != "null" %}
 <p>Parent job: <a href="{{url_for('show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
 
