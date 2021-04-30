@@ -44,8 +44,7 @@ initReadQueryFile();
 <div>
 
 <div id="searchModuleContent" class="moduleContent">
-<form method="post" enctype="multipart/form-data" action="{{submit_url}}"
-      onsubmit="return validateForm()" name="searchOptionForm">
+<form method="post" enctype="multipart/form-data" action="{{submit_url}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     <label class="fieldset-label" for="inputSection">Input</label>
@@ -161,8 +160,9 @@ initReadQueryFile();
         </div>
 
         <div> {#  TODO: maybe as class=input-layer #}
-            <label class="select-label" for="requiredSequences">Required sequences</label>
-            <select style="width: 40%;" id="requiredSequences" name="requiredSequences" multiple="multiple">
+            <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
+            <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
+            <select style="width: 40%;" id="requiredSequencesSelector" multiple="multiple">
 {#                <option>1</option>#}
 {#                <option>2</option>#}
             </select>

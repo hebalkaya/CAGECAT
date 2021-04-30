@@ -67,6 +67,9 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     print("==== SUBMIT_JOB in ROUTES.PY ====")
     print(request.form)
 
+    print("------args------------------")
+    print(request.args)
+
     new_jobs = []
 
     job_type = request.form["job_type"]

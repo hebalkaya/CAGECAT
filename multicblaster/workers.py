@@ -77,9 +77,11 @@ def cblaster_search(job_id, options=None, file_path=None):
                 "--min_hits", options["min_hits_in_clusters"],
                 "--percentage", options["percentageQueryGenes"]])
 
-    if "requiredSequences" in options:
+    if options["requiredSequences"]:  # as empty string evaluates to False
         cmd.append("--require")
-        cmd.extend(options["requiredSequences"].split())
+        for q in options["requiredSequences"].split(";"):
+            cmd.append(f"'{q}'")  # to prevent 1 header to be interpreted
+                                    # as multiple due to spaces in header
 
     # add summary table
     cmd.extend(create_summary_table_commands('search', options))
