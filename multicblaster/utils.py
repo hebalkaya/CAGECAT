@@ -116,7 +116,7 @@ FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                                "calculate_neighbourhood": "outputFileName"
                                }
 
-COMPRESSION_FORMATS = [".tar", ".tar.gz", ".gz", ".7z", ".zip", ".rar"]
+COMPRESSION_FORMATS = [".zip", ".tar", ".tar.gz", ".gz", ".7z", ".rar"]
 
 TEST_PATH = ".."
 

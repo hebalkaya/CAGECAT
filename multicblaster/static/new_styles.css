@@ -503,3 +503,6 @@ div.scientificnotation-div {
     content: " ";
 }
 
+.error-message {
+    color: red;
+}

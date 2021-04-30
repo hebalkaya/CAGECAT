@@ -449,3 +449,50 @@ function mergeExponentials(){
         document.getElementById(allEs[i].toLowerCase()).value = document.getElementById("base" + allEs[i]).value + "E" + document.getElementById("power" + allEs[i]).innerText;;
     }
 }
+
+function initReadQueryFile(){
+    var file = document.getElementById("genomeFile").files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            console.log(evt.target.result);
+            // document.getElementById("fileContents").innerHTML = evt.target.result;
+        }
+        reader.onerror = function (evt) {
+            console.log("Error reading file");
+            // document.getElementById("fileContents").innerHTML = "error reading file";
+        }
+    }
+}
+
+function readFileContents() {
+    let headers = []
+    var valid_ext = ["fasta", "fa"]
+    var file = document.getElementById("genomeFile").files[0];
+    var reader = new FileReader();
+    let ext = file.name.split(".").pop().toLowerCase();
+    reader.onload = function(evt){
+        // TODO: check if file adheres to FASTA format
+        if (!valid_ext.includes(ext)){
+            document.getElementById("fileUploadIncorExt").style.display = "block";
+            document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
+            return;
+        }
+        else {
+            document.getElementById("fileUploadIncorExt").style.display = "none";
+        }
+        let splitted = reader.result.split("\n");
+        for (let i=0; i<splitted.length; i++){
+            // console.log("b");
+            // console.log(splitted[i]);
+            if (splitted[i].startsWith(">")){
+                headers.push(splitted[i].slice(1, splitted[i].length));
+            }
+        }
+        console.log(headers);
+    }
+
+    reader.readAsText(file, "UTF-8");
+
+}
