@@ -539,5 +539,34 @@ function addRequiredSeqs(){
 }
 
 function storeJobId(id){
-    console.log(id);
+    let maxToShow = 15;
+
+    for (let i=0; i<maxToShow; i++){
+        let str = i.toString();
+        if (localStorage.getItem(str) === null){
+            localStorage.setItem(str, id);
+            console.log(localStorage);
+            return;
+        }
+    }
+}
+
+function showPreviousJobs(){
+    let overview = document.getElementById("previousJobsOverview");
+
+    for (let i=0; i <localStorage.length; i++){
+        let jobId = localStorage.getItem(i);
+        // console.log(localStorage.getItem(i.toString()));
+
+        let li = document.createElement("li");
+        li.classList.add("jobs")
+
+        let a = document.createElement("a");
+        a.href = "/results/" + jobId;
+        a.innerText = jobId;
+
+        li.appendChild(a);
+        overview.insertBefore(li, overview.childNodes[0])
+        // overview.appendChild(li);
+    }
 }

@@ -506,3 +506,13 @@ div.scientificnotation-div {
 .error-message {
     color: red;
 }
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 100%}
+}
+
+#previousJobsOverview {
+    animation-name: fadeIn;
+    animation-duration: 0.7s;
+}

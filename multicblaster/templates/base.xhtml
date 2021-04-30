@@ -21,7 +21,7 @@
 {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
 {#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>#}
 </head>
-<body onload="{% block scripts %}{% endblock %}">
+<body onload="showPreviousJobs();{% block scripts %}{% endblock %}">
 
 {% block navigationBar %}{% endblock %}
 {#<a class="" href="{{url_for('home_page')}}"><p>Home</p></a>#}
@@ -41,6 +41,10 @@
         <li>Running:  <span class="rightAligned">{{serv_info["running"]}}</span></li>
         <li>Completed:  <span class="rightAligned">{{serv_info["completed"]}}</span></li>
     </ul>
+    <div>
+        <ul class="statuscorrect" id="previousJobsOverview">
+        </ul>
+    </div>
 
 
 {#    <table>#}
