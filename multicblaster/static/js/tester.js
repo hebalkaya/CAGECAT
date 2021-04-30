@@ -80,6 +80,7 @@ function removeRequiredAndEnabled(id){
 }
 
 function showInputOptions(selectionOption){
+    document.getElementById("requiredSequences").options.length = 0;
     if (selectionOption === 'fasta'){
         document.getElementById('genomeFileUploadDiv').style.display = 'block';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
@@ -189,6 +190,7 @@ function validateNCBIEntries() {
     let errorBox = document.getElementById("accessionsError")
     let lines = textArea.value.split("\n");
     let valid = true;
+    document.getElementById("requiredSequences").options.length = 0;
 
     for (let i = 0; i < lines.length; i++) {
         if (!lines[i].match(ncbiPattern)) {
@@ -201,13 +203,33 @@ function validateNCBIEntries() {
     }
 
     if (valid) {
+
         textArea.classList.remove("invalid");
         errorBox.style.display = "none";
         document.getElementById("submitSearchForm").disabled = false;
+
+        let requiredSequences = document.getElementById("requiredSequences");
+        let everything = textArea.value.split("\n");
+        if (!(everything.length === 1 && everything[0] === "")){
+
+            for (let i=0; i<everything.length; i++){
+                if (!(everything[i] === "")){
+                    console.log(everything[i]);
+                    let opt = document.createElement("option");
+                    opt.text = everything[i];
+                    opt.value = everything[i];
+                    requiredSequences.add(opt);
+                }
+            }
+        }
+
+
+
     } else {
         textArea.classList.add("invalid");
         document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
         document.getElementById("submitSearchForm").disabled = true;
+        document.getElementById("requiredSequences").options.length = 0;
     }
     return valid;
 
@@ -467,11 +489,13 @@ function initReadQueryFile(){
 }
 
 function readFileContents() {
-    let headers = []
+    let requiredSequencesSelect = document.getElementById("requiredSequences");
+    requiredSequencesSelect.options.length = 0;  // Clear all options
     var valid_ext = ["fasta", "fa"]
     var file = document.getElementById("genomeFile").files[0];
     var reader = new FileReader();
     let ext = file.name.split(".").pop().toLowerCase();
+
     reader.onload = function(evt){
         // TODO: check if file adheres to FASTA format
         if (!valid_ext.includes(ext)){
@@ -484,13 +508,17 @@ function readFileContents() {
         }
         let splitted = reader.result.split("\n");
         for (let i=0; i<splitted.length; i++){
-            // console.log("b");
-            // console.log(splitted[i]);
+
             if (splitted[i].startsWith(">")){
-                headers.push(splitted[i].slice(1, splitted[i].length));
+                let txt = splitted[i].slice(1, splitted[i].length);
+                let opt = document.createElement("option");
+                opt.text = txt;
+                opt.value = txt;
+
+                requiredSequencesSelect.add(opt);
             }
         }
-        console.log(headers);
+
     }
 
     reader.readAsText(file, "UTF-8");

@@ -160,18 +160,25 @@ initReadQueryFile();
                    name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
         </div>
 
-        <div >
-            <label class="checkbox-label">
-                <input type="checkbox" id="requiredSequencesCheckbox"
-                       name="requiredSequencesCheckbox"
-                       onclick="toggleDisabled('requiredSequences')">Required sequences</input>
-            </label>
-            <div  id="requiredSequencesTextarea">
-                <textarea rows="4" cols="25" name="requiredSequences"
-                          id="requiredSequences" placeholder="NCBI entry"
-                          disabled="disabled" required="required"></textarea>
-            </div>
+        <div> {#  TODO: maybe as class=input-layer #}
+            <label class="select-label" for="requiredSequences">Required sequences</label>
+            <select style="width: 40%;" id="requiredSequences" name="requiredSequences" multiple="multiple">
+{#                <option>1</option>#}
+{#                <option>2</option>#}
+            </select>
         </div>
+{#        <div >#}
+{#            <label class="checkbox-label">#}
+{#                <input type="checkbox" id="requiredSequencesCheckbox"#}
+{#                       name="requiredSequencesCheckbox"#}
+{#                       onclick="toggleDisabled('requiredSequences')">Required sequences</input>#}
+{#            </label>#}
+{#            <div  id="requiredSequencesTextarea">#}
+{#                <textarea rows="4" cols="25" name="requiredSequences"#}
+{#                          id="requiredSequences" placeholder="NCBI entry"#}
+{#                          disabled="disabled" required="required"></textarea>#}
+{#            </div>#}
+{#        </div>#}
     </fieldset>
     {{ result_table('search', "Sum") }}
     {{ result_table('search', "Bin") }}
