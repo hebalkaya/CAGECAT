@@ -9,6 +9,11 @@
     {{ showNavigationBar('results') }}
 {% endblock %}
 
+{% block scripts %}
+    {% if module in modules_with_plots %}
+{#document.getElementById('newWindow').src = '/plots/' + '{{ j_id }}';#}
+    {% endif %}
+{% endblock %}
 
 <!--This page will show the status of the job (job unfinished), or the results of -->
 <!--        the job (job finished)-->
@@ -16,6 +21,7 @@
 {% block content %}
     <div style="border-bottom: 2px solid #5284a7">
     <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
+    <p>Job type: <b>{{ module }}</b></p>
 
     <form action="/download-results/{{j_id}}" method="post"
           enctype="multipart/form-data" name="download_settings">
@@ -112,7 +118,18 @@
     {% if module in modules_with_plots %}
 <div>
 {#TODO: lazy loading doesnt work yet#}
-    <iframe loading="lazy" {{'onload=loadedIframe(this)' if module in ['search', 'recompute']}} height="800" id="newWindow" srcdoc="{{plot_contents}}" title="Generated HTML plot"></iframe>
+<div style="margin: auto;width: 60%;">
+
+    <p style="display: inline-block;"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
+    <img id="loadingImage" style="vertical-align: middle; width: 80px; height: auto;" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
+</div>
+    {% if module in ['search', 'recompute'] %}
+        {% set onload = 'loadedIframe(this);postLoadingIFrame()' %}
+    {% elif module in ['clinker_full', 'clinker_query'] %}
+        {% set onload = 'postLoadingIFrame()' %}
+    {% endif %}
+<iframe onload="showPreviousJobs(true)" style="display: none"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
+    <iframe onload="{{onload}}" height="800" id="newWindow" src="/plots/{{ j_id }}" title="Generated HTML plot"></iframe>
 </div>
 
         {% endif %}

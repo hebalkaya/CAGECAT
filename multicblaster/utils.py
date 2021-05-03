@@ -433,3 +433,6 @@ def handle_soft_interrupt(signalNumber, frame):
 
 signal.signal(signal.SIGTERM, handle_soft_interrupt)
 
+
+def format_size(size):
+    return "%3.1f MB" % (size/1000000)

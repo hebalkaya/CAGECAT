@@ -196,15 +196,15 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
         if status == "finished":
             module = job.job_type
-            plot_contents, program = prepare_finished_result(job_id, module)
+            plot_contents, program, size = prepare_finished_result(job_id, module)
+            # plot contents is not used
 
             with open(os.path.join(ut.JOBS_DIR, job_id, "logs",
                                    f"{job_id}_{program}.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
-            print(ut.get_available_downstream_modules(module))
+            # print(ut.get_available_downstream_modules(module))
             return show_template("result_page.xhtml", j_id=job_id,
-                                 status=status, compr_formats=ut.COMPRESSION_FORMATS,
-                                 plot_contents=plot_contents, module=module,
+                                 status=status, content_size=ut.format_size(size), compr_formats=ut.COMPRESSION_FORMATS, module=module,
                                  modules_with_plots=ut.MODULES_WHICH_HAVE_PLOTS,
                                  log_contents=log_contents,
                                  downstream_modules=ut.get_available_downstream_modules(module))
@@ -225,10 +225,12 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             return show_template("status_page.xhtml", j_id=job_id,
                                  parent_job=pj, status=status, settings=settings, store_job_id=store_job_id, j_type=j_type)
         elif status == "waiting":
+            pj = ut.fetch_job_from_db(job_id).depending_on if "pj" not in request.args else request.args["pj"]
+
             return show_template("status_page.xhtml", j_id=job_id,
                                  status="waiting for preceding job to finish",
                                  settings=settings,
-                                 parent_job=request.args["pj"], store_job_id=store_job_id, j_type=j_type)
+                                 parent_job=pj, store_job_id=store_job_id, j_type=j_type)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
@@ -387,6 +389,11 @@ def clinker_query() -> str:
 def post_analysis_explanation() -> str:
     return show_template("post_analysis_explanation.xhtml")
 
+
+@app.route("/plots/<job_id>")
+def get_plot_contents(job_id) -> str:
+    return prepare_finished_result(job_id, ut.fetch_job_from_db(job_id).job_type)[0]
+
 @app.route("/help")
 def help_page():
     # TODO: actually create
@@ -489,7 +496,7 @@ def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
 
 
 def prepare_finished_result(job_id: str,
-                            module: str) -> t.Tuple[t.Union[str, None], str]:
+                            module: str) -> t.Tuple[t.Union[str, None], str, t.Union[int, None]]:
     """Returns HTML code of plots if applicable and appropriate program
 
     Input:
@@ -503,6 +510,7 @@ def prepare_finished_result(job_id: str,
     """
     plot_path = os.path.join(ut.JOBS_DIR, job_id,
                              "results", f"{job_id}_plot.html")
+    size = None
 
     if module == "extract_sequences" or module == "extract_clusters":
         program = "cblaster"
@@ -512,6 +520,7 @@ def prepare_finished_result(job_id: str,
         program = "cblaster"
         with open(plot_path) as inf:
             plot_contents = inf.read()
+        size = os.path.getsize(plot_path)
 
     elif module == "corason":
         program = "echo"  # TODO: will be someting else later
@@ -521,15 +530,18 @@ def prepare_finished_result(job_id: str,
         program = "clinker"
         with open(plot_path) as inf:
             plot_contents = inf.read()
+        size = os.path.getsize(plot_path)
+
     elif module == "clinker_query":
         program = "cblaster"  # as it uses plot_clusters functionality of cblaster
         with open(plot_path) as inf:
             plot_contents = inf.read()
+        size = os.path.getsize(plot_path)
     else:
         raise NotImplementedError(
             f"Module {module} has not been implemented yet in results")
 
-    return plot_contents, program
+    return plot_contents, program, size
 
 
 def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,

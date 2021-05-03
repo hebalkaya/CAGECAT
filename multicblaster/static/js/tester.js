@@ -435,6 +435,13 @@ function loadedIframe(){
     }
 }
 
+function postLoadingIFrame(){
+    console.log("LOADED");
+    // console.log()
+    document.getElementById("resultLoadedMessage").innerText = "Loading has completed";
+    document.getElementById("loadingImage").style.display = "none";
+}
+
 
 function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
@@ -554,7 +561,13 @@ function storeJobId(id, j_type){
     }
 }
 
-function showPreviousJobs(){
+
+function showPreviousJobs(disableBodyOnLoad){
+    if (disableBodyOnLoad){
+        parent.document.body.onload = null;
+        // To prevent double loading as for plots thep revious jobs are loaded before the big plot is loaded
+    }
+
     let overview = document.getElementById("previousJobsOverview");
 
     for (let i=0; i <localStorage.length; i++){
@@ -622,6 +635,5 @@ function showDetailedPreviousJobs(){
     th2.innerText = "Date";
     tr.appendChild(th2);
 
-    console.log(tr);
     overview.insertBefore(tr, overview.childNodes[0]);
 }
