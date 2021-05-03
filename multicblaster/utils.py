@@ -27,17 +27,9 @@ FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 SUBMIT_URL = "/submit_job"
 PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 
-# INVALID_JOB_COMBINATIONS = []
-INVALID_JOB_COMBINATIONS = [("recompute", "recompute"),
-                            ("gne", "gne"),
-                            ("recompute", "gne"),
-                            ("gne", "recompute")]
-INVALID_JOB_COMBINATIONS = [] # TODO: update when we found the invalid combinations
-
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
-                             "clinker_full", "clinker_query"] # TODO: add gne?
-# TODO: really check if above combinations are not valid, and document what
-# kind of errors they produce
+                             "clinker_full", "clinker_query"]
+
 
 PRETTY_TRANSLATION = {"job_type": "Job type",
                       "inputType": "Input type",
@@ -378,7 +370,7 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         - prev_job_id: ID of the user-submitted previous job
         - job_type: type of the submitted job e.g. "search" or "gne"
 
-    Output: # TODO: might change into rendering templates
+    Output:
         - None
 
     Raises:
@@ -392,38 +384,7 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         # TODO: create invalid job ID template
         # TODO: OR let JS check job ID on front-end
         raise NotImplementedError("Unknown job ID. Template should be created")
-    if (fetch_job_from_db(prev_job_id).job_type, job_type) in \
-            INVALID_JOB_COMBINATIONS:
-        # TODO: should create template
-        # TODO: can maybe be removed as not all module buttons are available anymore from every job_type
-        raise NotImplementedError(f"Invalid combinations of job types. Prev job ID: {prev_job_id}. Combination: ({fetch_job_from_db(prev_job_id).job_type}, {job_type}). Should create template")
 
-
-def get_available_downstream_modules(module):
-    """TODO
-
-    :param module:
-    :return:
-    """
-    available_modules = []
-    if module == "search":
-        available_modules.append("recompute")
-
-    if module in ("search", "recompute"):
-        available_modules.extend(["gne", "extract_sequences",
-                                  "extract_clusters", "corason",
-                                  "clinker_full", "clinker_query"])
-
-    if module == "extract_clusters":
-        available_modules.extend(["corason", "clinker_full", "clinker_query"])
-
-    if module in ("clinker_full", "clinker_query"):
-        available_modules.append("extract_clusters")
-
-    # at the moment, corason has no downstream modules. Downstream modules
-    # can be added here when that becomes the case
-
-    return available_modules
 
 # Below are experimental functions
 def handle_soft_interrupt(signalNumber, frame):

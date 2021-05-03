@@ -207,7 +207,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status, content_size=ut.format_size(size), compr_formats=ut.COMPRESSION_FORMATS, module=module,
                                  modules_with_plots=ut.MODULES_WHICH_HAVE_PLOTS,
                                  log_contents=log_contents,
-                                 downstream_modules=ut.get_available_downstream_modules(module))
+                                 downstream_modules=co.DOWNSTREAM_MODULES_OPTIONS[module])
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:

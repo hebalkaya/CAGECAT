@@ -436,8 +436,6 @@ function loadedIframe(){
 }
 
 function postLoadingIFrame(){
-    console.log("LOADED");
-    // console.log()
     document.getElementById("resultLoadedMessage").innerText = "Loading has completed";
     document.getElementById("loadingImage").style.display = "none";
 }
@@ -480,7 +478,7 @@ function mergeExponentials(){
     }
 }
 
-function initReadQueryFile(){
+function initReadQueryFile(){ // TODO: check if this can be removed?
     var file = document.getElementById("genomeFile").files[0];
     if (file) {
         var reader = new FileReader();
