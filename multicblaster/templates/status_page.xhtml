@@ -14,7 +14,7 @@
 {#{% endif %}#}
 {% block scripts %}
     {% if request.args.get('store_job_id') == "True" %}
-storeJobId('{{ j_id }}');
+storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}');
     {% endif %}
 {% endblock %}
 

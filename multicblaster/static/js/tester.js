@@ -3,6 +3,7 @@ var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 var selectedQueries = []
+var currentTime = Date();
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -538,14 +539,16 @@ function addRequiredSeqs(){
     document.getElementById("requiredSequences").value = selected.join(";");
 }
 
-function storeJobId(id){
+function storeJobId(id, j_type){
     let maxToShow = 15;
 
     for (let i=0; i<maxToShow; i++){
         let str = i.toString();
         if (localStorage.getItem(str) === null){
-            localStorage.setItem(str, id);
-            console.log(localStorage);
+            console.log("here we are");
+            let msg = id + ";" + j_type + ";" + currentTime.toLocaleString();
+            localStorage.setItem(str, msg);
+            // console.log(localStorage);
             return;
         }
     }
@@ -555,18 +558,70 @@ function showPreviousJobs(){
     let overview = document.getElementById("previousJobsOverview");
 
     for (let i=0; i <localStorage.length; i++){
-        let jobId = localStorage.getItem(i);
+        let jobId = localStorage.getItem(i).split(";")[0];
         // console.log(localStorage.getItem(i.toString()));
 
         let li = document.createElement("li");
-        li.classList.add("jobs")
+        li.classList.add("jobs");
 
         let a = document.createElement("a");
         a.href = "/results/" + jobId;
         a.innerText = jobId;
 
         li.appendChild(a);
-        overview.insertBefore(li, overview.childNodes[0])
+        overview.insertBefore(li, overview.childNodes[0]);
         // overview.appendChild(li);
     }
+    let li = document.createElement("li");
+    let a = document.createElement("a");
+    a.classList.add("no-link-decoration");
+    a.href = "/results";
+    a.innerText =  "Previous jobs";
+    li.appendChild(a);
+
+    overview.insertBefore(li, overview.childNodes[0]);
+}
+
+function showDetailedPreviousJobs(){
+    let overview = document.getElementById("detailedPreviousJobs");
+    console.log("hello");
+
+    for (let i=0; i <localStorage.length; i++) {
+        let msg = localStorage.getItem(i).split(";");
+        console.log(msg);
+        let tr = document.createElement("tr");
+
+        let td = document.createElement("td");
+        let a = document.createElement("a");
+        a.href = "/results/" + msg[0];
+        a.innerText = msg[0]
+        td.appendChild(a);
+        tr.appendChild(td);
+
+        let td1 = document.createElement("td");
+        td1.innerText = msg[1];
+        tr.appendChild(td1);
+
+        let td2 = document.createElement("td");
+        td2.innerText = msg[2];
+        tr.appendChild(td2);
+
+        overview.insertBefore(tr, overview.childNodes[0]);
+    }
+    let tr = document.createElement("tr");
+
+    let th = document.createElement("th");
+    th.innerText = "Job ID";
+    tr.appendChild(th);
+
+    let th1 = document.createElement("th");
+    th1.innerText = "Type of job";
+    tr.appendChild(th1);
+
+    let th2 = document.createElement("th");
+    th2.innerText = "Date";
+    tr.appendChild(th2);
+
+    console.log(tr);
+    overview.insertBefore(tr, overview.childNodes[0]);
 }
