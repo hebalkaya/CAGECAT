@@ -9,15 +9,6 @@
     {{ showNavigationBar('results') }}
 {% endblock %}
 
-{% block scripts %}
-    {% if module in modules_with_plots %}
-{#document.getElementById('newWindow').src = '/plots/' + '{{ j_id }}';#}
-    {% endif %}
-{% endblock %}
-
-<!--This page will show the status of the job (job unfinished), or the results of -->
-<!--        the job (job finished)-->
-
 {% block content %}
     <div style="border-bottom: 2px solid #5284a7">
     <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
@@ -32,7 +23,7 @@
 
         {% endfor %}
     </select>
-<!--    <input name=""/>-->
+
     <label class="button" for="download-button"><i class="fa fa-download"><span> Download</span></i></label>
     <input id="download-button" class="download-button" type="submit"></input>
     </form>
