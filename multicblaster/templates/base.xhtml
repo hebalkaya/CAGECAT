@@ -69,8 +69,17 @@
 {#        </tr>#}
 {#    </table>#}
 </div>
-<div class="column rightColumn">{% block content %}{% endblock %}</div>
+<div class="column middleColumn" id="middleColumn">{% block content %}{% endblock %}</div>
 </div>
+
+<button style="position: absolute;top: 8%;right: 20%;" onclick="toggleExplanationColumn()">&#62&#62</button>
+<div class="column rightColumn" id="explanationColumn"> {# TODO: add animation to hide help #}
+
+    <h2 id="explanationTitle">Explanation</h2>
+
+    <p id="explanationText">Click a question mark next to an input field to view its explanation.</p>
+</div>
+
 {#<p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>#}
 {##}
 {#<div class="">#}

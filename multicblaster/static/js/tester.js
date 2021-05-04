@@ -639,7 +639,58 @@ function showDetailedPreviousJobs(){
 function showHelp(textType){
     // let elems = document.getElementById();
     $.get('/docs/' + textType, function(data, status){
-       console.log(data);
+        document.getElementById("explanationTitle").innerText = data.title;
+        document.getElementById("explanationText").innerText = data.text;
+       //  console.log(data);
+       // console.log(data.text);
        // console.log(status);
     });
+}
+
+function jalala () {
+
+    let elem = document.getElementById("explanationColumn");
+
+    if (elem.style.display === "none") {
+        elem.style.display = "block";
+    }
+    else {
+        elem.style.display = "none";
+    }
+
+    // console.log(elem);
+    // console.log(elem.classList);
+    //
+    // if (elem.classList.length === 2){
+    //     elem.classList.add("slider-invisible");
+    // }
+    // else if (elem.classList[2] === "slider-invisible") {
+    //     elem.classList.remove("slider-invisible");
+    //     elem.classList.add("slider-visible")
+    // }
+    // else if (elem.classList[2] === "slider-visible") {
+    //     elem.classList.remove("slider-visible");
+    //     elem.classList.add("slider-invisible")
+    // }
+    // console.log(elem.classList);
+}
+
+function toggleExplanationColumn(){
+    let rightCol = document.getElementById('explanationColumn');
+    let middleCol = document.getElementById('middleColumn');
+    console.log(event.target);
+    if (rightCol.style.display === "none"){
+        rightCol.style.display = "block";
+        event.target.style.right = "20%";
+        event.target.innerText = ">>";
+        middleCol.style.width = "65%";
+    }
+    else {
+        rightCol.style.display = "none";
+        event.target.style.right = "8px";
+        event.target.innerText = "<<";
+        middleCol.style.width = "85%";
+
+    }
+
 }

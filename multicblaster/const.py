@@ -23,4 +23,7 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "clinker_full": ["extract_clusters"],
                               "clinker_query": ["extract_clusters"]}
 
-HELP_TEXTS = {"max_intergenic_gap": "Yess here we are now"}
+HELP_TEXTS = {"max_intergenic_gap": {"title": "Maximum intergenic gap",
+                                     "text": "This is the explanation"},
+              "entrez_query": {"title": "Huize Wunderlich",
+                               "text": "HAHA HALLO DAAR ROSAN"}}

@@ -329,12 +329,17 @@ div.div-margin {
     border-right: 2px solid #5284a7;
 }
 
-.rightColumn{
-    width: 85%;
+.middleColumn{
+    width: 65%;
     /*border-left: 2px solid #6aabd7;*/
     border-bottom: 2px solid #5284a7;
     border-bottom-left-radius: 5px;
 
+}
+
+.rightColumn {
+    width: 20%;
+    border-left: 2px solid #5284a7;
 }
 
 .column {
@@ -440,7 +445,7 @@ i.fa.fa-download span {
 
 div.input-layer {
     display: table;
-    width: 28%;
+    width: 40%;
     margin-left: 1%;
 }
 
@@ -513,6 +518,17 @@ div.scientificnotation-div {
     to {opacity: 100%}
 }
 
+@keyframes slideInvisible  {
+    from {width: 20%;}
+    to {width: 0}
+
+}
+
+@keyframes slideVisible {
+    from {width: 0}
+    to {width: 20%;}
+}
+
 #previousJobsOverview, #detailedPreviousJobs {
     animation-name: fadeIn;
     animation-duration: 0.7s;
@@ -531,7 +547,7 @@ div.scientificnotation-div {
 div.input-layer img, .help-button {
     cursor: pointer;
     vertical-align: middle;
-    padding-left: 3px;
+    padding-left: 5px;
     padding-top: 6px;
 }
 
@@ -539,3 +555,14 @@ div.input-layer img, .help-button {
 /*    width: 18px;*/
 /*    height: auto;*/
 /*}*/
+
+.slider-invisible {
+
+    animation-name: slideInvisible;
+    animation-duration: 2s;
+}
+
+.slider-visible {
+    animation-name: slideVisible;
+    animation-duration: 2s;
+}
