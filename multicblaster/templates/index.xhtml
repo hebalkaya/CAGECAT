@@ -93,6 +93,7 @@ initReadQueryFile();
     <div class="input-layer">
 
         <label class="input-label" for="entrez_query">Entrez query</label>
+        {{ renderHelpButton('entrez_query') }}
         <input class="bigger" type="text" name="entrez_query"
                id="entrez_query" placeholder="Aspergillus[organism]"/>
     </div>
@@ -108,6 +109,7 @@ initReadQueryFile();
 
     <div class="input-layer">
         <label class="input-label" for="max_hits">Maximum hits</label>
+        {{ renderHelpButton('max_hits') }}
         <input type="number" required="required" name="max_hits"
                id="max_hits" min="1" max="99999" step="1"
                value="5000"/>
@@ -117,17 +119,20 @@ initReadQueryFile();
 <fieldset id="filteringSection">
     <div class="input-layer">
         <label class="input-label" for="max_evalue">Max. e-value</label>
+        {{ renderHelpButton('max_evalue') }}
         <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
            name="max_evalue"/>
     </div>
     <div class="input-layer">
         <label class="input-label" for="min_identity">Min. identity (%)</label>
+        {{ renderHelpButton('min_identity') }}
         <input type="number" required="required" value="30" min="0" max="100" step="1"
                id="min_identity" name="min_identity"/>
     </div>
 
     <div class="input-layer">
         <label class="input-label" for="min_query_coverage">Min. query coverage (%)</label>
+        {{ renderHelpButton('min_query_coverage') }}
         <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
                name="min_query_coverage"/>
     </div>
@@ -146,11 +151,13 @@ initReadQueryFile();
 
         <div class="input-layer">
             <label class="input-label" for="percentageQueryGenes">Percentage</label>
+            {{ renderHelpButton('percentageQueryGenes') }}
             <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
         </div>
 
         <div class="input-layer">
             <label class="input-label" for="min_unique_query_hits">Min. unique query hits</label>
+            {{ renderHelpButton('min_unique_query_hits') }}
             <input class="short" type="number" id="min_unique_query_hits"
                    name="min_unique_query_hits" value="3" step="1" min="0" max="150"
                    required="required"/>
@@ -158,6 +165,7 @@ initReadQueryFile();
 
         <div class="input-layer">
             <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters</label>
+            {{ renderHelpButton('min_hits_in_clusters') }}
             <input class="short" type="number" id="min_hits_in_clusters"
                    name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
         </div>
@@ -166,22 +174,10 @@ initReadQueryFile();
             <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
             <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
             <select style="width: 40%;" id="requiredSequencesSelector" multiple="multiple">
-{#                <option>1</option>#}
-{#                <option>2</option>#}
+
             </select>
         </div>
-{#        <div >#}
-{#            <label class="checkbox-label">#}
-{#                <input type="checkbox" id="requiredSequencesCheckbox"#}
-{#                       name="requiredSequencesCheckbox"#}
-{#                       onclick="toggleDisabled('requiredSequences')">Required sequences</input>#}
-{#            </label>#}
-{#            <div  id="requiredSequencesTextarea">#}
-{#                <textarea rows="4" cols="25" name="requiredSequences"#}
-{#                          id="requiredSequences" placeholder="NCBI entry"#}
-{#                          disabled="disabled" required="required"></textarea>#}
-{#            </div>#}
-{#        </div>#}
+
     </fieldset>
     {{ result_table('search', "Sum") }}
     {{ result_table('search', "Bin") }}
@@ -207,10 +203,12 @@ initReadQueryFile();
             <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes</label>
         <div class="input-layer">
             <label class="input-label" for="intermediate_max_distance">Max. distance</label>
+            {{ renderHelpButton('intermediate_max_distance') }}
             <input type="number" min="0" max="250000" value="5000" disabled="disabled" id="intermediate_max_distance" name="intermediate_max_distance"/>
         </div>
         <div class="input-layer">
             <label class="input-label" for="intermediate_max_clusters">Max. clusters</label>
+            {{ renderHelpButton('intermediate_max_clusters') }}
             <input type="number" min="1" max="250" value="100" disabled="disabled" id="intermediate_max_clusters" name="intermediate_max_clusters"/>
         </div>
     </fieldset>
@@ -236,10 +234,12 @@ initReadQueryFile();
         <fieldset id="gneOptions">
             <div class="input-layer">
                 <label class="input-label" for="max_intergenic_distance">Max. intergenic distance</label>
+                {{ renderHelpButton('max_intergenic_distance') }}
                 <input type="number" id="max_intergenic_distance" name="max_intergenic_distance" min="0" max="2500000" value="100000" required="required" step="1"/>
             </div>
             <div class="input-layer">
                 <label class="input-label" for="sample_number">Number of samples</label>
+                {{ renderHelpButton('sample_number') }}
                 <input type="number" id="sample_number" name="sample_number"value="100" step="1" min="1" max="400" required="required"/>
             </div>
             <div class="input-layer">
@@ -269,9 +269,8 @@ initReadQueryFile();
             </label>
             <div class="input-layer">
                 <label class="input-label" for="identity">Min. alignment sequence identity</label>
+                {{ renderHelpButton('identity') }}
                 <input type="number" id="identity" name="identity" required="required" min="0" max="1" value="0.3" step="0.01"/>
-{#                TODO check which values are valid for identity#}
-    {#            TODO number of CPU's --> add in workers.py#}
             </div>
 
         </fieldset>
