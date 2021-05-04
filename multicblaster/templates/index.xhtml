@@ -252,6 +252,7 @@ initReadQueryFile();
             </div>
             <div class="input-layer">
                 <label class="select-label" for="sampling_space">Sampling space</label>
+                {{ renderHelpButton('sampling_space') }}
                 <select class="select-options" name="sampling_space" id="sampling_space" required="required">
                     <option name="spaceLinear" value="linear">linear</option>
                     <option name="spaceLog" value="log">log</option>
