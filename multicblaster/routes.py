@@ -411,8 +411,6 @@ def get_help_text(input_type):
 
             if input_type not in all_unregistrered_helps:
                 outf.write(f"{input_type}\n")
-
-
         ##### UNTIL HERE #####
 
         return show_template("page_not_found.xhtml", stat_code=404)
