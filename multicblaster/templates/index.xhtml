@@ -267,15 +267,18 @@ initReadQueryFile();
 <div id="clinkerContent" class="moduleContent" style="display: none">
     <form action="{{submit_url}}" method="post">
         <input type="hidden" name="job_type" value="clinker_full"/>
+
         <label class="fieldset-label" for="clinkerInputSection">Input</label>
         <fieldset id="clinkerInputSection">
             {{ prev_session('clinker', true, prev_run_id, true) }}
         </fieldset>
+
         <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
         <fieldset id="clinkerAlignmentSection">
             <label class="checkbox-label">
                 <input type="checkbox" name="noAlign"/>Don't align clusters
             </label>
+            {{ renderHelpButton('noAlign') }}
             <div class="input-layer">
                 <label class="input-label" for="identity">Min. alignment sequence identity</label>
                 {{ renderHelpButton('identity') }}
@@ -288,27 +291,36 @@ initReadQueryFile();
             <div class="input-layer">
                 <label class="input-label"
                        for="clinkerDelim">Delimiter</label>
+                {{ renderHelpButton('generalDelimiter') }}
                 <input class="short" type="text" id="clinkerDelim" name="clinkerDelim" size="1" maxlength="1"/>
             </div>
             <div class="input-layer">
                 <label class="input-label"
                        for="clinkerDecimals">Decimal places</label>
+                {{ renderHelpButton('generalDecimals') }}
                 <input class="short" type="number" id="clinkerDecimals" name="clinkerDecimals" value="2" step="1" min="0" max="9"
                        required="required"/>
             </div>
+
             <label class="checkbox-label">
-            <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers</label>
+                <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers
+            </label>
+            {{ renderHelpButton('hideLinkHeaders') }}
 
             <div>
-            <label class="checkbox-label">
-                <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers</label>
-{#            {{ result_table('clinker', '') }}#}
+                <label class="checkbox-label">
+                    <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers
+                </label>
+                {{ renderHelpButton('hideAlignHeaders') }}
             </div>
         </fieldset>
+
         <label class="fieldset-label" for="clinkerVisualiationSection">Additional options</label>
         <fieldset id="clinkerVisualiationSection">
             <label class="checkbox-label">
-            <input type="checkbox" name="useFileOrder"/>Maintain order of input files</label>
+                <input type="checkbox" name="useFileOrder"/>Maintain order of input files
+            </label>
+            {{ renderHelpButton('useFileOrder') }}
         </fieldset>
 
 
