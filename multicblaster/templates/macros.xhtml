@@ -52,6 +52,7 @@
         <div class="input-layer">
             <label class="input-label"
                    for="{{ '%s%sTableDelim' % (module, type) }}">Delimiter</label>
+            {{ renderHelpButton('generalDelimiter') }}
             <input class="short" type="text"
                    id="{{ '%s%sTableDelim' % (module, type) }}"
                    name="{{ '%s%sTableDelim' % (module, type) }}" size="1" maxlength="1"/>
@@ -59,6 +60,7 @@
         <div class="input-layer">
             <label class="input-label"
                    for="{{ '%s%sTableDecimals' % (module, type) }}">Decimal places</label>
+            {{ renderHelpButton('generalDecimals') }}
             <input class="short"  type="number"
                    id="{{ '%s%sTableDecimals' % (module, type) }}"
                    name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0" max="9"
@@ -70,20 +72,24 @@
                        id="{{ '%s%sTableHideHeaders' % (module, type) }}"
                        name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
             </label>
+            {{ renderHelpButton('generalHideHeaders') }}
         </div>
 
         {% if type == 'Bin' %}
         <div class="input-layer">
             <label class="select-label" for="keyFunction">Key function</label>
+            {{ renderHelpButton('keyFunction') }}
                 <select class="select-options" name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
                     <option name="functionLen" value="len">len</option>
                     <option name="functionSum" value="sum">sum</option>
                     <option name="functionMax" value="max">max</option>
                 </select>
+
         </div>
 
         <div class="input-layer">
             <label class="select-label" for="hitAttribute">Hit attribute</label>
+            {{ renderHelpButton('hitAttribute') }}
             <select class="select-options" name="hitAttribute" id="hitAttribute" disabled="disabled">
                 <option name="hitAttrIdentity" value="identity">identity</option>
                 <option name="hitAttrCoverage" value="coverage">coverage</option>
