@@ -31,7 +31,7 @@
             </label>
         </div>
         <label class="input-label" for="{{ '%sEnteredJobId' % module }}">Previous job ID</label>
-        {{ renderHelpButton('%sEnteredJobId' % module) }}
+        {{ renderHelpButton('generalEnteredJobId') }}
         <input type="text"  id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
                placeholder="A123B456C789D01" size="15" maxlength="15" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
 

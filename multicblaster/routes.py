@@ -404,6 +404,17 @@ def help_page():
 @app.route("/docs/<input_type>")
 def get_help_text(input_type):
     if input_type not in co.HELP_TEXTS:
+        ##### REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
+        with open('not_registered_helps.txt', "r+") as outf:
+            all_unregistrered_helps = [line.strip() for line in outf.readlines()]
+            # print(all_unregistrered_helps)
+
+            if input_type not in all_unregistrered_helps:
+                outf.write(f"{input_type}\n")
+
+
+        ##### UNTIL HERE #####
+
         return show_template("page_not_found.xhtml", stat_code=404)
 
     return co.HELP_TEXTS[input_type]
