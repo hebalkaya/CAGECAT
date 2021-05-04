@@ -638,8 +638,8 @@ function showDetailedPreviousJobs(){
 
 function showHelp(textType){
     // let elems = document.getElementById();
-    console.log(textType);
     $.get('/docs/' + textType, function(data, status){
        console.log(data);
+       // console.log(status);
     });
 }

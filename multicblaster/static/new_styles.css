@@ -528,6 +528,14 @@ div.scientificnotation-div {
     text-decoration: none;
 }
 
-div.input-layer img {
+div.input-layer img, .help-button {
     cursor: pointer;
+    vertical-align: middle;
+    padding-left: 3px;
+    padding-top: 6px;
 }
+
+/*.resized {*/
+/*    width: 18px;*/
+/*    height: auto;*/
+/*}*/

@@ -404,7 +404,7 @@ def help_page():
 @app.route("/docs/<input_type>")
 def get_help_text(input_type):
     if input_type not in co.HELP_TEXTS:
-        return show_template("page_not_found.xhtml")
+        return show_template("page_not_found.xhtml", stat_code=404)
 
     return co.HELP_TEXTS[input_type]
 
