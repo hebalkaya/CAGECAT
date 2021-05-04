@@ -527,3 +527,7 @@ div.scientificnotation-div {
     color: black;
     text-decoration: none;
 }
+
+div.input-layer img {
+    cursor: pointer;
+}

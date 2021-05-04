@@ -394,10 +394,19 @@ def post_analysis_explanation() -> str:
 def get_plot_contents(job_id) -> str:
     return prepare_finished_result(job_id, ut.fetch_job_from_db(job_id).job_type)[0]
 
+
 @app.route("/help")
 def help_page():
     # TODO: actually create
     return show_template("help.xhtml")
+
+
+@app.route("/docs/<input_type>")
+def get_help_text(input_type):
+    if input_type not in co.HELP_TEXTS:
+        return show_template("page_not_found.xhtml")
+
+    return co.HELP_TEXTS[input_type]
 
 
 # Error handlers

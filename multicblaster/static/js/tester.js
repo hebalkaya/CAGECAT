@@ -635,3 +635,11 @@ function showDetailedPreviousJobs(){
 
     overview.insertBefore(tr, overview.childNodes[0]);
 }
+
+function showHelp(textType){
+    // let elems = document.getElementById();
+    console.log(textType);
+    $.get('/docs/' + textType, function(data, status){
+       console.log(data);
+    });
+}

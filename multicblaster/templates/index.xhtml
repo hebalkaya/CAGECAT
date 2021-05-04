@@ -139,6 +139,8 @@ initReadQueryFile();
             <label class="input-label" for="max_intergenic_gap">Max. intergenic gap</label>
             <input type="number" id="max_intergenic_gap"
                    name="max_intergenic_gap" value="20000" min="0" max="999999" step="1" required="required"/>
+            <img onclick="showHelp('max_intergenic_gap')" style="vertical-align: middle;"
+                 src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
         </div>
 
         <div class="input-layer">
