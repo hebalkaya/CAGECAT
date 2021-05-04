@@ -68,7 +68,8 @@ initReadQueryFile();
     <div class="div-margin" id="genomeFileUploadDiv">
         <label class="file-upload-lbl" for="genomeFile">
         <input type="file" id="genomeFile" name="genomeFiles"
-               required="required" accept=".fasta, .fa" onchange="readFileContents()"/>Query</label>
+               required="required" accept=".fasta, .fa" onchange="readFileContents()"/>Query file</label>
+        {{ renderHelpButton('genomeFile') }}
 
         <div class="error-message" id="fileUploadIncorExt" style="display: none">
             <span id="fileUploadIncorExtText"></span>
@@ -80,6 +81,7 @@ initReadQueryFile();
 {#        <label for="ncbiEntriesTextArea">NCBI identifiers</label>#}
         <textarea rows="6" cols="25" id="ncbiEntriesTextArea"
                   name="ncbiEntriesTextArea" placeholder="NCBI accessions" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
+        {{ renderHelpButton('ncbiEntriesTextArea') }}
     </div>
     <div class="error-message" id="accessionsError" style="display: none">
         <span id="accessionsErrorText"></span>
@@ -99,6 +101,7 @@ initReadQueryFile();
     </div>
     <div class="input-layer">
         <label class="select-label" for="database_type">Database</label>
+        {{ renderHelpButton('database_type') }}
         <select class="select-options" id="database_type" name="database_type" required="required">
             <option value="nr">nr</option>
             <option value="refseq_protein">refseq_protein</option>
@@ -173,6 +176,7 @@ initReadQueryFile();
         <div> {#  TODO: maybe as class=input-layer #}
             <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
             <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
+            {{ renderHelpButton('requiredSequencesSelector') }}
             <select style="width: 40%;" id="requiredSequencesSelector" multiple="multiple">
 
             </select>
@@ -188,7 +192,9 @@ initReadQueryFile();
             <input type="checkbox" id="sortClusters" name="sortClusters">Sort
                 clusters
             </input>
+
         </label>
+        {{ renderHelpButton('sortClusters') }}
 <!--        <label>-->
 <!--            <input type="checkbox" id="generatePlot"-->
 <!--                   name="generatePlot">Generate plot-->
@@ -200,7 +206,9 @@ initReadQueryFile();
     <fieldset id="intermediateGenesSection">
 
         <label class="checkbox-label">
-            <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes</label>
+            <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes
+        </label>
+        {{ renderHelpButton('intermediate_genes') }}
         <div class="input-layer">
             <label class="input-label" for="intermediate_max_distance">Max. distance</label>
             {{ renderHelpButton('intermediate_max_distance') }}

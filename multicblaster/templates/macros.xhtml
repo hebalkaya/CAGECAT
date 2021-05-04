@@ -1,4 +1,5 @@
 <!--Here we can have code block which are used more than once-->
+{#TODO: make variables using Jinja2's set keyword instead of re-formatting a modular text more than once#}
 
 {% macro prev_session_bs(module, mainInput, job_id) %}
     <div id="{{ '%sPrevJobOptions' % module }}" class="tab-pane fade form-group" >
@@ -29,13 +30,14 @@
                 <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile" onclick="changePrevSessionType()">Session file</input>
             </label>
         </div>
-        <label class="input-label" for="{{ '%sEnteredJobId' % module }}">Previous job
-            ID</label>
+        <label class="input-label" for="{{ '%sEnteredJobId' % module }}">Previous job ID</label>
+        {{ renderHelpButton('%sEnteredJobId' % module) }}
         <input type="text"  id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
                placeholder="A123B456C789D01" size="15" maxlength="15" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
 
         <span>or</span>
         <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ '%sUploadedSessionFile' % module }}">
+{#            TODO: possibly insert help button#}
         <input type="file"
                id="{{ '%sUploadedSessionFile' % module }}"
                name="{{ '%sUploadedSessionFile' % module }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
