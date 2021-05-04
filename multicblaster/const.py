@@ -23,7 +23,36 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "clinker_full": ["extract_clusters"],
                               "clinker_query": ["extract_clusters"]}
 
-HELP_TEXTS = {"max_intergenic_gap": {"title": "Maximum intergenic gap",
-                                     "text": "This is the explanation"},
-              "entrez_query": {"title": "Huize Wunderlich",
-                               "text": "HAHA HALLO DAAR ROSAN"}}
+# TODO: maybe we can add module to which it belongs as well
+HELP_TEXTS = {# search module
+              'entrez_query': {'title': 'Entrez query',
+                   'text': 'TODO'},
+              'max_hits': {'title': "Maximum hits",
+                           'text': "TODO"},
+              'max_evalue': {'title': "Maximum e-value",
+                             'text': "TODO"},
+              'min_identity': {'title': "Minimum identity",
+                               'text': "TODO"},
+              'min_query_coverage': {'title': "Minimum query coverage",
+                                     'text': "TODO"},
+              'max_intergenic_gap': {'title': 'Maximum intergenic gap',
+                                     'text': 'This is the explanation'},
+              'percentageQueryGenes': {'title': "Percentage query genes",
+                                       'text': "TODO"},
+              'min_unique_query_hits': {'title': "Minimum unique query hits",
+                                        'text': "TODO"},
+              'min_hits_in_clusters': {'title': "Minimum hits in clusters",
+                                       'text': "TODO"},
+              'intermediate_max_distance': {'title': "Maximum distance of intermediate genes",
+                                            'text': "TODO"},
+              'intermediate_max_clusters': {'title': "Maximum number of clusters to get intermediate genes assigned",
+                                            'text': "TODO"},
+                # gne module
+              'max_intergenic_distance': {'title': "Maximum intergenic distance",
+                                          'text': "TODO"},
+              'sample_number': {'title': "Sample number",
+                                'text': "TODO"},
+                # clinker full
+              'identity': {'title': "Minimum alignment sequence identity",
+                           'text': "TODO"}}
+

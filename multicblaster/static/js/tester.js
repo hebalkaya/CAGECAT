@@ -645,6 +645,9 @@ function showHelp(textType){
        // console.log(data.text);
        // console.log(status);
     });
+    if (document.getElementById("explanationColumn").style.display === "none"){
+        toggleExplanationColumn();
+    }
 }
 
 function jalala () {
@@ -678,17 +681,18 @@ function jalala () {
 function toggleExplanationColumn(){
     let rightCol = document.getElementById('explanationColumn');
     let middleCol = document.getElementById('middleColumn');
-    console.log(event.target);
+    let toggleButton = document.getElementById('toggleHelpButton');
+    // console.log(event.target);
     if (rightCol.style.display === "none"){
         rightCol.style.display = "block";
-        event.target.style.right = "20%";
-        event.target.innerText = ">>";
+        toggleButton.style.right = "20%";
+        toggleButton.innerText = ">>";
         middleCol.style.width = "65%";
     }
     else {
         rightCol.style.display = "none";
-        event.target.style.right = "8px";
-        event.target.innerText = "<<";
+        toggleButton.style.right = "8px";
+        toggleButton.innerText = "<<";
         middleCol.style.width = "85%";
 
     }
