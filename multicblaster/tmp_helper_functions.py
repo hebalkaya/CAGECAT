@@ -6,6 +6,10 @@ def create_empty_dict_of_labels(filename):
 
     for l in labels:
         new[l] = {"title": "TODO",
-                  "text": "TODO"}
+                  "text": {"module": "TODO",
+                           "description": "TODO",
+                           "accepted_values": "TODO",
+                           }}
+        # TODO: potentially more at text
 
     return new
