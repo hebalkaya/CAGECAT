@@ -101,13 +101,13 @@ initReadQueryFile();
     </div>
     <div class="input-layer">
         <label class="select-label" for="database_type">Database</label>
-        {{ renderHelpButton('database_type') }}
         <select class="select-options" id="database_type" name="database_type" required="required">
             <option value="nr">nr</option>
             <option value="refseq_protein">refseq_protein</option>
             <option value="swissprot">swissprot</option>
             <option value="pdb">pdb</option>
         </select>
+        {{ renderHelpButton('database_type') }}
     </div>
 
     <div class="input-layer">

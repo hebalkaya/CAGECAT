@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import filtering_section %}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpButton %}
 
 {% block title %}Extract sequences{% endblock %}
 
@@ -19,13 +20,22 @@
             <fieldset id="outputSection">
                 <div class="input-layer">
                     <label class="input-label" for="outputDelimiter">Delimiter</label>
+                    {{ renderHelpButton('generalDelimiter') }}
                     <input class="short" type="text" id="outputDelimiter" name="outputDelimiter" maxlength="1"/>
                 </div>
                 <div>
-                    <label class="checkbox-label"><input type="checkbox" name="downloadSeqs"/>Download sequences</label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="downloadSeqs"/>
+                        Download sequences
+                    </label>
+                    {{ renderHelpButton('downloadSeqs') }}
                 </div>
                 <div>
-                    <label class="checkbox-label"><input type="checkbox" name="nameOnly" onclick="toggleDisabled('outputDelimiter')"/>Name only</label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="nameOnly" onclick="toggleDisabled('outputDelimiter')"/>
+                        Name only
+                    </label>
+                    {{ renderHelpButton('nameOnly') }}
                 </div>
             </fieldset>
                 <button type="submit">Extract!</button>

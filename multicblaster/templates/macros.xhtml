@@ -120,27 +120,32 @@
 <fieldset id="filteringSection">
     <div class="input-layer">
         <label class="input-label" for="selectedOrganisms">Organisms</label>
+        {{ renderHelpButton('selectedOrganisms') }}
         <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
     </div>
     <div class="input-layer">
         <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>
+        {{ renderHelpButton('selectedScaffolds') }}
         <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
     </div>
 
     {% if extraction_type == 'sequences' %}
     <div class="input-layer">
         <label class="textarea-label" for="selectedQueries">Queries</label>
+        {{ renderHelpButton('selectedQueries') }}
         <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
     </div>
     {% elif extraction_type == 'clusters' %}
     <div class="input-layer">
         <label class="input-label" for="clusterNumbers">Clusters</label>
+        {{ renderHelpButton('clusterNumbers') }}
         <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
 <!--        TODO: add pattern for clusternumbers (either separated by space or via stripes)-->
 <!--        TODO: check if 1-3 and 6-8 works-->
     </div>
     <div class="input-layer">
         <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
+        {{ renderHelpButton('clusterScoreThreshold') }}
         <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
     </div>
 
@@ -157,6 +162,7 @@
     <label class="input-label" for="base{{type}}">{{label}}</label>
     <div class="scientificnotation-div">
         <input type="number" id="base{{type}}" step="0.01" min="1" max="9.99" value="1"/>
+        {{ renderHelpButton(type.lower()) }}
         <span class="spaced">E<sup><span id="power{{type}}">{{default_value}}</span></sup></span>
         <button type="button" class="scientificnotation" onclick="changePower(-1, 'power{{type}}')">&#9660</button>
         <button type="button" class="scientificnotation" onclick="changePower(1, 'power{{type}}')">&#9650</button>

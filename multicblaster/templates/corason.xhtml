@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import create_scientific_input %}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpButton %}
 
 {% block navigationBar %}
     {{ showNavigationBar('post-analysis') }}
@@ -19,15 +20,18 @@ Corason
         <fieldset id="inputSection">
             <div class="input-layer bigger">
                 <label class="input-label" for="selectedQuery">Query</label>
+                {{ renderHelpButton('selectedQuery') }}
                 <input type="text" id="selectedQuery" name="selectedQuery" required="required" value="{{query}}"/>
             </div>
             <div class="input-layer">
                 <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>
+                {{ renderHelpButton('selectedReferenceCluster') }}
                 <input type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>
             </div>
 
             <div class="input-layer">
                 <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
+                {{ renderHelpButton('selectedClustersToSearch') }}
                 <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>
             </div>
 
@@ -42,9 +46,11 @@ Corason
                 <label class="checkbox-label">
                     <input type="checkbox" name="bitscore"/>Bitscore
                 </label>
+                {{ renderHelpButton('bitscore') }}
             </div>
             <div class="input-layer">
                 <label class="input-label" for="clusterRadio">Cluster radio?</label>
+                {{ renderHelpButton('clusterRadio') }}
                 <input type="number" value="10" id="clusterRadio" name="clusterRadio" required="required"/>
             </div>
 
@@ -55,11 +61,13 @@ Corason
 
             <div class="input-layer">
                 <label class="input-label" for="rescale">Rescale</label>
+                {{ renderHelpButton('rescale') }}
                 <input type="number" id="rescale" name="rescale" value="85000" step="1" required="required"/>
             </div>
             <div>
                 <label class="file-upload-lbl" for="antismashFile">Antismash file</label>
                 <input type="file" name="antismashFile" id="antismashFile"/>
+{#                TODO: add question mark here#}
             </div>
 
 

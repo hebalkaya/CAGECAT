@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import filtering_section %}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpButton %}
 
 {% block title %}clinker query{% endblock %}
 
@@ -16,6 +17,7 @@
     <label class="fieldset-label" for="outputSection">Output</label>
     <fieldset>
         <label class="input-label" for="maxclusters">Maximum clusters</label>
+        {{ renderHelpButton('maxclusters') }}
         <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
     </fieldset>
     <input type="submit" value="Visualize"/>

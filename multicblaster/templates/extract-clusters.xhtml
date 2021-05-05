@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import filtering_section %}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpButton %}
 
 {% block title %}Extract clusters{% endblock %}
 
@@ -20,6 +21,7 @@
     <fieldset id="outputSectionExtractClusters">
         <div class="input-layer">
             <label class="input-label" for="prefix">Prefix</label>
+            {{ renderHelpButton('prefix') }}
             <input class="custom-width" type="text" id="prefix" name="prefix" maxlength="15"/>
         </div>
         <div class="input-layer">
@@ -28,9 +30,11 @@
                 <option value="genbank">Genbank</option>
                 <option value="bigscape">BiG-SCAPE</option>
             </select>
+            {{ renderHelpButton('format') }}
         </div>
         <div class="input-layer">
             <label class="input-label" for="maxclusters">Maximum clusters</label>
+            {{ renderHelpButton('maxclusters') }}
             <input class="short" type="number" name="maxclusters" value="50" step="1" id="maxclusters" required="required"/>
         </div>
 
