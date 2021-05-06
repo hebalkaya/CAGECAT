@@ -169,6 +169,34 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                         pj=ut.fetch_job_from_db(last_job_id).depending_on, store_job_id=True, j_type=ut.fetch_job_from_db(job_id).job_type))
 
 
+def get_connected_jobs(job):
+    connected_jobs = []
+
+    if job.main_search_job == "null": # current job is a search job (or comes from session file?)
+        # go and look for child jobs
+        children = job.child_jobs
+        print(job)
+        print("+++++++++++++")
+        print(children)
+
+        if children != "null" and children is not None:
+            # TODO: change above booleans
+            for j_id in children.split(","):
+                child_job = ut.fetch_job_from_db(j_id)
+                connected_jobs.append((child_job.id, child_job.job_type, child_job.status, "child"))
+
+    else:
+        main_job = ut.fetch_job_from_db(job.main_search_job)
+        connected_jobs.append((main_job.id, main_job.job_type, main_job.status, "main search"))
+
+        if job.depending_on != "null":
+            parent_job = ut.fetch_job_from_db(job.depending_on)
+            connected_jobs.append((parent_job.id, parent_job.job_type, parent_job.status, "depending"))
+
+    return connected_jobs
+
+
+
 @app.route("/results/<job_id>")
 def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: # parent_job should be
     """Shows the results page for the given job ID
@@ -202,12 +230,15 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             with open(os.path.join(ut.JOBS_DIR, job_id, "logs",
                                    f"{job_id}_{program}.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
+            connected_jobs = get_connected_jobs(job)
+
+
             # print(ut.get_available_downstream_modules(module))
             return show_template("result_page.xhtml", j_id=job_id,
                                  status=status, content_size=ut.format_size(size), compr_formats=ut.COMPRESSION_FORMATS, module=module,
                                  modules_with_plots=ut.MODULES_WHICH_HAVE_PLOTS,
                                  log_contents=log_contents,
-                                 downstream_modules=co.DOWNSTREAM_MODULES_OPTIONS[module])
+                                 downstream_modules=co.DOWNSTREAM_MODULES_OPTIONS[module], connected_jobs=connected_jobs)
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:
@@ -614,10 +645,25 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         status = "queued" if depending_job is None else "waiting"
         # for parent job to finish
 
+        # db preparations
+        if new_job[5] == "search":
+            main_search_job = "null"
+        else:
+            old_job = ut.fetch_job_from_db(new_job[2]["prev_job_id"])
+
+            if old_job.job_type == "search":
+                main_search_job = old_job.id
+            else:
+                main_search_job = old_job.main_search_job
+                # print("The old job was not search, so we need to search for it")
+                # TODO
+        # end db preparations
+
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
                   redis_id=job.id,
                   depending_on="null" if
-                  depending_job is None else new_job[4])  # is our own job ID
+                  depending_job is None else new_job[4],  # is our own job ID
+                  main_search_job=main_search_job)
 
         db.session.add(j)
         db.session.commit()

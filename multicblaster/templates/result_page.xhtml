@@ -35,6 +35,17 @@
     <p class="log">{{log_contents|safe}}</p>
 </div>
     </div>
+    {% if connected_jobs %}
+    <div id="connectedJobs">
+        {% for id, module, status, job_category in connected_jobs %}
+            {{ id }}
+            {{ module }}
+            {{ status }}
+            {{ job_category }}
+
+        {% endfor %}
+    </div>
+    {% endif %}
 
 {% if downstream_modules %}
             <div class="partly-height">
