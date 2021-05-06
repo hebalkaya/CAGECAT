@@ -21,7 +21,8 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "extract_clusters": ["corason", "clinker_full",
                                                    "clinker_query"],
                               "clinker_full": ["extract_clusters"],
-                              "clinker_query": ["extract_clusters"]}
+                              "clinker_query": ["extract_clusters"] # TODO: possibly also corason?
+                              }
 
 # TODO: create all help texts per module using script
 

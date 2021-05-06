@@ -275,15 +275,17 @@ function hasOneElementSelected(overview){
 function checkCorasonButton() {
     // TODO: implement that a cluster cannot be in in the cluster section and be the reference cluster at the same time
     let elem = document.getElementById("corasonSubmit");
-    let queries = document.getElementById("selectedQueriesOverview");
-    let clusters = document.getElementById("selectedClustersOverview")
-    let referenceCluster = document.getElementById("selectedReferenceCluster");
+    if (elem !== null){
+        let queries = document.getElementById("selectedQueriesOverview");
+        let clusters = document.getElementById("selectedClustersOverview")
+        let referenceCluster = document.getElementById("selectedReferenceCluster");
 
-    if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
-        elem.removeAttribute("disabled");
-    }
-    else {
-        elem.setAttribute("disabled", "disabled");
+        if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
+            elem.removeAttribute("disabled");
+        }
+        else {
+            elem.setAttribute("disabled", "disabled");
+        }
     }
 }
 
