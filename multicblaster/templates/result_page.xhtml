@@ -115,9 +115,9 @@
     <img id="loadingImage" style="vertical-align: middle; width: 80px; height: auto;" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
 </div>
     {% if module in ['search', 'recompute'] %}
-        {% set onload = 'loadedIframe(this);postLoadingIFrame()' %}
+        {% set onload = 'applyListenersSearchResults(this);postLoadingIFrame()' %}
     {% elif module in ['clinker_full', 'clinker_query'] %}
-        {% set onload = 'postLoadingIFrame()' %}
+        {% set onload = 'applyListenersClinkerResults(this);postLoadingIFrame()' %}
     {% endif %}
 <iframe onload="showPreviousJobs(true)" style="display: none"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
     <iframe onload="{{onload}}" height="800" id="newWindow" src="/plots/{{ j_id }}" title="Generated HTML plot"></iframe>

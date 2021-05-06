@@ -405,7 +405,8 @@ window.addEventListener("message", function(e){
 }, false)
 
 
-function loadedIframe(){
+function applyListenersSearchResults(){
+    // TODO: see if we can modularize this function with applyListenersClinkerResults()
     let frame = document.getElementById("newWindow");
     let doc = frame.contentDocument || frame.contentWindow.document;
     let clusters = doc.getElementsByClassName("tickTextGroup");
@@ -435,9 +436,33 @@ function loadedIframe(){
     }
 }
 
+function applyListenersClinkerResults(){
+    // TODO: see if we can modularize this function with applyListenersSearchResults()
+    let frame = document.getElementById("newWindow");
+    let doc = frame.contentDocument || frame.contentWindow.document;
+    let clusters = doc.getElementsByClassName("clusters")[0].childNodes;
+
+    for (let i=0; i < clusters.length; i++){
+        clusters[i].addEventListener("contextmenu", function(event){
+            event.preventDefault();
+
+            let childs = clusters[i].firstChild.childNodes;
+            // console.log(clusters[i]);
+            // console.log(clusters[i].childNodes);
+            // console.log(clusters[i].firstChild); //represents label
+            if (childs[0].textContent !== "Query Cluster") {
+
+                parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
+            }
+        });
+    }
+
+}
+
 function postLoadingIFrame(){
     document.getElementById("resultLoadedMessage").innerText = "Loading has completed";
     document.getElementById("loadingImage").style.display = "none";
+    // TODO: use classes for display: none of elements
 }
 
 
@@ -679,6 +704,7 @@ function jalala () {
 }
 
 function toggleExplanationColumn(){
+    // TODO: make it so that classes are used
     let rightCol = document.getElementById('explanationColumn');
     let middleCol = document.getElementById('middleColumn');
     let toggleButton = document.getElementById('toggleHelpButton');

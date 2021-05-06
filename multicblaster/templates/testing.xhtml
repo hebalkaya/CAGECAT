@@ -4,7 +4,7 @@
 
 {% block content %}
 <p>Testing?</p>
-<iframe onload="loadedIframe(this)" id="newWindow"  srcdoc="{{html_contents}}" title="Generated HTML plot"></iframe>
+<iframe onload="applyListenersSearchResults(this)" id="newWindow" srcdoc="{{html_contents}}" title="Generated HTML plot"></iframe>
 
 <p id="selectedClustersOverview">No clusters selected</p>
         {% endblock %}
