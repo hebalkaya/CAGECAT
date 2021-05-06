@@ -178,8 +178,9 @@ def get_connected_jobs(job):
         print(job)
         print("+++++++++++++")
         print(children)
+        print(len(children))
 
-        if children != "null" and children is not None:
+        if children:  # empty string evaluates to False
             # TODO: change above booleans
             for j_id in children.split(","):
                 child_job = ut.fetch_job_from_db(j_id)
@@ -646,24 +647,15 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         # for parent job to finish
 
         # db preparations
-        if new_job[5] == "search":
-            main_search_job = "null"
-        else:
-            old_job = ut.fetch_job_from_db(new_job[2]["prev_job_id"])
+        main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job)
 
-            if old_job.job_type == "search":
-                main_search_job = old_job.id
-            else:
-                main_search_job = old_job.main_search_job
-                # print("The old job was not search, so we need to search for it")
-                # TODO
         # end db preparations
 
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
                   redis_id=job.id,
                   depending_on="null" if
                   depending_job is None else new_job[4],  # is our own job ID
-                  main_search_job=main_search_job)
+                  main_search_job=main_search_job_id)
 
         db.session.add(j)
         db.session.commit()
@@ -673,6 +665,27 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         last_job_id = new_job[1]
 
     return last_job_id
+
+
+def add_parent_search_and_child_jobs_to_db(new_job):
+    # TODO: documentation
+    if new_job[5] == "search":
+        main_search_job_id = "null"
+    else:
+        old_job = ut.fetch_job_from_db(new_job[2]["prev_job_id"])
+
+        if old_job.job_type == "search":
+            main_search_job_id = old_job.id
+            main_search_job = ut.fetch_job_from_db(main_search_job_id)
+
+            sep = "" if not main_search_job.child_jobs else ","
+            main_search_job.child_jobs += f"{sep}{new_job[1]}"
+            # empty string for the first child job
+
+        else:
+            main_search_job_id = old_job.main_search_job
+
+    return main_search_job_id
 
 
 @app.route("/testing")

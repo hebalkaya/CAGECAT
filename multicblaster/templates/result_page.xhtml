@@ -49,7 +49,8 @@
 
 {% if downstream_modules %}
             <div class="partly-height">
-            <div class="column leftColumn" style="border-bottom: 2px solid #5284a7;border-bottom-right-radius: 5px;">
+            <div class="column leftColumn" style="width: 20%;border-bottom: 2px solid #5284a7;border-bottom-right-radius: 5px;">
+{#            TODO: make class for style except width#}
 
         {% if 'clinker_query' in downstream_modules %}
             <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
@@ -99,7 +100,7 @@
         {% endif %}
 
             </div>
-            <div class="column middleColumn" style="width: 85%;">
+            <div class="column middleColumn" style="width: 80%;">
 <label for="selectedQueriesOverview">Selected queries</label>
 <ul id="selectedQueriesOverview">
     <li>No queries selected</li>
