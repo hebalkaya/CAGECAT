@@ -335,12 +335,20 @@ def extract_clusters() -> str:
     """
     selected_clusters = request.form["selectedClusters"]
     selected_scaffolds = pa.parse_selected_scaffolds(selected_clusters)
-    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters, ut.CLUST_NUMBER_PATTERN_W_SCORE)
+    prev_job = request.form["job_id"]
+
+    pattern = ut.CLUST_NUMBER_PATTERN_W_SCORE if \
+        ut.fetch_job_from_db(prev_job).job_type not in \
+        ('clinker_query', 'clinker_full') else \
+        ut.CLUST_NUMBER_PATTERN_W_CLINKER_SCORE
+    # TODO: store the now hardcorded clinker_modules in a constant
+
+    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters, pattern)
 
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
                          selected_scaffolds=selected_scaffolds,
                          cluster_numbers=cluster_numbers,
-                         prev_job_id=request.form["job_id"])
+                         prev_job_id=prev_job)
 
 
 @app.route("/downstream/corason", methods=["POST"])
