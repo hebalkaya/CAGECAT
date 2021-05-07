@@ -29,21 +29,37 @@
     </form>
 
 
-<label class="checkbox-label">
-    <input onclick="toggleElementVisibility('logSection')" type="checkbox"/>Show log</label>
-<div id="logSection" style="display: none">
-    <p class="log">{{log_contents|safe}}</p>
-</div>
-    </div>
+{#<label class="checkbox-label">#}
+{#    <input onclick="toggleElementVisibility('logSection')" type="checkbox"/>Show log</label>#}
+{#<div id="logSection" style="display: none">#}
+{#    <p class="log">{{log_contents|safe}}</p>#}
+{#</div>#}
+{#    </div>#}
     {% if connected_jobs %}
-    <div id="connectedJobs">
-        {% for id, module, status, job_category in connected_jobs %}
-            {{ id }}
-            {{ module }}
-            {{ status }}
-            {{ job_category }}
+        <div id="connectedJobsCheckbox">
+            <label class="checkbox-label" for="connectedJobsToggle">
+                <input type="checkbox" id="connectedJobsToggle" onclick="toggleElementVisibility('connectedJobs')"/>Show Linked jobs
+            </label>
+        </div>
+    <div id="connectedJobs" style="display: none;">
 
+        <table>
+            <tr>
+                <th>Job ID</th>
+                <th>Module</th>
+                <th>Status</th>
+                <th>Category</th>
+            </tr>
+
+        {% for id, module, status, job_category in connected_jobs %}
+            <tr>
+                <td>{{ id }}</td>
+                <td>{{ module }}</td>
+                <td>{{ status }}</td>
+                <td>{{ job_category }}</td>
+            </tr>
         {% endfor %}
+        </table>
     </div>
     {% endif %}
 
