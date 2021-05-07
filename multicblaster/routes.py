@@ -175,13 +175,8 @@ def get_connected_jobs(job):
     if job.main_search_job == "null": # current job is a search job (or comes from session file?)
         # go and look for child jobs
         children = job.child_jobs
-        print(job)
-        print("+++++++++++++")
-        print(children)
-        print(len(children))
 
         if children:  # empty string evaluates to False
-            # TODO: change above booleans
             for j_id in children.split(","):
                 child_job = ut.fetch_job_from_db(j_id)
                 connected_jobs.append((child_job.id, child_job.job_type, child_job.status, "child"))

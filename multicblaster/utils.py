@@ -397,4 +397,4 @@ signal.signal(signal.SIGTERM, handle_soft_interrupt)
 
 
 def format_size(size):
-    return "%3.1f MB" % (size/1000000)
+    return "%3.1f MB" % (size/1000000) if size is not None else size
