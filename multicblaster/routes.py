@@ -104,7 +104,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         # print(request.form)
         f = rf.cblaster_extract_clusters
 
-        prev_job_id = request.form["prev_job_id"]
+        prev_job_id = ut.fetch_job_from_db(request.form["prev_job_id"]).main_search_job
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
         # For now, only when coming from a results page (using a previous job
