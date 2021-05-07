@@ -572,7 +572,7 @@ function addRequiredSeqs(){
 }
 
 function storeJobId(id, j_type){
-    let maxToShow = 15;
+    let maxToShow = 250;
 
     for (let i=0; i<maxToShow; i++){
         let str = i.toString();
