@@ -642,7 +642,7 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         # for parent job to finish
 
         # db preparations
-        main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job)
+        main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job, i == len(new_jobs)-1)
 
         # end db preparations
 
@@ -662,12 +662,14 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
     return last_job_id
 
 
-def add_parent_search_and_child_jobs_to_db(new_job):
+def add_parent_search_and_child_jobs_to_db(new_job, is_last_job):
     # TODO: documentation
     if new_job[5] == "search":
         main_search_job_id = "null"
     else:
-        old_job = ut.fetch_job_from_db(new_job[2]["prev_job_id"])
+        old_job = get_parent_job(new_job, is_last_job)
+        # parse main search job ID from given file_path
+        # TODO: index on else statement could change when the base_path is changed
 
         if old_job.job_type == "search":
             main_search_job_id = old_job.id
@@ -681,6 +683,30 @@ def add_parent_search_and_child_jobs_to_db(new_job):
             main_search_job_id = old_job.main_search_job
 
     return main_search_job_id
+
+
+def get_parent_job(new_job, is_last_job):
+    # TODO: documentation
+    if new_job[5] in ("recompute", "gne", "clinker_full"):
+        # are modules which use the prev_session macro to get the previous session ID
+        # might change in the future
+
+        # below lines are required due to the naming in the HTML input fields
+        if new_job[5] == "recompute":
+            module = "search"
+        elif new_job[5] == "clinker_full":
+            module = "clinker"
+        else:
+            module = new_job[5]
+
+        key = f"{module}EnteredJobId"
+    else:
+        key = "prev_job_id"
+
+    old_job = ut.fetch_job_from_db(
+        new_job[2][key] if is_last_job else new_job[3].split(os.sep)[2])
+
+    return old_job
 
 
 @app.route("/testing")

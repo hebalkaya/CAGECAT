@@ -1,5 +1,6 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpButton %}
 
 {% block title %}
     Status: {{ status }}
@@ -74,6 +75,9 @@
                 <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
                 <button class="button button-small" type="submit">Visualize with query clusters</button>
             </form>
+{#            {{ renderHelpButton('module_clinker_query') }}#}
+{#            TODO: add help buttons for downstream modules#}
+
         {% endif %}
 
         {% if 'clinker_full' in downstream_modules %}
