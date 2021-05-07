@@ -53,7 +53,7 @@
 
         {% for id, module, status, job_category in connected_jobs %}
             <tr>
-                <td>{{ id }}</td>
+                <td style="font-family: monospace;font-size: 16px;"><a href="{{ url_for('show_result', job_id=id) }}">{{ id }}</a></td>
                 <td>{{ module }}</td>
                 <td>{{ status }}</td>
                 <td>{{ job_category }}</td>
