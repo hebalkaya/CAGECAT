@@ -151,15 +151,7 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None):
     cmd = ["cblaster", "extract", file_path,
            "--output", os.path.join(RESULTS_PATH, f"{job_id}_sequences.{extension}")]
 
-    if options["selectedQueries"]:
-        cmd.append("--queries")
-        cmd.extend(options["selectedQueries"].split())
-
-    # TODO: add organism filtering
-
-    if options["selectedScaffolds"]:
-        cmd.append("--scaffolds")
-        cmd.extend(options["selectedScaffolds"].split())
+    cmd.extend(create_filtering_command(options, False))
 
     if "outputDelimiter" in options:
         cmd.extend(["--delimiter", options["outputDelimiter"]])
@@ -183,29 +175,44 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
     cmd = ["cblaster", "extract_clusters", file_path,
            "--output", RESULTS_PATH]
 
-    if options["selectedOrganisms"]:
-        cmd.extend(["--organisms", options['selectedOrganisms']])
-        # TODO: could also that user gives multiple patterns. separated by ?
-
-    if options["selectedScaffolds"]:
-        cmd.append("--scaffolds")
-        cmd.extend(options["selectedScaffolds"].split())
-
-    if options["clusterNumbers"]:
-        cmd.append("--clusters")
-        cmd.extend(options["clusterNumbers"].strip().split())
-
-    if options["clusterScoreThreshold"]:
-        cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
+    cmd.extend(create_filtering_command(options, True))
 
     if options["prefix"]:
         cmd.extend(["--prefix", options["prefix"]])
 
     cmd.extend(["--format", options["format"]])
-    cmd.extend(["--maximum_clusters", options["maxclusters"]])
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
+
+
+def create_filtering_command(options, is_cluster_related):
+    partly_cmd = []
+
+    if not is_cluster_related:
+        if options["selectedQueries"]:
+            partly_cmd.append("--queries")
+            partly_cmd.extend(options["selectedQueries"].split())
+
+    if options["selectedOrganisms"]:
+        partly_cmd.extend(["--organisms", options['selectedOrganisms']])
+        # TODO: could also that user gives multiple patterns. separated by ?
+
+    if options["selectedScaffolds"]:
+        partly_cmd.append("--scaffolds")
+        partly_cmd.extend(options["selectedScaffolds"].split())
+
+    if is_cluster_related:
+        if options["clusterNumbers"]:
+            partly_cmd.append("--clusters")
+            partly_cmd.extend(options["clusterNumbers"].strip().split())
+
+        if options["clusterScoreThreshold"]:
+            partly_cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
+
+        partly_cmd.extend(["--maximum_clusters", options["maxclusters"]])
+
+    return partly_cmd
 
 
 def corason(job_id, options=None, file_path=None):
@@ -291,23 +298,7 @@ def clinker_query(job_id, options=None, file_path=None):
     cmd = ["cblaster", "plot_clusters", file_path,
            "--output", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
 
-    # TODO: check section below. Is almost equivalent to cblaster_extract_clusters (and maybe more)
-    # ==== section start ============
-    # TODO: organism
-
-    if options["selectedScaffolds"]:
-        cmd.append("--scaffolds")
-        cmd.extend(options["selectedScaffolds"].split())
-
-    if options["clusterNumbers"]:
-        cmd.append("--clusters")
-        cmd.extend(options["clusterNumbers"].strip().split())
-
-    if options["clusterScoreThreshold"]:
-        cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
-
-    cmd.extend(["--maximum_clusters", options["maxclusters"]])
-    # ==== section end ============
+    cmd.extend(create_filtering_command(options, True))
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
