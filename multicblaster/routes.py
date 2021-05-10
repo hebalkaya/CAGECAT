@@ -105,6 +105,9 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         f = rf.cblaster_extract_clusters
 
         prev_job_id = ut.fetch_job_from_db(request.form["prev_job_id"]).main_search_job
+        if prev_job_id == "null":
+            prev_job_id = request.form["prev_job_id"]
+
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")
         # For now, only when coming from a results page (using a previous job
@@ -250,7 +253,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 pj = request.args["pj"]
 
             return show_template("status_page.xhtml", j_id=job_id,
-                                 parent_job=pj, status=status, settings=settings, store_job_id=store_job_id, j_type=j_type)
+                                 parent_job=pj, status=status, settings=settings, store_job_id=store_job_id, j_type=j_type, stat_code=302)
         elif status == "waiting":
             pj = ut.fetch_job_from_db(job_id).depending_on if "pj" not in request.args else request.args["pj"]
 
