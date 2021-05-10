@@ -10,11 +10,24 @@ from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status
 from multicblaster import db
 import werkzeug.datastructures
 import typing as t
+import Bio.SeqIO as SeqIO
 
 # Whenever a CMD is ran from a function, all print statements within that
 # same function are performed when the CMD has finished
 
 # redis-queue functions
+def store_query_sequences_headers(log_path, input_type, data):
+
+    if input_type == "ncbi_entries": # ncbi_entries
+        headers = data
+    elif input_type == "fasta":
+        with open(data) as inf:
+            headers = [line.strip()[1:] for line in inf.readlines() if line.startswith(">")]
+
+    with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
+        outf.write(",".join(headers))
+
+
 def cblaster_search(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
 
@@ -33,10 +46,15 @@ def cblaster_search(job_id, options=None, file_path=None):
     if input_type == "fasta":
         cmd.extend(["--query_file", file_path])
         session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+        store_query_sequences_headers(LOG_PATH, input_type, file_path)
     elif input_type == "ncbi_entries":
+        entries = options["ncbiEntriesTextArea"].split()
+
         cmd.append("--query_ids")
-        cmd.extend(options["ncbiEntriesTextArea"].split())
+        cmd.extend(entries)
+
         session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+        store_query_sequences_headers(LOG_PATH, input_type, entries)
     elif input_type == "prev_session":
         recompute = True
         cmd.extend(["--recompute",
