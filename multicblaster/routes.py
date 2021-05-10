@@ -169,7 +169,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     last_job_id = enqueue_jobs(new_jobs)
 
     return redirect(url_for("show_result", job_id=last_job_id,
-                        pj=ut.fetch_job_from_db(last_job_id).depending_on, store_job_id=True, j_type=ut.fetch_job_from_db(job_id).job_type))
+                        pj=ut.fetch_job_from_db(last_job_id).depending_on, store_job_id=True, j_type=ut.fetch_job_from_db(last_job_id).job_type))
 
 
 def get_connected_jobs(job):
