@@ -15,14 +15,6 @@ import typing as t
 # same function are performed when the CMD has finished
 
 # redis-queue functions
-def first(job_id, options=None, file_path=None):
-    print(f"This is the first function. JID: {job_id}")
-    post_job_formalities(job_id, 0)
-
-def second(job_id, options=None, file_path=None):
-    print(f"Second function?!!!?! JID: {job_id}")
-    post_job_formalities(job_id, 0)
-
 def cblaster_search(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
 
@@ -141,7 +133,6 @@ def cblaster_gne(job_id, options=None, file_path=None):
            "--plot", os.path.join(results_path, f"{job_id}_plot.html"),
            "--output", os.path.join(results_path, f"{job_id}_summary.txt")]
 
-    # TODO: test if gne also works with a job_id
     cmd.extend(create_summary_table_commands('gne', options))
 
     return_code = run_command(cmd, log_path, job_id)
@@ -192,7 +183,9 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
     cmd = ["cblaster", "extract_clusters", file_path,
            "--output", RESULTS_PATH]
 
-    # TODO: add organism filtering
+    if options["selectedOrganisms"]:
+        cmd.extend(["--organisms", options['selectedOrganisms']])
+        # TODO: could also that user gives multiple patterns. separated by ?
 
     if options["selectedScaffolds"]:
         cmd.append("--scaffolds")
@@ -284,12 +277,6 @@ def clinker_full(job_id, options=None, file_path=None):
 
     if "useFileOrder" in options:
         cmd.append("--use_file_order")
-
-    print("======== WORKERS.PY ========")
-    print("File path:", file_path)
-    print(options)
-
-    # print("We are in clinker")
 
     return_code = run_command(cmd, LOG_PATH, job_id)
 
