@@ -1,4 +1,5 @@
-EXTRACT_CLUSTERS_OPTIONS = {"selectedScaffolds": "",  # empty strings as
+EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
+                            "selectedScaffolds": "",  # empty strings as
                             "clusterNumbers": "",  # if nothing was
                             "clusterScoreThreshold": "",  # filled in in the
                             "prefix": "",  # submission form
