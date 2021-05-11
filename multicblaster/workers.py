@@ -3,33 +3,14 @@
 Author: Matthias van den Belt
 """
 # package imports
-import subprocess
-import os
 
 # own project imports
-from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status
-from multicblaster import db
-
-# typing imports
-import werkzeug.datastructures
-import typing as t
+from multicblaster.workers_helpers import *
 
 # Whenever a CMD is ran from a function, all print statements within that
 # same function are performed when the CMD has finished
 
 ### redis-queue functions
-def store_query_sequences_headers(log_path, input_type, data):
-
-    if input_type == "ncbi_entries": # ncbi_entries
-        headers = data
-    elif input_type == "fasta":
-        with open(data) as inf:
-            headers = [line.strip()[1:] for line in inf.readlines() if line.startswith(">")]
-
-    with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
-        outf.write(",".join(headers))
-
-
 def cblaster_search(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
 
@@ -92,7 +73,7 @@ def cblaster_search(job_id, options=None, file_path=None):
     if options["requiredSequences"]:  # as empty string evaluates to False
         cmd.append("--require")
         for q in options["requiredSequences"].split(";"):
-            cmd.append(f"'{q}'")  # to prevent 1 header to be interpreted
+            cmd.append(f"'{q.strip().split()[0]}'")  # to prevent 1 header to be interpreted
                                     # as multiple due to spaces in header
 
     # add summary table
@@ -185,6 +166,7 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None):
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
+
 def cblaster_extract_clusters(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
@@ -201,67 +183,6 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
         cmd.extend(["--prefix", options["prefix"]])
 
     cmd.extend(["--format", options["format"]])
-
-    return_code = run_command(cmd, LOG_PATH, job_id)
-    post_job_formalities(job_id, return_code)
-
-
-def create_filtering_command(options, is_cluster_related):
-    partly_cmd = []
-
-    if not is_cluster_related:
-        if options["selectedQueries"]:
-            partly_cmd.append("--queries")
-            partly_cmd.extend(options["selectedQueries"].split())
-
-    if options["selectedOrganisms"]:
-        partly_cmd.extend(["--organisms", options['selectedOrganisms']])
-        # TODO: could also that user gives multiple patterns. separated by ?
-
-    if options["selectedScaffolds"]:
-        partly_cmd.append("--scaffolds")
-        partly_cmd.extend(options["selectedScaffolds"].split())
-
-    if is_cluster_related:
-        if options["clusterNumbers"]:
-            partly_cmd.append("--clusters")
-            partly_cmd.extend(options["clusterNumbers"].strip().split())
-
-        if options["clusterScoreThreshold"]:
-            partly_cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
-
-        partly_cmd.extend(["--maximum_clusters", options["maxclusters"]])
-
-    return partly_cmd
-
-
-def corason(job_id, options=None, file_path=None):
-
-    pre_job_formalities(job_id)
-    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
-
-    cmd = ["echo", "we should execute corason here"]
-    # TODO: implement CORASON
-
-    cmd.extend(["queryfile", "tmpQUERYFILEPATH",
-                "special_org", "tmpREFERENCECLUSTERPATH",
-                "e_value", options["evalue"],
-                "e_core", options["ecore"]])
-
-    if "bitscore" in options:
-        cmd.append("bitscore") # TODO: check if this is really the way, or an integer should be provided (true/false)
-
-    cmd.extend(["cluster_radio", options["clusterRadio"],
-                "e_cluster", options["ecluster"]])
-
-    # list functionality intentionally left out, as clusters to search in
-    # are already selected and therefore all clusters in the GENOME directory
-    # should be searched
-
-    cmd.extend(["rescale", options["rescale"]])
-
-    if "antismashFile" in options:
-        cmd.extend(["antismash", options["antismashFile"]])
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
@@ -323,161 +244,34 @@ def clinker_query(job_id, options=None, file_path=None):
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
 
-# auxiliary functions
-# TODO: maybe in a separate module
-def create_summary_table_commands(
-        module: str, options: werkzeug.datastructures.ImmutableMultiDict) \
-        -> t.List[str]:
-    """Generates commands for creating a summary table
 
-    Input:
-        - module: name of used multicblaster module to create commands for.
-            Currently available are: ["search", "gne"]
-        - options: user submitted options (values) via HTTP form of front-end
+def corason(job_id, options=None, file_path=None):
 
-    Output:
-        - summary_cmds: commands to enable creation of a custom-defined
-            summary table
+    pre_job_formalities(job_id)
+    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    Depending on the module, a prefix is required for the commands to work.
-    """
-    summary_cmds = []
+    cmd = ["echo", "we should execute corason here"]
+    # TODO: implement CORASON
 
-    if module == "search":
-        prefix = "output_"
-    elif module == "gne":
-        prefix = ""
-    else:
-        raise IOError("Invalid module")
+    cmd.extend(["queryfile", "tmpQUERYFILEPATH",
+                "special_org", "tmpREFERENCECLUSTERPATH",
+                "e_value", options["evalue"],
+                "e_core", options["ecore"]])
 
-    sum_table_delim = options[f"{module}SumTableDelim"]
-    if sum_table_delim:  # evalutes to True if not an empty string
-        summary_cmds.extend([f"--{prefix}delimiter", sum_table_delim])
+    if "bitscore" in options:
+        cmd.append("bitscore") # TODO: check if this is really the way, or an integer should be provided (true/false)
 
-    summary_cmds.extend([f"--{prefix}decimals",
-                         options[f"{module}SumTableDecimals"]])
+    cmd.extend(["cluster_radio", options["clusterRadio"],
+                "e_cluster", options["ecluster"]])
 
-    if f"{module}SumTableHideHeaders" in options:
-        summary_cmds.append(f"--{prefix}hide_headers")
+    # list functionality intentionally left out, as clusters to search in
+    # are already selected and therefore all clusters in the GENOME directory
+    # should be searched
 
-    return summary_cmds
+    cmd.extend(["rescale", options["rescale"]])
 
+    if "antismashFile" in options:
+        cmd.extend(["antismash", options["antismashFile"]])
 
-def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
-    """Executes a command on the command line
-
-    Input:
-        - cmd: split command to be executed. All elements in the
-            list are joined together with a space to form a full command
-        - log_base: base directory for logging. Has the following structure:
-            "multicblaster/jobs/{job_id}/logs/"
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - res.returncode: exit code of the executed command. A non-zero exit
-            code indicates something went wrong. An exit code of 0 indicates
-            the command has executed without any problems.
-
-    # TODO: add graceful termination handling by SIGTERM. When terminated
-    # status should be changed to "failed" and "finish" time should be added
-    """
-    log_command(cmd, log_base, job_id)
-
-    with open(os.path.join(log_base, f"{job_id}_{cmd[0]}.log"), "w") as outf:
-        res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
-
-    return res.returncode
-
-
-def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
-    """Returns paths for logging and result directories
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - [0]: base path for the job
-        - [1]: path for the logging directory
-        - [2]: path for the results directory
-    """
-    base = os.path.join(JOBS_DIR, job_id)
-    return base, os.path.join(base, "logs"), os.path.join(base, "results")
-
-
-def zip_results(job_id: str) -> None:
-    """Zips all files belonging to a job (logs, results, uploads)
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - None
-        - A .zip file containing all files which are part of a job
-
-    We change directories to the {job_id} folder, which contains 3 folders:
-    1. logs; 2. results; 3. uploads; Therefore, the paths used in this
-    function are relative to the {job_id} folder.
-    """
-    base, log_dir, results_dir = generate_paths(job_id)
-    os.chdir(base)  # go 1 level up
-
-    cmd = ["zip", "-r", os.path.join("results", f"{job_id}.zip"), "."]
-    # all files and folders in the current directory
-    # (multicblaster/jobs/{job_id}/ under the base folder
-
-    run_command(cmd, "logs", job_id)
-    # invalid path: 'logs/U812J131P392S71_zip.txt/U812J131P392S71_cmd.txt'
-    # something is going wrong
-
-
-def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
-    """Logs the executed command to a file
-
-    Input:
-        - cmd: split command to be executed. All elements in the
-            list are joined together with a space to form a full command
-        - log_base: base directory for logging. Has the following structure:
-            "multicblaster/jobs/{job_id}/logs/"
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - None
-        - .txt file with the executed command
-    """
-    with open(os.path.join(log_base,
-                           f"{job_id}_{cmd[0]}_cmd.txt"), "w") as outf:
-        outf.write(" ".join(cmd))
-
-
-def pre_job_formalities(job_id: str) -> None:
-    """Wrapper function for functions to be executed pre-job execution
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - None
-        - See documentation of executed functions for their corresponding
-            outputs
-    """
-    add_time_to_db(job_id, "start", db)
-    mutate_status(job_id, "start", db)
-
-
-def post_job_formalities(job_id: str, return_code: int) -> None:
-    """Wrapper function for functions to be executed post-job execution
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-        - return_code: exit code of the executed command. A non-zero exit
-            code indicates something went wrong. An exit code of 0 indicates
-            the command has executed without any problems.
-
-    Output:
-        - None
-        - See documentation of executed functions for their corresponding
-            outputs
-    """
-    zip_results(job_id)
-    add_time_to_db(job_id, "finish", db)
-    mutate_status(job_id, "finish", db, return_code=return_code)
+    return_code = run_command(cmd, LOG_PATH, job_id)
+    post_job_formalities(job_id, return_code)
