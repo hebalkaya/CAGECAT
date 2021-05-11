@@ -80,8 +80,10 @@ function removeRequiredAndEnabled(id){
     document.getElementById(id).removeAttribute('required');
 }
 
-function showInputOptions(selectionOption){
-    document.getElementById("requiredSequencesSelector").options.length = 0;
+function showInputOptions(selectionOption, resetQueries){
+    if (resetQueries){
+        document.getElementById("requiredSequencesSelector").options.length = 0;
+    }
     if (selectionOption === 'fasta'){
         document.getElementById('genomeFileUploadDiv').style.display = 'block';
         document.getElementById('ncbiEntriesDiv').style.display = 'none';
@@ -136,6 +138,10 @@ function showInputOptions(selectionOption){
 
         document.getElementById("accessionsError").style.display = "none";
         document.getElementById("submitSearchForm").removeAttribute("disabled");
+
+        if (!resetQueries){
+            document.getElementById('radioPrevSession').setAttribute('checked', 'checked');
+        }
     }
 }
 
@@ -577,7 +583,7 @@ function storeJobId(id, j_type){
     for (let i=0; i<maxToShow; i++){
         let str = i.toString();
         if (localStorage.getItem(str) === null){
-            console.log("here we are");
+            // console.log("here we are");
             let msg = id + ";" + j_type + ";" + currentTime.toLocaleString();
             localStorage.setItem(str, msg);
             // console.log(localStorage);
@@ -622,11 +628,11 @@ function showPreviousJobs(disableBodyOnLoad){
 
 function showDetailedPreviousJobs(){
     let overview = document.getElementById("detailedPreviousJobs");
-    console.log("hello");
+    // console.log("hello");
 
     for (let i=0; i <localStorage.length; i++) {
         let msg = localStorage.getItem(i).split(";");
-        console.log(msg);
+        // console.log(msg);
         let tr = document.createElement("tr");
 
         let td = document.createElement("td");

@@ -40,13 +40,16 @@ def home_page(prev_run_id: str = None) -> str:
     When the /rerun/<prev_run_id> is visited, the input fields where the user
     can enter previous job IDs are pre-filled with the given job ID
     """
+    if "type" in request.args:
+        headers = None if prev_run_id is None and request.args["type"] == "recompute" else ut.read_headers(prev_run_id)
+        module_to_show = request.args["type"]
+    else:
+        headers = None
+        module_to_show = None
 
-    print(request.args["type"] if
-          "type" in request.args else None)
     return show_template("index.xhtml", submit_url=ut.SUBMIT_URL,
                          prev_run_id=prev_run_id,
-                         module_to_show=request.args["type"] if
-                         "type" in request.args else None)
+                         module_to_show=module_to_show, headers=headers)
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():  # return type: werkzeug.wrappers.response.Response:

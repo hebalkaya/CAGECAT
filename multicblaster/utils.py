@@ -398,3 +398,10 @@ signal.signal(signal.SIGTERM, handle_soft_interrupt)
 
 def format_size(size):
     return "%3.1f MB" % (size/1000000) if size is not None else size
+
+
+def read_headers(job_id):
+    with open(os.path.join(JOBS_DIR, job_id, "logs", "query_headers.csv")) as outf:
+        headers = outf.read().strip().split(",")
+
+    return headers

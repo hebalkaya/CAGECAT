@@ -116,7 +116,7 @@
         {% endif %}
 
         {% if 'recompute' in downstream_modules %}
-            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute"><button class="button button-small">Recompute</button></a>
+            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=recompute&resetQueries=0"><button class="button button-small">Recompute</button></a>
         {% endif %}
 
             </div>

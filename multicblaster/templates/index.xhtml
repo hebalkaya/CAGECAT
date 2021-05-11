@@ -14,7 +14,7 @@ showModule(undefined, 'clinkerContent');
     {% elif module_to_show == 'gne' %}
 showModule(undefined, 'gneModuleContent');
     {% elif module_to_show == 'recompute' %}
-document.getElementById('radioPrevSession').click();
+showInputOptions('prev_session', 0);
     {% endif %}
 initReadQueryFile();
 {% endblock %}
@@ -53,16 +53,16 @@ initReadQueryFile();
 
         <label class="radioLabel">
         <input type="radio" value="fasta" checked="checked" id="radioFasta"
-               name="inputType" onclick="showInputOptions('fasta')"/>FASTA</label>
+               name="inputType" onclick="showInputOptions('fasta', 1)"/>FASTA</label>
         <label class="radioLabel">
         <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
                name="inputType"
-               onclick="showInputOptions('ncbi_entries')"/>NCBI entries
+               onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
         </label>
         <label class="radioLabel">
         <input type="radio" value="prev_session" id="radioPrevSession"
                name="inputType"
-                onclick="showInputOptions('prev_session')"/>Recompute
+                onclick="showInputOptions('prev_session', 1)"/>Recompute
         </label>
 
     <div class="div-margin" id="genomeFileUploadDiv">
@@ -178,6 +178,11 @@ initReadQueryFile();
             <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
             {{ renderHelpButton('requiredSequencesSelector') }}
             <select style="width: 40%;" id="requiredSequencesSelector" multiple="multiple">
+                {% if headers %}
+                    {% for head in headers %}
+                    <option value="{{ head }}">{{ head }}</option>
+                    {% endfor %}
+                {% endif %}
 
             </select>
         </div>
