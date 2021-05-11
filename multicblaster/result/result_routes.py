@@ -1,5 +1,5 @@
 # package imports
-from flask import Blueprint, request, redirect, url_for
+from flask import Blueprint, request, redirect, url_for, send_file
 
 # own project imports
 from multicblaster import app
@@ -120,7 +120,7 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
 
     # TODO: send_from_directory is a safer approach, but this suits for now
     # as Flask should not be serving files when deployed
-    return rthelp.send_file(os.path.join(app.config["DOWNLOAD_FOLDER"],
+    return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"],
                                   job_id, "results", f"{job_id}.zip"))
 
 

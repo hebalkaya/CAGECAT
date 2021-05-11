@@ -15,7 +15,7 @@
     <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
     <p>Job type: <b>{{ module }}</b></p>
 
-    <form action="/download-results/{{j_id}}" method="post"
+    <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
           enctype="multipart/form-data" name="download_settings">
     <input name="job_id" type="hidden" value="{{j_id}}"/>
     <select class="select-options" name="compression_type">
