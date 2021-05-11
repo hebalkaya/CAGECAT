@@ -89,7 +89,7 @@
         {% endif %}
 
         {% if 'extract_sequences' in downstream_modules %}
-    <form action="{{url_for('extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
+    <form action="{{url_for('job_views.extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
         <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>

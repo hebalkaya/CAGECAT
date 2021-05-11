@@ -331,28 +331,7 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
             #TODO: create invalid job ID template
 
 
-@app.route("/downstream/extract-sequences", methods=["GET", "POST"])
-def extract_sequences() -> str:
-    """Shows page for extracting sequences from a previous job
 
-    Input:
-        No inputs
-
-    Output:
-        - HTML represented in string format showing options for extracting
-            sequences in the client's browser
-    """
-    selected_queries = request.form["selectedQueries"]
-    selected_scaffolds = pa.parse_selected_scaffolds(
-        request.form["selectedClusters"])
-
-    if selected_queries == "No queries selected":
-        selected_queries = None
-
-    return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_queries=selected_queries,
-                         selected_scaffolds=selected_scaffolds,
-                         prev_job_id=request.form["job_id"])
 
 
 @app.route("/downstream/extract-clusters", methods=["GET", "POST"])
