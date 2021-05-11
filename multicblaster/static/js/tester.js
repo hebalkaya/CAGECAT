@@ -642,6 +642,7 @@ function showDetailedPreviousJobs(){
 function showHelp(textType){
     $.get('/docs/' + textType, function(data, status){
         document.getElementById("explanationTitle").innerText = data.title;
+        document.getElementById("explanationModule").innerText = "Module: " + data.module;
         document.getElementById("explanationText").innerText = data.text;
     });
 
