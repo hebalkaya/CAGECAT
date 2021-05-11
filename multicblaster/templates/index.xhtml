@@ -233,7 +233,7 @@ initReadQueryFile();
 
 <div id="gneModuleContent" class="moduleContent" style="display: none">
     <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
-          onsubmit="return validateForm()" name="gneOptionForm">
+          name="gneOptionForm">
 
         <input type="hidden" name="job_type" value="gne" required="required"/>
         <label class="fieldset-label" for="gneInputSection">Input</label>
@@ -332,17 +332,6 @@ initReadQueryFile();
         <input type="submit" value="Visualize!"/>
     </form>
 </div>
-
-<!--<div id="extractModuleContent" class="moduleContent" style="display: none">-->
-<!--    <form method="post" enctype="multipart/form-data" action="{{submit_url}}"-->
-<!--          onsubmit="return validateForm()" name="extractOptionForm">-->
-<!--        <input type="hidden" name="job_type" value="extract"-->
-<!--               required="required"/>-->
-
-<!--        {{ prev_session('extract', true, prev_run_id) }}-->
-<!--        <input type="submit" class="submit_button" value="Run"/>-->
-<!--    </form>-->
-<!--</div>-->
 </div>
 
 

@@ -21,14 +21,6 @@ function option5change(){
     enableOrDisableOption("option2", enable);
 }
 
-function validateForm(){
-    // TODO
-
-    return validateNCBIEntries();
-    // Is now executed twice: when submitting the form, and onfocusout of text area
-    // Accepts form (and therefore continues to next page if true
-    // is returned)
-}
 function changeFooterVisibility(){
     var elem = document.getElementById("showFooterCheckbox");
     // var footer = document.getElementById("custom_footer");
