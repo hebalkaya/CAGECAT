@@ -4,16 +4,17 @@
 Author: Matthias van den Belt
 """
 
-# Import statements
+# package imports
 import re
 from more_itertools import consecutive_groups
+
+# own project imports
 import multicblaster.utils as ut
 
 # typing imports
 import typing as t
 
-
-# Function definitions
+### Function definitions
 def parse_selected_cluster_names(selected_clusters: str) -> t.Union[str, None]:
     """Extracts and formats selected clusters in a readable manner
 

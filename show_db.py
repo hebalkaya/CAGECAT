@@ -1,8 +1,10 @@
-from multicblaster import db
-from multicblaster.models import Job, Statistic
+# package imports
 from sys import argv
 
+# own project imports
+from multicblaster.models import Job, Statistic
 
+### main code
 if __name__ == "__main__":
     try:
         if argv[1] == "failed":

@@ -1,8 +1,10 @@
+# package imports
 from redis import Redis
 from rq import Queue
 from rq.registry import StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry
 import os
 
+### main code
 DB_PATH = "multicblaster/status.db"
 REGISTRIES = [StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry]
 

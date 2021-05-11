@@ -1,10 +1,14 @@
+# package imports
 from flask import Blueprint, request
+
+# own project imports
 import multicblaster.parsers as pa
 import multicblaster.utils as ut
 from multicblaster.routes_helpers import show_template
 
 downstream = Blueprint('downstream', __name__, template_folder="templates")
 
+### Route function definitions
 @downstream.route("/downstream")
 def post_analysis_explanation() -> str:
     return show_template("post_analysis_explanation.xhtml")

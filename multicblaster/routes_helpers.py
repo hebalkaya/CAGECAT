@@ -1,17 +1,17 @@
+# package imports
 from flask import render_template, request
-
 import os
 
+# own project imports
 import multicblaster.utils as ut
-import multicblaster.parsers as pa
-import multicblaster.const as co
 from multicblaster import q, r
-
 from multicblaster.models import Job as dbJob
 from multicblaster import db
 
+# typing imports
 import typing as t
 
+### Function definitions
 def get_connected_jobs(job):
     connected_jobs = []
 

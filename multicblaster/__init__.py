@@ -30,9 +30,7 @@ app = Flask("multicblaster")
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///status.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-
 db = SQLAlchemy(app)
-
 
 
 UPLOAD_FOLDER = os.path.join("multicblaster/static", "uploads")

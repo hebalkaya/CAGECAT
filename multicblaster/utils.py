@@ -2,14 +2,15 @@
 
 Author: Matthias van den Belt
 """
+# package imports
 import os
 import random
 from rq.registry import StartedJobRegistry
-from multicblaster.models import Job, Statistic
 from datetime import datetime
-import re
 import signal
-import pickle
+
+# own project imports
+from multicblaster.models import Job, Statistic
 
 # typing imports
 import werkzeug.datastructures
@@ -113,7 +114,7 @@ COMPRESSION_FORMATS = [".zip", ".tar", ".tar.gz", ".gz", ".7z", ".rar"]
 
 TEST_PATH = ".."
 
-
+### Function definitions
 def generate_job_id(id_len: int = 15) -> str:
     """Generates a numeric job ID with each 4th character being a letter
 

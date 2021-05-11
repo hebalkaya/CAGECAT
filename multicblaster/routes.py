@@ -3,29 +3,22 @@
 Author: Matthias van den Belt
 """
 
-# import statements
-from flask import render_template, request, url_for, redirect, send_file
+# package imports
+from flask import request, url_for, redirect
+import os
+import copy
+
+# own project imports
 from multicblaster import app
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
 import multicblaster.const as co
 import multicblaster.routes_helpers as rthelp
-
 import multicblaster.workers as rf
-import os
-import copy
-from rq.job import Job
-
-# type imports
-import flask.wrappers
-import typing as t
 
 # !!!! TODO: Note that the return types could change when deploying Flask !!!!
 
 # route definitions
-
-
-
 @app.route("/rerun/<prev_run_id>")
 @app.route("/")
 def home_page(prev_run_id: str = None) -> str:

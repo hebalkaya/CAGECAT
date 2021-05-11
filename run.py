@@ -3,9 +3,10 @@
 Author: Matthias van den Belt
 """
 
-# import statements
+# own project imports
 from multicblaster import app
 
+### main code
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
 

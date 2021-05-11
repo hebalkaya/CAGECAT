@@ -2,20 +2,22 @@
 
 Author: Matthias van den Belt
 """
-
-# import statements
+# package imports
 import subprocess
 import os
+
+# own project imports
 from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status
 from multicblaster import db
+
+# typing imports
 import werkzeug.datastructures
 import typing as t
-import Bio.SeqIO as SeqIO
 
 # Whenever a CMD is ran from a function, all print statements within that
 # same function are performed when the CMD has finished
 
-# redis-queue functions
+### redis-queue functions
 def store_query_sequences_headers(log_path, input_type, data):
 
     if input_type == "ncbi_entries": # ncbi_entries

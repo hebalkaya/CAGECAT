@@ -1,14 +1,14 @@
+# package imports
 from flask import Blueprint, request, redirect, url_for
 
+# own project imports
 from multicblaster import app
-
 import multicblaster.utils as ut
 import multicblaster.const as co
-
 from multicblaster.routes_helpers import show_template
 import multicblaster.routes_helpers as rthelp
 
-
+# other imports
 import os
 
 # typing imports
@@ -17,7 +17,7 @@ import typing as t
 
 result = Blueprint('result', __name__, template_folder="templates")
 
-
+### Route function definitions
 @result.route("/<job_id>")
 def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: # parent_job should be
     """Shows the results page for the given job ID

@@ -2,8 +2,11 @@
 
 Author: Matthias van den Belt
 """
-from datetime import datetime
+# own project imports
 from multicblaster import db
+
+# other imports
+from datetime import datetime
 
 ## SQLAlchemy database classes
 class Job(db.Model):
