@@ -41,10 +41,10 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 from multicblaster import routes
 import multicblaster.models as m
-from multicblaster.job_types.job_views import job_views
+from multicblaster.downstream.downstream_routes import downstream
 
 app.config["DOWNLOAD_FOLDER"] = "jobs" # multicblaster not required in front of jobs
-app.register_blueprint(job_views, url_prefix="/downstream")
+app.register_blueprint(downstream, url_prefix="/downstream")
 
 db.create_all()
 

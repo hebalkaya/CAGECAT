@@ -3,9 +3,9 @@ import multicblaster.parsers as pa
 import multicblaster.utils as ut
 from multicblaster.routes import show_template
 
-job_views = Blueprint('job_views', __name__, template_folder="templates")
+downstream = Blueprint('downstream', __name__, template_folder="templates")
 
-@job_views.route("/extract-sequences", methods=["GET", "POST"])
+@downstream.route("/extract-sequences", methods=["GET", "POST"])
 def extract_sequences() -> str:
     """Shows page for extracting sequences from a previous job
 
