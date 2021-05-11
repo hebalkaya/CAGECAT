@@ -106,7 +106,7 @@
         {% endif %}
 
         {% if 'corason' in downstream_modules %}
-    <form action="{{ url_for('downstream.corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
+    <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
         <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>

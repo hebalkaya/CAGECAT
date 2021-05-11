@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 import multicblaster.parsers as pa
 import multicblaster.utils as ut
-from multicblaster.routes import show_template
+from multicblaster.routes_helpers import show_template
 
 downstream = Blueprint('downstream', __name__, template_folder="templates")
 
