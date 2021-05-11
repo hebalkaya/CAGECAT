@@ -70,7 +70,7 @@
 {#            TODO: make class for style except width#}
 
         {% if 'clinker_query' in downstream_modules %}
-            <form action="{{url_for('clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
+            <form action="{{url_for('downstream.clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
                 <input type="hidden" name="job_id" value="{{j_id}}"/>
                 <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
                 <button class="button button-small" type="submit">Visualize with query clusters</button>
@@ -98,7 +98,7 @@
         {% endif %}
 
         {% if 'extract_clusters' in downstream_modules %}
-    <form action="{{url_for('extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
+    <form action="{{url_for('downstream.extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
         <button class="button button-small" type="submit">Extract clusters</button>
@@ -106,7 +106,7 @@
         {% endif %}
 
         {% if 'corason' in downstream_modules %}
-    <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
+    <form action="{{ url_for('downstream.corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
         <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>
