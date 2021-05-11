@@ -62,7 +62,7 @@ initReadQueryFile();
     <div class="div-margin" id="genomeFileUploadDiv">
         <label class="file-upload-lbl" for="genomeFile">
         <input type="file" id="genomeFile" name="genomeFiles"
-               required="required" accept=".fasta, .fa" onchange="readFileContents()"/>Query file</label>
+               required="required" accept=".fasta, .fa .fsa .fna .faa" onchange="readFileContents()"/>Query file</label>
         {{ renderHelpButton('genomeFile') }}
 
         <div class="error-message" id="fileUploadIncorExt" style="display: none">

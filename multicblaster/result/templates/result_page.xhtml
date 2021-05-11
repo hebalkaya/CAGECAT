@@ -142,11 +142,15 @@
     {% if module in ['search', 'recompute'] %}
 {#        TODO: postLoadingIFrame is now everywhere, so we can do it standard#}
         {% set onload = 'applyListenersSearchResults(this);postLoadingIFrame()' %}
-    {% elif module in ['clinker_full', 'clinker_query'] %}
+    {% elif module == 'clinker_query' %}
         {% set onload = 'applyListenersClinkerResults(this);postLoadingIFrame()' %}
+    {% elif module == 'clinker_full' %}
+        {% set onload = 'postLoadingIFrame()' %}
+        <p>To download the clusters shown below, navigate to the 'extract_clusters' job on which this job depends.</p>
     {% elif module == 'gne' %}
         {% set onload = 'postLoadingIFrame()' %}
     {% endif %}
+
 <iframe onload="showPreviousJobs(true)" style="display: none"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
     <iframe onload="{{onload}}" height="800" id="newWindow" src="{{ url_for('result.get_plot_contents', job_id=j_id) }}" title="Generated HTML plot"></iframe>
 </div>
