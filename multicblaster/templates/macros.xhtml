@@ -1,46 +1,33 @@
 <!--Here we can have code block which are used more than once-->
 {#TODO: make variables using Jinja2's set keyword instead of re-formatting a modular text more than once#}
 
-{% macro prev_session_bs(module, mainInput, job_id) %}
-    <div id="{{ '%sPrevJobOptions' % module }}" class="tab-pane fade form-group" >
-        <label class="radio-inline"><input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevJobId' % module}}" value="jobID" checked/>Job ID</label>
-        <label class="radio-inline"><input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile"/>Session file</label>
-        <div class="form-group form-inline"> {# TODO: style it better with has-succes and has-error #}
-            <label for="{{ '%sEnteredJobId' % module }}">Previous job ID</label>
-            <input class="form-control" id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}"/>
-{#            TODO: onfocusout validate entered job ID#}
-            <span> or </span>
-            <label  for="{{ '%sUploadedSessionFile' % module }}">Session file</label>
-            <input type="file" id="{{ '%sUploadedSessionFile' % module }}" name="{{ '%sUploadedSessionFile' % module }}" disabled/>
-{#            TODO: put session file in same block as previous job ID input#}
-        </div>
-    </div>
-
-{% endmacro %}
-
 {% macro prev_session(module, mainInput, job_id, allow_multiple) %}
+    {% set previousType = '%sPreviousType' % module %}
+    {% set enteredJobId = '%sEnteredJobId' % module %}
+    {% set uploadedSessionFile = '%sUploadedSessionFile' % module %}
+
     <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">
         <div>
             <label class="radioLabel">
-            <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
+            <input type="radio" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
             </label>
 
             <label class="radioLabel">
-                <input type="radio" name="{{'%sPreviousType' % module}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile" onclick="changePrevSessionType()">Session file</input>
+                <input type="radio" name="{{previousType}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile" onclick="changePrevSessionType()">Session file</input>
             </label>
         </div>
-        <label class="input-label" for="{{ '%sEnteredJobId' % module }}">Previous job ID</label>
+        <label class="input-label" for="{{ enteredJobId }}">Previous job ID</label>
         {{ renderHelpButton('generalEnteredJobId') }}
-        <input type="text"  id="{{ '%sEnteredJobId' % module }}" name="{{ '%sEnteredJobId' % module }}" onfocusout="validateJobID()"
+        <input type="text"  id="{{ enteredJobId }}" name="{{ enteredJobId }}" onfocusout="validateJobID()"
                placeholder="A123B456C789D01" size="15" maxlength="15" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
 
         <span>or</span>
-        <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ '%sUploadedSessionFile' % module }}">
+        <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ uploadedSessionFile }}">
 {#            TODO: possibly insert help button#}
         <input type="file"
-               id="{{ '%sUploadedSessionFile' % module }}"
-               name="{{ '%sUploadedSessionFile' % module }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
+               id="{{ uploadedSessionFile }}"
+               name="{{uploadedSessionFile }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
     </div>
 {% endmacro %}
 
@@ -140,8 +127,6 @@
         <label class="input-label" for="clusterNumbers">Clusters</label>
         {{ renderHelpButton('clusterNumbers') }}
         <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
-<!--        TODO: add pattern for clusternumbers (either separated by space or via stripes)-->
-<!--        TODO: check if 1-3 and 6-8 works-->
     </div>
     <div class="input-layer">
         <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
