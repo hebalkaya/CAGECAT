@@ -36,9 +36,6 @@ initReadQueryFile();
     </button>
 
     <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>
-<!--    <button class="moduleSelector"-->
-<!--            onclick="showModule(event, 'extractModuleContent')">Extract-->
-<!--    </button>-->
 </div>
 
 <!--Module contents-->
@@ -87,7 +84,6 @@ initReadQueryFile();
         <span id="accessionsErrorText"></span>
     </div>
     {{ prev_session('search', false, prev_run_id, false) }}
-
 </fieldset>
 
     <label class="fieldset-label" for="searchSection">Search</label>
@@ -200,11 +196,7 @@ initReadQueryFile();
 
         </label>
         {{ renderHelpButton('sortClusters') }}
-<!--        <label>-->
-<!--            <input type="checkbox" id="generatePlot"-->
-<!--                   name="generatePlot">Generate plot-->
-<!--            </input>-->
-<!--        </label>-->
+
     </fieldset>
 
     <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
@@ -327,7 +319,6 @@ initReadQueryFile();
             </label>
             {{ renderHelpButton('useFileOrder') }}
         </fieldset>
-
 
         <input type="submit" value="Visualize!"/>
     </form>
