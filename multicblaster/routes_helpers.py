@@ -34,7 +34,7 @@ def get_connected_jobs(job):
 
     return connected_jobs
 
-# auxiliary functions
+
 def show_template(template_name: str, stat_code=None, **kwargs) \
         -> t.Union[str, t.Tuple[str, int]]:
     """Returns rendered templates to the client
@@ -211,10 +211,7 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         status = "queued" if depending_job is None else "waiting"
         # for parent job to finish
 
-        # db preparations
         main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job, i == len(new_jobs)-1)
-
-        # end db preparations
 
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
                   redis_id=job.id,
@@ -239,7 +236,6 @@ def add_parent_search_and_child_jobs_to_db(new_job, is_last_job):
     else:
         old_job = get_parent_job(new_job, is_last_job)
         # parse main search job ID from given file_path
-        # TODO: index on else statement could change when the base_path is changed
 
         if old_job.job_type == "search":
             main_search_job_id = old_job.id
@@ -247,6 +243,7 @@ def add_parent_search_and_child_jobs_to_db(new_job, is_last_job):
 
             sep = "" if not main_search_job.child_jobs else ","
             main_search_job.child_jobs += f"{sep}{new_job[1]}"
+            # TODO: index on else statement could change when the base_path is changed
             # empty string for the first child job
 
         else:

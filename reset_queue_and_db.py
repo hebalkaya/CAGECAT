@@ -36,6 +36,3 @@ while result not in ("y", "n", "yes", "no"):
 
     elif result in ("n", "no"):
         print("Nothing has been emptied or removed. Exiting..")
-
-
-

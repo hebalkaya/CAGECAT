@@ -17,33 +17,26 @@
 
     <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
           enctype="multipart/form-data" name="download_settings">
-    <input name="job_id" type="hidden" value="{{j_id}}"/>
-    <select class="select-options" name="compression_type">
-        {% for compr in compr_formats %}
-        <option name="{{compr}}" value="{{compr}}">{{compr}}</option>
+        <input name="job_id" type="hidden" value="{{j_id}}"/>
+        <select class="select-options" name="compression_type">
+            {% for compr in compr_formats %}
+            <option name="{{compr}}" value="{{compr}}">{{compr}}</option>
 
-        {% endfor %}
-    </select>
+            {% endfor %}
+        </select>
 
-    <label class="button" for="download-button"><i class="fa fa-download"><span> Download</span></i></label>
-    <input id="download-button" class="download-button" type="submit"></input>
+        <label class="button" for="download-button"><i class="fa fa-download"><span> Download</span></i></label>
+        <input id="download-button" class="download-button" type="submit"></input>
     </form>
 
-
-{#<label class="checkbox-label">#}
-{#    <input onclick="toggleElementVisibility('logSection')" type="checkbox"/>Show log</label>#}
-{#<div id="logSection" style="display: none">#}
-{#    <p class="log">{{log_contents|safe}}</p>#}
-{#</div>#}
-{#    </div>#}
     {% if connected_jobs %}
         <div id="connectedJobsCheckbox">
             <label class="checkbox-label" for="connectedJobsToggle">
                 <input type="checkbox" id="connectedJobsToggle" onclick="toggleElementVisibility('connectedJobs')"/>Show linked jobs
             </label>
         </div>
-    <div id="connectedJobs" style="display: none;">
 
+    <div id="connectedJobs" style="display: none;">
         <table>
             <tr>
                 <th>Job ID</th>
@@ -120,21 +113,21 @@
         {% endif %}
 
             </div>
-            <div class="column middleColumn" style="width: 80%;">
-<label for="selectedQueriesOverview">Selected queries</label>
-<ul id="selectedQueriesOverview">
-    <li>No queries selected</li>
-</ul>
+        <div class="column middleColumn" style="width: 80%;">
+            <label for="selectedQueriesOverview">Selected queries</label>
+            <ul id="selectedQueriesOverview">
+                <li>No queries selected</li>
+            </ul>
 
-<label for="selectedClustersOverview">Selected clusters</label>
-<ul id="selectedClustersOverview">
-    <li>No clusters selected</li>
-</ul>
-<label for="selectedReferenceCluster">Selected reference cluster</label>
-<ul id="selectedReferenceCluster">
-    <li>No reference cluster selected</li>
-</ul>
-            </div>
+            <label for="selectedClustersOverview">Selected clusters</label>
+            <ul id="selectedClustersOverview">
+                <li>No clusters selected</li>
+            </ul>
+            <label for="selectedReferenceCluster">Selected reference cluster</label>
+            <ul id="selectedReferenceCluster">
+                <li>No reference cluster selected</li>
+            </ul>
+        </div>
             </div>
     {% endif %}
 {#            TODO: center the iframe and still be able to click the downstream buttons#}

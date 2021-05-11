@@ -53,13 +53,12 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 log_contents = "<br/>".join(inf.readlines())
             connected_jobs = rthelp.get_connected_jobs(job)
 
-
-            # print(ut.get_available_downstream_modules(module))
             return show_template("result_page.xhtml", j_id=job_id,
                                  status=status, content_size=ut.format_size(size), compr_formats=ut.COMPRESSION_FORMATS, module=module,
                                  modules_with_plots=ut.MODULES_WHICH_HAVE_PLOTS,
                                  log_contents=log_contents,
                                  downstream_modules=co.DOWNSTREAM_MODULES_OPTIONS[module], connected_jobs=connected_jobs)
+
         elif status == "failed":
             with open(os.path.join(ut.JOBS_DIR, job_id,
                                    "logs", f"{job_id}_cblaster.log")) as inf:
@@ -67,6 +66,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
             return show_template("failed_job.xhtml", settings=settings,
                                  j_id=job_id, log_contents=log_contents)
+
         elif status == "queued" or status == "running":
 
             if "pj" not in request.args:
@@ -76,6 +76,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
             return show_template("status_page.xhtml", j_id=job_id,
                                  parent_job=pj, status=status, settings=settings, store_job_id=store_job_id, j_type=j_type, stat_code=302)
+
         elif status == "waiting":
             pj = ut.fetch_job_from_db(job_id).depending_on if "pj" not in request.args else request.args["pj"]
 

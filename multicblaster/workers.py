@@ -324,6 +324,7 @@ def clinker_query(job_id, options=None, file_path=None):
     post_job_formalities(job_id, return_code)
 
 # auxiliary functions
+# TODO: maybe in a separate module
 def create_summary_table_commands(
         module: str, options: werkzeug.datastructures.ImmutableMultiDict) \
         -> t.List[str]:
@@ -480,5 +481,3 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     zip_results(job_id)
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
-
-

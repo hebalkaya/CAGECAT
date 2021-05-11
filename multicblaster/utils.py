@@ -32,7 +32,6 @@ PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
                              "clinker_full", "clinker_query"]
 
-
 PRETTY_TRANSLATION = {"job_type": "Job type",
                       "inputType": "Input type",
                       "ncbiEntriesTextArea": "NCBI entries",
@@ -342,14 +341,11 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     # TODO: check if we can replace this with os.path.join(log_base, f"{job_id}_cmd.txt"), "w"
     #     outf.write(str(dict(options)))
 
-
         for key, value in options.items():
             if "\r\n" in value:
                 value = ','.join(value.split('\r\n'))
 
-            # new_val =
             outf.write(f"{key},{value}\n")
-
 
 
 def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
@@ -388,21 +384,20 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         raise NotImplementedError("Unknown job ID. Template should be created")
 
 
-# Below are experimental functions
-def handle_soft_interrupt(signalNumber, frame):
-    print(f"Terminated by signal {signalNumber}")
-    print(frame)
-
-
-signal.signal(signal.SIGTERM, handle_soft_interrupt)
 
 
 def format_size(size):
     return "%3.1f MB" % (size/1000000) if size is not None else size
-
 
 def read_headers(job_id):
     with open(os.path.join(JOBS_DIR, job_id, "logs", "query_headers.csv")) as outf:
         headers = outf.read().strip().split(",")
 
     return headers
+
+# Below are experimental functions
+def handle_soft_interrupt(signalNumber, frame):
+    print(f"Terminated by signal {signalNumber}")
+    print(frame)
+
+signal.signal(signal.SIGTERM, handle_soft_interrupt)

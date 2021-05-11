@@ -34,7 +34,6 @@ def parse_selected_cluster_names(selected_clusters: str) -> t.Union[str, None]:
             sep_index = cluster.find(")") + 1
             organism = cluster[:sep_index].split("(")[0].strip()
             clust_num = int(re.findall(ut.CLUST_NUMBER_PATTERN_W_SCORE, cluster)[0])
-            # print(organism, clust_num)
 
             cluster_names.append(f"{organism} (Cluster {clust_num})")
 

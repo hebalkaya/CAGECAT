@@ -4,6 +4,7 @@ var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 var selectedQueries = []
 var currentTime = Date();
+ // TODO: remove unused functions
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -23,9 +24,6 @@ function option5change(){
 
 function changeFooterVisibility(){
     var elem = document.getElementById("showFooterCheckbox");
-    // var footer = document.getElementById("custom_footer");
-    //console.log(elem);
-    // console.log($("custom_footer"));
 
     var footer = $("#custom_footer"); // uses ID
     let speed = "slow"
@@ -119,7 +117,6 @@ function showInputOptions(selectionOption, resetQueries){
         //enable
         setRequiredAndEnabled('searchEnteredJobId');
 
-
         // disable elements
         removeRequiredAndEnabled('genomeFile');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
@@ -139,7 +136,6 @@ function showInputOptions(selectionOption, resetQueries){
 
 function showModule(ev, moduleName){
     var i, moduleSelector, moduleContent;
-    // console.log(moduleName);
 
     moduleContent = document.getElementsByClassName('moduleContent');
     for (i=0; i < moduleContent.length; i++){
@@ -162,7 +158,6 @@ function changeHitAttribute(){
 function changePrevSessionType(){
     let clickedButton = event.target;
     let module = clickedButton.id.split("Prev")[0];
-    // console.log(module);
     let uploadSessionID = module + "UploadedSessionFile";
     let jobIDElementID = module + "EnteredJobId";
     let labelSession = module + "LabelSessionFile"
@@ -202,7 +197,6 @@ function validateNCBIEntries() {
     }
 
     if (valid) {
-
         textArea.classList.remove("invalid");
         errorBox.style.display = "none";
         document.getElementById("submitSearchForm").disabled = false;
@@ -230,10 +224,9 @@ function validateNCBIEntries() {
         document.getElementById("submitSearchForm").disabled = true;
         document.getElementById("requiredSequencesSelector").options.length = 0;
     }
-    return valid;
 
-    // example:
-    // https://stackoverflow.com/questions/16465325/regular-expression-on-textarea
+    return valid;
+    // example: https://stackoverflow.com/questions/16465325/regular-expression-on-textarea
 }
 
 function validateJobID(target){
@@ -289,7 +282,6 @@ function checkCorasonButton() {
 
 window.addEventListener("message", function(e){
     let text;
-    // const array;
     let src = e.data[0];
     let message = e.data[1]; // e.data represents the message posted by the child
     //
@@ -384,11 +376,9 @@ window.addEventListener("message", function(e){
 
                         newOverview.removeChild(this);
                     }
-
                     checkCorasonButton();
                 })
             }
-
             overview.appendChild(newNode);
         }
         else {
@@ -430,7 +420,6 @@ function applyListenersSearchResults(){
         ticks[i].addEventListener("contextmenu", function(event){
             event.preventDefault();
             let query_name = ticks[i].childNodes[1];
-            // console.log();
             parent.window.postMessage(["Queries", query_name.textContent], "*");
         })
     }
@@ -447,17 +436,14 @@ function applyListenersClinkerResults(){
             event.preventDefault();
 
             let childs = clusters[i].firstChild.childNodes;
-            // console.log(clusters[i]);
-            // console.log(clusters[i].childNodes);
-            // console.log(clusters[i].firstChild); //represents label
             if (childs[0].textContent !== "Query Cluster") {
 
                 parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
             }
         });
     }
-
 }
+
 
 function postLoadingIFrame(){
     document.getElementById("resultLoadedMessage").innerText = "Loading has completed";
@@ -510,11 +496,10 @@ function initReadQueryFile(){ // TODO: check if this can be removed?
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
             console.log(evt.target.result);
-            // document.getElementById("fileContents").innerHTML = evt.target.result;
         }
+
         reader.onerror = function (evt) {
             console.log("Error reading file");
-            // document.getElementById("fileContents").innerHTML = "error reading file";
         }
     }
 }
@@ -551,9 +536,7 @@ function readFileContents() {
         }
 
     }
-
     reader.readAsText(file, "UTF-8");
-
 }
 
 function addRequiredSeqs(){
@@ -565,7 +548,6 @@ function addRequiredSeqs(){
             selected.push(selector.options[i].value);
         }
     }
-
     document.getElementById("requiredSequences").value = selected.join(";");
 }
 
@@ -595,7 +577,6 @@ function showPreviousJobs(disableBodyOnLoad){
 
     for (let i=0; i <localStorage.length; i++){
         let jobId = localStorage.getItem(i).split(";")[0];
-        // console.log(localStorage.getItem(i.toString()));
 
         let li = document.createElement("li");
         li.classList.add("jobs");
@@ -606,7 +587,6 @@ function showPreviousJobs(disableBodyOnLoad){
 
         li.appendChild(a);
         overview.insertBefore(li, overview.childNodes[0]);
-        // overview.appendChild(li);
     }
     let li = document.createElement("li");
     let a = document.createElement("a");
@@ -620,11 +600,9 @@ function showPreviousJobs(disableBodyOnLoad){
 
 function showDetailedPreviousJobs(){
     let overview = document.getElementById("detailedPreviousJobs");
-    // console.log("hello");
 
     for (let i=0; i <localStorage.length; i++) {
         let msg = localStorage.getItem(i).split(";");
-        // console.log(msg);
         let tr = document.createElement("tr");
 
         let td = document.createElement("td");
@@ -662,14 +640,11 @@ function showDetailedPreviousJobs(){
 }
 
 function showHelp(textType){
-    // let elems = document.getElementById();
     $.get('/docs/' + textType, function(data, status){
         document.getElementById("explanationTitle").innerText = data.title;
         document.getElementById("explanationText").innerText = data.text;
-       //  console.log(data);
-       // console.log(data.text);
-       // console.log(status);
     });
+
     if (document.getElementById("explanationColumn").style.display === "none"){
         toggleExplanationColumn();
     }
@@ -685,22 +660,6 @@ function jalala () {
     else {
         elem.style.display = "none";
     }
-
-    // console.log(elem);
-    // console.log(elem.classList);
-    //
-    // if (elem.classList.length === 2){
-    //     elem.classList.add("slider-invisible");
-    // }
-    // else if (elem.classList[2] === "slider-invisible") {
-    //     elem.classList.remove("slider-invisible");
-    //     elem.classList.add("slider-visible")
-    // }
-    // else if (elem.classList[2] === "slider-visible") {
-    //     elem.classList.remove("slider-visible");
-    //     elem.classList.add("slider-invisible")
-    // }
-    // console.log(elem.classList);
 }
 
 function toggleExplanationColumn(){
@@ -708,7 +667,7 @@ function toggleExplanationColumn(){
     let rightCol = document.getElementById('explanationColumn');
     let middleCol = document.getElementById('middleColumn');
     let toggleButton = document.getElementById('toggleHelpButton');
-    // console.log(event.target);
+
     if (rightCol.style.display === "none"){
         rightCol.style.display = "block";
         toggleButton.style.right = "20%";

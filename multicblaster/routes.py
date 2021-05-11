@@ -44,6 +44,7 @@ def home_page(prev_run_id: str = None) -> str:
                          prev_run_id=prev_run_id,
                          module_to_show=module_to_show, headers=headers)
 
+
 @app.route(ut.SUBMIT_URL, methods=["POST"])
 def submit_job():  # return type: werkzeug.wrappers.response.Response:
     """Handles job submissions by putting it onto the Redis queue
@@ -60,12 +61,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    print("==== SUBMIT_JOB in ROUTES.PY ====")
-    print(request.form)
-
-    print("------args------------------")
-    print(request.args)
-
     new_jobs = []
 
     job_type = request.form["job_type"]
@@ -74,18 +69,20 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     # Note that the "{module}PreviousType" is submitted via the form, but is
     # only used if a previous job ID or previous session file will be used
 
-    ut.create_directories(job_id) # should be done if user uploads files
+    ut.create_directories(job_id)
     # TODO: BIG ONE: make every job_type functional by appending it to the job list
     if job_type == "search":
         f = rf.cblaster_search
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+
     elif job_type == "gne":
         f = rf.cblaster_gne
         file_path = rthelp.get_previous_job_properties(job_id, job_type, "gne")
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+
     elif job_type == "extract_sequences":
         # For now, only when coming from a results page (using a previous job
         # id) is supported
@@ -96,8 +93,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                                  f"{prev_job_id}_session.json")
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+
     elif job_type == "extract_clusters":
-        # print(request.form)
         f = rf.cblaster_extract_clusters
 
         prev_job_id = ut.fetch_job_from_db(request.form["prev_job_id"]).main_search_job
@@ -110,12 +107,11 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         # id) is supported
 
         new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+
     elif job_type == "corason":
         prev_job_id = request.form["prev_job_id"]
         file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                f"{prev_job_id}_session.json")
-
-        # print(file_path_extract_clust)
 
         extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
 
@@ -123,9 +119,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         extr_clust_options["clusterNumbers"] = pa.parse_selected_cluster_numbers(merged, ut.CLUST_NUMBER_PATTERN_WITHOUT_SCORE)
 
         # TODO: extract query sequence
-        # query = request.form["selectedQuery"]
-        # print(query)
-        # new_jobs.append((rf.cblaster_extract_sequences, ut.generate_job_id(), "tmp", file_path_extract_clust, None, "extract_sequences"))
 
         corason_job_id = ut.generate_job_id()
         new_options = dict(request.form)
@@ -140,6 +133,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
 
         # TODO: file path corason --> for corason, the file path is the path to where the extracted clusters will be
+
     elif job_type == "clinker_full":
         prev_job_id = request.form["clinkerEnteredJobId"]
         extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
@@ -157,7 +151,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
 
         new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))# TODO: depending job could change in future
-                # return "should do"
 
     else: # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
@@ -166,8 +159,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
     return redirect(url_for("show_result", job_id=last_job_id,
                         pj=ut.fetch_job_from_db(last_job_id).depending_on, store_job_id=True, j_type=ut.fetch_job_from_db(last_job_id).job_type))
-
-
 
 
 @app.route("/help")
@@ -202,9 +193,6 @@ def page_not_found(error):
 @app.errorhandler(405)
 def invalid_method(error):
     return redirect(url_for("home_page"))
-
-
-
 
 
 @app.route("/testing")

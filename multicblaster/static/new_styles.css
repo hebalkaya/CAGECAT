@@ -30,21 +30,6 @@ body{
     background-color: #304f63;
 }
 
-/*input[type="submit"]{*/
-/*    width: 140px;*/
-/*    height: 30px;*/
-/*    font-size: 20px;*/
-/*    border-radius: 8px;*/
-/*    background-color: #6aabd7;*/
-/*    border-color: #444444;*/
-/*    color: white;*/
-/*    !*margin: auto;*!*/
-/*    !*width: 50%;*!*/
-/*}*/
-/*input[type="submit"]::before {*/
-/*    content: "<br/>"*/
-/*}*/
-
 .select-options {
     border-radius: 3px;
     box-shadow: 0 0.5px 0 0.5px #a3a2a2;
@@ -300,14 +285,6 @@ input[type="number"], input[type="text"]{
     display: inline-block;
 }
 
-/*.fieldset-label:after{*/
-/*    content: " -";*/
-/*}*/
-/*in*/
-/*.checkbox-label {*/
-/*    padding-left: 20px;*/
-/*}*/
-
 div.div-margin {
     margin: 10px 0 0;
 }
@@ -381,13 +358,6 @@ table {
     border-radius: 20px 20px 0 0 ;
 }
 
-
-/*.allColumnsd{*/
-/*    content: "";*/
-/*    display: table;*/
-/*    clear: both;*/
-/*}*/
-
 .rightAligned {
     float: right;
     font-weight: bold;
@@ -429,9 +399,6 @@ i.fa.fa-download span {
     font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-/*div.column.leftColumn form button, div.column.leftColumn a button {*/
-/*    color: red;*/
-/*}*/
 
 .button-small {
     margin: 5px;
@@ -550,11 +517,6 @@ div.input-layer img, .help-button {
     padding-left: 5px;
     padding-top: 6px;
 }
-
-/*.resized {*/
-/*    width: 18px;*/
-/*    height: auto;*/
-/*}*/
 
 .slider-invisible {
 

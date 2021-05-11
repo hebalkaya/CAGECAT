@@ -31,6 +31,7 @@
     </div>
 {% endmacro %}
 
+
 {% macro result_table(module, type) %}
     {% set tableSection = '%s%sTableSection' % (module, type) %}
     {% set tableDelim = '%s%sTableDelim' % (module, type) %}
@@ -94,6 +95,7 @@
 </div>
 {% endmacro %}
 
+
 {% macro show_options(settings) %}
 <label for="optionsList">Selected options</label>
 <ul id="optionsList">
@@ -102,6 +104,7 @@
     {% endfor %}
 </ul>
 {% endmacro %}
+
 
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
 <div>
@@ -135,14 +138,14 @@
             {{ renderHelpButton('clusterScoreThreshold') }}
             <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
         </div>
-
         {% endif %}
+
     </fieldset>
 </div>
 {% endmacro %}
 
-    {% macro create_scientific_input(label, type, default_value) %}
 
+    {% macro create_scientific_input(label, type, default_value) %}
 <div style="display: table;width: 25%;margin-left: 1%">
 {#TODO: change style#}
     <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
@@ -169,6 +172,7 @@
 </ul>
 </div>
 {% endmacro %}
+
 
 {% macro renderHelpButton(help_type) %}
     <img class="help-button" onclick="showHelp('{{ help_type }}')"

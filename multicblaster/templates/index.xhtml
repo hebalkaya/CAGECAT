@@ -4,7 +4,6 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 
-
 {% block title %}
     multicblaster
 {% endblock %}
@@ -23,9 +22,7 @@ initReadQueryFile();
     {{ showNavigationBar('home') }}
 {% endblock %}
 
-
 {% block content %}
-
 <!--Module buttons-->
 <div class="modules centered">
     <button class="button moduleSelector" onclick="showModule(event,
@@ -75,7 +72,6 @@ initReadQueryFile();
 
 
     <div id="ncbiEntriesDiv" style="display: none">
-{#        <label for="ncbiEntriesTextArea">NCBI identifiers</label>#}
         <textarea rows="6" cols="25" id="ncbiEntriesTextArea"
                   name="ncbiEntriesTextArea" placeholder="NCBI accessions" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
         {{ renderHelpButton('ncbiEntriesTextArea') }}
@@ -86,7 +82,7 @@ initReadQueryFile();
     {{ prev_session('search', false, prev_run_id, false) }}
 </fieldset>
 
-    <label class="fieldset-label" for="searchSection">Search</label>
+<label class="fieldset-label" for="searchSection">Search</label>
 <fieldset id="searchSection">
     <div class="input-layer">
 
@@ -114,6 +110,7 @@ initReadQueryFile();
                value="5000"/>
     </div>
 </fieldset>
+
     <label class="fieldset-label" for="filteringSection">Filtering</label>
 <fieldset id="filteringSection">
     <div class="input-layer">
@@ -135,7 +132,6 @@ initReadQueryFile();
         <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
                name="min_query_coverage"/>
     </div>
-
 </fieldset>
 
     <label class="fieldset-label" for="clusteringSection">Clustering</label>
@@ -182,7 +178,6 @@ initReadQueryFile();
 
             </select>
         </div>
-
     </fieldset>
     {{ result_table('search', "Sum") }}
     {{ result_table('search', "Bin") }}
@@ -196,7 +191,6 @@ initReadQueryFile();
 
         </label>
         {{ renderHelpButton('sortClusters') }}
-
     </fieldset>
 
     <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
@@ -219,7 +213,6 @@ initReadQueryFile();
     </fieldset>
 
     <input type="submit" id="submitSearchForm" value="Submit"/>
-
     </form>
 </div>
 
@@ -324,7 +317,5 @@ initReadQueryFile();
     </form>
 </div>
 </div>
-{#    {{ url_for('downstream.extract_sequences') }}#}
-
 
 {% endblock %}

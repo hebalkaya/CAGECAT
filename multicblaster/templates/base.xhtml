@@ -8,68 +8,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
     <script type="application/javascript"
             src="{{ url_for('static', filename='js/tester.js') }}"></script>
-{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-<!--    <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='new_styles.css') }}"></link>
     <link rel="apple-touch-icon" sizes="180x180"
           href="{{url_for('static', filename='/images/icon/apple-touch-icon.png')}}"/>
     <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='/images/icon/favicon-32x32.png')}}"/>
     <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='/images/icon/favicon-16x16.png')}}"/>
-<!--    <link rel="manifest" href="{{url_for('static', filename='/images/icon/site.webmanifest')}}"/>-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-
-{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"></link>#}
-{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-{#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>#}
 </head>
 <body onload="showPreviousJobs(false);{% block scripts %}{% endblock %}">
 
 {% block navigationBar %}{% endblock %}
-{#<a class="" href="{{url_for('home_page')}}"><p>Home</p></a>#}
-{#<a href="{{url_for('result_from_job_id')}}"><span>Results</span></a>#}
-{#<p class="server-status" id="serverStatus">Server status: <span class="important">#}
-{#    {{serv_info["server_status"]}}</span> Queued:#}
-{#    <span class="important">{{serv_info["queued"]}}</span>    Running:#}
-{#    <span class="important">{{serv_info["running"]}}</span>#}
-{#        Completed:#}
-{#    <span class="important">{{serv_info["completed"]}}</span>#}
-{#</p>#}
 <div class="flexbox-wrapper">
-<div class="column leftColumn non-scrollable">
+    <div class="column leftColumn non-scrollable">
 
-    <ul class="statuscorrect">
-        <li>Server status: <span class="rightAligned">{{serv_info["server_status"]}}</span></li>
-        <li>Queued:  <span class="rightAligned">{{serv_info["queued"]}}</span></li>
-        <li>Running:  <span class="rightAligned">{{serv_info["running"]}}</span></li>
-        <li>Completed:  <span class="rightAligned">{{serv_info["completed"]}}</span></li>
-    </ul>
-    <br/>
-    <div>
-        <ul class="statuscorrect" id="previousJobsOverview">
+        <ul class="statuscorrect">
+            <li>Server status: <span class="rightAligned">{{serv_info["server_status"]}}</span></li>
+            <li>Queued:  <span class="rightAligned">{{serv_info["queued"]}}</span></li>
+            <li>Running:  <span class="rightAligned">{{serv_info["running"]}}</span></li>
+            <li>Completed:  <span class="rightAligned">{{serv_info["completed"]}}</span></li>
         </ul>
+        <br/>
+        <div>
+            <ul class="statuscorrect" id="previousJobsOverview">
+            </ul>
+        </div>
+
     </div>
-
-
-{#    <table>#}
-{#        <tr class="important-row">#}
-{#            <td>Server status</td>#}
-{#            <td class="status-info">{{serv_info["server_status"]}}</td>#}
-{#        </tr>#}
-{#        <tr>#}
-{#            <td>Queued</td>#}
-{#            <td class="status-info">{{serv_info["queued"]}}</td>#}
-{#        </tr>#}
-{#        <tr>#}
-{#            <td>Running</td>#}
-{#            <td class="status-info">{{serv_info["running"]}}</td>#}
-{#        </tr>#}
-{#        <tr>#}
-{#            <td>Completed</td>#}
-{#            <td class="status-info">{{serv_info["completed"]}}</td>#}
-{#        </tr>#}
-{#    </table>#}
-</div>
-<div class="column middleColumn" id="middleColumn">{% block content %}{% endblock %}</div>
+    <div class="column middleColumn" id="middleColumn">
+        {% block content %}{% endblock %}
+    </div>
 </div>
 
 <button id="toggleHelpButton" style="position: absolute;top: 8%;right: 20%;" onclick="toggleExplanationColumn()">&#62&#62</button>
@@ -81,35 +48,5 @@
     <p id="explanationText">Click a question mark next to an input field to view its explanation.</p>
 </div>
 
-{#<p class="server-status">Server status: <span class="important">{{serv_info["server_status"]}}</span></p>#}
-{##}
-{#<div class="">#}
-{#    <ul class="status centered">#}
-{#        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["queued"]}}<br/></span><span class="smaller">queued</span></li>#}
-{#        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["running"]}}<br/></span><span class="smaller">running</span></li>#}
-{#        <li class="status" style="display: inline-block;"><span class="important">{{serv_info["completed"]}}<br/></span><span class="smaller">completed</span></li>#}
-{#    </ul>#}
-{#</div>#}
-
-
-
-{#        <hr/>#}
-{#    <div id="custom_footer">#}
-{#        <p style="text-align: center" class="footer">This work has been created#}
-{#            by the <a#}
-{#                href="https://www.wur.nl/en/Research-Results/Chair-groups/Plant-Sciences/Bioinformatics.htm">BIF</a></>#}
-{#            group#}
-{#            of#}
-{#            Wageningen University and Research</p>#}
-{#        <a href="https://www.wur.nl/en.htm"><img class="centerrrr"#}
-{#                src="{{url_for('static', filename='images/wur_logo.png')}}"#}
-{#                alt="WUR logo"/></a>#}
-{#</div>#}
-{#    <div style="margin: auto; width: 10%">#}
-{#        <label for="showFooterCheckbox">Show footer</label>#}
-{#        <input type="checkbox" onclick="changeFooterVisibility()"#}
-{#               id="showFooterCheckbox" name="showFooterCheckbox" checked="checked"/>#}
-{##}
-{#    </div>#}
 </body>
 </html>
