@@ -18,7 +18,7 @@ storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}');
 <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 
 {% if parent_job != "null" %}
-<p>Parent job: <a href="{{url_for('show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
+<p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
 
 {% endif %}
 
