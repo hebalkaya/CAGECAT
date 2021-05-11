@@ -106,7 +106,7 @@
         {% endif %}
 
         {% if 'corason' in downstream_modules %}
-    <form action="{{ url_for('corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
+    <form action="{{ url_for('downstream.corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
         <input type="hidden" name="job_id" value="{{j_id}}"/>
         <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
         <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>
@@ -155,19 +155,8 @@
         {% set onload = 'postLoadingIFrame()' %}
     {% endif %}
 <iframe onload="showPreviousJobs(true)" style="display: none"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
-    <iframe onload="{{onload}}" height="800" id="newWindow" src="/plots/{{ j_id }}" title="Generated HTML plot"></iframe>
+    <iframe onload="{{onload}}" height="800" id="newWindow" src="{{ url_for('result.get_plot_contents', job_id=j_id) }}" title="Generated HTML plot"></iframe>
 </div>
-
         {% endif %}
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
