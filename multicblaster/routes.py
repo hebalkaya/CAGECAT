@@ -406,12 +406,6 @@ def corason() -> str:
                          prev_job_id=request.form["job_id"])
 
 
-@app.route("/downstream/clinker")
-def full_clinker() -> str:
-
-    return show_template("full_clinker.xhtml", submit_url=ut.SUBMIT_URL)
-
-
 @app.route("/downstream/clinker_query", methods=["POST"])
 def clinker_query() -> str:
     # print("===== ROUTES.PY CLINKER_QUERY.PY =====")
