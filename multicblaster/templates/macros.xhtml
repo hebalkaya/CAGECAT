@@ -1,5 +1,4 @@
 <!--Here we can have code block which are used more than once-->
-{#TODO: make variables using Jinja2's set keyword instead of re-formatting a modular text more than once#}
 
 {% macro prev_session(module, mainInput, job_id, allow_multiple) %}
     {% set previousType = '%sPreviousType' % module %}
@@ -32,32 +31,37 @@
 {% endmacro %}
 
 {% macro result_table(module, type) %}
+    {% set tableSection = '%s%sTableSection' % (module, type) %}
+    {% set tableDelim = '%s%sTableDelim' % (module, type) %}
+    {% set tableDecimals = '%s%sTableDecimals' % (module, type) %}
+    {% set tableHideHeaders = '%s%sTableHideHeaders' % (module, type) %}
+
 <div>
-    <label class="fieldset-label"  for="{{ '%s%sTableSection' % (module, type) }}">
+    <label class="fieldset-label"  for="{{ tableSection }}">
         {{ 'Summary table' if type == 'Sum' else 'Binary table'}}</label>
-    <fieldset id="{{ '%s%sTableSection' % (module, type) }}">
+    <fieldset id="{{ tableSection }}">
         <div class="input-layer">
             <label class="input-label"
-                   for="{{ '%s%sTableDelim' % (module, type) }}">Delimiter</label>
+                   for="{{ tableDelim }}">Delimiter</label>
             {{ renderHelpButton('generalDelimiter') }}
             <input class="short" type="text"
-                   id="{{ '%s%sTableDelim' % (module, type) }}"
-                   name="{{ '%s%sTableDelim' % (module, type) }}" size="1" maxlength="1"/>
+                   id="{{ tableDelim }}"
+                   name="{{ tableDelim }}" size="1" maxlength="1"/>
         </div>
         <div class="input-layer">
             <label class="input-label"
-                   for="{{ '%s%sTableDecimals' % (module, type) }}">Decimal places</label>
+                   for="{{ tableDecimals }}">Decimal places</label>
             {{ renderHelpButton('generalDecimals') }}
             <input class="short"  type="number"
-                   id="{{ '%s%sTableDecimals' % (module, type) }}"
-                   name="{{ '%s%sTableDecimals' % (module, type) }}" value="2" step="1" min="0" max="9"
+                   id="{{ tableDecimals }}"
+                   name="{{ tableDecimals }}" value="2" step="1" min="0" max="9"
                    required="required"/>
         </div>
         <div>
             <label class="checkbox-label">
                 <input type="checkbox"
-                       id="{{ '%s%sTableHideHeaders' % (module, type) }}"
-                       name="{{ '%s%sTableHideHeaders' % (module, type) }}">Hide headers</input>
+                       id="{{ tableHideHeaders }}"
+                       name="{{ tableHideHeaders }}">Hide headers</input>
             </label>
             {{ renderHelpButton('generalHideHeaders') }}
         </div>
@@ -71,7 +75,6 @@
                     <option name="functionSum" value="sum">sum</option>
                     <option name="functionMax" value="max">max</option>
                 </select>
-
         </div>
 
         <div class="input-layer">
@@ -93,55 +96,54 @@
 {% macro show_options(settings) %}
 <label for="optionsList">Selected options</label>
 <ul id="optionsList">
-
-{% for label, option in settings.items() %}
-    <li>{{label}}: {{option}}</li>
-{% endfor %}
-
+    {% for label, option in settings.items() %}
+        <li>{{label}}: {{option}}</li>
+    {% endfor %}
 </ul>
 {% endmacro %}
 
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
 <div>
-<label class="fieldset-label" for="filteringSection">Filtering</label>
-<fieldset id="filteringSection">
-    <div class="input-layer">
-        <label class="input-label" for="selectedOrganisms">Organisms</label>
-        {{ renderHelpButton('selectedOrganisms') }}
-        <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
-    </div>
-    <div class="input-layer">
-        <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>
-        {{ renderHelpButton('selectedScaffolds') }}
-        <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
-    </div>
+    <label class="fieldset-label" for="filteringSection">Filtering</label>
+    <fieldset id="filteringSection">
+        <div class="input-layer">
+            <label class="input-label" for="selectedOrganisms">Organisms</label>
+            {{ renderHelpButton('selectedOrganisms') }}
+            <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
+        </div>
+        <div class="input-layer">
+            <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>
+            {{ renderHelpButton('selectedScaffolds') }}
+            <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
+        </div>
 
-    {% if extraction_type == 'sequences' %}
-    <div class="input-layer">
-        <label class="textarea-label" for="selectedQueries">Queries</label>
-        {{ renderHelpButton('selectedQueries') }}
-        <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
-    </div>
-    {% elif extraction_type == 'clusters' %}
-    <div class="input-layer">
-        <label class="input-label" for="clusterNumbers">Clusters</label>
-        {{ renderHelpButton('clusterNumbers') }}
-        <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
-    </div>
-    <div class="input-layer">
-        <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
-        {{ renderHelpButton('clusterScoreThreshold') }}
-        <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
-    </div>
+        {% if extraction_type == 'sequences' %}
+        <div class="input-layer">
+            <label class="textarea-label" for="selectedQueries">Queries</label>
+            {{ renderHelpButton('selectedQueries') }}
+            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
+        </div>
+        {% elif extraction_type == 'clusters' %}
+        <div class="input-layer">
+            <label class="input-label" for="clusterNumbers">Clusters</label>
+            {{ renderHelpButton('clusterNumbers') }}
+            <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
+        </div>
+        <div class="input-layer">
+            <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
+            {{ renderHelpButton('clusterScoreThreshold') }}
+            <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
+        </div>
 
-    {% endif %}
-</fieldset>
+        {% endif %}
+    </fieldset>
 </div>
 {% endmacro %}
 
     {% macro create_scientific_input(label, type, default_value) %}
 
 <div style="display: table;width: 25%;margin-left: 1%">
+{#TODO: change style#}
     <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
 
     <label class="input-label" for="base{{type}}">{{label}}</label>
@@ -153,7 +155,6 @@
         <button type="button" class="scientificnotation" onclick="changePower(1, 'power{{type}}')">&#9650</button>
     </div>
 </div>
-
         {% endmacro %}
 
 
