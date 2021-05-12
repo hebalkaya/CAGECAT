@@ -73,7 +73,7 @@ def cblaster_search(job_id, options=None, file_path=None):
     if options["requiredSequences"]:  # as empty string evaluates to False
         cmd.append("--require")
         for q in options["requiredSequences"].split(";"):
-            cmd.append(f"'{q.strip().split()[0]}'")  # to prevent 1 header to be interpreted
+            cmd.append(f"{q.strip().split()[0]}")  # to prevent 1 header to be interpreted
                                     # as multiple due to spaces in header
 
     # add summary table
