@@ -154,7 +154,7 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None):
 
     cmd.extend(create_filtering_command(options, False))
 
-    if "outputDelimiter" in options:
+    if "outputDelimiter" in options and options["outputDelimiter"]:
         cmd.extend(["--delimiter", options["outputDelimiter"]])
 
     if "nameOnly" in options:
