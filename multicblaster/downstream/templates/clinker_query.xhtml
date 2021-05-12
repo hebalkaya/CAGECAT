@@ -2,6 +2,7 @@
 {% from "macros.xhtml" import filtering_section %}
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
+{% from "macros.xhtml" import createBackButton %}
 
 {% block title %}clinker query{% endblock %}
 
@@ -10,18 +11,20 @@
 {% endblock %}
 
 {% block content %}
+    {{ createBackButton() }}
+
     <form action="{{ submit_url }}" method="post">
-    <input type="hidden" name="job_type" value="clinker_query"/>
-    <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
-    {{ filtering_section('clusters', selected_scaffolds, selected_clusters) }}
-    <label class="fieldset-label" for="outputSection">Output</label>
-    <fieldset>
-        <div class="input-layer">
-            <label class="input-label" for="maxclusters">Maximum clusters</label>
-            {{ renderHelpButton('maxclusters') }}
-            <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
-        </div>
-    </fieldset>
-    <input type="submit" value="Visualize"/>
+        <input type="hidden" name="job_type" value="clinker_query"/>
+        <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
+        {{ filtering_section('clusters', selected_scaffolds, selected_clusters) }}
+        <label class="fieldset-label" for="outputSection">Output</label>
+        <fieldset>
+            <div class="input-layer">
+                <label class="input-label" for="maxclusters">Maximum clusters</label>
+                {{ renderHelpButton('maxclusters') }}
+                <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
+            </div>
+        </fieldset>
+        <input type="submit" value="Visualize"/>
     </form>
 {% endblock %}

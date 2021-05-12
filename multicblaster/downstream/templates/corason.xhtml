@@ -2,6 +2,8 @@
 {% from "macros.xhtml" import create_scientific_input %}
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
+{% from "macros.xhtml" import createBackButton %}
+
 
 {% block navigationBar %}
     {{ showNavigationBar('post-analysis') }}
@@ -11,6 +13,7 @@ Corason
 {% endblock %}
 
         {% block content %}
+            {{ createBackButton() }}
 <div>
     <form action="{{submit_url}}" method="post" enctype="multipart/form-data" onsubmit="mergeExponentials()">
         <input type="hidden" name="job_type" value="corason"/>

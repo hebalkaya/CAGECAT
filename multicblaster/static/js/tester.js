@@ -698,5 +698,8 @@ function toggleExplanationColumn(){
             inputs[i].classList.remove('wider');
         }
     }
+}
 
+function lastPage () {
+    window.history.back();
 }
