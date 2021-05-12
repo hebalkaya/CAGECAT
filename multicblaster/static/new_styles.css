@@ -542,11 +542,16 @@ li.jobs a:visited, td a {
     font-family: monospace;
 }
 
-@keyframes shrink {
-    0% {
-        transform: scaleX(0);
-    }
-    100% {
-        transform: scaleX(1);
-    }
-}
+/*TODO: below is some working animation code*/
+/*@keyframes shrink {*/
+/*    0% {*/
+/*        transform: scaleX(0.0);*/
+/*    }*/
+/*    100% {*/
+/*        transform: scaleX(1);*/
+/*    }*/
+/*}*/
+
+/*.shrink {*/
+/*    animation: shrink 1s ease 1 alternate;*/
+/*}*/
