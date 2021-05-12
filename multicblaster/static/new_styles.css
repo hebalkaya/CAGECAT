@@ -528,3 +528,12 @@ div.input-layer img, .help-button {
     animation-name: slideVisible;
     animation-duration: 2s;
 }
+
+li.jobs a:visited, td a {
+    text-decoration: none;
+    color: blue;
+}
+
+.monospaced {
+    font-family: monospace;
+}

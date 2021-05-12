@@ -607,6 +607,8 @@ function showDetailedPreviousJobs(){
 
         let td = document.createElement("td");
         let a = document.createElement("a");
+        a.style = 'font-size: 17px;';
+        a.classList.add('monospaced');
         a.href = "/results/" + msg[0];
         a.innerText = msg[0]
         td.appendChild(a);
