@@ -16,9 +16,11 @@
     {{ filtering_section('clusters', selected_scaffolds, selected_clusters) }}
     <label class="fieldset-label" for="outputSection">Output</label>
     <fieldset>
-        <label class="input-label" for="maxclusters">Maximum clusters</label>
-        {{ renderHelpButton('maxclusters') }}
-        <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
+        <div class="input-layer">
+            <label class="input-label" for="maxclusters">Maximum clusters</label>
+            {{ renderHelpButton('maxclusters') }}
+            <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
+        </div>
     </fieldset>
     <input type="submit" value="Visualize"/>
     </form>

@@ -165,11 +165,11 @@ initReadQueryFile();
                    name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
         </div>
 
-        <div> {#  TODO: maybe as class=input-layer #}
+        <div class="input-layer"> {#  TODO: maybe as class=input-layer #}
             <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
             <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
             {{ renderHelpButton('requiredSequencesSelector') }}
-            <select style="width: 40%;" id="requiredSequencesSelector" multiple="multiple">
+            <select style="width: 60%;" id="requiredSequencesSelector" multiple="multiple">
                 {% if headers %}
                     {% for head in headers %}
                     <option value="{{ head }}">{{ head }}</option>

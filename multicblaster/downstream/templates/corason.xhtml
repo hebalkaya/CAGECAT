@@ -21,15 +21,16 @@ Corason
             <div class="input-layer bigger">
                 <label class="input-label" for="selectedQuery">Query</label>
                 {{ renderHelpButton('selectedQuery') }}
-                <input type="text" id="selectedQuery" name="selectedQuery" required="required" value="{{query}}"/>
+                <input readonly="readonly" type="text" id="selectedQuery" name="selectedQuery" required="required" value="{{query}}"/>
             </div>
             <div class="input-layer">
                 <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>
                 {{ renderHelpButton('selectedReferenceCluster') }}
-                <input type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>
+                <input readonly="readonly" type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>
             </div>
 
             <div class="input-layer">
+{#                TODO: change how this is shown. Also make it readonly#}
                 <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
                 {{ renderHelpButton('selectedClustersToSearch') }}
                 <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>

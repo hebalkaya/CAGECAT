@@ -412,12 +412,12 @@ i.fa.fa-download span {
 
 div.input-layer {
     display: table;
-    width: 40%;
+    width: 45%;
     margin-left: 1%;
 }
 
 .wider {
-    width: 55% !important;
+    width: 65% !important;
 }
 
 div.input-layer-cust {
@@ -540,4 +540,13 @@ li.jobs a:visited, td a {
 
 .monospaced {
     font-family: monospace;
+}
+
+@keyframes shrink {
+    0% {
+        transform: scaleX(0);
+    }
+    100% {
+        transform: scaleX(1);
+    }
 }
