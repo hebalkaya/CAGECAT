@@ -141,7 +141,7 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
 
     """
     if request.method == "GET":
-        return show_template("result_from_jobid.xhtml")
+        return show_template("result_from_jobid.xhtml", help_enabled=False)
     else:  # can only be POST as GET and POST are the only allowed methods
         job_id = request.form["job_id"]
         if ut.fetch_job_from_db(job_id) is not None:

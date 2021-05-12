@@ -164,7 +164,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 @app.route("/help")
 def help_page():
     # TODO: actually create
-    return rthelp.show_template("help.xhtml")
+    return rthelp.show_template("help.xhtml", help_enabled=False)
 
 
 @app.route("/docs/<input_type>")

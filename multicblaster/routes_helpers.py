@@ -35,13 +35,14 @@ def get_connected_jobs(job):
     return connected_jobs
 
 
-def show_template(template_name: str, stat_code=None, **kwargs) \
-        -> t.Union[str, t.Tuple[str, int]]:
+def show_template(template_name: str, help_enabled:bool = True,
+                  stat_code=None, **kwargs) -> t.Union[str, t.Tuple[str, int]]:
     """Returns rendered templates to the client
 
     Input:
         - template_name: name of template to be rendered. By default,
             templates should be located in the templates/ folder
+        - help_enabled :TODO
         - stat_code, int: HTTP status code to be returned to the client
         - kwargs: keyword arguments used during rendering of the template
 
@@ -52,10 +53,10 @@ def show_template(template_name: str, stat_code=None, **kwargs) \
     and uses Flask's render_template function to actually render the templates
     """
     if stat_code is None:
-        return render_template(template_name,
+        return render_template(template_name, help_enabled=help_enabled,
                                serv_info=ut.get_server_info(q, r), **kwargs)
     else:
-        return render_template(template_name,
+        return render_template(template_name, help_enabled=help_enabled,
                                serv_info=ut.get_server_info(q, r),
                                **kwargs), stat_code
 

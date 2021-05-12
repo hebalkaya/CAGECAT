@@ -32,7 +32,8 @@ def create_filtering_command(options, is_cluster_related):
             partly_cmd.extend(options["clusterNumbers"].strip().split())
 
         if options["clusterScoreThreshold"]:
-            partly_cmd.extend(["--score_threshold", options["clusterScoreThreshold"]])
+            partly_cmd.extend(["--score_threshold",
+                               options["clusterScoreThreshold"]])
 
         partly_cmd.extend(["--maximum_clusters", options["maxclusters"]])
 
@@ -196,14 +197,14 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
 
-def store_query_sequences_headers(log_path, input_type, data):
 
-    if input_type == "ncbi_entries": # ncbi_entries
+def store_query_sequences_headers(log_path, input_type, data):
+    if input_type == "ncbi_entries":  # ncbi_entries
         headers = data
     elif input_type == "fasta":
         with open(data) as inf:
-            headers = [line.strip()[1:] for line in inf.readlines() if line.startswith(">")]
+            headers = [line.strip()[1:] for line in
+                       inf.readlines() if line.startswith(">")]
 
     with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
         outf.write(",".join(headers))
-

@@ -11,7 +11,7 @@ downstream = Blueprint('downstream', __name__, template_folder="templates")
 ### Route function definitions
 @downstream.route("/downstream")
 def post_analysis_explanation() -> str:
-    return show_template("post_analysis_explanation.xhtml")
+    return show_template("post_analysis_explanation.xhtml", help_enabled=False)
 
 
 @downstream.route("/clinker_query", methods=["POST"])
