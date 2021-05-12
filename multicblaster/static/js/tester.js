@@ -666,23 +666,35 @@ function jalala () {
 }
 
 function toggleExplanationColumn(){
+    let wider;
     // TODO: make it so that classes are used
     let rightCol = document.getElementById('explanationColumn');
     let middleCol = document.getElementById('middleColumn');
     let toggleButton = document.getElementById('toggleHelpButton');
+    let inputs = document.getElementsByClassName('input-layer');
 
     if (rightCol.style.display === "none"){
         rightCol.style.display = "block";
         toggleButton.style.right = "20%";
         toggleButton.innerText = ">>";
         middleCol.style.width = "65%";
+        wider = true;
     }
     else {
         rightCol.style.display = "none";
         toggleButton.style.right = "8px";
         toggleButton.innerText = "<<";
         middleCol.style.width = "85%";
+        wider = false;
+    }
 
+    for (let i=0; i < inputs.length; i++){
+        if (wider){
+            inputs[i].classList.add('wider');
+        }
+        else {
+            inputs[i].classList.remove('wider');
+        }
     }
 
 }

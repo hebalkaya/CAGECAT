@@ -416,6 +416,10 @@ div.input-layer {
     margin-left: 1%;
 }
 
+.wider {
+    width: 55% !important;
+}
+
 div.input-layer-cust {
     /*same as div.input-layer, but child element styling should be different*/
     display: table;
