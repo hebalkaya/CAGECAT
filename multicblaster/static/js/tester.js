@@ -703,3 +703,23 @@ function toggleExplanationColumn(){
 function lastPage () {
     window.history.back();
 }
+
+function addAnimation() {
+    let elem = document.getElementById('jalala');
+
+    if (elem.style.display === 'block'){
+        elem.classList.add('ani-tester');
+        elem.classList.remove('ani-fadein');
+        setTimeout(function () {
+            elem.style.display = 'none';
+            // TODO: create class for it
+        }, 499)
+    }
+    else {
+        elem.classList.remove('ani-tester')
+        elem.style.display = 'block';
+        elem.classList.add('ani-fadein');
+
+    }
+
+}

@@ -555,3 +555,31 @@ li.jobs a:visited, td a {
 /*.shrink {*/
 /*    animation: shrink 1s ease 1 alternate;*/
 /*}*/
+
+@keyframes slideOut {
+    0% {
+        transform-origin: right;
+        transform: translate(30%);
+    }
+    100% {
+        transform: translate(130%);
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform-origin: right;
+        transform: translate(130%);
+    }
+    100% {
+        transform: translate(30%);
+    }
+}
+
+.ani-tester {
+    animation: slideOut 0.5s ease 1 alternate;
+}
+
+.ani-fadein {
+    animation: slideIn 0.5s ease 1 alternate;
+}
