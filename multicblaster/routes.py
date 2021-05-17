@@ -210,3 +210,7 @@ def testing():
         html = inf.read()
 
     return rthelp.show_template("testing.xhtml", html_contents=html)
+
+@app.route("/jala")
+def ani_tester():
+    return rthelp.show_template('ani_tester.xhtml')
