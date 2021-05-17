@@ -414,6 +414,7 @@ div.input-layer {
     display: table;
     width: 45%;
     margin-left: 1%;
+    transition: width 0.5s ease-in-out;
 }
 
 .wider {
@@ -542,44 +543,37 @@ li.jobs a:visited, td a {
     font-family: monospace;
 }
 
-/*TODO: below is some working animation code*/
-/*@keyframes shrink {*/
-/*    0% {*/
-/*        transform: scaleX(0.0);*/
-/*    }*/
-/*    100% {*/
-/*        transform: scaleX(1);*/
-/*    }*/
-/*}*/
-
-/*.shrink {*/
-/*    animation: shrink 1s ease 1 alternate;*/
-/*}*/
-
-@keyframes slideOut {
-    0% {
-        transform-origin: right;
-        transform: translate(30%);
-    }
-    100% {
-        transform: translate(130%);
-    }
+.invisible {
+    transform: translateX(100%);
+    opacity: 0;
+    width: 0;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, width 0.5s ease-in-out;
+    /*display: none;*/
 }
 
-@keyframes slideIn {
-    0% {
-        transform-origin: right;
-        transform: translate(130%);
-    }
-    100% {
-        transform: translate(30%);
-    }
+.visible {
+    display: block !important;
+    transform: translateX(0) !important;
+    width: 20%;
+    opacity: 1 !important;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, width 0.5s ease-in-out;
+    /*transition: opacity 0.3s ease-in-out;*/
 }
 
-.ani-tester {
-    animation: slideOut 0.5s ease 1 alternate;
+.shrink-it {
+    width: 65% !important;
+    transition: width 0.5s ease-in-out;
+}
+.enlarge-it {
+    width: 85%;
+    transition: width 0.5s ease-in-out;
 }
 
-.ani-fadein {
-    animation: slideIn 0.5s ease 1 alternate;
+.no-display {
+    display: none;
+}
+
+.wider-input {
+    width: 60% !important;
+    transition: width 0.5s ease-in-out;
 }

@@ -648,7 +648,7 @@ function showHelp(textType){
         document.getElementById("explanationText").innerText = data.text;
     });
 
-    if (document.getElementById("explanationColumn").style.display === "none"){
+    if (document.getElementById("explanationColumn").classList.contains('invisible')){
         toggleExplanationColumn();
     }
 }
@@ -665,40 +665,80 @@ function jalala () {
     }
 }
 
-function toggleExplanationColumn(){
-    let wider;
-    // TODO: make it so that classes are used
+function toggleExplanationColumn() {
     let rightCol = document.getElementById('explanationColumn');
     let middleCol = document.getElementById('middleColumn');
-    let toggleButton = document.getElementById('toggleHelpButton');
     let inputs = document.getElementsByClassName('input-layer');
 
-    if (rightCol.style.display === "none"){
-        // rightCol.classList.remove('shrink');
-        rightCol.style.display = "block";
-        toggleButton.style.right = "20%";
-        toggleButton.innerText = ">>";
-        middleCol.style.width = "65%";
-        wider = true;
-    }
-    else {
-        // rightCol.classList.add('shrink');
-        rightCol.style.display = "none";
-        toggleButton.style.right = "8px";
-        toggleButton.innerText = "<<";
-        middleCol.style.width = "85%";
-        wider = false;
+    if (rightCol.classList.contains('invisible')) {
+        // rightCol.classList.remove('no-display');
+        rightCol.classList.remove('invisible');
+        rightCol.classList.add('visible');
+        middleCol.classList.add('shrink-it');
+        middleCol.classList.add('enlarge-it');
+
+    } else {
+        rightCol.classList.remove('visible');
+        rightCol.classList.add('invisible');
+        middleCol.classList.remove('shrink-it');
+        middleCol.classList.add('enlarge-it');
+
+        // setTimeout(function(){
+        //     rightCol.classList.add('no-display');
+        // }, 500);
     }
 
     for (let i=0; i < inputs.length; i++){
-        if (wider){
-            inputs[i].classList.add('wider');
-        }
-        else {
-            inputs[i].classList.remove('wider');
-        }
+        inputs[i].classList.toggle('wider-input');
+        // if (wider){
+        //     inputs[i].classList.add('wider-input');
+        // }
+        // else {
+        //     inputs[i].classList.remove('wider-input');
+        // }
     }
+
 }
+
+//
+//     rightCol.classList.toggle('visible');
+//     middleCol.classList.toggle('shrink-it');
+// }
+
+// function toggleExplanationColumn(){
+//     let wider;
+//     // TODO: make it so that classes are used
+//     let rightCol = document.getElementById('explanationColumn');
+//     let middleCol = document.getElementById('middleColumn');
+//     let toggleButton = document.getElementById('toggleHelpButton');
+//     let inputs = document.getElementsByClassName('input-layer');
+//
+//     if (rightCol.style.display === "none"){
+//         // rightCol.classList.remove('shrink');
+//         rightCol.style.display = "block";
+//         toggleButton.style.right = "20%";
+//         toggleButton.innerText = ">>";
+//         middleCol.style.width = "65%";
+//         wider = true;
+//     }
+//     else {
+//         // rightCol.classList.add('shrink');
+//         rightCol.style.display = "none";
+//         toggleButton.style.right = "8px";
+//         toggleButton.innerText = "<<";
+//         middleCol.style.width = "85%";
+//         wider = false;
+//     }
+//
+//     for (let i=0; i < inputs.length; i++){
+//         if (wider){
+//             inputs[i].classList.add('wider');
+//         }
+//         else {
+//             inputs[i].classList.remove('wider');
+//         }
+//     }
+// }
 
 function lastPage () {
     window.history.back();

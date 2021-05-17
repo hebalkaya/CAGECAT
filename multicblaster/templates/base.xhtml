@@ -34,15 +34,15 @@
         </div>
 
     </div>
-    <div class="column middleColumn" id="middleColumn">
+    <div class="column middleColumn enlarge-it" id="middleColumn">
         {% block content %}{% endblock %}
     </div>
 </div>
 
 {% if help_enabled %}
-<button id="toggleHelpButton" style="position: absolute;top: 8%;right: 8px;" onclick="toggleExplanationColumn()">&#60&#60</button>
+<button id="toggleHelpButton" style="position: absolute;top: 8%;right: 8px; z-index: 9000" onclick="toggleExplanationColumn()">&#60&#60</button>
 {#TODO: align button properly#}
-<div class="column rightColumn" id="explanationColumn" style="display: none;"> {# TODO: add animation to hide help #}
+<div class="column rightColumn invisible" id="explanationColumn"> {# TODO: add animation to hide help #}
 {#TODO: make explanation column not shown by default#}
     <h2 id="explanationTitle">Explanation</h2>
     <h4 id="explanationModule">Module: </h4>
