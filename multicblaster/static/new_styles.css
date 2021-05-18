@@ -577,3 +577,8 @@ li.jobs a:visited, td a {
     width: 60% !important;
     transition: width 0.5s ease-in-out;
 }
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+}

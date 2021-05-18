@@ -446,7 +446,7 @@ function applyListenersClinkerResults(){
 
 
 function postLoadingIFrame(){
-    document.getElementById("resultLoadedMessage").innerText = "Loading has completed";
+    document.getElementById("resultLoadedMessage").classList.add('fade-out');
     document.getElementById("loadingImage").style.display = "none";
     // TODO: use classes for display: none of elements
 }
@@ -669,6 +669,7 @@ function toggleExplanationColumn() {
     let rightCol = document.getElementById('explanationColumn');
     let middleCol = document.getElementById('middleColumn');
     let inputs = document.getElementsByClassName('input-layer');
+    let toggleButton = document.getElementById('toggleHelpButton');
 
     if (rightCol.classList.contains('invisible')) {
         // rightCol.classList.remove('no-display');
@@ -677,11 +678,15 @@ function toggleExplanationColumn() {
         middleCol.classList.add('shrink-it');
         middleCol.classList.add('enlarge-it');
 
+        toggleButton.innerText = ">>"
+
     } else {
         rightCol.classList.remove('visible');
         rightCol.classList.add('invisible');
         middleCol.classList.remove('shrink-it');
         middleCol.classList.add('enlarge-it');
+
+        toggleButton.innerText = "<<"
 
         // setTimeout(function(){
         //     rightCol.classList.add('no-display');

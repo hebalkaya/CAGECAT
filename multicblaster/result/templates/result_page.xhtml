@@ -136,7 +136,7 @@
 
 <div style="margin: auto;width: 60%;">
 
-    <p style="display: inline-block;"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
+    <p style="display: inline-block;padding-left: 10px;"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
     <img id="loadingImage" style="vertical-align: middle; width: 80px; height: auto;" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
 </div>
     {% if module in ['search', 'recompute'] %}
