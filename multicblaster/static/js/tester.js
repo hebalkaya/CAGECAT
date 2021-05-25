@@ -768,3 +768,24 @@ function addAnimation() {
     }
 
 }
+
+function determineHeight() {
+    var body = document.body,
+        html = document.documentElement;
+
+    let height_tmp = Math.max(body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight).toString();
+
+    let height = height_tmp - document.getElementById('navigationBar').offsetHeight - 8;
+    // -8px has been found by trying
+
+    console.log('height is ' + height)
+    document.getElementById('statusColumn').style.height = height + 'px';
+
+    let explanationCol = document.getElementById('explanationColumn');
+    if (explanationCol !== null) {
+        explanationCol.style.height = height + 'px';
+    }
+
+    // TODO: might be a class instead of using the ID's
+}

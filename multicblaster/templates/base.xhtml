@@ -15,11 +15,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='/images/icon/favicon-16x16.png')}}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
-<body onload="showPreviousJobs(false);{% block scripts %}{% endblock %}">
+<body onload="showPreviousJobs(false);{% block scripts %}{% endblock %}determineHeight();">
 
 {% block navigationBar %}{% endblock %}
 <div class="flexbox-wrapper">
-    <div class="column leftColumn non-scrollable">
+    <div id="statusColumn" class="column leftColumn non-scrollable">
 
         <ul class="statuscorrect">
             <li>Server status:<span class="rightAligned">{{serv_info["server_status"]}}</span></li>

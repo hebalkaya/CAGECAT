@@ -163,7 +163,7 @@
 
 
 {% macro showNavigationBar(page)  %}
-<div class="non-scrollable">
+<div id="navigationBar" class="non-scrollable">
 <ul class="nav">
     <li><a {{ '' if page != 'home' else 'class=active' }} href="{{url_for('home_page')}}">Home</a></li>
     <li><a {{ '' if page != 'results' else 'class=active' }} href="{{url_for('result.result_from_job_id')}}">Results</a></li>
