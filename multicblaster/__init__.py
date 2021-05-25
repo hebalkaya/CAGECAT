@@ -27,14 +27,9 @@ r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
 app = Flask("multicblaster")
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///status.db'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 db = SQLAlchemy(app)
-
-
-UPLOAD_FOLDER = os.path.join("multicblaster/static", "uploads")
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
 from multicblaster import routes
@@ -42,7 +37,6 @@ import multicblaster.models as m
 from multicblaster.downstream.downstream_routes import downstream
 from multicblaster.result.result_routes import result
 
-app.config["DOWNLOAD_FOLDER"] = "jobs" # multicblaster not required in front of jobs
 app.register_blueprint(downstream, url_prefix="/downstream")
 app.register_blueprint(result, url_prefix="/results")
 
@@ -58,3 +52,6 @@ if m.Statistic.query.filter_by(name="finished").first() is None:
         db.session.add(s)
 
     db.session.commit()
+
+
+app.config.from_pyfile(os.path.join("..", "config.py"))

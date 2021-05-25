@@ -8,7 +8,8 @@ from multicblaster import app
 
 ### main code
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5001)
+    print(app.config)
+    app.run(host=app.config["HOST"], port=app.config["PORT"])
 
     # lets other computers within the same network access the web pages
     # by typing the following address in a web browser:
