@@ -554,7 +554,7 @@ li.jobs a:visited, td a {
 .visible {
     display: block !important;
     transform: translateX(0) !important;
-    width: 20%;
+    width: 100%; /* as it is now part of another div */
     opacity: 1 !important;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, width 0.5s ease-in-out;
     /*transition: opacity 0.3s ease-in-out;*/
@@ -581,4 +581,8 @@ li.jobs a:visited, td a {
 .fade-out {
     opacity: 0;
     transition: opacity 0.2s ease-out;
+}
+
+.hide-overflow {
+    overflow: hidden;
 }
