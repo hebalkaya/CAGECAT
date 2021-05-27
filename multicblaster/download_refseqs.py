@@ -17,17 +17,17 @@ ftp = ftplib.FTP(BASE)
 # ftp.connect(BASE)
 
 ftp.login()
+time.sleep(0.34)
 ftp.cwd('genomes/refseq/bacteria')
 # print(ftp.pwd())
-def download_files(name, to_download, progression, incorrect_entries_fn='incorrect_entries.txt'):
+def download_files(name, to_download,incorrect_entries_fn='incorrect_entries.txt'):
 
     print('\t--> downloading')
 
     for f in to_download:
-        time.sleep(0.1)
-
         fn = f.split('/')[-1]
 
+        time.sleep(0.34)
         with open(fn, 'wb') as outf:
             ftp.retrbinary(f'RETR {f}', outf.write, blocksize=blocksize)
 
@@ -65,11 +65,18 @@ try:
     total_to_check = len(bacteria_dump.strepto)
 
     for count, b in enumerate(bacteria_dump.strepto, start=1):
+        if not count % 4:
+            print('Sending connection ping')
+            time.sleep(0.34)
+            ftp.voidcmd('NOOP')
+
         print(f'({count}/{total_to_check}): {b}')
         # print(b, end='\r')
         path = f"{b}/representative"
+        time.sleep(0.34)
         if path in ftp.nlst(b):
             # print(b, "repr. genome present")
+            time.sleep(0.34)
             dirs = ftp.nlst(path)
             if len(dirs) > 1:
                 raise Exception('Multiple assemblies')
@@ -77,6 +84,7 @@ try:
                 # new_path = f"{path}/{dirs[0]}"
                 to_download = []
                 # found = 0
+                time.sleep(0.34)
                 for file in ftp.nlst(dirs[0]):
                     if file.endswith('genomic.gbff.gz'):
                         # print('We should download:', file)
@@ -89,18 +97,20 @@ try:
 
                 if len(to_download) in (0, 1, 3, 4):
                     raise Exception('Incorrect number of files to download')
-                download_files(b, to_download, (count, total_to_check))
+                download_files(b, to_download)
             else:
                 raise Exception('No files?')
         else:
             print("\t--> no representative genome found")
 
-        time.sleep(1.5)
+        time.sleep(0.9)
         # break
 except KeyboardInterrupt:
+    time.sleep(0.34)
     ftp.quit()
     exit(0)
 
+time.sleep(0.34)
 ftp.quit()
 
 
