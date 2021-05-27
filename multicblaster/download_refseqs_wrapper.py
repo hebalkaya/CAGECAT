@@ -1,35 +1,23 @@
-import ftplib
 import hashlib
+import subprocess
 
 import bacteria_dump
 import time
 import os
-import subprocess
+import ftplib
 
 blocksize = 32*1024*1024
 BASE = "ftp.ncbi.nlm.nih.gov"
 BASE_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
 
-if not os.path.exists(BASE_DIR):
-    os.mkdir(BASE_DIR)
 
-os.chdir(BASE_DIR)
+BATCH_SIZE = 50
+BATCHES = (len(bacteria_dump.strepto) // 50 ) + 1
 
-ftp = ftplib.FTP(BASE, user='anonymous', passwd='password')
-# ftp.connect(BASE)
+def chunks(seqs, batch_size):
+    for i in range(0, len(seqs), batch_size):
+        yield seqs[i:i+batch_size]
 
-def connect():
-
-    ftp.login()
-    time.sleep(0.5)
-    print('\nLogged in')
-
-    time.sleep(0.5)
-    ftp.cwd('genomes/refseq/bacteria')
-    print('Changed working directory. Starting..\n')
-
-connect()
-# print(ftp.pwd())
 def download_files(name, to_download, download_base, incorrect_entries_fn='incorrect_entries.txt', errors_fn='error_entries.txt'):
 
     print('\t--> downloading')
@@ -48,9 +36,9 @@ def download_files(name, to_download, download_base, incorrect_entries_fn='incor
             ftp.retrbinary(f'RETR {f}', outf.write, blocksize=blocksize)
         # except EOFError:
         #     print(f'\t--> error (written to {errors_fn}')
-            # with open(errors_fn, 'w' if not os.path.exists(errors_fn) else 'a') as outf:
-                    # outf.write(f'{name}\n')
-            # break
+        # with open(errors_fn, 'w' if not os.path.exists(errors_fn) else 'a') as outf:
+        # outf.write(f'{name}\n')
+        # break
 
         if f == to_download[-1]: # indicates checksums
             print('\t--> checking MD5 checksum')
@@ -81,29 +69,18 @@ def download_files(name, to_download, download_base, incorrect_entries_fn='incor
 
                 print(f'\t--> failed (written to {incorrect_entries_fn})')
 
-# below could be in a function
-if not os.path.exists('Streptomyces'):
-    os.mkdir('Streptomyces')
-
-if not os.path.exists('Streptomyces/correct'):
-    os.mkdir('Streptomyces/correct')
-os.chdir('Streptomyces')
-
-# print(len([a for a in bacteria_dump.strepto if len(a.split('_'))==2]))
-
-try:
-    # checker = ['Streptomyces_decoyicus', 'Streptomyces_durhamensis']
-    total_to_check = len(bacteria_dump.strepto)
-
-    for count, b in enumerate(bacteria_dump.strepto, start=1):
+def download_batch(seqs):
+    total_to_check = len(seqs)
+    for count, b in enumerate(seqs, start=1):
         success = 0
+
         while not success:
             try:
 
-            # if not count % 4:
-            #     print('Sending connection ping')
-            #     time.sleep(0.34)
-            #     ftp.voidcmd('NOOP')
+                # if not count % 4:
+                #     print('Sending connection ping')
+                #     time.sleep(0.34)
+                #     ftp.voidcmd('NOOP')
 
                 print(f'({count}/{total_to_check}): {b}')
                 # print(b, end='\r')
@@ -144,13 +121,41 @@ try:
             except EOFError:
                 print("Failed to connect")
                 # connect()
-        # breaks
-except KeyboardInterrupt:
+
+def init():
+    if not os.path.exists(BASE_DIR):
+        os.mkdir(BASE_DIR)
+
+    os.chdir(BASE_DIR)
+
+    if not os.path.exists('Streptomyces'):
+        os.mkdir('Streptomyces')
+
+    if not os.path.exists('Streptomyces/correct'):
+        os.mkdir('Streptomyces/correct')
+
+    os.chdir('Streptomyces')
+
+def connect():
+    ftp = ftplib.FTP(BASE, user='anonymous', passwd='password')
+
+    ftp.login()
     time.sleep(0.5)
-    ftp.quit()
-    exit(0)
+    print('\nLogged in')
 
-time.sleep(0.5)
-ftp.quit()
+    time.sleep(0.5)
+    ftp.cwd('genomes/refseq/bacteria')
+    print('Changed working directory. Starting..\n')
 
+    return ftp
 
+if __name__ == '__main__':
+    init()
+
+    for count, entries in enumerate(chunks(bacteria_dump.strepto, BATCH_SIZE), start=1):
+        ftp = connect()
+        print(f'Batch {count}/{BATCHES}')
+
+        download_batch(entries)
+        ftp.quit()
+        print('\nLogged out')
