@@ -1,4 +1,6 @@
 import ftplib
+import hashlib
+
 import bacteria_dump
 import time
 
@@ -11,11 +13,31 @@ ftp.login()
 ftp.cwd('genomes/refseq/bacteria')
 # print(ftp.pwd())
 def download_files(to_download):
+    correct = 0
     for f in to_download:
         fn = f.split('/')[-1]
         with open(fn, 'wb') as outf:
             ftp.retrbinary(f'RETR {f}', outf.write)
             print('Written file:', fn)
+
+        if f == to_download[-1]: # indicates checksums
+
+            # get the checksum to validate file
+            with open(fn) as inf:
+                for line in inf.readlines():
+                    splitted = line.strip().split()
+                    if splitted[-1].endswith('genomic.gbff.gz'):
+                        checksum = splitted[0]
+                        break
+            ori_fn = to_download[0].split('/')[-1]
+            with open(ori_fn, 'rb') as inf:
+                check = hashlib.md5(inf.read()).hexdigest()
+
+            print(check)
+            print(checksum)
+            print(check == checksum)
+
+
 
             # TODO: check md5 checksums
     pass
@@ -44,12 +66,11 @@ for b in bacteria_dump.strepto:
             print('The files to be downloaded are:', to_download)
             download_files(to_download)
 
-            if len(to_download) in (0, 1):
+            if len(to_download) in (0, 1, 3, 4):
                 raise Exception('Incorrect number of files to download')
 
         else:
             raise Exception('No files?')
-
 
     else:
         print("No repr. genome for", b)
