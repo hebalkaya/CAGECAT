@@ -62,6 +62,15 @@ def download_files(name, to_download, download_base, incorrect_entries_fn='incor
                 os.rename(os.path.join(download_base, actual_fn[:-3]), os.path.join(download_base, 'correct', actual_fn[:-3]))
                 print('\t--> extracted and moved')
 
+                successfull_fn = 'successfully_downloaded.txt'
+
+                mode = 'w' if not os.path.exists(successfull_fn) else 'a'
+                with open(successfull_fn, mode) as outf:
+                    if mode == 'w':
+                        to_write = f'{name}'
+                    else:
+                        to_write = f',{name}'
+                    outf.write(to_write)
             else:
                 # print(f"MD5 checksum not correct: {name}")
                 with open(incorrect_entries_fn, 'w' if not os.path.exists(incorrect_entries_fn) else 'a') as outf:
@@ -158,4 +167,3 @@ if __name__ == '__main__':
 
         download_batch(entries)
         ftp.quit()
-        print('\nLogged out')
