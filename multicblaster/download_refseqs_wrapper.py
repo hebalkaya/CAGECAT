@@ -1,7 +1,6 @@
 import hashlib
 import subprocess
 
-import bacteria_dump
 import time
 import os
 import ftplib
@@ -12,7 +11,7 @@ BASE_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
 
 
 BATCH_SIZE = 50
-BATCHES = (len(bacteria_dump.strepto) // 50 ) + 1
+
 
 def chunks(seqs, batch_size):
     for i in range(0, len(seqs), batch_size):
@@ -145,6 +144,7 @@ def init():
 
     os.chdir('Streptomyces')
 
+
 def connect():
     ftp = ftplib.FTP(BASE, user='anonymous', passwd='password')
 
@@ -161,7 +161,17 @@ def connect():
 if __name__ == '__main__':
     init()
 
-    for count, entries in enumerate(chunks(bacteria_dump.strepto, BATCH_SIZE), start=1):
+    ftp = connect()
+    print('Fetching Streptomyces list')
+    all_bacteria = ftp.nlst()
+    strepto = [c for c in all_bacteria if c.startswith('Streptomyces')]
+
+    time.sleep(0.5)
+    ftp.quit()
+
+    BATCHES = (len(strepto) // 50 ) + 1
+
+    for count, entries in enumerate(chunks(strepto, BATCH_SIZE), start=1):
         ftp = connect()
         print(f'Batch {count}/{BATCHES}')
 
