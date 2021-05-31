@@ -15,6 +15,8 @@ SUCCESSFULL_DOWNLOADS_FN = 'successfull_downloads.txt'
 
 
 def init():
+    print('\nStarting..\n')
+
     genus = argv[1].capitalize()
     output_fn = f'{genus}_ftp_paths.txt'
 
@@ -152,4 +154,4 @@ if __name__ == '__main__':
     paths = parse_paths(fn)
     download_files(paths)
 
-    print(f"All done!")
+    print(f"\nAll done!")

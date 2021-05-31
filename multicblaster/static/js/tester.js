@@ -789,3 +789,28 @@ function determineHeight() {
 
     // TODO: might be a class instead of using the ID's
 }
+
+function changeSearchMode(mode){
+    let fieldsetDiv = document.getElementById('hmmFullFieldset');
+    let fieldset = document.getElementById('hmmSection');
+
+    if (mode === 'remote'){
+        fieldsetDiv.classList.add('no-display');
+        fieldset.setAttribute('disabled', 'disabled');
+
+        console.log('remote');
+    }
+    else if (mode === 'hmm'){
+        fieldsetDiv.classList.remove('no-display');
+        fieldset.removeAttribute('disabled');
+        console.log('hmm');
+    }
+    else if (mode === 'combi_remote'){
+        fieldsetDiv.classList.remove('no-display');
+        fieldset.removeAttribute('disabled');
+        console.log('combi_remote');
+    }
+    else {
+        console.log('Invalid mode');
+    }
+}

@@ -45,19 +45,33 @@ initReadQueryFile();
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
 
-        <label class="radioLabel">
-        <input type="radio" value="fasta" checked="checked" id="radioFasta"
-               name="inputType" onclick="showInputOptions('fasta', 1)"/>FASTA</label>
-        <label class="radioLabel">
-        <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
-               name="inputType"
-               onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
-        </label>
-        <label class="radioLabel">
-        <input type="radio" value="prev_session" id="radioPrevSession"
-               name="inputType"
-                onclick="showInputOptions('prev_session', 1)"/>Recompute
-        </label>
+        <div>
+            <label class="radioLabel">
+                <input type="radio" name="mode" checked="checked" onclick="changeSearchMode('remote')">Remote
+            </label>
+            <label class="radioLabel">
+                <input type="radio" name="mode" onclick="changeSearchMode('hmm')">HMM
+            </label>
+            <label class="radioLabel">
+                <input type="radio" name="mode" onclick="changeSearchMode('combi_remote')">Remote + HMM
+            </label>
+        </div>
+
+        <div>
+            <label class="radioLabel">
+            <input type="radio" value="fasta" checked="checked" id="radioFasta"
+                   name="inputType" onclick="showInputOptions('fasta', 1)"/>FASTA</label>
+            <label class="radioLabel">
+            <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
+                   name="inputType"
+                   onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
+            </label>
+            <label class="radioLabel">
+            <input type="radio" value="prev_session" id="radioPrevSession"
+                   name="inputType"
+                    onclick="showInputOptions('prev_session', 1)"/>Recompute
+            </label>
+        </div>
 
     <div class="div-margin" id="genomeFileUploadDiv">
         <label class="file-upload-lbl" for="genomeFile">
@@ -82,6 +96,28 @@ initReadQueryFile();
     {{ prev_session('search', false, prev_run_id, false) }}
 </fieldset>
 
+<div id="hmmFullFieldset" class="no-display">
+    <label class="fieldset-label" for="hmmSection">Hidden Markov Models (HMM)</label>
+    <fieldset id="hmmSection" disabled="disabled">
+            <div id="hmmProfilesDiv">
+                <div class="input-layer">
+                    <label class="select-label" for="selectedGenus">Genus</label>
+                    <select class="select-options" name="selectedGenus" id="selectedGenus">
+                        <option value="Streptomyces">Streptomyces</option>
+                    </select>
+                    {{ renderHelpButton('selectedGenus') }}
+                </div>
+                <div class="input-layer">
+                    <textarea rows="6" cols="25" id="hmmProfiles"
+                              name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
+                        {#        TODO: add Pfam identifier validation#}
+                        {{ renderHelpButton('hmmProfiles') }}
+                </div>
+            </div>
+
+    </fieldset>
+</div>
+
 <label class="fieldset-label" for="searchSection">Search</label>
 <fieldset id="searchSection">
     <div class="input-layer">
@@ -95,9 +131,9 @@ initReadQueryFile();
         <label class="select-label" for="database_type">Database</label>
         <select class="select-options" id="database_type" name="database_type" required="required">
             <option value="nr">nr</option>
-            <option value="refseq_protein">refseq_protein</option>
-            <option value="swissprot">swissprot</option>
-            <option value="pdb">pdb</option>
+            <option value="refseq_protein">RefSeq protein</option>
+            <option value="swissprot">Swissprot</option>
+            <option value="pdbaa">pdbaa</option>
         </select>
         {{ renderHelpButton('database_type') }}
     </div>
