@@ -24,12 +24,7 @@ def download_files(name, to_download, download_base, incorrect_entries_fn='incor
     for f in to_download:
         fn = f.split('/')[-1]
 
-        if f == to_download[0]:
-            if fn[:-3] in os.listdir(os.path.join(download_base, 'correct')):
-                print('\t--> skipped (file already downloaded)')
-                break
-
-        time.sleep(0.5)
+        time.sleep(0.35)
         # try:
         with open(fn, 'wb') as outf:
             ftp.retrbinary(f'RETR {f}', outf.write, blocksize=blocksize)
@@ -65,10 +60,8 @@ def download_files(name, to_download, download_base, incorrect_entries_fn='incor
 
                 mode = 'w' if not os.path.exists(successfull_fn) else 'a'
                 with open(successfull_fn, mode) as outf:
-                    if mode == 'w':
-                        to_write = f'{name}'
-                    else:
-                        to_write = f',{name}'
+                    assembly_id = to_download[0].split('/')[-1][:-3]
+                    to_write = f'{name}:{assembly_id}\n'
                     outf.write(to_write)
             else:
                 # print(f"MD5 checksum not correct: {name}")
@@ -77,10 +70,31 @@ def download_files(name, to_download, download_base, incorrect_entries_fn='incor
 
                 print(f'\t--> failed (written to {incorrect_entries_fn})')
 
-def download_batch(seqs):
+def check_if_already_downloaded(name):
+    everything = {}
+
+    if not os.path.exists('successfully_downloaded.txt'):
+        with open('successfully_downloaded.txt', 'w') as outf:
+            pass
+
+    with open('successfully_downloaded.txt') as inf:
+        for entry in inf.readlines():
+            splitted = entry.strip().split(':')
+            everything[splitted[0]] = splitted[1]
+
+    return name in everything
+
+
+def download_batch(seqs, error_fn='errors.txt'):
+
     total_to_check = len(seqs)
     for count, b in enumerate(seqs, start=1):
         success = 0
+        print(f'({count}/{total_to_check}): {b}')
+
+        if check_if_already_downloaded(b):
+            print('\t--> skipped (file already downloaded)')
+            continue
 
         while not success:
             try:
@@ -89,23 +103,25 @@ def download_batch(seqs):
                 #     print('Sending connection ping')
                 #     time.sleep(0.34)
                 #     ftp.voidcmd('NOOP')
-
-                print(f'({count}/{total_to_check}): {b}')
                 # print(b, end='\r')
                 path = f"{b}/representative"
-                time.sleep(0.5)
 
+                time.sleep(0.35)
                 if path in ftp.nlst(b):
                     # print(b, "repr. genome present")
-                    time.sleep(0.5)
+                    time.sleep(0.35)
                     dirs = ftp.nlst(path)
                     if len(dirs) > 1:
-                        raise Exception('Multiple assemblies')
+                        print(f'ERROR: multiple assemblies (written to {error_fn})')
+                        with open(error_fn, 'w' if not os.path.exists(error_fn) else 'a') as outf:
+                            outf.write(f'{b},multiple assemblies')
+                        break
+                        # raise Exception('Multiple assemblies')
                     elif len(dirs) == 1:
                         # new_path = f"{path}/{dirs[0]}"
                         to_download = []
                         # found = 0
-                        time.sleep(0.5)
+                        time.sleep(0.35)
                         for file in ftp.nlst(dirs[0]):
                             if file.endswith('genomic.gbff.gz'):
                                 # print('We should download:', file)
@@ -117,17 +133,25 @@ def download_batch(seqs):
                         # print('The files to be downloaded are:', to_download)
 
                         if len(to_download) in (0, 1, 3, 4):
-                            raise Exception('Incorrect number of files to download')
+                            print(f'ERROR: incorrect number of files to download (written to {error_fn})')
+                            with open(error_fn, 'w' if not os.path.exists(error_fn) else 'a') as outf:
+                                outf.write(f'{b},incorrect file number')
+                            break
+                            # raise Exception('Incorrect number of files to download')
                         download_files(b, to_download, os.path.join(BASE_DIR, 'Streptomyces'))
                     else:
-                        raise Exception('No files?')
+                        print(f'ERROR: no files found (written to {error_fn})')
+                        with open(error_fn, 'w' if not os.path.exists(error_fn) else 'a') as outf:
+                            outf.write(f'{b},no files found')
+                        break
                 else:
                     print("\t--> skipped (no representative genome found)")
 
                 success = 1
                 time.sleep(1.5)
             except EOFError:
-                print("Failed to connect")
+                print("Failed to connect. Waiting one minute before reconnecting")
+                time.sleep(60)
                 # connect()
 
 def init():
@@ -149,10 +173,10 @@ def connect():
     ftp = ftplib.FTP(BASE, user='anonymous', passwd='password')
 
     ftp.login()
-    time.sleep(0.5)
+    time.sleep(0.35)
     print('\nLogged in')
 
-    time.sleep(0.5)
+    time.sleep(0.35)
     ftp.cwd('genomes/refseq/bacteria')
     print('Changed working directory. Starting..\n')
 
@@ -162,14 +186,29 @@ if __name__ == '__main__':
     init()
 
     ftp = connect()
-    print('Fetching Streptomyces list')
+
+    print("Fetching all bacteria..")
     all_bacteria = ftp.nlst()
+
+    print('Getting al genuses..')
+    all_genus = []
+    for b in all_bacteria:
+        genus = b.split('_')[0]
+        if genus not in all_genus:
+            all_genus.append(genus)
+
+    print(f'Total number of genuses: {len(all_genus)}')
+
+    # TODO: here we could loop over the genuses
+
+    print(f'Filtering for: Streptomyces')
     strepto = [c for c in all_bacteria if c.startswith('Streptomyces')]
 
-    time.sleep(0.5)
+    time.sleep(0.35)
     ftp.quit()
 
     BATCHES = (len(strepto) // 50 ) + 1
+    print(f"In total, {len(strepto)} are genomes are going to be downloaded")
 
     for count, entries in enumerate(chunks(strepto, BATCH_SIZE), start=1):
         ftp = connect()
