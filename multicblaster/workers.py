@@ -5,7 +5,10 @@ Author: Matthias van den Belt
 # package imports
 
 # own project imports
+import os.path
+
 from multicblaster.workers_helpers import *
+import config
 
 # Whenever a CMD is ran from a function, all print statements within that
 # same function are performed when the CMD has finished
@@ -21,32 +24,47 @@ def cblaster_search(job_id, options=None, file_path=None):
     cmd = ["cblaster", "search",
            "--output", os.path.join(RESULTS_PATH, f"{job_id}_summary.txt"),
            "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
-           "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt")]
+           "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
+           "--mode", options["mode"]]
 
     # add input options
-    input_type = options["inputType"]
+    if options['mode'] in ('remote', 'combi_remote'):
+        input_type = options["inputType"]
 
-    if input_type == "fasta":
-        cmd.extend(["--query_file", file_path])
+        if input_type == "fasta":
+            cmd.extend(["--query_file", file_path])
+            session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+            store_query_sequences_headers(LOG_PATH, input_type, file_path)
+        elif input_type == "ncbi_entries":
+            entries = options["ncbiEntriesTextArea"].split()
+
+            cmd.append("--query_ids")
+            cmd.extend(entries)
+
+            session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+            store_query_sequences_headers(LOG_PATH, input_type, entries)
+        elif input_type == "prev_session":
+            recompute = True
+            cmd.extend(["--recompute",
+                        os.path.join(RESULTS_PATH, f"{job_id}_session.json")])
+            session_path = file_path
+
+        else:  # future input types and prev_session
+            raise NotImplementedError(f"Input type {input_type} is not supported "
+                                      f"in cblaster_search")
+
+    if options['mode'] in ('hmm', 'combi_remote'):
         session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
-        store_query_sequences_headers(LOG_PATH, input_type, file_path)
-    elif input_type == "ncbi_entries":
-        entries = options["ncbiEntriesTextArea"].split()
 
-        cmd.append("--query_ids")
-        cmd.extend(entries)
+        # add HMM profiles
+        cmd.append('--query_profiles')
+        cmd.extend(options["hmmProfiles"].split())
 
-        session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
-        store_query_sequences_headers(LOG_PATH, input_type, entries)
-    elif input_type == "prev_session":
-        recompute = True
-        cmd.extend(["--recompute",
-                    os.path.join(RESULTS_PATH, f"{job_id}_session.json")])
-        session_path = file_path
+        # PFAM database
+        cmd.extend(['--database_pfam', config.DATABASE_FOLDER])
 
-    else:  # future input types and prev_session
-        raise NotImplementedError(f"Input type {input_type} is not supported "
-                                  f"in cblaster_search")
+        # database to search in
+        cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
 
     cmd.extend(["--session_file", session_path])
 

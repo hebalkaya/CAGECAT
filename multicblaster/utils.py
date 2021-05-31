@@ -102,7 +102,10 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "useFileOrder": "Maintain order of input files",
                       "intermediate_genes": "Show intermediate genes",
                       "intermediate_max_distance": "Max. distance between cluster and intermediate gene",
-                      "intermediate_max_clusters": "Max. amount of clusters to search intermediate genes for"
+                      "intermediate_max_clusters": "Max. amount of clusters to search intermediate genes for",
+                      "mode": "Mode",
+                      "selectedGenus": "Genus",
+                      "hmmProfiles": "HMM profile identifiers"
                       }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",

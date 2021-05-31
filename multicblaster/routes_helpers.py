@@ -103,18 +103,21 @@ def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
             is changed when the the user asked for a recomputation
     """
     # save the files
-    input_type = request.form["inputType"]
+    if 'inputType' in request.form:
+        input_type = request.form["inputType"]
 
-    if input_type == 'fasta':
-        file_path = ut.save_file(request.files["genomeFiles"], job_id)
-    elif input_type == "ncbi_entries":
-        file_path = None
-    elif input_type == "prev_session":
-        job_type = "recompute"
-        file_path = get_previous_job_properties(job_id, job_type, "search")
+        if input_type == 'fasta':
+            file_path = ut.save_file(request.files["genomeFiles"], job_id)
+        elif input_type == "ncbi_entries":
+            file_path = None
+        elif input_type == "prev_session":
+            job_type = "recompute"
+            file_path = get_previous_job_properties(job_id, job_type, "search")
+        else:
+            raise NotImplementedError(
+                f"Input type {input_type} has not been implemented yet")
     else:
-        raise NotImplementedError(
-            f"Input type {input_type} has not been implemented yet")
+        file_path, job_type = None, 'search'
 
     return file_path, job_type
 
@@ -213,12 +216,15 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         # for parent job to finish
 
         main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job, i == len(new_jobs)-1)
+        print(main_search_job_id)
 
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
                   redis_id=job.id,
                   depending_on="null" if
                   depending_job is None else new_job[4],  # is our own job ID
                   main_search_job=main_search_job_id)
+
+        print(j)
 
         db.session.add(j)
         db.session.commit()
@@ -232,6 +238,8 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
 
 def add_parent_search_and_child_jobs_to_db(new_job, is_last_job):
     # TODO: documentation
+    print(new_job)
+    print(new_job[5])
     if new_job[5] == "search":
         main_search_job_id = "null"
     else:

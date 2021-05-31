@@ -64,6 +64,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     new_jobs = []
 
     job_type = request.form["job_type"]
+    print(request.form)
+    print(job_type)
     job_id = ut.generate_job_id()
 
     # Note that the "{module}PreviousType" is submitted via the form, but is
