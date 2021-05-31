@@ -793,21 +793,28 @@ function determineHeight() {
 function changeSearchMode(mode){
     let fieldsetDiv = document.getElementById('hmmFullFieldset');
     let fieldset = document.getElementById('hmmSection');
+    let remoteOptions = document.getElementById('remoteOptionsSection');
 
     if (mode === 'remote'){
         fieldsetDiv.classList.add('no-display');
         fieldset.setAttribute('disabled', 'disabled');
+        remoteOptions.classList.remove('no-display');
+        remoteOptions.removeAttribute('disabled');
 
         console.log('remote');
     }
     else if (mode === 'hmm'){
         fieldsetDiv.classList.remove('no-display');
         fieldset.removeAttribute('disabled');
+        remoteOptions.classList.add('no-display');
+        remoteOptions.setAttribute('disabled', 'disabled');
         console.log('hmm');
     }
     else if (mode === 'combi_remote'){
         fieldsetDiv.classList.remove('no-display');
         fieldset.removeAttribute('disabled');
+        remoteOptions.classList.remove('no-display');
+        remoteOptions.removeAttribute('disabled');
         console.log('combi_remote');
     }
     else {
