@@ -5,7 +5,7 @@ DEBUG=True
 
 HOST="0.0.0.0"
 PORT=5001
-ON_PI=True
+ON_PI=False
 
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///status.db'
 # SQLALCHEMY_TRACK_MODIFICATIONS = False
