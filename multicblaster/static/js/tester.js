@@ -821,6 +821,9 @@ function changeSearchMode(mode){
 
         toggleRemoteOptions(true);
         radioFasta.click()
+        document.getElementById('entrez_query').removeAttribute('disabled');
+        document.getElementById('database_type').removeAttribute('disabled');
+
         console.log('remote');
     }
     else if (mode === 'hmm'){
@@ -830,6 +833,9 @@ function changeSearchMode(mode){
         remoteOptions.setAttribute('disabled', 'disabled');
 
         toggleRemoteOptions(false);
+        document.getElementById('entrez_query').setAttribute('disabled', 'disabled');
+        document.getElementById('database_type').setAttribute('disabled', 'disabled');
+
         console.log('hmm');
     }
     else if (mode === 'combi_remote'){
@@ -840,6 +846,9 @@ function changeSearchMode(mode){
 
         toggleRemoteOptions(true);
         radioFasta.click()
+        document.getElementById('entrez_query').removeAttribute('disabled');
+        document.getElementById('database_type').removeAttribute('disabled');
+
         console.log('combi_remote');
     }
     else {

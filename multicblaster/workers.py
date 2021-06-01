@@ -14,6 +14,23 @@ import config
 # same function are performed when the CMD has finished
 
 ### redis-queue functions
+def forge_database_args(options):
+
+    # TODO: handle recompute scenario
+    base = ['--database']
+    if options['mode'] in ('hmm', 'combi_remote'):
+        base.append(os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta'))
+        # TODO: should me modular
+
+    if options['mode'] in ('remote', 'combi_remote'):
+        base.append(options['database_type'])
+
+    if len(base) == 1:
+        raise IOError('Incorrect database arguments length')
+
+    return base
+
+
 def cblaster_search(job_id, options=None, file_path=None):
     pre_job_formalities(job_id)
 
@@ -27,6 +44,7 @@ def cblaster_search(job_id, options=None, file_path=None):
            "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
            "--mode", options["mode"]]
 
+    cmd.extend(forge_database_args(options))
     # add input options
     if options['mode'] in ('remote', 'combi_remote'):
         input_type = options["inputType"]
@@ -56,7 +74,7 @@ def cblaster_search(job_id, options=None, file_path=None):
             # add search options
         if not recompute:
             cmd.extend([
-                "--database", options["database_type"],
+                # "--database", options["database_type"],
                 "--hitlist_size", options["max_hits"]])
 
             if options["entrez_query"]:
@@ -73,7 +91,7 @@ def cblaster_search(job_id, options=None, file_path=None):
         cmd.extend(['--database_pfam', config.DATABASE_FOLDER])
 
         # database to search in
-        cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
+        # cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
 
     cmd.extend(["--session_file", session_path])
 
