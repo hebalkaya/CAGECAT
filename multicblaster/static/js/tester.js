@@ -790,6 +790,20 @@ function determineHeight() {
     // TODO: might be a class instead of using the ID's
 }
 
+function toggleRemoteOptions(enable){
+    let all = ['radioFasta', 'radioNCBIEntries', 'genomeFile', 'ncbiEntriesTextArea',
+    'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile']
+
+    for (let i=0; i < all.length; i++){
+        if (enable){
+            setRequiredAndEnabled(all[i]);
+        }
+        else {
+            removeRequiredAndEnabled(all[i]);
+        }
+    }
+}
+
 function changeSearchMode(mode){
     let fieldsetDiv = document.getElementById('hmmFullFieldset');
     let fieldset = document.getElementById('hmmSection');
@@ -801,6 +815,8 @@ function changeSearchMode(mode){
         remoteOptions.classList.remove('no-display');
         remoteOptions.removeAttribute('disabled');
 
+        toggleRemoteOptions(true);
+
         console.log('remote');
     }
     else if (mode === 'hmm'){
@@ -808,6 +824,8 @@ function changeSearchMode(mode){
         fieldset.removeAttribute('disabled');
         remoteOptions.classList.add('no-display');
         remoteOptions.setAttribute('disabled', 'disabled');
+
+        toggleRemoteOptions(false);
         console.log('hmm');
     }
     else if (mode === 'combi_remote'){
@@ -815,6 +833,8 @@ function changeSearchMode(mode){
         fieldset.removeAttribute('disabled');
         remoteOptions.classList.remove('no-display');
         remoteOptions.removeAttribute('disabled');
+
+        toggleRemoteOptions(true);
         console.log('combi_remote');
     }
     else {
