@@ -11,5 +11,6 @@ ON_PI=False
 # SQLALCHEMY_TRACK_MODIFICATIONS = False
 DOWNLOAD_FOLDER = "jobs" # multicblaster not required in front of jobs
 
-PFAM_FOLDER = '/lustre/BIF/nobackup/belt017/multicblaster_HMM'
-DATABASE_FOLDER = '/lustre/BIF/nobackup/belt017/multicblaster_HMM/databases'
+# PFAM_FOLDER = '/lustre/BIF/nobackup/belt017/multicblaster_HMM'
+# DATABASE_FOLDER = '/lustre/BIF/nobackup/belt017/multicblaster_HMM/databases'
+DATABASE_FOLDER = '/storage/databases'

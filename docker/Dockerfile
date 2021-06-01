@@ -8,6 +8,7 @@ RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug cblaste
 COPY repo/ /repo/
 COPY supervisord.conf /etc/supervisord.conf
 COPY process_logs/ /process_logs/
+COPY storage/ /storage
 
 RUN cblaster config --email "server@server.com"
 
