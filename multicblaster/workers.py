@@ -53,6 +53,15 @@ def cblaster_search(job_id, options=None, file_path=None):
             raise NotImplementedError(f"Input type {input_type} is not supported "
                                       f"in cblaster_search")
 
+            # add search options
+        if not recompute:
+            cmd.extend([
+                "--database", options["database_type"],
+                "--hitlist_size", options["max_hits"]])
+
+            if options["entrez_query"]:
+                cmd.extend(["--entrez_query", options["entrez_query"]])
+
     if options['mode'] in ('hmm', 'combi_remote'):
         session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
 
@@ -68,14 +77,7 @@ def cblaster_search(job_id, options=None, file_path=None):
 
     cmd.extend(["--session_file", session_path])
 
-    # add search options
-    if not recompute:
-        cmd.extend([
-            "--database", options["database_type"],
-            "--hitlist_size", options["max_hits"]])
 
-        if options["entrez_query"]:
-            cmd.extend(["--entrez_query", options["entrez_query"]])
 
     # add filtering options
     cmd.extend(["--max_evalue", options["max_evalue"],
