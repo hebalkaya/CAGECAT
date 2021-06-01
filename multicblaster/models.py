@@ -29,9 +29,9 @@ class Job(db.Model):
     finish_time = db.Column(db.DateTime)
 
     def __repr__(self):
-        print("Main search", self.main_search_job)
-        print("Children", self.child_jobs)
-        print("Depending", self.depending_on)
+        # print("Main search", self.main_search_job)
+        # print("Children", self.child_jobs)
+        # print("Depending", self.depending_on)
         return f"ID: {self.id}; Type: {self.job_type}; Status: {self.status}; Posted: {self.post_time}; Started: {self.start_time}; Finished: {self.finish_time}"
 
 class Statistic(db.Model):
