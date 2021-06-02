@@ -45,9 +45,9 @@ initReadQueryFile();
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
 
-        <div>
+        <div class="radio-options">
             <label class="radioLabel">
-                <input type="radio" value="remote" name="mode" checked="checked" onclick="changeSearchMode('remote')">Remote
+                <input type="radio"  class="radio-margin" value="remote" name="mode" checked="checked" onclick="changeSearchMode('remote')">Remote
             </label>
             <label class="radioLabel">
                 <input type="radio" value="hmm" name="mode" onclick="changeSearchMode('hmm')">HMM
@@ -57,10 +57,10 @@ initReadQueryFile();
             </label>
         </div>
 
-        <div id="remoteOptionsSection">
+        <div class="radio-options" id="remoteOptionsSection">
                 <div>
                     <label class="radioLabel">
-                    <input type="radio" value="fasta" checked="checked" id="radioFasta"
+                    <input type="radio" class="radio-margin" value="fasta" checked="checked" id="radioFasta"
                            name="inputType" onclick="showInputOptions('fasta', 1)"/>FASTA</label>
                     <label class="radioLabel">
                     <input type="radio" value="ncbi_entries" id="radioNCBIEntries"

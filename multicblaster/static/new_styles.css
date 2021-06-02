@@ -154,13 +154,13 @@ p.server-status {
     font-size: 18px;
 }
 
-.input-label{
-    font-size: 15px;
-    margin-left: 0.5%;
-    color: red;
-    font-weight: bold;
-    vertical-align: middle;
-}
+/*.input-label{*/
+/*    font-size: 15px;*/
+/*    margin-left: 0.5%;*/
+/*    color: red;*/
+/*    font-weight: bold;*/
+/*    vertical-align: middle;*/
+/*}*/
 
 .textarea-label {
     color: darkcyan;
@@ -219,7 +219,7 @@ iframe {
 }
 
 .file-upload-lbl:active{
-    background-color: #304f63;;
+    background-color: #304f63;
 }
 
 form button:disabled, form button:disabled:hover {
@@ -235,9 +235,10 @@ form button:disabled, form button:disabled:hover {
 }
 
 .fieldset-label {
-    font-size: 18px;
+    font-size: 20px;
     padding-left: 20px;
     font-weight: bold;
+    color: #57a1d3;
 }
 
 fieldset {
@@ -259,8 +260,6 @@ textarea {
     margin: 3px;
     font-size: 15px;
 }
-
-
 
 input[type="checkbox"] {
     transform: scale(1.4);
@@ -296,17 +295,13 @@ div.div-margin {
     margin: 10px 0 0;
 }
 
-.radioLabel{
-    color: limegreen;
-}
+/*.checkbox-label{*/
+/*    color: blue;*/
+/*}*/
 
-.checkbox-label{
-    color: blue;
-}
-
-.select-label{
-    color: chocolate;
-}
+/*.select-label{*/
+/*    color: chocolate;*/
+/*}*/
 
 .leftColumn {
     width: 15%;
@@ -413,10 +408,6 @@ i.fa.fa-download span {
     width: 90%;
 }
 
-.nopadding {
-    padding: 0;
-}
-
 div.input-layer {
     display: table;
     width: 45%;
@@ -489,7 +480,7 @@ div.scientificnotation-div {
 }
 
 .error-message {
-    color: red;
+    color: #ff4646;
 }
 
 @keyframes fadeIn {
@@ -596,4 +587,28 @@ li.jobs a:visited, td a {
 
 .hide-overflow {
     overflow: hidden;
+}
+
+.input-label, .select-label, .checkbox-label, .radio-label{
+    color: #202020;
+    font-size: 15px;
+    margin-left: 1%;
+    font-weight: bold;
+}
+
+.radio-label {
+    font-weight: unset;
+}
+
+.radio-options {
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
+}
+
+div.radio-options label {
+    cursor: pointer;
+}
+
+.radio-margin{
+    margin-left: 1.2%;
 }

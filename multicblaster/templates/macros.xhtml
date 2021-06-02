@@ -5,12 +5,12 @@
     {% set enteredJobId = '%sEnteredJobId' % module %}
     {% set uploadedSessionFile = '%sUploadedSessionFile' % module %}
 
-    <div id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
+    <div class="radio-options" id="{{ '%sPrevJobOptions' % module }}" style="{{'display: block' if
     mainInput else 'display: none'}}">
 {#    TODO: change style to classes#}
         <div>
             <label class="radioLabel">
-            <input type="radio" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
+            <input type="radio" class="radio-margin" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
             </label>
 
             <label class="radioLabel">
