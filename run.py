@@ -16,7 +16,6 @@ if __name__ == "__main__":
     # TODO: should be from config file
     # app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///status.db'
     # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    print(app.config)
     app.run(host=app.config["HOST"], port=app.config["PORT"])
 
     # lets other computers within the same network access the web pages
