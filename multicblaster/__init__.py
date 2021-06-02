@@ -20,6 +20,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 import redis
 import rq
+import config
 
 # TODO: Find out how pre-submission uploading works
 
@@ -27,9 +28,7 @@ r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
 app = Flask("multicblaster")
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///status.db'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+app.config.update(config.CONF)
 
 db = SQLAlchemy(app)
 
@@ -53,7 +52,3 @@ if m.Statistic.query.filter_by(name="finished").first() is None:
         db.session.add(s)
 
     db.session.commit()
-
-
-
-app.config.from_pyfile(os.path.join("..", "config.py"))
