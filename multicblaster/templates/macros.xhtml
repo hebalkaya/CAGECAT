@@ -65,7 +65,7 @@
                        id="{{ tableHideHeaders }}"
                        name="{{ tableHideHeaders }}">Hide headers</input>
             </label>
-            {{ renderHelpButton('generalHideHeaders') }}
+            {{ renderHelpButton('generalHideHeaders', True) }}
         </div>
 
         {% if type == 'Bin' %}
@@ -174,8 +174,8 @@
 {% endmacro %}
 
 
-{% macro renderHelpButton(help_type) %}
-    <img class="help-button" onclick="showHelp('{{ help_type }}')"
+{% macro renderHelpButton(help_type, for_checkbox) %}
+    <img class="help-button{{ " checkbox-help" if for_checkbox else "" }}" onclick="showHelp('{{ help_type }}')"
          src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
 {% endmacro %}
 

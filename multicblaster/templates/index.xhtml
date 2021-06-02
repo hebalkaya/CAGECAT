@@ -86,7 +86,7 @@ initReadQueryFile();
             </div>
 
             <div id="ncbiEntriesDiv" style="display: none">
-                <textarea rows="6" cols="25" id="ncbiEntriesTextArea"
+                <textarea rows="6" cols="25" class="ncbi-entries" id="ncbiEntriesTextArea"
                           name="ncbiEntriesTextArea" placeholder="NCBI accessions" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
                 {{ renderHelpButton('ncbiEntriesTextArea') }}
             </div>
@@ -109,6 +109,7 @@ initReadQueryFile();
                     {{ renderHelpButton('selectedGenus') }}
                 </div>
                 <div class="input-layer">
+                    <label class="textarea-label">HMM profiles</label>
                     <textarea rows="6" cols="25" required="required" id="hmmProfiles"
                               name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
                         {#        TODO: add Pfam identifier validation#}
@@ -231,7 +232,7 @@ initReadQueryFile();
             </input>
 
         </label>
-        {{ renderHelpButton('sortClusters') }}
+        {{ renderHelpButton('sortClusters', True) }}
     </fieldset>
 
     <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
@@ -240,7 +241,7 @@ initReadQueryFile();
         <label class="checkbox-label">
             <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes
         </label>
-        {{ renderHelpButton('intermediate_genes') }}
+        {{ renderHelpButton('intermediate_genes', True) }}
         <div class="input-layer">
             <label class="input-label" for="intermediate_max_distance">Max. distance</label>
             {{ renderHelpButton('intermediate_max_distance') }}
@@ -309,7 +310,7 @@ initReadQueryFile();
             <label class="checkbox-label">
                 <input type="checkbox" name="noAlign"/>Don't align clusters
             </label>
-            {{ renderHelpButton('noAlign') }}
+            {{ renderHelpButton('noAlign', True) }}
             <div class="input-layer">
                 <label class="input-label" for="identity">Min. alignment sequence identity</label>
                 {{ renderHelpButton('identity') }}
@@ -336,13 +337,13 @@ initReadQueryFile();
             <label class="checkbox-label">
                 <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers
             </label>
-            {{ renderHelpButton('hideLinkHeaders') }}
+            {{ renderHelpButton('hideLinkHeaders', True) }}
 
             <div>
                 <label class="checkbox-label">
                     <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers
                 </label>
-                {{ renderHelpButton('hideAlignHeaders') }}
+                {{ renderHelpButton('hideAlignHeaders', True) }}
             </div>
         </fieldset>
 
@@ -351,7 +352,7 @@ initReadQueryFile();
             <label class="checkbox-label">
                 <input type="checkbox" name="useFileOrder"/>Maintain order of input files
             </label>
-            {{ renderHelpButton('useFileOrder') }}
+            {{ renderHelpButton('useFileOrder', True) }}
         </fieldset>
 
         <input type="submit" value="Visualize!"/>

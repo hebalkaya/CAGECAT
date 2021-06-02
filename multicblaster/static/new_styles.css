@@ -162,10 +162,6 @@ p.server-status {
 /*    vertical-align: middle;*/
 /*}*/
 
-.textarea-label {
-    color: darkcyan;
-}
-
 /*.hidden {*/
 /*    display: none;*/
 /*}*/
@@ -589,7 +585,7 @@ li.jobs a:visited, td a {
     overflow: hidden;
 }
 
-.input-label, .select-label, .checkbox-label, .radio-label{
+.input-label, .select-label, .checkbox-label, .radio-label, .textarea-label{
     color: #202020;
     font-size: 15px;
     margin-left: 1%;
@@ -611,4 +607,13 @@ div.radio-options label {
 
 .radio-margin{
     margin-left: 1.2%;
+}
+
+.ncbi-entries{
+    margin: 0.5% 0 0 3%;
+}
+
+.checkbox-help{
+    padding-left: 2px;
+    padding-top: 0;
 }
