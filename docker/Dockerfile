@@ -3,7 +3,9 @@ FROM python:3
 
 RUN apt-get update
 RUN apt-get install -y supervisor redis zip hmmer
-RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug cblaster clinker
+RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker
+
+RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
 
 COPY supervisord.conf /etc/supervisord.conf
 COPY repo/ /repo/
