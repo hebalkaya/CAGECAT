@@ -791,20 +791,40 @@ function determineHeight() {
 }
 
 function toggleRemoteOptions(enable){
-    let all = ['radioFasta', 'radioNCBIEntries', 'genomeFile', 'ncbiEntriesTextArea',
-    'searchPrevJobId', 'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile']
+    let individualElements = ['radioFasta', 'radioNCBIEntries', 'genomeFile', 'ncbiEntriesTextArea',
+    'searchPrevJobId', 'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile'];
+    let fieldsets = ['searchSectionFullFieldset', 'filteringSectionFullFieldset'];
+    let sections = ['filteringSection', 'searchSection']
 
-    for (let i=0; i < all.length; i++) {
-        if (document.getElementById(all[i]) !== null) {
-
-        if (enable) {
-
-            setRequiredAndEnabled(all[i]);
-        } else {
-            removeRequiredAndEnabled(all[i]);
+    for (let i=0; i < individualElements.length; i++) {
+        if (document.getElementById(individualElements[i]) !== null) {
+            if (enable) {
+                setRequiredAndEnabled(individualElements[i]);
+            } else {
+                removeRequiredAndEnabled(individualElements[i]);
+            }
         }
     }
+
+    for (let i=0; i < fieldsets.length; i++){
+        if (enable){
+            document.getElementById(fieldsets[i]).classList.remove('no-display');
+        }
+        else {
+            document.getElementById(fieldsets[i]).classList.add('no-display');
+        }
     }
+
+    for (let i=0; i< sections.length; i++) {
+        if (enable){
+            document.getElementById(sections[i]).removeAttribute('disabled');
+        }
+        else {
+            document.getElementById(sections[i]).setAttribute('disabled', 'disabled');
+        }
+    }
+
+
 }
 
 function changeSearchMode(mode){
@@ -812,6 +832,7 @@ function changeSearchMode(mode){
     let fieldset = document.getElementById('hmmSection');
     let remoteOptions = document.getElementById('remoteOptionsSection');
     let radioFasta = document.getElementById('radioFasta');
+    document.getElementById("requiredSequencesSelector").options.length = 0;
 
     if (mode === 'remote'){
         fieldsetDiv.classList.add('no-display');

@@ -119,57 +119,61 @@ initReadQueryFile();
     </fieldset>
 </div>
 
-<label class="fieldset-label" for="searchSection">Search</label>
-<fieldset id="searchSection">
-    <div class="input-layer">
+<div id="searchSectionFullFieldset">
+    <label class="fieldset-label" for="searchSection">Search</label>
+    <fieldset id="searchSection">
+        <div class="input-layer">
 
-        <label class="input-label" for="entrez_query">Entrez query</label>
-        {{ renderHelpButton('entrez_query') }}
-        <input class="bigger" type="text" name="entrez_query"
-               id="entrez_query" placeholder="Aspergillus[organism]"/>
-    </div>
-    <div class="input-layer">
-        <label class="select-label" for="database_type">Database</label>
-        <select class="select-options" id="database_type" name="database_type" required="required">
-            <option value="nr">nr</option>
-            <option value="refseq_protein">RefSeq protein</option>
-            <option value="swissprot">Swissprot</option>
-            <option value="pdbaa">pdbaa</option>
-        </select>
-        {{ renderHelpButton('database_type') }}
-    </div>
+            <label class="input-label" for="entrez_query">Entrez query</label>
+            {{ renderHelpButton('entrez_query') }}
+            <input class="bigger" type="text" name="entrez_query"
+                   id="entrez_query" placeholder="Aspergillus[organism]"/>
+        </div>
+        <div class="input-layer">
+            <label class="select-label" for="database_type">Database</label>
+            <select class="select-options" id="database_type" name="database_type" required="required">
+                <option value="nr">nr</option>
+                <option value="refseq_protein">RefSeq protein</option>
+                <option value="swissprot">Swissprot</option>
+                <option value="pdbaa">pdbaa</option>
+            </select>
+            {{ renderHelpButton('database_type') }}
+        </div>
 
-    <div class="input-layer">
-        <label class="input-label" for="max_hits">Maximum hits</label>
-        {{ renderHelpButton('max_hits') }}
-        <input type="number" required="required" name="hitlist_size"
-               id="max_hits" min="1" max="99999" step="1"
-               value="5000"/>
-    </div>
-</fieldset>
+        <div class="input-layer">
+            <label class="input-label" for="max_hits">Maximum hits</label>
+            {{ renderHelpButton('max_hits') }}
+            <input type="number" required="required" name="hitlist_size"
+                   id="max_hits" min="1" max="99999" step="1"
+                   value="5000"/>
+        </div>
+    </fieldset>
+</div>
 
+<div id="filteringSectionFullFieldset">
     <label class="fieldset-label" for="filteringSection">Filtering</label>
-<fieldset id="filteringSection">
-    <div class="input-layer">
-        <label class="input-label" for="max_evalue">Max. e-value</label>
-        {{ renderHelpButton('max_evalue') }}
-        <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
-           name="max_evalue"/>
-    </div>
-    <div class="input-layer">
-        <label class="input-label" for="min_identity">Min. identity (%)</label>
-        {{ renderHelpButton('min_identity') }}
-        <input type="number" required="required" value="30" min="0" max="100" step="1"
-               id="min_identity" name="min_identity"/>
-    </div>
+    <fieldset id="filteringSection">
+        <div class="input-layer">
+            <label class="input-label" for="max_evalue">Max. e-value</label>
+            {{ renderHelpButton('max_evalue') }}
+            <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
+               name="max_evalue"/>
+        </div>
+        <div class="input-layer">
+            <label class="input-label" for="min_identity">Min. identity (%)</label>
+            {{ renderHelpButton('min_identity') }}
+            <input type="number" required="required" value="30" min="0" max="100" step="1"
+                   id="min_identity" name="min_identity"/>
+        </div>
 
-    <div class="input-layer">
-        <label class="input-label" for="min_query_coverage">Min. query coverage (%)</label>
-        {{ renderHelpButton('min_query_coverage') }}
-        <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
-               name="min_query_coverage"/>
-    </div>
+        <div class="input-layer">
+            <label class="input-label" for="min_query_coverage">Min. query coverage (%)</label>
+            {{ renderHelpButton('min_query_coverage') }}
+            <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
+                   name="min_query_coverage"/>
+        </div>
 </fieldset>
+</div>
 
     <label class="fieldset-label" for="clusteringSection">Clustering</label>
     <fieldset id="clusteringSection">
