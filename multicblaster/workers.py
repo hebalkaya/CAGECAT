@@ -75,7 +75,7 @@ def cblaster_search(job_id, options=None, file_path=None):
         if not recompute:
             cmd.extend([
                 # "--database", options["database_type"],
-                "--hitlist_size", options["max_hits"]])
+                "--hitlist_size", options["hitlist_size"]])
 
             if options["entrez_query"]:
                 cmd.extend(["--entrez_query", options["entrez_query"]])
