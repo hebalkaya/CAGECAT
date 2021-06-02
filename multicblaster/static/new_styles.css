@@ -236,7 +236,7 @@ form button:disabled, form button:disabled:hover {
 
 .fieldset-label {
     font-size: 18px;
-    margin-left: 10px;
+    padding-left: 20px;
     font-weight: bold;
 }
 
@@ -245,6 +245,13 @@ fieldset {
     border-right-style: none;
     border-bottom-style: none;
     border-color: #6aabd7;
+
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
 }
 
 textarea {
@@ -571,6 +578,10 @@ li.jobs a:visited, td a {
 
 .no-display {
     display: none;
+}
+
+.no-padding {
+    padding: 0;
 }
 
 .wider-input {
