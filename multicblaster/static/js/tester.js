@@ -881,6 +881,7 @@ function moveSelectedElements(target, selectionType){
     let src;
     let dest;
 
+    console.log('exe');
     if (target === 'selected') {
         src = '#unselected'+ selectionType;
         dest = '#selected' + selectionType;
@@ -894,7 +895,10 @@ function moveSelectedElements(target, selectionType){
     else {
         console.log('Incorrect target');
     }
-    return !$(src + ' option:selected').remove().appendTo(dest);
+
+    console.log(src);
+    console.log(dest);
+    return !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
 }
 
 function showSelection(toShow){

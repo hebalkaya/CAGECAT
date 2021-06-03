@@ -114,20 +114,61 @@
 
             </div>
         <div class="column middleColumn" style="width: 80%;">
-            <label for="selectedQueriesOverview">Selected queries</label>
-            <ul id="selectedQueriesOverview">
-                <li>No queries selected</li>
-            </ul>
+{#            <label for="selectedQueriesOverview">Selected queries</label>#}
+{#            <ul id="selectedQueriesOverview">#}
+{#                <li>No queries selected</li>#}
+{#            </ul>#}
+{##}
+{#            <label for="selectedClustersOverview">Selected clusters</label>#}
+{#            <ul id="selectedClustersOverview">#}
+{#                <li>No clusters selected</li>#}
+{#            </ul>#}
+{#            <label for="selectedReferenceCluster">Selected reference cluster</label>#}
+{#            <ul id="selectedReferenceCluster">#}
+{#                <li>No reference cluster selected</li>#}
+{#            </ul>#}
+{#        </div>#}
+            <div>
+                <button onclick="showSelection('cluster')">Selected clusters</button>
+                <button onclick="showSelection('query')">Selected queries</button>
+            </div>
 
-            <label for="selectedClustersOverview">Selected clusters</label>
-            <ul id="selectedClustersOverview">
-                <li>No clusters selected</li>
-            </ul>
-            <label for="selectedReferenceCluster">Selected reference cluster</label>
-            <ul id="selectedReferenceCluster">
-                <li>No reference cluster selected</li>
-            </ul>
-        </div>
+            <div>
+                <div id="clusterSelection">
+
+                    <select id="unselectedClustersSelector" class="multiselect-large" multiple="multiple">
+                        <option>cluster 1</option>
+                        <option>cluster 2</option>
+                        <option>cluster 3</option>
+                        <option>cluster 4</option>
+                        <option>cluster 5</option>
+                    </select>
+
+                    <button onclick="moveSelectedElements('unselected', 'Clusters')"><<</button>
+                    <button onclick="moveSelectedElements('selected', 'Clusters')">>></button>
+
+                    <select id="selectedClustersSelector" class="multiselect-large" multiple="multiple">
+{#                        <option>ads</option>#}
+                    </select>
+                </div>
+
+                <div id="queriesSelection" class="no-display">
+                    <select id="unselectedQueriesSelector" multiple="multiple" class="multiselect-small">
+                        <option>q 1</option>
+                        <option>q 2</option>
+                        <option>q 3</option>
+                        <option>q 4</option>
+                        <option>q 5</option>
+                    </select>
+
+                    <button onclick="moveSelectedElements('unselected', 'Queries')"><<</button>
+                    <button onclick="moveSelectedElements('selected', 'Queries')">>></button>
+
+                    <select id="selectedQueriesSelector" multiple="multiple" class="multiselect-small">
+                        {#            <option></option>#}
+                    </select>
+                </div>
+            </div>
             </div>
     {% endif %}
 {#            TODO: center the iframe and still be able to click the downstream buttons#}
