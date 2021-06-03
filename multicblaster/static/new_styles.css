@@ -619,10 +619,14 @@ div.radio-options label {
 }
 
 .multiselect-large{
-    width: 40%;
+    width: 45%;
     /*height: 100%;*/
 }
 
 .multiselect-small{
     width: 25%;
+}
+
+.smaller-font{
+    font-size: 15px;
 }

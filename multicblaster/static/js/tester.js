@@ -401,27 +401,42 @@ function applyListenersSearchResults(){
     let doc = frame.contentDocument || frame.contentWindow.document;
     let clusters = doc.getElementsByClassName("tickTextGroup");
 
+
+    let clusterSelector = $('#unselectedClustersSelector')[0];
+    console.log(clusterSelector);
+
+
+
     for (let i=0; i < clusters.length; i++){
         // the type: "contextmenu" evaluates to a right-click of the mouse
         // and the contextmenu is not surpressed. Could be changed to a different
         // selection method in the future
-        clusters[i].addEventListener("contextmenu", function(event){
-            event.preventDefault();
-            let childs = clusters[i].firstChild.childNodes;
-            // childs[0] represents organism and cluster # + score
-            // childs[1] indicates accession number and range
-            parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
-        }); // space in line above is a non-breaking space:
-            // not a regular space. " "
-    }
+        let text = clusters[i].firstChild.childNodes[0].textContent;
 
-    let ticks = doc.getElementsByClassName("tick");
-    for (let i=0; i < ticks.length; i++){
-        ticks[i].addEventListener("contextmenu", function(event){
-            event.preventDefault();
-            let query_name = ticks[i].childNodes[1];
-            parent.window.postMessage(["Queries", query_name.textContent], "*");
-        })
+        let option = document.createElement('option');
+        option.value = text;
+        option.innerText = text;
+        option.classList.add('smaller-font');
+        clusterSelector.appendChild(option);
+
+
+    //     clusters[i].addEventListener("contextmenu", function(event){
+    //         event.preventDefault();
+    //         let childs = clusters[i].firstChild.childNodes;
+    //         // childs[0] represents organism and cluster # + score
+    //         // childs[1] indicates accession number and range
+    //         parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
+    //     }); // space in line above is a non-breaking space:
+    //         // not a regular space. " "
+    // }
+    //
+    // let ticks = doc.getElementsByClassName("tick");
+    // for (let i=0; i < ticks.length; i++){
+    //     ticks[i].addEventListener("contextmenu", function(event){
+    //         event.preventDefault();
+    //         let query_name = ticks[i].childNodes[1];
+    //         parent.window.postMessage(["Queries", query_name.textContent], "*");
+    //     })
     }
 }
 
@@ -881,7 +896,6 @@ function moveSelectedElements(target, selectionType){
     let src;
     let dest;
 
-    console.log('exe');
     if (target === 'selected') {
         src = '#unselected'+ selectionType;
         dest = '#selected' + selectionType;
@@ -896,8 +910,6 @@ function moveSelectedElements(target, selectionType){
         console.log('Incorrect target');
     }
 
-    console.log(src);
-    console.log(dest);
     return !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
 }
 
