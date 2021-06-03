@@ -617,3 +617,12 @@ div.radio-options label {
     padding-left: 2px;
     padding-top: 0;
 }
+
+.multiselect-large{
+    width: 20%;
+    /*height: 100%;*/
+}
+
+.multiselect-small{
+    width: 10%;
+}

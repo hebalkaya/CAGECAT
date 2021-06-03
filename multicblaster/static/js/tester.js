@@ -876,3 +876,40 @@ function changeSearchMode(mode){
         console.log('Invalid mode');
     }
 }
+
+function moveSelectedElements(target, selectionType){
+    let src;
+    let dest;
+
+    if (target === 'selected') {
+        src = '#unselected'+ selectionType;
+        dest = '#selected' + selectionType;
+        // return !$('#unselectedClusters option:selected').remove().appendTo('#selectedClusters');
+    }
+    else if (target === 'unselected'){
+        src = '#selected' + selectionType;
+        dest = '#unselected' + selectionType;
+        // return !$('#selectedClusters option:selected').remove().appendTo('#unselectedClusters');
+    }
+    else {
+        console.log('Incorrect target');
+    }
+    return !$(src + ' option:selected').remove().appendTo(dest);
+}
+
+function showSelection(toShow){
+    // console.log($('#clusterSelection'));
+    let show;
+    let hide;
+
+    if (toShow === 'cluster'){
+        show = $('#clusterSelection')[0];
+        hide = $('#queriesSelection')[0];
+    }
+    else {
+        show = $('#queriesSelection')[0];
+        hide = $('#clusterSelection')[0];
+    }
+    show.classList.remove('no-display');
+    hide.classList.add('no-display');
+}
