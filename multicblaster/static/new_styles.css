@@ -620,7 +620,7 @@ div.radio-options label {
 
 .multiselect-large{
     width: 45%;
-    /*height: 100%;*/
+    height: 80%;
 }
 
 .multiselect-small{

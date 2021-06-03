@@ -284,6 +284,10 @@ window.addEventListener("message", function(e){
     let text;
     let src = e.data[0];
     let message = e.data[1]; // e.data represents the message posted by the child
+    if (src === "Queries"){
+        console.log(message);
+    }
+
     //
     // // -------------- TODO: check if we can generalize this function. Below
     // // -------------- was a trial, but variable referencing is not supported in JS
@@ -401,11 +405,8 @@ function applyListenersSearchResults(){
     let doc = frame.contentDocument || frame.contentWindow.document;
     let clusters = doc.getElementsByClassName("tickTextGroup");
 
-
     let clusterSelector = $('#unselectedClustersSelector')[0];
-    console.log(clusterSelector);
-
-
+    let querySelector = $('#unselectedQueriesSelector')[0];
 
     for (let i=0; i < clusters.length; i++){
         // the type: "contextmenu" evaluates to a right-click of the mouse
@@ -418,7 +419,7 @@ function applyListenersSearchResults(){
         option.innerText = text;
         option.classList.add('smaller-font');
         clusterSelector.appendChild(option);
-
+    }
 
     //     clusters[i].addEventListener("contextmenu", function(event){
     //         event.preventDefault();
@@ -437,7 +438,31 @@ function applyListenersSearchResults(){
     //         let query_name = ticks[i].childNodes[1];
     //         parent.window.postMessage(["Queries", query_name.textContent], "*");
     //     })
-    }
+
+    // console.log(ticks);
+    setTimeout(function(){
+        let ticks = doc.getElementsByClassName("tick");
+        for (let i=0; i < ticks.length; i++){
+            // // console.log(.innerHTML);
+            // let qn = ticks[i].childNodes[1];
+            // // timeout(0.1);
+            // console.log(qn.textContent);
+            const query_name = ticks[i].childNodes[1];
+            // parent.window.postMessage(["Queries", query_name.textContent], "*");
+            // app
+            // parent.console.log();
+            let text = query_name.textContent;
+
+            let option = document.createElement('option');
+            option.value = text;
+            option.innerText = text;
+            option.classList.add('smaller-font');
+
+            querySelector.appendChild(option);
+        }
+    }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
+
+
 }
 
 function applyListenersClinkerResults(){
