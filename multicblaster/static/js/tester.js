@@ -398,110 +398,68 @@ window.addEventListener("message", function(e){
     checkCorasonButton()
 }, false)
 
-
-function applyListenersSearchResults(){
-    // TODO: see if we can modularize this function with applyListenersClinkerResults()
+function getOutputFromPlot(plotting_type){
     let frame = document.getElementById("newWindow");
     let doc = frame.contentDocument || frame.contentWindow.document;
-    let clusters = doc.getElementsByClassName("tickTextGroup");
+    let clusters;
 
     let clusterSelector = $('#unselectedClustersSelector')[0];
     let querySelector = $('#unselectedQueriesSelector')[0];
 
-    for (let i=0; i < clusters.length; i++){
-        // the type: "contextmenu" evaluates to a right-click of the mouse
-        // and the contextmenu is not surpressed. Could be changed to a different
-        // selection method in the future
-        let text = clusters[i].firstChild.childNodes[0].textContent;
+    if (plotting_type === 'search'){
+        clusters = doc.getElementsByClassName("tickTextGroup");
 
-        let option = document.createElement('option');
-        option.value = text;
-        option.innerText = text;
-        option.classList.add('smaller-font');
-        clusterSelector.appendChild(option);
+        setTimeout(function(){
+            let ticks = doc.getElementsByClassName("tick");
+            for (let i=0; i < ticks.length; i++){
+                // // console.log(.innerHTML);
+                // let qn = ticks[i].childNodes[1];
+                // // timeout(0.1);
+                // console.log(qn.textContent);
+                const query_name = ticks[i].childNodes[1];
+                // parent.window.postMessage(["Queries", query_name.textContent], "*");
+                // app
+                // parent.console.log();
+                let text = query_name.textContent;
+
+                let option = document.createElement('option');
+                option.value = text;
+                option.innerText = text;
+                option.classList.add('smaller-font');
+
+                querySelector.appendChild(option);
+            }
+        }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
+    }
+    else if (plotting_type === 'visualize'){
+        clusters = doc.getElementsByClassName("clusters")[0].childNodes;
+    }
+    else {
+        console.log('Incorrect plotting type')
     }
 
-    //     clusters[i].addEventListener("contextmenu", function(event){
-    //         event.preventDefault();
-    //         let childs = clusters[i].firstChild.childNodes;
-    //         // childs[0] represents organism and cluster # + score
-    //         // childs[1] indicates accession number and range
-    //         parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
-    //     }); // space in line above is a non-breaking space:
-    //         // not a regular space. " "
-    // }
-    //
-    // let ticks = doc.getElementsByClassName("tick");
-    // for (let i=0; i < ticks.length; i++){
-    //     ticks[i].addEventListener("contextmenu", function(event){
-    //         event.preventDefault();
-    //         let query_name = ticks[i].childNodes[1];
-    //         parent.window.postMessage(["Queries", query_name.textContent], "*");
-    //     })
+    for (let i=0; i < clusters.length; i++) {
+        let text;
+        if (plotting_type === 'search') {
+            text = clusters[i].firstChild.childNodes[0].textContent;
 
-    // console.log(ticks);
-    setTimeout(function(){
-        let ticks = doc.getElementsByClassName("tick");
-        for (let i=0; i < ticks.length; i++){
-            // // console.log(.innerHTML);
-            // let qn = ticks[i].childNodes[1];
-            // // timeout(0.1);
-            // console.log(qn.textContent);
-            const query_name = ticks[i].childNodes[1];
-            // parent.window.postMessage(["Queries", query_name.textContent], "*");
-            // app
-            // parent.console.log();
-            let text = query_name.textContent;
+        } else if (plotting_type === 'visualize') {
+            if (clusters[i].firstChild.childNodes[0].textContent !== 'Query Cluster') {
+                text = clusters[i].firstChild.childNodes[0].textContent;
+                // continue;
+            }
 
-            let option = document.createElement('option');
-            option.value = text;
-            option.innerText = text;
-            option.classList.add('smaller-font');
-
-            querySelector.appendChild(option);
+        } else {
+            console.log('Incorrect plotting type')
         }
-    }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
-
-
-}
-
-function applyListenersClinkerResults(){
-    let frame = document.getElementById("newWindow");
-    let doc = frame.contentDocument || frame.contentWindow.document;
-    let clusters = doc.getElementsByClassName("clusters")[0].childNodes;
-    let clusterSelector = $('#unselectedClustersSelector')[0];
-
-    for (let i=0; i < clusters.length; i++){
-        // console.log(clusters[i].firstChild.childNodes[0].textContent);
-        if (clusters[i].firstChild.childNodes[0].textContent !== 'Query Cluster'){
-            let text = clusters[i].firstChild.childNodes[0].textContent
+        if (text !== undefined) { // in case of visualize and "Query Cluster"
             let option = document.createElement('option');
             option.value = text;
             option.innerText = text;
             option.classList.add('smaller-font');
-
             clusterSelector.appendChild(option);
         }
-
     }
-
-
-    // TODO: see if we can modularize this function with applyListenersSearchResults()
-    // let frame = document.getElementById("newWindow");
-    // let doc = frame.contentDocument || frame.contentWindow.document;
-    // let clusters = doc.getElementsByClassName("clusters")[0].childNodes;
-
-    // for (let i=0; i < clusters.length; i++){
-    //     clusters[i].addEventListener("contextmenu", function(event){
-    //         event.preventDefault();
-    //
-    //         let childs = clusters[i].firstChild.childNodes;
-    //         if (childs[0].textContent !== "Query Cluster") {
-    //
-    //             parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
-    //         }
-    //     });
-    // }
 }
 
 

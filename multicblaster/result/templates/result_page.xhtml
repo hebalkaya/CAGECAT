@@ -173,9 +173,9 @@
 </div>
     {% if module in ['search', 'recompute'] %}
 {#        TODO: postLoadingIFrame is now everywhere, so we can do it standard#}
-        {% set onload = 'applyListenersSearchResults(this);postLoadingIFrame()' %}
+        {% set onload = 'getOutputFromPlot("search");postLoadingIFrame()' %}
     {% elif module == 'clinker_query' %}
-        {% set onload = 'applyListenersClinkerResults(this);postLoadingIFrame()' %}
+        {% set onload = 'getOutputFromPlot("visualize");postLoadingIFrame()' %}
     {% elif module == 'clinker_full' %}
         {% set onload = 'postLoadingIFrame()' %}
         <p>To download the clusters shown below, navigate to the 'extract_clusters' job on which this job depends.</p>
