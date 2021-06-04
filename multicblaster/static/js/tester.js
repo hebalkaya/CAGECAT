@@ -494,11 +494,11 @@ function postLoadingIFrame(){
 
 function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
-        document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
-        document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
-
-        console.log($('#selectedClustersSelector option'))
-
+        // document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
+        // document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
+        console.log(getSelectedQueries());
+        console.log($('#selectedQueriesSelector option'))
+        $('#selectedQueries')[0].value = getSelectedQueries();
     }
     else if (downstream_prog === "clusters"){
         $('#selectedClusters1')[0].value = getSelectedClusters();
@@ -525,15 +525,23 @@ function addSelectedToForm(downstream_prog) {
     }
 }
 
+// TODO: modularize below functions
 function getSelectedClusters(){
     let msg = '';
-    // console.log($('#selectedClustersSelector option'));
     $('#selectedClustersSelector option').each(function(){
         msg += this.innerText;
         msg += '\n'
     });
+    return msg.trimEnd('\n');
+}
 
-    return msg;
+function getSelectedQueries(){
+    let msg ='';
+    $('#selectedQueriesSelector option').each(function(){
+        msg += this.innerText;
+        msg += '\n';
+    })
+    return msg.trimEnd('\n');
 }
 
 function changePower(value, elemToChange){
