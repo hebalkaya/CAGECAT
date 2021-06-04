@@ -501,31 +501,39 @@ function addSelectedToForm(downstream_prog) {
 
     }
     else if (downstream_prog === "clusters"){
-        document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
+        $('#selectedClusters1')[0].value = getSelectedClusters();
+        // document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
     }
     else if (downstream_prog === "corason"){
+        //TODO: modify how clusters are given
         document.getElementById("selectedQuery").value = document.getElementById("selectedQueriesOverview").innerText;
         document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
         document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
     }
-    else if (downstream_prog === "clinker_full"){
-        document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;
-    }
+    // else if (downstream_prog === "clinker_full"){
+    //     document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;
+    // }
     else if (downstream_prog === "clinker_query"){
-        let msg = '';
-        console.log($('#selectedClustersSelector option'));
-        $('#selectedClustersSelector option').each(function(){
-            msg += this.innerText;
-            msg += '\n'
-        });
-        console.log(msg);
-        $('#selectedClusters3')[0].value = msg;
+
+        // console.log(msg);
+        $('#selectedClusters3')[0].value = getSelectedClusters();
         // document.getElementById("selectedClusters3").value = document.getElementById("selectedClustersOverview").innerText;
 
     }
     else {
         console.log("Invalid  type");
     }
+}
+
+function getSelectedClusters(){
+    let msg = '';
+    // console.log($('#selectedClustersSelector option'));
+    $('#selectedClustersSelector option').each(function(){
+        msg += this.innerText;
+        msg += '\n'
+    });
+
+    return msg;
 }
 
 function changePower(value, elemToChange){
