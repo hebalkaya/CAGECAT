@@ -1,3 +1,8 @@
+"""TODO: docstring
+
+
+"""
+
 # package imports
 from flask import Blueprint, request
 
@@ -11,23 +16,33 @@ downstream = Blueprint('downstream', __name__, template_folder="templates")
 ### Route function definitions
 @downstream.route("/downstream")
 def post_analysis_explanation() -> str:
+    """Shows page for explanation about post analysis modules
+
+    Output:
+        - HTML represented in string format
+    """
     return show_template("post_analysis_explanation.xhtml", help_enabled=False)
 
 
 @downstream.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
-    # print("===== ROUTES.PY CLINKER_QUERY.PY =====")
-    # print(request.form)
+    """Shows page for selecting options to run clinker with query genes
+
+    Output:
+        - HTML represented in string format
+    """
     selected_scaffolds = pa.parse_selected_scaffolds(
         request.form["selectedClusters"])
 
-    print(request.form['selectedClusters'])
-    clusters = pa.parse_selected_cluster_numbers(request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
+    # print(request.form['selectedClusters'])
+    clusters = pa.parse_selected_cluster_numbers(
+        request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
-    return show_template("clinker_query.xhtml", submit_url=ut.SUBMIT_URL,
+    return show_template("clinker_query.xhtml",
+                         submit_url=ut.SUBMIT_URL,
                          prev_job_id=request.form["job_id"],
-                         # selected_scaffolds=selected_scaffolds,
-                         cluster_headers=request.form["selectedClusters"].split('\r\n'),
+                         cluster_headers=
+                         request.form["selectedClusters"].split('\r\n'),
                          selected_clusters=clusters)
 
 
@@ -73,9 +88,10 @@ def extract_clusters() -> str:
         ut.fetch_job_from_db(prev_job).job_type not in \
         ('clinker_query', 'clinker_full') else \
         ut.CLUST_NUMBER_PATTERN_W_CLINKER_SCORE
-    # TODO: store the now hardcorded clinker_modules in a constant
+    # TODO: store the now hardcoded clinker_modules in a constant
 
-    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters, pattern)
+    cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters,
+                                                        pattern)
 
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
                          selected_scaffolds=selected_scaffolds,
@@ -94,10 +110,13 @@ def corason() -> str:
         - HTML represented in string format showing options for running
             Corason in the client's browser
     """
-    # print(request.form)
-    cluster_to_search_in = pa.parse_selected_cluster_names(request.form["selectedClusters"])
+    cluster_to_search_in = pa.parse_selected_cluster_names(
+        request.form["selectedClusters"])
+
+    reference_cluster = pa.parse_selected_cluster_names(
+        request.form["selectedReferenceCluster"])
+
     query = request.form["selectedQuery"]
-    reference_cluster = pa.parse_selected_cluster_names(request.form["selectedReferenceCluster"])
 
     return show_template("corason.xhtml", submit_url=ut.SUBMIT_URL,
                          query=query, reference_cluster=reference_cluster,

@@ -1,8 +1,14 @@
+"""TODO: module docstring
+
+"""
+
 # package imports
 from flask import render_template, request
 import os
 
 # own project imports
+from typing import List, Tuple
+
 import multicblaster.utils as ut
 from multicblaster import q, r
 from multicblaster.models import Job as dbJob
@@ -12,7 +18,21 @@ from multicblaster import db
 import typing as t
 
 ### Function definitions
-def get_connected_jobs(job):
+def get_connected_jobs(job: t.Optional[dbJob]) -> \
+        List[Tuple[str, str, str, str], ]:
+    """Gets the connected (children, main_search, depending) jobs of a job
+
+    Input:
+        - job entry in SQL db for which connected jobs are requested
+
+    Output:
+        - connected jobs. Format of connected job:
+            [job_id, job_type, job_status, connection_type]
+
+    Child jobs: jobs which use the output of preceding jobs as input
+    Main search: job which was used to search (initial job)
+    Depending: jobs on which the current job depends to start
+    """
     connected_jobs = []
 
     if job.main_search_job == "null": # current job is a search job (or comes from session file?)
@@ -134,6 +154,7 @@ def prepare_finished_result(job_id: str,
     Output:
         - plot_contents: HTML code of a plot
         - program: the program that was executed by this job
+        - size: size of the returned plot IN bytes
     """
     plot_path = os.path.join(ut.JOBS_DIR, job_id,
                              "results", f"{job_id}_plot.html")
@@ -238,8 +259,6 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
 
 def add_parent_search_and_child_jobs_to_db(new_job, is_last_job):
     # TODO: documentation
-    print(new_job)
-    print(new_job[5])
     if new_job[5] == "search":
         main_search_job_id = "null"
     else:

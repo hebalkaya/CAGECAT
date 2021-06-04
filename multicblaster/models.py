@@ -32,7 +32,11 @@ class Job(db.Model):
         # print("Main search", self.main_search_job)
         # print("Children", self.child_jobs)
         # print("Depending", self.depending_on)
-        return f"ID: {self.id}; Type: {self.job_type}; Status: {self.status}; Posted: {self.post_time}; Started: {self.start_time}; Finished: {self.finish_time}"
+        return f"ID: {self.id}; Type: {self.job_type}; " \
+               f"Status: {self.status}; " \
+               f"Posted: {self.post_time}; " \
+               f"Started: {self.start_time}; " \
+               f"Finished: {self.finish_time}"
 
 class Statistic(db.Model):
     """Model for creating a entry for job statistics

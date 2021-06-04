@@ -60,6 +60,7 @@ def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
         for cluster in selected_clusters.split("\n"):
             # TODO: maybe we can use regex here
             sep_index = cluster.find(")") + 1  # due to excluding last index
+            # TODO: use organism
             organism = cluster[:sep_index].split("(")[0].strip()
             selected_scaffolds.append(
                 cluster[sep_index + 1:].strip())  # due to separation
@@ -103,7 +104,7 @@ def parse_selected_cluster_numbers(selected_clusters: str, pattern) -> str:
             this value is used to set the value of the input area of
             cluster numbers in HTML.
     """
-    if selected_clusters: # empty string evaluates to False
+    if selected_clusters:  # empty string evaluates to False
         cluster_numbers = []
 
         for cluster in selected_clusters.split("\r\n"):

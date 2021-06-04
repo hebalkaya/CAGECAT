@@ -9,6 +9,8 @@ import os
 import copy
 
 # own project imports
+from typing import Dict
+
 from multicblaster import app
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
@@ -40,9 +42,11 @@ def home_page(prev_run_id: str = None) -> str:
         headers = None
         module_to_show = None
 
-    return rthelp.show_template("index.xhtml", submit_url=ut.SUBMIT_URL,
-                         prev_run_id=prev_run_id,
-                         module_to_show=module_to_show, headers=headers)
+    return rthelp.show_template("index.xhtml",
+                                submit_url=ut.SUBMIT_URL,
+                                prev_run_id=prev_run_id,
+                                module_to_show=module_to_show,
+                                headers=headers)
 
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
@@ -152,27 +156,45 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         prev_job_id = request.form["prev_job_id"]
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
 
-        new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))# TODO: depending job could change in future
+        new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))  # TODO: depending job could change in future
 
-    else: # future input types
+    else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
     last_job_id = rthelp.enqueue_jobs(new_jobs)
 
-    return redirect(url_for("result.show_result", job_id=last_job_id,
-                        pj=ut.fetch_job_from_db(last_job_id).depending_on, store_job_id=True, j_type=ut.fetch_job_from_db(last_job_id).job_type))
+    return redirect(url_for("result.show_result",
+                            job_id=last_job_id,
+                            pj=ut.fetch_job_from_db(last_job_id).depending_on,
+                            store_job_id=True,
+                            j_type=ut.fetch_job_from_db(
+                                last_job_id).job_type))
 
 
 @app.route("/help")
-def help_page():
+def help_page() -> str:
+    """Shows the help page to the user
+
+    Output:
+        - HTML represented in string format
+    """
     # TODO: actually create
     return rthelp.show_template("help.xhtml", help_enabled=False)
 
 
 @app.route("/docs/<input_type>")
-def get_help_text(input_type):
+def get_help_text(input_type) -> Dict[str:str, str:str, str:str]:
+    """Returns help text corresponding to the requested input parameter
+
+    Input:
+        - input_type: HTML name of the input parameter
+
+    Output:
+        - help texts of input parameter. Keys: "title", "module", "text"
+    """
+
     if input_type not in co.HELP_TEXTS:
-        ##### REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
+        ##### TODO: REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
         with open('not_registered_helps.txt', "r+") as outf:
             all_unregistrered_helps = [line.strip() for line in outf.readlines()]
             # print(all_unregistrered_helps)
@@ -188,17 +210,24 @@ def get_help_text(input_type):
 
 # Error handlers
 @app.errorhandler(404)
-def page_not_found(error):
+def page_not_found():
+    """Shows page displaying that the requested page was not found
+
+    """
     return rthelp.show_template("page_not_found.xhtml", stat_code=404)
 
 
 @app.errorhandler(405)
-def invalid_method(error):
+def invalid_method():
+    """Redirects user to home page if method used for request was invalid
+
+    """
     return redirect(url_for("home_page"))
 
 
 @app.route("/testing")
 def testing():
+    # TODO: remove
     html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1; console.log(document.getElementById('counter'));
     console.log("hi");window.postMessage("This is the actual message", "*");}</script><span id="counter" style="color: white">0</span>
     <button id="TestingSomething" onclick="a()">Testerrr</>

@@ -1,3 +1,7 @@
+""" TODO: module docstring
+
+"""
+
 EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "selectedScaffolds": "",  # empty strings as
                             "clusterNumbers": "",  # if nothing was
@@ -50,3 +54,5 @@ for label, d in HELP_OVERVIEW:
         d[key]['module'] = label
 
     HELP_TEXTS.update(d)
+
+print(HELP_TEXTS['selectedQuery'])
