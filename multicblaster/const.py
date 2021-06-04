@@ -19,8 +19,7 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "corason": [],
                               "gne": [],
                               "extract_sequences": [],
-                              "extract_clusters": ["corason", "clinker_full",
-                                                   "clinker_query"],
+                              "extract_clusters": ["clinker_full"],
                               "clinker_full": [],
                               "clinker_query": ["extract_clusters"] # TODO: possibly also corason?
                               }
