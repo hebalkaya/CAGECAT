@@ -103,10 +103,10 @@ def parse_selected_cluster_numbers(selected_clusters: str, pattern) -> str:
             this value is used to set the value of the input area of
             cluster numbers in HTML.
     """
-    if selected_clusters != "No clusters selected":
+    if selected_clusters: # empty string evaluates to False
         cluster_numbers = []
-
-        for cluster in selected_clusters.split("\n"):
+        print(selected_clusters.split('\r\n')[:-1])
+        for cluster in selected_clusters.split("\n\r")[:-1]:
             cluster_numbers.append(int(re.findall(pattern,
                                                   cluster)[0]))
 

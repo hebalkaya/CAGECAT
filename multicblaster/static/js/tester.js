@@ -496,6 +496,9 @@ function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
         document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
         document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
+
+        console.log($('#selectedClustersSelector option'))
+
     }
     else if (downstream_prog === "clusters"){
         document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
@@ -509,7 +512,16 @@ function addSelectedToForm(downstream_prog) {
         document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;
     }
     else if (downstream_prog === "clinker_query"){
-        document.getElementById("selectedClusters3").value = document.getElementById("selectedClustersOverview").innerText;
+        let msg = '';
+        console.log($('#selectedClustersSelector option'));
+        $('#selectedClustersSelector option').each(function(){
+            msg += this.innerText;
+            msg += '\n'
+        });
+        console.log(msg);
+        $('#selectedClusters3')[0].value = msg;
+        // document.getElementById("selectedClusters3").value = document.getElementById("selectedClustersOverview").innerText;
+
     }
     else {
         console.log("Invalid  type");

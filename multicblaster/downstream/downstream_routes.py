@@ -21,6 +21,7 @@ def clinker_query() -> str:
     selected_scaffolds = pa.parse_selected_scaffolds(
         request.form["selectedClusters"])
 
+    print(request.form['selectedClusters'])
     clusters = pa.parse_selected_cluster_numbers(request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
     return show_template("clinker_query.xhtml", submit_url=ut.SUBMIT_URL,
