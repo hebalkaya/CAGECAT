@@ -30,13 +30,14 @@
 
         <h3 class="indent">Overview of selected clusters</h3>
         <ul>
-        {% if cluster_headers %}
-            {% for header in cluster_headers %}
+        {% for header in cluster_headers %}
+            {% if not header %}
+                <li>All clusters are selected</li>
+            {% else %}
                 <li>{{header}}</li>
-            {% endfor %}
-        {% else %}
-            <li class="indent">All clusters are selected</li>
-        {% endif %}
+            {% endif %}
+        {% endfor %}
+
         </ul>
 
         <input type="submit" value="Visualize"/>

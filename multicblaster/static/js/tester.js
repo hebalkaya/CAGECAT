@@ -466,22 +466,42 @@ function applyListenersSearchResults(){
 }
 
 function applyListenersClinkerResults(){
-    // TODO: see if we can modularize this function with applyListenersSearchResults()
     let frame = document.getElementById("newWindow");
     let doc = frame.contentDocument || frame.contentWindow.document;
     let clusters = doc.getElementsByClassName("clusters")[0].childNodes;
+    let clusterSelector = $('#unselectedClustersSelector')[0];
 
     for (let i=0; i < clusters.length; i++){
-        clusters[i].addEventListener("contextmenu", function(event){
-            event.preventDefault();
+        // console.log(clusters[i].firstChild.childNodes[0].textContent);
+        if (clusters[i].firstChild.childNodes[0].textContent !== 'Query Cluster'){
+            let text = clusters[i].firstChild.childNodes[0].textContent
+            let option = document.createElement('option');
+            option.value = text;
+            option.innerText = text;
+            option.classList.add('smaller-font');
 
-            let childs = clusters[i].firstChild.childNodes;
-            if (childs[0].textContent !== "Query Cluster") {
+            clusterSelector.appendChild(option);
+        }
 
-                parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
-            }
-        });
     }
+
+
+    // TODO: see if we can modularize this function with applyListenersSearchResults()
+    // let frame = document.getElementById("newWindow");
+    // let doc = frame.contentDocument || frame.contentWindow.document;
+    // let clusters = doc.getElementsByClassName("clusters")[0].childNodes;
+
+    // for (let i=0; i < clusters.length; i++){
+    //     clusters[i].addEventListener("contextmenu", function(event){
+    //         event.preventDefault();
+    //
+    //         let childs = clusters[i].firstChild.childNodes;
+    //         if (childs[0].textContent !== "Query Cluster") {
+    //
+    //             parent.window.postMessage(["Clusters", childs[0].textContent + " " + childs[1].textContent], "*");
+    //         }
+    //     });
+    // }
 }
 
 

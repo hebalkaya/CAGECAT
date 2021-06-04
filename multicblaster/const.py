@@ -20,6 +20,7 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "gne": [],
                               "extract_sequences": [],
                               "extract_clusters": ["clinker_full"],
+                              # TODO: possible corason and clinker_query. Get query headers from .csv file
                               "clinker_full": [],
                               "clinker_query": ["extract_clusters"] # TODO: possibly also corason?
                               }
