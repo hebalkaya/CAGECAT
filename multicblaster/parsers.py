@@ -105,8 +105,8 @@ def parse_selected_cluster_numbers(selected_clusters: str, pattern) -> str:
     """
     if selected_clusters: # empty string evaluates to False
         cluster_numbers = []
-        print(selected_clusters.split('\r\n')[:-1])
-        for cluster in selected_clusters.split("\n\r")[:-1]:
+
+        for cluster in selected_clusters.split("\r\n")[:-1]:
             cluster_numbers.append(int(re.findall(pattern,
                                                   cluster)[0]))
 

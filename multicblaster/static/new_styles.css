@@ -630,3 +630,11 @@ div.radio-options label {
 .smaller-font{
     font-size: 15px;
 }
+
+.selection-button{
+    margin-bottom: 1%;
+}
+
+.indent {
+    padding-left: 20px;
+}

@@ -115,11 +115,11 @@
             {{ renderHelpButton('selectedOrganisms') }}
             <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
         </div>
-        <div class="input-layer">
-            <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>
-            {{ renderHelpButton('selectedScaffolds') }}
-            <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>
-        </div>
+{#        <div class="input-layer">#}
+{#            <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>#}
+{#            {{ renderHelpButton('selectedScaffolds') }}#}
+{#            <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>#}
+{#        </div>#}
 
         {% if extraction_type == 'sequences' %}
         <div class="input-layer">
@@ -131,7 +131,7 @@
         <div class="input-layer">
             <label class="input-label" for="clusterNumbers">Clusters</label>
             {{ renderHelpButton('clusterNumbers') }}
-            <input type="text" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
+            <input type="text" readonly="readonly" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
         </div>
         <div class="input-layer">
             <label class="input-label" for="clusterScoreThreshold">Score threshold</label>

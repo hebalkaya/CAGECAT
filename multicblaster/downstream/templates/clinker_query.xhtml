@@ -13,6 +13,8 @@
 {% block content %}
     {{ createBackButton() }}
 
+    <h2 class="indent">Visualize with query clusters</h2>
+
     <form action="{{ submit_url }}" method="post">
         <input type="hidden" name="job_type" value="clinker_query"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
@@ -25,6 +27,18 @@
                 <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
             </div>
         </fieldset>
+
+        <h3 class="indent">Overview of selected clusters</h3>
+        <ul>
+        {% if cluster_headers %}
+            {% for header in cluster_headers %}
+                <li>{{header}}</li>
+            {% endfor %}
+        {% else %}
+            <li class="indent">All clusters are selected</li>
+        {% endif %}
+        </ul>
+
         <input type="submit" value="Visualize"/>
     </form>
 {% endblock %}

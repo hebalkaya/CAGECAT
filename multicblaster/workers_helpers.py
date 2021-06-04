@@ -22,9 +22,9 @@ def create_filtering_command(options, is_cluster_related):
         partly_cmd.extend(["--organisms", options['selectedOrganisms']])
         # TODO: could also that user gives multiple patterns. separated by ?
 
-    if options["selectedScaffolds"]:
-        partly_cmd.append("--scaffolds")
-        partly_cmd.extend(options["selectedScaffolds"].split())
+    # if options["selectedScaffolds"]:
+    #     partly_cmd.append("--scaffolds")
+    #     partly_cmd.extend(options["selectedScaffolds"].split())
 
     if is_cluster_related:
         if options["clusterNumbers"]:

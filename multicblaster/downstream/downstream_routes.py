@@ -26,8 +26,9 @@ def clinker_query() -> str:
 
     return show_template("clinker_query.xhtml", submit_url=ut.SUBMIT_URL,
                          prev_job_id=request.form["job_id"],
-                         selected_scaffolds=selected_scaffolds,
-                         selected_clusters= clusters)
+                         # selected_scaffolds=selected_scaffolds,
+                         cluster_headers=request.form["selectedClusters"].split('\r\n')[:-1],
+                         selected_clusters=clusters)
 
 
 @downstream.route("/extract-sequences", methods=["GET", "POST"])
