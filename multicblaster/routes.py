@@ -183,7 +183,7 @@ def help_page() -> str:
 
 
 @app.route("/docs/<input_type>")
-def get_help_text(input_type) -> Dict[str:str, str:str, str:str]:
+def get_help_text(input_type):
     """Returns help text corresponding to the requested input parameter
 
     Input:
