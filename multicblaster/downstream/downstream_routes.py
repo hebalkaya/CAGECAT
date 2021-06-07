@@ -110,9 +110,9 @@ def corason() -> str:
         - HTML represented in string format showing options for running
             Corason in the client's browser
     """
-    cluster_to_search_in = pa.parse_selected_cluster_names(
-        request.form["selectedClusters"])
-    print(cluster_to_search_in)
+    # cluster_to_search_in = pa.parse_selected_cluster_names(
+    #     request.form["selectedClusters"])
+    # print(cluster_to_search_in)
 
     # reference_cluster = pa.parse_selected_cluster_names(
     #     request.form["selectedReferenceCluster"])
