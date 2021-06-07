@@ -180,7 +180,9 @@
 {% endmacro %}
 
 {% macro createBackButton() %}
-    <button class="button" onclick="lastPage();">Go back</button>
+    <div class="indent">
+        <button class="button smaller" onclick="lastPage();">Previous page</button>
+    </div>
 {% endmacro %}
 
 {% macro showSelectedClusters(cluster_headers, show_title) %}

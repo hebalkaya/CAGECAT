@@ -3,6 +3,7 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 {% from "macros.xhtml" import createBackButton %}
+{% from "macros.xhtml" import showSelectedClusters %}
 
 {% block title %}Extract clusters{% endblock %}
 
@@ -44,6 +45,7 @@
     </fieldset>
 
 {#    <br/>#}
+    {{ showSelectedClusters(cluster_headers, True) }}
     <div class="input-layer centered">
         <input class="button" type="submit"/>
     </div>

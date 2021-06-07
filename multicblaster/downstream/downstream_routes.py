@@ -81,7 +81,7 @@ def extract_clusters() -> str:
             clusters in the client's browser
     """
     selected_clusters = request.form["selectedClusters"]
-    selected_scaffolds = pa.parse_selected_scaffolds(selected_clusters)
+    # selected_scaffolds = pa.parse_selected_scaffolds(selected_clusters)
     prev_job = request.form["job_id"]
 
     pattern = ut.CLUST_NUMBER_PATTERN_W_SCORE if \
@@ -94,7 +94,8 @@ def extract_clusters() -> str:
                                                         pattern)
 
     return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_scaffolds=selected_scaffolds,
+                         # selected_scaffolds=selected_scaffolds,
+                         cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
                          prev_job_id=prev_job)
 
