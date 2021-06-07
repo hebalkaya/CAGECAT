@@ -133,41 +133,41 @@
 {#            TODO: center the iframe and still be able to click the downstream buttons#}
 
     {% if module in modules_with_plots %}
-<div>
-    <div>
-        <button class="selection-button" onclick="showSelection('cluster')">Select clusters</button>
-        <button class="selection-button" onclick="showSelection('query')">Select queries</button>
-        {#                {{ renderHelpButton('downstream_select') }}#}
-    </div>
+        <div>
+            <div>
+                <button class="selection-button" onclick="showSelection('cluster')">Select clusters</button>
+                <button class="selection-button" onclick="showSelection('query')">Select queries</button>
+                {#                {{ renderHelpButton('downstream_select') }}#}
+            </div>
 
-    <div>
-        <div id="clusterSelection">
+            <div>
+                <div id="clusterSelection">
 
-            <select id="unselectedClustersSelector" class="multiselect-large" multiple="multiple">
-            </select>
+                    <select id="unselectedClustersSelector" class="multiselect-large" multiple="multiple">
+                    </select>
 
-            <button onclick="moveSelectedElements('unselected', 'Clusters')"><<</button>
-            <button onclick="moveSelectedElements('selected', 'Clusters')">>></button>
+                    <button onclick="moveSelectedElements('unselected', 'Clusters')"><<</button>
+                    <button onclick="moveSelectedElements('selected', 'Clusters')">>></button>
 
-            <select id="selectedClustersSelector" class="multiselect-large" multiple="multiple">
-                {#                        <option>ads</option>#}
-            </select>
+                    <select id="selectedClustersSelector" class="multiselect-large" multiple="multiple">
+                        {#                        <option>ads</option>#}
+                    </select>
+                </div>
+
+                <div id="queriesSelection" class="no-display">
+                    <select id="unselectedQueriesSelector" multiple="multiple" class="multiselect-small">
+                    </select>
+
+                    <button onclick="moveSelectedElements('unselected', 'Queries')"><<</button>
+                    <button onclick="moveSelectedElements('selected', 'Queries')">>></button>
+
+                    <select id="selectedQueriesSelector" multiple="multiple" class="multiselect-small">
+                        {#            <option></option>#}
+                    </select>
+                </div>
+            </div>
         </div>
-
-        <div id="queriesSelection" class="no-display">
-            <select id="unselectedQueriesSelector" multiple="multiple" class="multiselect-small">
-            </select>
-
-            <button onclick="moveSelectedElements('unselected', 'Queries')"><<</button>
-            <button onclick="moveSelectedElements('selected', 'Queries')">>></button>
-
-            <select id="selectedQueriesSelector" multiple="multiple" class="multiselect-small">
-                {#            <option></option>#}
-            </select>
-        </div>
     </div>
-</div>
-
 
 <div style="margin: auto;width: 60%;">
 
