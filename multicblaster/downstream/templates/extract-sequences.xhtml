@@ -12,6 +12,8 @@
 
 {% block content %}
     {{ createBackButton() }}
+
+    <h2 class="indent">Extract sequences</h2>
 <div>
     <form action="{{submit_url}}" method="post">
         <input type="hidden" name="job_type" value="extract_sequences"/>

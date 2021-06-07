@@ -13,7 +13,9 @@ Corason
 {% endblock %}
 
         {% block content %}
-            {{ createBackButton() }}
+    {{ createBackButton() }}
+        <h2 class="indent">Corason</h2>
+
 <div>
     <form action="{{submit_url}}" method="post" enctype="multipart/form-data" onsubmit="mergeExponentials()">
         <input type="hidden" name="job_type" value="corason"/>
