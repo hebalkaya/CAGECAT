@@ -638,3 +638,12 @@ div.radio-options label {
 .indent {
     padding-left: 20px;
 }
+
+input[type="submit"]{
+    /*justify-content: center;*/
+    width: 40%;
+    float: unset !important;
+    /*margin: auto;*/
+    /*text-align: center;*/
+    /*transform: translateX(50%);*/
+}
