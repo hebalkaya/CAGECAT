@@ -11,23 +11,25 @@
 {% endblock %}
 
 {% block content %}
-    <div style="border-bottom: 2px solid #5284a7">
-    <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
-    <p>Job type: <b>{{ module }}</b></p>
+    <div>
+        <div class="indent">
+            <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
+            <p>Job type: <b>{{ module }}</b></p>
 
-    <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
-          enctype="multipart/form-data" name="download_settings">
-        <input name="job_id" type="hidden" value="{{j_id}}"/>
-        <select class="select-options" name="compression_type">
-            {% for compr in compr_formats %}
-            <option name="{{compr}}" value="{{compr}}">{{compr}}</option>
+            <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
+                  enctype="multipart/form-data" name="download_settings">
+                <input name="job_id" type="hidden" value="{{j_id}}"/>
+                <select class="select-options" name="compression_type">
+                    {% for compr in compr_formats %}
+                    <option name="{{compr}}" value="{{compr}}">{{compr}}</option>
 
-            {% endfor %}
-        </select>
+                    {% endfor %}
+                </select>
 
-        <label class="button" for="download-button"><i class="fa fa-download"><span> Download</span></i></label>
-        <input id="download-button" class="download-button" type="submit"></input>
-    </form>
+                <label class="button" for="download-button"><i class="fa fa-download"><span> Download</span></i></label>
+                <input id="download-button" class="download-button" type="submit"></input>
+            </form>
+        </div>
 
     {% if connected_jobs %}
         <div id="connectedJobsCheckbox">
@@ -135,14 +137,16 @@
     {% if module in modules_with_plots %}
         {% if module != 'clinker_full' %}
         <div>
-            <div>
-                <button class="selection-button" onclick="showSelection('cluster')">Select clusters</button>
-                <button class="selection-button" onclick="showSelection('query')">Select queries</button>
+            <div class="centered">
+                <button class="button smaller" onclick="showSelection('cluster')">Select clusters</button>
+            {% if module != 'clinker_query' %}
+                <button class="button smaller" onclick="showSelection('query')">Select queries</button>
+            {% endif %}
                 {#                {{ renderHelpButton('downstream_select') }}#}
             </div>
 
             <div>
-                <div id="clusterSelection">
+                <div class="centered" id="clusterSelection">
 
                     <select id="unselectedClustersSelector" class="multiselect-large" multiple="multiple">
                     </select>
@@ -155,7 +159,8 @@
                     </select>
                 </div>
 
-                <div id="queriesSelection" class="no-display">
+            {% if module != 'clinker_query' %}
+                <div id="queriesSelection" class="centered no-display">
                     <select id="unselectedQueriesSelector" multiple="multiple" class="multiselect-small">
                     </select>
 
@@ -166,6 +171,7 @@
                         {#            <option></option>#}
                     </select>
                 </div>
+            {% endif %}
             </div>
         </div>
         {% endif %}
