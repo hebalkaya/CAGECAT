@@ -941,7 +941,22 @@ function moveSelectedElements(target, selectionType){
         console.log('Incorrect target');
     }
 
-    return !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
+    let result = !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
+    if (selectionType === 'Queries') {
+        // console.log('queries');
+        let elem = $('#corasonSubmit')[0];
+        if (elem !== null) {
+            // console.log($('#selectedQueriesSelector')[0]);
+            // console.log($('#selectedQueriesSelector'))
+            if ($('#selectedQueriesSelector')[0].length === 1) {
+                elem.removeAttribute('disabled');
+            } else {
+                elem.setAttribute('disabled', 'disabled');
+            }
+        }
+    }
+
+    return result;
 }
 
 function showSelection(toShow){
