@@ -71,15 +71,16 @@ EXTR_SEQS_HELPS = {'downloadSeqs': {'title': 'Download sequences', 'module': '',
                    'nameOnly': {'title': 'Name only', 'module': '', 'text': 'Do not save sequence descriptions (i.e. no genomic coordinates).\n\nRequired: no'}}
 EXTR_CLUST_HELPS = {'prefix': {'title': 'File prefix', 'module': '', 'text': 'Start of the name for each created cluster file, e.g. <prefix>_cluster1.\n\nRequired: no'},
                     'format': {'title': 'File format', 'module': '', 'text': 'Format of the resulting files.\n\nRequired: no'}}
-CORASON_HELPS = {'selectedQuery': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'selectedReferenceCluster': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'selectedClustersToSearch': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'evalue': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'bitscore': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'clusterRadio': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'ecluster': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'ecore': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
-                 'rescale': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
+CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'text': 'Query to be analyzed\n\nRequired: yes'},
+                 'selectedReferenceCluster': {'title': 'Selected reference cluster', 'module': '', 'text': 'TODO'},
+                 'selectedClustersToSearch': {'title': 'Selected clusters to search in', 'module': '', 'text': 'TODO'}, # is this list parameter?
+                 'evalue': {'title': 'Minimal e-value', 'module': '', 'text': 'Minimal e-value for a gene to be considered a hit.\n\nRequired: yes'},
+                 'bitscore': {'title': 'Bitscore', 'module': '', 'text': 'TODO'},
+                 'clusterRadio': {'title': 'Number of genes to analyze', 'module': '', 'text': 'Number of genes in the neighbourhood to analyze\n\nRequired: yes'},
+                 'ecluster': {'title': 'e-value of genes from reference cluster', 'module': '', 'text': 'e-value for sequences from reference cluster\n\nRequired: yes'},
+                 'ecore': {'title': 'TODO', 'module': '', 'text': 'e-value for Best Bidirectional Hits used to construct genomic core from clusters.\n\nRequired: yes'},
+                 'rescale': {'title': 'Rescale', 'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
+# TODO: missing antismash file
 HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
               'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
 
