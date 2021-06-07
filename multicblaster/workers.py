@@ -23,9 +23,12 @@ def forge_database_args(options):
         # TODO: should me modular
 
     if options['mode'] in ('remote', 'combi_remote'):
-        base.append(options['database_type'])
+        if 'database_type' in options:
+            base.append(options['database_type'])
+        else:  # when recomputing it's not there
+            return []
 
-    if len(base) == 1:
+    if len(base) not in (2, 3):
         raise IOError('Incorrect database arguments length')
 
     return base
