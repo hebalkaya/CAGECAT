@@ -3,6 +3,8 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 {% from "macros.xhtml" import createBackButton %}
+{% from "macros.xhtml" import showSelectedClusters %}
+
 
 {% block title %}Extract sequences{% endblock %}
 
@@ -19,7 +21,7 @@
         <input type="hidden" name="job_type" value="extract_sequences"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
         {{ filtering_section('sequences', selected_scaffolds, selected_queries) }}
-        <br/>
+{#        <br/>#}
             <label class="fieldset-label" for="outputSection">Output</label>
             <fieldset id="outputSection">
                 <div class="input-layer">

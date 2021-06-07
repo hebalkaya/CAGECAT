@@ -123,9 +123,11 @@
 
         {% if extraction_type == 'sequences' %}
         <div class="input-layer">
+
             <label class="textarea-label" for="selectedQueries">Queries</label>
             {{ renderHelpButton('selectedQueries') }}
-            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>
+            {{ showSelectedClusters(selected_queries_or_cluster_numbers, False, True) }}
+{#            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>#}
         </div>
         {% elif extraction_type == 'clusters' %}
         <div class="input-layer">
@@ -185,18 +187,24 @@
     </div>
 {% endmacro %}
 
-{% macro showSelectedClusters(cluster_headers, show_title) %}
+{% macro showSelectedClusters(headers, show_title, is_for_filtering) %}
     {% if show_title %}
         <h3 class="indent">Overview of selected clusters</h3>
     {% endif %}
 
     <ul>
-    {% for header in cluster_headers %}
-        {% if not header %}
+    {% if headers|length == 1 %}
+        {% if is_for_filtering %}
+            <li>No filtering on queries</li>
+        {% elif not headers[0] %}
             <li>All clusters are selected</li>
-        {% else %}
-            <li>{{header}}</li>
         {% endif %}
-    {% endfor %}
+
+    {% endif %}
+    {% if headers|length != 1 %}
+        {% for header in headers %}
+            <li>{{header}}</li>
+        {% endfor %}
+    {% endif %}
     </ul>
 {% endmacro %}

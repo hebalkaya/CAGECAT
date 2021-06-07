@@ -57,16 +57,15 @@ def extract_sequences() -> str:
         - HTML represented in string format showing options for extracting
             sequences in the client's browser
     """
-    selected_queries = request.form["selectedQueries"]
-    selected_scaffolds = pa.parse_selected_scaffolds(
-        request.form["selectedClusters"])
+    # selected_scaffolds = pa.parse_selected_scaffolds(
+    #     request.form["selectedClusters"])
 
-    if selected_queries == "No queries selected":
-        selected_queries = None
+    # if selected_queries == "No queries selected":
+    #     selected_queries = None
 
     return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
-                         selected_queries=selected_queries,
-                         selected_scaffolds=selected_scaffolds,
+                         selected_queries=request.form["selectedQueries"].split('\r\n'),
+                         # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])
 
 @downstream.route("/extract-clusters", methods=["GET", "POST"])
