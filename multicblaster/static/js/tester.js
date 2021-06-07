@@ -263,22 +263,22 @@ function hasOneElementSelected(overview){
     return overview.children.length === 1 && !overview.children[0].textContent.startsWith("No");
 }
 
-function checkCorasonButton() {
-    // TODO: implement that a cluster cannot be in in the cluster section and be the reference cluster at the same time
-    let elem = document.getElementById("corasonSubmit");
-    if (elem !== null){
-        let queries = document.getElementById("selectedQueriesOverview");
-        let clusters = document.getElementById("selectedClustersOverview")
-        let referenceCluster = document.getElementById("selectedReferenceCluster");
-
-        if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
-            elem.removeAttribute("disabled");
-        }
-        else {
-            elem.setAttribute("disabled", "disabled");
-        }
-    }
-}
+// function checkCorasonButton() {
+//     // TODO: implement that a cluster cannot be in in the cluster section and be the reference cluster at the same time
+//     let elem = document.getElementById("corasonSubmit");
+//     if (elem !== null){
+//         let queries = document.getElementById("selectedQueriesOverview");
+//         let clusters = document.getElementById("selectedClustersOverview")
+//         let referenceCluster = document.getElementById("selectedReferenceCluster");
+//
+//         if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
+//             elem.removeAttribute("disabled");
+//         }
+//         else {
+//             elem.setAttribute("disabled", "disabled");
+//         }
+//     }
+// }
 
 window.addEventListener("message", function(e){
     let text;
@@ -484,9 +484,11 @@ function addSelectedToForm(downstream_prog) {
     }
     else if (downstream_prog === "corason"){
         //TODO: modify how clusters are given
-        document.getElementById("selectedQuery").value = document.getElementById("selectedQueriesOverview").innerText;
-        document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
-        document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
+        $('#selectedQuery')[0].value = getSelectedQueries();
+        $('#selectedClusters2')[0].value = getSelectedClusters();
+        // document.getElementById("selectedQuery").value = document.getElementById("selectedQueriesOverview").innerText;
+        // document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
+        // document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
     }
     // else if (downstream_prog === "clinker_full"){
     //     document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;

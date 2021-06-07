@@ -182,3 +182,19 @@
 {% macro createBackButton() %}
     <button class="button" onclick="lastPage();">Go back</button>
 {% endmacro %}
+
+{% macro showSelectedClusters(cluster_headers, show_title) %}
+    {% if show_title %}
+        <h3 class="indent">Overview of selected clusters</h3>
+    {% endif %}
+
+    <ul>
+    {% for header in cluster_headers %}
+        {% if not header %}
+            <li>All clusters are selected</li>
+        {% else %}
+            <li>{{header}}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% endmacro %}

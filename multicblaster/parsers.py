@@ -30,7 +30,8 @@ def parse_selected_cluster_names(selected_clusters: str) -> t.Union[str, None]:
     if selected_clusters != "No clusters selected":
         cluster_names = []
 
-        for cluster in selected_clusters.split("\n"):
+        print( selected_clusters.split("\r\n"))
+        for cluster in selected_clusters.split("\r\n"):
             sep_index = cluster.find(")") + 1
             organism = cluster[:sep_index].split("(")[0].strip()
             clust_num = int(re.findall(ut.CLUST_NUMBER_PATTERN_W_SCORE, cluster)[0])

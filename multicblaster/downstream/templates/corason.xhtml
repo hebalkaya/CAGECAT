@@ -3,7 +3,7 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 {% from "macros.xhtml" import createBackButton %}
-
+{% from "macros.xhtml" import showSelectedClusters %}
 
 {% block navigationBar %}
     {{ showNavigationBar('post-analysis') }}
@@ -36,7 +36,9 @@ Corason
 {#                TODO: change how this is shown. Also make it readonly#}
                 <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
                 {{ renderHelpButton('selectedClustersToSearch') }}
-                <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>
+{#                TODO: add input for the selected clusters#}
+{#                <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>#}
+                {{ showSelectedClusters(cluster_headers, False) }}
             </div>
 
         </fieldset>

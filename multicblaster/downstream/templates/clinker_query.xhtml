@@ -3,6 +3,7 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 {% from "macros.xhtml" import createBackButton %}
+{% from "macros.xhtml" import showSelectedClusters %}
 
 {% block title %}clinker query{% endblock %}
 
@@ -28,17 +29,17 @@
             </div>
         </fieldset>
 
-        <h3 class="indent">Overview of selected clusters</h3>
-        <ul>
-        {% for header in cluster_headers %}
-            {% if not header %}
-                <li>All clusters are selected</li>
-            {% else %}
-                <li>{{header}}</li>
-            {% endif %}
-        {% endfor %}
-
-        </ul>
+        {{ showSelectedClusters(cluster_headers, True) }}
+{#        <h3 class="indent">Overview of selected clusters</h3>#}
+{#        <ul>#}
+{#        {% for header in cluster_headers %}#}
+{#            {% if not header %}#}
+{#                <li>All clusters are selected</li>#}
+{#            {% else %}#}
+{#                <li>{{header}}</li>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#        </ul>#}
 
         <input type="submit" value="Visualize"/>
     </form>

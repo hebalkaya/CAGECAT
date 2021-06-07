@@ -112,13 +112,16 @@ def corason() -> str:
     """
     cluster_to_search_in = pa.parse_selected_cluster_names(
         request.form["selectedClusters"])
+    print(cluster_to_search_in)
 
-    reference_cluster = pa.parse_selected_cluster_names(
-        request.form["selectedReferenceCluster"])
+    # reference_cluster = pa.parse_selected_cluster_names(
+    #     request.form["selectedReferenceCluster"])
 
     query = request.form["selectedQuery"]
 
     return show_template("corason.xhtml", submit_url=ut.SUBMIT_URL,
-                         query=query, reference_cluster=reference_cluster,
-                         cluster_to_search_in=cluster_to_search_in,
+                         query=query,
+                         cluster_headers=
+                         request.form["selectedClusters"].split('\r\n'),
+                         # cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
