@@ -30,23 +30,68 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               }
 
 # TODO: create all help texts per module using script
-GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': 'TODO', 'text': 'TODO'}, 'generalDelimiter': {'title': 'Output file delimiter', 'module': '', 'text': 'Single delimiter character to use when writing results to a file.\n\nResults will be separated of each other in the output file by the specified character.\n\nRequired: no\nDefault: no delimiter (human readable)'}, 'generalDecimals': {'title': 'Number of decimals', 'module': 'TODO', 'text': 'TODO'}, 'generalHideHeaders': {'title': 'Hide headers', 'module': 'TODO', 'text': 'TODO'}}
-SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': 'TODO', 'text': 'TODO'}, 'ncbiEntriesTextArea': {'title': 'Search from NCBI entries', 'module': 'TODO', 'text': 'TODO'}, 'entrez_query': {'title': 'Filter using Entrez query', 'module': 'TODO', 'text': 'TODO'}, 'database_type': {'title': 'Database to search in', 'module': 'TODO', 'text': 'TODO'}, 'max_hits': {'title': 'Maximum hits to show', 'module': 'TODO', 'text': 'TODO'}, 'max_evalue': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'min_identity': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'min_query_coverage': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'max_intergenic_gap': {'title': 'Maximum intergenic distance between genes', 'module': '', 'text': 'Maximum allowed intergenic distance (bp) between conserved hits to be considered in the same block.\n\nIf you are not sure which value to use, please refer to the Gene Neighbourhood Estimation documentation, as this will help you find a proper value. \n\nRequired: yes\nDefault value: 20000'}, 'percentageQueryGenes': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'min_unique_query_hits': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'min_hits_in_clusters': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'requiredSequencesSelector': {'title': 'Required sequences in a cluster', 'module': '', 'text': 'Names of query sequences that must be represented in a hit cluster.\n\nOnce you upload a query file or enter NCBI entries, click a sequence header to select it. Hold CTRL while clicking to select multiple sequences. To unselect a header, hold CTRL while clicking the header.\n\nRequired: no\nDefault: none selected'}, 'sortClusters': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'intermediate_genes': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'intermediate_max_distance': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'intermediate_max_clusters': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-GNE_HELPS = {'max_intergenic_distance': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'sample_number': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'sampling_space': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-CLINKER_FULL_HELPS = {'noAlign': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'identity': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'hideLinkHeaders': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'hideAlignHeaders': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'useFileOrder': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-BINARY_TABLE_HELPS = {'keyFunction': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'hitAttribu te': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-FILTERING_HELPS = {'selectedOrganisms': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'selectedScaffolds': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'clusterNumbers': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'clusterScoreThreshold': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'selectedQueries': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-CLINKER_QUERY_HELPS = {'maxclusters': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-EXTR_SEQS_HELPS = {'downloadSeqs': {'title': 'Download sequences', 'module': 'TODO', 'text': 'TODO'}, 'nameOnly': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-EXTR_CLUST_HELPS = {'prefix': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'format': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
-CORASON_HELPS = {'selectedQuery': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'selectedReferenceCluster': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'selectedClustersToSearch': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'evalue': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'bitscore': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'clusterRadio': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'ecluster': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'ecore': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}, 'rescale': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
+GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': '', 'text': 'The ID of the job which\' results are wished to be used.'},
+                 'generalDelimiter': {'title': 'Output file delimiter', 'module': '', 'text': 'Single delimiter character to use when writing results to a file.\n\nResults will be separated of each other in the output file by the specified character.\n\nRequired: no\nDefault: no delimiter (human readable)'},
+                 'generalDecimals': {'title': 'Number of decimals', 'module': '', 'text': 'Total decimal places to use when saving score values.\n\nRequired: no'},
+                 'generalHideHeaders': {'title': 'Hide headers', 'module': '', 'text': 'Hide headers when saving result output.\n\nRequired: no'}}
+SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'FASTA file containing protein sequences to be searched.'},
+                'ncbiEntriesTextArea': {'title': 'Search from NCBI entries', 'module': '', 'text': 'A collection of valid NCBI sequence identifiers to be searched'},
+                'entrez_query': {'title': 'Filter using Entrez query', 'module': '', 'text': 'An NCBI Entrez search term for pre-search filtering of an NCBI database when using command line BLASTp (e.g. Aspergillus[organism]\n\nRequired: no'},
+                'database_type': {'title': 'Database to search in', 'module': '', 'text': 'Database to be searched: NCBI database name.\n\nRequired: yes'},
+                'max_hits': {'title': 'Maximum hits to show', 'module': '', 'text': 'Maximum total hits to save from a remote BLAST search. Setting this value too low may result in missed hits/clusters.\n\nRequired: yes'},
+                'max_evalue': {'title': 'Maximum e-value', 'module': '', 'text': 'Maximum e-value for a BLAST hit to be saved.\n\nRequired: yes'},
+                'min_identity': {'title': 'Minimum percent identity', 'module': '', 'text': 'Minimum percent identity for a BLAST hit to be saved.\n\nRequired: yes'},
+                'min_query_coverage': {'title': 'Minimum query coverage', 'module': '', 'text': 'Minimum percent query coverage for a BLAST hit to be saved.\n\nRequired: yes'},
+                'max_intergenic_gap': {'title': 'Maximum intergenic distance between genes', 'module': '', 'text': 'Maximum allowed intergenic distance (bp) between conserved hits to be considered in the same block.\n\nIf you are not sure which value to use, please refer to the Gene Neighbourhood Estimation documentation, as this will help you find a proper value.\n\nRequired: yes\nDefault value: 20000'},
+                'percentageQueryGenes': {'title': 'Percentage of query genes', 'module': '', 'text': 'Filter on %% of query genes needed to be present in cluster\n\nRequired: yes'},
+                'min_unique_query_hits': {'title': 'Minimum unique query sequences', 'module': '', 'text': 'Minimum number of unique query sequences that must be conservedin a hit cluster.\n\nRequired: yes'},
+                'min_hits_in_clusters': {'title': 'Minimum hit number in clusters', 'module': '', 'text': 'Minimum number of hits in a cluster.\n\nRequired: yes'},
+                'requiredSequencesSelector': {'title': 'Required sequences in a cluster', 'module': '', 'text': 'Names of query sequences that must be represented in a hit cluster.\n\nOnce you upload a query file or enter NCBI entries, click a sequence header to select it. Hold CTRL while clicking to select multiple sequences. To unselect a header, hold CTRL while clicking the header.\n\nRequired: no\nDefault: none selected'},
+                'sortClusters': {'title': 'Sort output clusters', 'module': '', 'text': 'Sorts the clusters of the final output on score. This means that clusters of the same organism are not neccesairily close together in the output.\n\nRequired: no'},
+                'intermediate_genes': {'title': 'Show intermediate genes', 'module': '', 'text': 'Show genes that in or near clusters but not part of the cluster.\n\nRequired: no'},
+                'intermediate_max_distance': {'title': 'Maximum intermediate gene distance', 'module': '', 'text': 'The maximum distance between the start/end of a cluster and an intermediate gene\n\nRequired: yes'},
+                'intermediate_max_clusters': {'title': 'Maximum number of clusters to find intermediate genes for', 'module': '', 'text': 'The maximum amount of clusters will get intermediate genes assigned. Ordered on score.\n\nRequired: yes'}}
+GNE_HELPS = {'max_intergenic_distance': {'title': 'Maximum intergenic distance', 'module': '', 'text': 'Maximum distance in bp between genes.\n\nRequired: yes'},
+             'sample_number': {'title': 'Number of samples', 'module': '', 'text': 'Total samples taken from Maximum intergenic distance.\n\nRequired: yes'},
+             'sampling_space': {'title': 'Sampling space', 'module': '', 'text': '"Draw sampling values from a linear or log scale.\n\nRequired: yes'}}
+CLINKER_FULL_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'text': 'Do not align clusters.\n\nRequired: no'},
+                      'identity': {'title': 'Minimum alignment sequence identity', 'module': '', 'text': 'Minimum alignment sequence identity.\n\nRequired: yes'},
+                      'hideLinkHeaders': {'title': 'Hide alignment column headers', 'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'},
+                      'hideAlignHeaders': {'title': 'Hide alignment cluster name headers', 'module': '', 'text': 'Hide alignment cluster name headers.\n\nRequired: no'},
+                      'useFileOrder': {'title': 'Maintain order of input files', 'module': '', 'text': 'Display clusters in order of input files.\n\nRequired: no'}}
+BINARY_TABLE_HELPS = {'keyFunction': {'title': 'Key function', 'module': '', 'text': 'Key function used when generating binary table cell values.\n\nRequired: yes'},
+                      'hitAttribute': {'title': 'Hit attribute', 'module': '', 'text': 'Hit attribute used when generating binary table cell values.\n\nRequired: yes'}}
+FILTERING_HELPS = {'selectedOrganisms': {'title': 'Organisms to filter fot', 'module': '', 'text': 'Organism names to filter hits for. When entering multiple organisms, separate by a space.\n\nRequired: no'},
+                   'selectedScaffolds': {'title': 'TODO', 'module': '', 'text': 'TODO'},  # TODO: check if we still use it
+                   'clusterNumbers': {'title': 'Cluster numbers', 'module': '', 'text': 'Cluster numbers/ranges provided by the summary file of the \'search\' command or selected online. If no numbers are entered, no filtering takes place.\n\nRequired: no'},
+                   'clusterScoreThreshold': {'title': 'Cluster score threshold', 'module': '', 'text': 'Minimum score of a cluster in order to be included. If no score is entered, no filtering takes place.\n\nRequired: no'},
+                   'selectedQueries': {'title': 'Query filtering', 'module': '', 'text': 'IDs of query sequences to filter for.\n\nRequired: no'}}
+CLINKER_QUERY_HELPS = {'maxclusters': {'title': 'Maximum number of clusters to plot', 'module': '', 'text': 'The maximum amount of clusters that will be plotted. Ordered on score.\n\nRequired: yes'}}
+EXTR_SEQS_HELPS = {'downloadSeqs': {'title': 'Download sequences', 'module': '', 'text': 'Download protein sequences for the selected proteins. The resulting summary will have a FASTA format.\n\nRequired: no'},
+                   'nameOnly': {'title': 'Name only', 'module': '', 'text': 'Do not save sequence descriptions (i.e. no genomic coordinates).\n\nRequired: no'}}
+EXTR_CLUST_HELPS = {'prefix': {'title': 'File prefix', 'module': '', 'text': 'Start of the name for each created cluster file, e.g. <prefix>_cluster1.\n\nRequired: no'},
+                    'format': {'title': 'File format', 'module': '', 'text': 'Format of the resulting files.\n\nRequired: no'}}
+CORASON_HELPS = {'selectedQuery': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'selectedReferenceCluster': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'selectedClustersToSearch': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'evalue': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'bitscore': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'clusterRadio': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'ecluster': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'ecore': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'},
+                 'rescale': {'title': 'TODO', 'module': 'TODO', 'text': 'TODO'}}
+HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
+              'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
+
+# BLANC: {'input_help': {'title': 'TODO', 'module': '', 'text': 'TODO'}}
 
 HELP_OVERVIEW = [('multiple', GENERAL_HELPS), ('search', SEARCH_HELPS),
-                 ('gne', GNE_HELPS), ('clinker_full', CLINKER_FULL_HELPS),
+                 ('neighbourhood', GNE_HELPS), ('clinker visualisation', CLINKER_FULL_HELPS),
                  ('search', BINARY_TABLE_HELPS), ('multiple', FILTERING_HELPS),
-                 ('clinker_query', CLINKER_QUERY_HELPS), ('extract_sequences',
-                 EXTR_SEQS_HELPS), ('extract_clusters', EXTR_CLUST_HELPS),
-                 ('corason', CORASON_HELPS)]
+                 ('clinker visualisation with query', CLINKER_QUERY_HELPS), ('extract sequences',
+                 EXTR_SEQS_HELPS), ('extract clusters', EXTR_CLUST_HELPS),
+                 ('corason', CORASON_HELPS), ('HMM', HMM_HELPS)]
+
 HELP_TEXTS = {}
 
 for label, d in HELP_OVERVIEW:
