@@ -64,7 +64,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  compr_formats=ut.COMPRESSION_FORMATS,
                                  module=module, modules_with_plots=
                                  ut.MODULES_WHICH_HAVE_PLOTS,
-                                 log_contents=log_contents,
+                                 # log_contents=log_contents,
                                  downstream_modules=
                                  co.DOWNSTREAM_MODULES_OPTIONS[module],
                                  connected_jobs=connected_jobs)
@@ -110,7 +110,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
         # TODO: create not_found template
 
 
-@result.route("/download/<job_id>", methods=["POST"])
+@result.route("/download/<job_id>", methods=["GET", "POST"])
 def return_user_download(job_id: str) -> flask.wrappers.Response:
     """Returns zipped file to client, enabling the user to download the file
 
@@ -128,14 +128,14 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
     # execute convert_compression.py
     submitted_data = request.form
 
-    if len(submitted_data) != 2:  # should be job_id and compression_type
-        return redirect(url_for("home_page"))
+    # if len(submitted_data) != 2:  # should be job_id and compression_type
+    #     return redirect(url_for("home_page"))
+    if 'compression_type' in submitted_data:
+        compr_type = submitted_data["compression_type"]
 
-    compr_type = submitted_data["compression_type"]
-
-    # TODO: first, execute compression_conversion script
-    # to go from ours server-default compression to the desired compresion
-    # format
+        # TODO: first, execute compression_conversion script
+        # to go from ours server-default compression to the desired compresion
+        # format
 
     # TODO: send_from_directory is a safer approach, but this suits for now
     # as Flask should not be serving files when deployed

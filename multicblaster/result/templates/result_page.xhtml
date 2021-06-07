@@ -133,6 +133,7 @@
 {#            TODO: center the iframe and still be able to click the downstream buttons#}
 
     {% if module in modules_with_plots %}
+        {% if module != 'clinker_full' %}
         <div>
             <div>
                 <button class="selection-button" onclick="showSelection('cluster')">Select clusters</button>
@@ -167,6 +168,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 
 <div style="margin: auto;width: 60%;">
@@ -181,7 +183,12 @@
         {% set onload = 'getOutputFromPlot("visualize");postLoadingIFrame()' %}
     {% elif module == 'clinker_full' %}
         {% set onload = 'postLoadingIFrame()' %}
-        <p>To download the clusters shown below, navigate to the 'extract_clusters' job on which this job depends.</p>
+        {% for connected_job in connected_jobs %}
+            {% if connected_job[3] == 'depending' %}
+                <p style="padding-left: 30px;"> <a href="{{ url_for('result.return_user_download', job_id=connected_job[0]) }}">Click this sentence to download the sequences of the clusters shown below.</a></p>
+            {% endif %}
+        {% endfor %}
+
     {% elif module == 'gne' %}
         {% set onload = 'postLoadingIFrame()' %}
     {% endif %}
