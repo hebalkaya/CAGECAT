@@ -647,3 +647,7 @@ input[type="submit"]{
     /*text-align: center;*/
     /*transform: translateX(50%);*/
 }
+
+.selector-custom-height {
+    height: 230px;
+}

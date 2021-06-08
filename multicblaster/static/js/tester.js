@@ -398,6 +398,20 @@ window.addEventListener("message", function(e){
     checkCorasonButton()
 }, false)
 
+// function setMultiSelectHeight() {
+//     let height = $('#downStreamModulesDiv')[0].offsetHeight - 80 + 'px';
+//     let ids = ['unselectedClustersSelector', 'selectedClustersSelector', 'unselectedQueriesSelector',
+//     'selectedQueriesSelector']
+//     // console.log(height);
+//     for (let i = 0; i < ids.length; i++) {
+//         let elem = $('#' + ids[i])[0];
+//         if (elem !== undefined){
+//             elem.style.height = '230px'
+//         }
+//     }
+//
+// }
+
 function getOutputFromPlot(plotting_type){
     let frame = document.getElementById("newWindow");
     let doc = frame.contentDocument || frame.contentWindow.document;
@@ -428,6 +442,8 @@ function getOutputFromPlot(plotting_type){
                 option.classList.add('smaller-font');
 
                 querySelector.appendChild(option);
+
+
             }
         }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
     }
@@ -460,6 +476,8 @@ function getOutputFromPlot(plotting_type){
             clusterSelector.appendChild(option);
         }
     }
+
+    // setMultiSelectHeight();
 }
 
 
