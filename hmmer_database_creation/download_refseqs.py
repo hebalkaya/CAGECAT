@@ -15,7 +15,7 @@ SUCCESSFULL_DOWNLOADS_FN = 'successfull_downloads.txt'
 
 
 def init():
-    print('\nStarting..\n')
+    print(f'\nStarting: {argv[1].capitalize()}\n')
 
     genus = argv[1].capitalize()
     output_fn = f'{genus}_ftp_paths.txt'
@@ -48,7 +48,8 @@ def parse_paths(ftp_paths_fn, ext='.gbff.gz'):
     for line in all_lines:
         # print(line)
         # print(line.strip().split())
-        path, genus, species = tuple(line.strip().split())
+        splitted = line.strip().split()
+        path, genus, species = splitted[0], splitted[1], " ".join(splitted[2:])
         key = ' '.join([genus, species])
 
         paths = (path, f'{path.split("/")[-1]}_genomic{ext}', f'md5checksums.txt')

@@ -6,7 +6,6 @@ Author: Matthias van den Belt
 # own project imports
 from multicblaster import app
 import os
-import config
 
 ### main code
 if __name__ == "__main__":
