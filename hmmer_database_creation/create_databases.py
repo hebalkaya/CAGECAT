@@ -40,7 +40,7 @@ def main():
 
             if not to_create:
                 print(f'No database to create. Waiting {SLEEPING_TIME} seconds')
-                time.sleep(30)
+                time.sleep(SLEEPING_TIME)
             else:
                 for genus in to_create:
                     print(f'Creating {genus} database')
