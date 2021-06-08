@@ -11,6 +11,7 @@ from sys import argv
 
 BASE_URL = 'ftp.ncbi.nlm.nih.gov'
 BASE_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
+COMPLETE_DOWNLOADS_FILE = '/lustre/BIF/nobackup/belt017/complete_downloads.txt'
 SUCCESSFULL_DOWNLOADS_FN = 'successfull_downloads.txt'
 
 
@@ -154,5 +155,8 @@ if __name__ == '__main__':
 
     paths = parse_paths(fn)
     download_files(paths)
+
+    with open(COMPLETE_DOWNLOADS_FILE, 'w' if not os.path.exists(COMPLETE_DOWNLOADS_FILE) else 'a') as outf:
+        outf.write(f'{argv[1].capitalize()}\n')
 
     print(f"\nAll done!")

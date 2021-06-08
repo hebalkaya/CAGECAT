@@ -10,7 +10,7 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:///status.db',
         "HOST": "0.0.0.0",
         "PORT": 5001,
         "DOWNLOAD_FOLDER": "jobs",
-        "DATABASE_FOLDER": "/storage/databases"
+        "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases"
         }
 # DEBUG=True
 #
