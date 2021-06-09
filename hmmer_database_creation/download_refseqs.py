@@ -156,11 +156,11 @@ if __name__ == '__main__':
     fn = init()
 
     paths = parse_paths(fn)
-    species_count = len(paths) / 2
+    species_count = len(paths.values())
     if species_count < CONF['REPRESENTATIVE_GENOMES_THRESHOLD']:
         print(f'Skipping {argv[1].capitalize()} genus. ({species_count} species < { CONF["REPRESENTATIVE_GENOMES_THRESHOLD"]})')
-        with open('too_few_species.txt', 'w' if os.path.exists('too_few_species.txt') else 'a') as outf:
-            outf.write(f'{argv[1].capitalize()} {species_count}')
+        with open('too_few_species.txt', 'w' if not os.path.exists('too_few_species.txt') else 'a') as outf:
+            outf.write(f'{argv[1].capitalize()} {species_count}\n')
         exit(0)
 
     download_files(paths)
