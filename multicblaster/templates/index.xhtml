@@ -3,6 +3,7 @@
 {% from "macros.xhtml" import result_table %}
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
+{% from 'macros.xhtml' import renderJobDetailsInput %}
 
 {% block title %}
     multicblaster
@@ -36,6 +37,7 @@ initReadQueryFile();
 {#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
 </div>
 
+    {{ renderJobDetailsInput() }}
 <!--Module contents-->
 <div>
 

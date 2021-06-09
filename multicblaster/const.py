@@ -29,7 +29,8 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "clinker_query": ["extract_clusters"] # TODO: possibly also corason?
                               }
 
-# TODO: create all help texts per module using script
+JOB_DESCRIPTOR_HELPS = {'job_title': {'title': 'Job title', 'module': '', 'text': 'Enter a job title for easy identification of jobs.\n\nRequired: no'},
+                        'email_notification': {'title': 'Email notification', 'module': '', 'text': 'Enter your e-mail to get notified when your job has finished.\n\nRequired: no'}}
 GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': '', 'text': 'The ID of the job which\' results are wished to be used.'},
                  'generalDelimiter': {'title': 'Output file delimiter', 'module': '', 'text': 'Single delimiter character to use when writing results to a file.\n\nResults will be separated of each other in the output file by the specified character.\n\nRequired: no\nDefault: no delimiter (human readable)'},
                  'generalDecimals': {'title': 'Number of decimals', 'module': '', 'text': 'Total decimal places to use when saving score values.\n\nRequired: no'},
@@ -86,7 +87,8 @@ HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text':
 
 # BLANC: {'input_help': {'title': 'TODO', 'module': '', 'text': 'TODO'}}
 
-HELP_OVERVIEW = [('multiple', GENERAL_HELPS), ('search', SEARCH_HELPS),
+HELP_OVERVIEW = [('multiple', JOB_DESCRIPTOR_HELPS),
+                 ('multiple', GENERAL_HELPS), ('search', SEARCH_HELPS),
                  ('neighbourhood', GNE_HELPS), ('clinker visualisation', CLINKER_FULL_HELPS),
                  ('search', BINARY_TABLE_HELPS), ('multiple', FILTERING_HELPS),
                  ('clinker visualisation with query', CLINKER_QUERY_HELPS), ('extract sequences',
