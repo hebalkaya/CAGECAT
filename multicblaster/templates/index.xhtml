@@ -33,7 +33,7 @@ initReadQueryFile();
 {#            onclick="showModule(event, 'gneModuleContent')">Neighbourhood#}
 {#    </button>#}
 
-    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>
+{#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
 </div>
 
 <!--Module contents-->
@@ -260,72 +260,6 @@ initReadQueryFile();
     </form>
 </div>
 
-
-
-<div id="clinkerContent" class="moduleContent" style="display: none">
-    <form action="{{submit_url}}" method="post">
-        <input type="hidden" name="job_type" value="clinker_full"/>
-
-        <label class="fieldset-label" for="clinkerInputSection">Input</label>
-        <fieldset id="clinkerInputSection">
-            {{ prev_session('clinker', true, prev_run_id, true) }}
-        </fieldset>
-
-        <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
-        <fieldset id="clinkerAlignmentSection">
-            <label class="checkbox-label">
-                <input type="checkbox" name="noAlign"/>Don't align clusters
-            </label>
-            {{ renderHelpButton('noAlign', True) }}
-            <div class="input-layer">
-                <label class="input-label" for="identity">Min. alignment sequence identity</label>
-                {{ renderHelpButton('identity') }}
-                <input type="number" id="identity" name="identity" required="required" min="0" max="1" value="0.3" step="0.01"/>
-            </div>
-
-        </fieldset>
-        <label class="fieldset-label" for="clinkerOutputSection">Output</label>
-        <fieldset id="clinkerOutputSection">
-            <div class="input-layer">
-                <label class="input-label"
-                       for="clinkerDelim">Delimiter</label>
-                {{ renderHelpButton('generalDelimiter') }}
-                <input class="short" type="text" id="clinkerDelim" name="clinkerDelim" size="1" maxlength="1"/>
-            </div>
-            <div class="input-layer">
-                <label class="input-label"
-                       for="clinkerDecimals">Decimal places</label>
-                {{ renderHelpButton('generalDecimals') }}
-                <input class="short" type="number" id="clinkerDecimals" name="clinkerDecimals" value="2" step="1" min="0" max="9"
-                       required="required"/>
-            </div>
-
-            <label class="checkbox-label">
-                <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers
-            </label>
-            {{ renderHelpButton('hideLinkHeaders', True) }}
-
-            <div>
-                <label class="checkbox-label">
-                    <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers
-                </label>
-                {{ renderHelpButton('hideAlignHeaders', True) }}
-            </div>
-        </fieldset>
-
-        <label class="fieldset-label" for="clinkerVisualiationSection">Additional options</label>
-        <fieldset id="clinkerVisualiationSection">
-            <label class="checkbox-label">
-                <input type="checkbox" name="useFileOrder"/>Maintain order of input files
-            </label>
-            {{ renderHelpButton('useFileOrder', True) }}
-        </fieldset>
-
-        <div class="input-layer centered">
-            <input class="button" type="submit"/>
-        </div>
-    </form>
-</div>
 </div>
 
 {% endblock %}
