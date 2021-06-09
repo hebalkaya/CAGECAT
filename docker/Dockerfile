@@ -10,7 +10,6 @@ RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip inst
 COPY supervisord.conf /etc/supervisord.conf
 COPY repo/ /repo/
 COPY process_logs/ /process_logs/
-COPY storage/ /storage
 
 RUN cblaster config --email "server@server.com"
 

@@ -1,0 +1,9 @@
+# if we want to recreate the container. Make sure that:
+ # 1. cwd has Dockerfile
+ # 2. cwd has empty process_logs folder
+ # 3. cwd has supervisord.conf file
+docker rm multicblaster_trial && rm -rf repo && git clone git@git.wur.nl:belt017/thesis_repo.git && mv thesis_repo/ repo && docker build -t multicblaster . && docker run --name multicblaster_trial --mount source=multicblaster_storage,target=/repo/multicblaster -v /lustre/BIF/nobackup/belt017/databases:/hmm_databases multicblaster
+
+
+# if we want to run the container
+docker run --name multicblaster_trial --mount source=multicblaster_storage,target=/repo/multicblaster -v /lustre/BIF/nobackup/belt017/databases:/hmm_databases multicblaster
