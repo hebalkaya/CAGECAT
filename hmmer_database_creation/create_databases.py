@@ -25,10 +25,23 @@ def read_contents():
 
 
 def list_files(genus):
+    all_files = []
+
     for root, dir, files in os.walk(os.path.join(BASE_DIR, genus, 'validated')):
-        all_files = [os.path.join(root, f) for f in files]
+        for f in files:
+            all_files.append(os.path.join(root, f))
     # print(all_files)
+
     return all_files
+
+
+def list_present_databases(path):
+    genera = []
+    for root, dir, files in os.walk(path):
+        for file in files:
+            genera.append(file.split('.')[0])
+
+    return genera
 
 
 def main():
@@ -43,13 +56,21 @@ def main():
                 time.sleep(SLEEPING_TIME)
             else:
                 for genus in to_create:
+                    if genus in list_present_databases(os.getcwd()):
+                        print(f'{genus} database already present. Skipped.')
+                        continue
+
                     print(f'Creating {genus} database')
 
                     # res = subprocess.run(['echo', 'hello'], capture_output=True)
                     cmd = ["cblaster", "makedb", "--name", genus,
-                           "--cpus",  CPUS, "--batch", BATCH_SIZE,
-                           "--force"]
+                           "--cpus",  CPUS, "--batch", BATCH_SIZE]
+
                     cmd.extend(list_files(genus))
+
+                    if len(cmd) == 8: # indicates no files were added
+                        print(f'{genus} has no genome files. Continueing..')
+                        continue
 
                     with open(os.path.join('logs', f'{genus}_creation.log'), 'w') as outf:
                         res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
