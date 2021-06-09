@@ -302,3 +302,17 @@ def get_parent_job(new_job, is_last_job):
         new_job[2][key] if is_last_job else new_job[3].split(os.sep)[2])
 
     return old_job
+
+
+def add_title_email_to_job(new_jobs, form):
+    # TODO: is temp until job will be a class
+    all_new_jobs = []
+
+    for j in new_jobs:
+        nj = list(j)
+        nj.append(form['job_title'] if 'job_title' in form else None)
+        nj.append(form['email'] if 'email' in form else None)
+
+        all_new_jobs.append(tuple(nj))
+
+    return all_new_jobs

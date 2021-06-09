@@ -227,13 +227,13 @@
     <fieldset id="jobDetailsInputFieldset">
         <div class="input-layer">
             <label class="input-label">Job title</label>
-            <input type="text" maxlength="60" placeholder="Experiment no. 19A82M"/>
+            <input name="job_title" type="text" maxlength="60" placeholder="Experiment no. 19A82M"/>
             {{ renderHelpButton('job_title') }}
         </div>
 
         <div class="input-layer">
             <label class="input-label">Email address for notification</label>
-            <input type="email"/>
+            <input name="email" type="email" maxlength="100"/>
             {{ renderHelpButton('email_notification') }}
         </div>
     </fieldset>

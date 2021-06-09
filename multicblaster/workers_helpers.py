@@ -179,6 +179,11 @@ def pre_job_formalities(job_id: str) -> None:
     mutate_status(job_id, "start", db)
 
 
+def send_notification_email():
+    # TODO: actually create
+    pass
+
+
 def post_job_formalities(job_id: str, return_code: int) -> None:
     """Wrapper function for functions to be executed post-job execution
 
@@ -193,9 +198,12 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
         - See documentation of executed functions for their corresponding
             outputs
     """
+
     zip_results(job_id)
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
+
+    send_notification_email()
 
 
 def store_query_sequences_headers(log_path, input_type, data):

@@ -20,10 +20,16 @@ class Job(db.Model):
     redis_id = db.Column(db.String(80))
     status = db.Column(db.Text, nullable=False)
 
+    # user-specified items
+    title = db.Column(db.String(60))
+    email = db.Column(db.String(100))
+
+    # connecting jobs
     main_search_job = db.Column(db.String(15))
     child_jobs = db.Column(db.String(), default="")
     depending_on = db.Column(db.String(10))
 
+    # timing
     post_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     start_time = db.Column(db.DateTime)
     finish_time = db.Column(db.DateTime)

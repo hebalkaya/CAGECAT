@@ -65,11 +65,10 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    # TODO: create a class for job
     new_jobs = []
 
     job_type = request.form["job_type"]
-    print(request.form)
-    print(job_type)
     job_id = ut.generate_job_id()
 
     # Note that the "{module}PreviousType" is submitted via the form, but is
@@ -161,7 +160,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
-    last_job_id = rthelp.enqueue_jobs(new_jobs)
+    last_job_id = rthelp.enqueue_jobs(rthelp.add_title_email_to_job(
+        new_jobs, request.form))
 
     return redirect(url_for("result.show_result",
                             job_id=last_job_id,
