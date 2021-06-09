@@ -81,7 +81,11 @@
         {% endif %}
 
         {% if 'gne' in downstream_modules %}
-            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=gne"><button class="button button-small">Neighbourhood</button></a>
+            <form action="{{url_for('downstream.neighbourhood')}}" method="get">
+                <input type="hidden" name="prev_id" value="{{ j_id }}"/>
+                <button class="button button-small" type="submit">Neighbourhood</button>
+            </form>
+{#            <a href="{{url_for('downstream.neighbourhood')}}"><button class="button button-small">Neighbourhood</button></a>#}
         {% endif %}
 
         {% if 'extract_sequences' in downstream_modules %}

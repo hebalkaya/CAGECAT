@@ -10,8 +10,8 @@
 {% block scripts %}
     {% if module_to_show == 'visualization' %}
 showModule(undefined, 'clinkerContent');
-    {% elif module_to_show == 'gne' %}
-showModule(undefined, 'gneModuleContent');
+{#    {% elif module_to_show == 'gne' %}#}
+{#showModule(undefined, 'gneModuleContent');#}
     {% elif module_to_show == 'recompute' %}
 showInputOptions('prev_session', 0);
 $(':radio:not(:checked)').attr('disabled', true);
@@ -29,9 +29,9 @@ initReadQueryFile();
     <button class="button moduleSelector" onclick="showModule(event,
     'searchModuleContent')">Search
     </button>
-    <button class="button moduleSelector" id="showGNE"
-            onclick="showModule(event, 'gneModuleContent')">Neighbourhood
-    </button>
+{#    <button class="button moduleSelector" id="showGNE"#}
+{#            onclick="showModule(event, 'gneModuleContent')">Neighbourhood#}
+{#    </button>#}
 
     <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>
 </div>
@@ -260,44 +260,7 @@ initReadQueryFile();
     </form>
 </div>
 
-<div id="gneModuleContent" class="moduleContent" style="display: none">
-    <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
-          name="gneOptionForm">
 
-        <input type="hidden" name="job_type" value="gne" required="required"/>
-        <label class="fieldset-label" for="gneInputSection">Input</label>
-        <fieldset id="gneInputSection">
-        {{ prev_session('gne', true, prev_run_id, false) }}
-        </fieldset>
-
-        {{ result_table('gne', 'Sum') }}
-
-        <label class="fieldset-label" for="gneOptions">Extra options</label>
-        <fieldset id="gneOptions">
-            <div class="input-layer">
-                <label class="input-label" for="max_intergenic_distance">Max. intergenic distance</label>
-                {{ renderHelpButton('max_intergenic_distance') }}
-                <input type="number" id="max_intergenic_distance" name="max_intergenic_distance" min="0" max="2500000" value="100000" required="required" step="1"/>
-            </div>
-            <div class="input-layer">
-                <label class="input-label" for="sample_number">Number of samples</label>
-                {{ renderHelpButton('sample_number') }}
-                <input type="number" id="sample_number" name="sample_number"value="100" step="1" min="1" max="400" required="required"/>
-            </div>
-            <div class="input-layer">
-                <label class="select-label" for="sampling_space">Sampling space</label>
-                {{ renderHelpButton('sampling_space') }}
-                <select class="select-options" name="sampling_space" id="sampling_space" required="required">
-                    <option name="spaceLinear" value="linear">linear</option>
-                    <option name="spaceLog" value="log">log</option>
-                </select>
-            </div>
-        </fieldset>
-        <div class="input-layer centered">
-            <input type="submit" class="button" id="submitGNEForm"/>
-        </div>
-    </form>
-</div>
 
 <div id="clinkerContent" class="moduleContent" style="display: none">
     <form action="{{submit_url}}" method="post">

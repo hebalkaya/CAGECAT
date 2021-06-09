@@ -53,7 +53,7 @@ SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'FAS
                 'intermediate_max_clusters': {'title': 'Maximum number of clusters to find intermediate genes for', 'module': '', 'text': 'The maximum amount of clusters will get intermediate genes assigned. Ordered on score.\n\nRequired: yes'}}
 GNE_HELPS = {'max_intergenic_distance': {'title': 'Maximum intergenic distance', 'module': '', 'text': 'Maximum distance in bp between genes.\n\nRequired: yes'},
              'sample_number': {'title': 'Number of samples', 'module': '', 'text': 'Total samples taken from Maximum intergenic distance.\n\nRequired: yes'},
-             'sampling_space': {'title': 'Sampling space', 'module': '', 'text': '"Draw sampling values from a linear or log scale.\n\nRequired: yes'}}
+             'sampling_space': {'title': 'Sampling space', 'module': '', 'text': 'Draw sampling values from a linear or log scale.\n\nRequired: yes'}}
 CLINKER_FULL_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'text': 'Do not align clusters.\n\nRequired: no'},
                       'identity': {'title': 'Minimum alignment sequence identity', 'module': '', 'text': 'Minimum alignment sequence identity.\n\nRequired: yes'},
                       'hideLinkHeaders': {'title': 'Hide alignment column headers', 'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'},

@@ -126,3 +126,8 @@ def corason() -> str:
                          request.form["selectedClusters"].split('\r\n'),
                          # cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
+
+@downstream.route("/neighbourhood")
+def neighbourhood() -> str:
+
+    return show_template('neighbourhood.xhtml', submit_url=ut.SUBMIT_URL)
