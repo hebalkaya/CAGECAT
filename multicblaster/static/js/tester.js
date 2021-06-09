@@ -995,3 +995,9 @@ function showSelection(toShow){
     show.classList.remove('no-display');
     hide.classList.add('no-display');
 }
+
+function redirect(url){
+    setTimeout(function(){
+        window.location.href = url;
+    }, 50);
+}

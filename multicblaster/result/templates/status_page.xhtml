@@ -11,6 +11,7 @@
 {% block scripts %}
     {% if request.args.get('store_job_id') == "True" %}
 storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}');
+redirect('{{  url_for('result.show_result', job_id=j_id)}}');
     {% endif %}
 {% endblock %}
 
