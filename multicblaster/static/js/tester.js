@@ -180,6 +180,7 @@ function changePrevSessionType(){
 
 function validateNCBIEntries() {
     let incorrectAcc = []
+    let correctAcc = []
     let textArea = document.getElementById("ncbiEntriesTextArea");
     let errorBox = document.getElementById("accessionsError")
     let lines = textArea.value.split("\n");
@@ -194,6 +195,14 @@ function validateNCBIEntries() {
                 valid = false;
             }
         }
+
+        if (correctAcc.includes(lines[i])){
+            incorrectAcc.push(lines[i]);
+            errorBox.style.display = "block";
+            valid = false;
+        }
+
+        correctAcc.push(lines[i]);
     }
 
     if (valid) {
@@ -207,6 +216,7 @@ function validateNCBIEntries() {
 
             for (let i=0; i<everything.length; i++){
                 if (!(everything[i] === "")){
+
                     // console.log(everything[i]);
                     let opt = document.createElement("option");
                     opt.text = everything[i];
