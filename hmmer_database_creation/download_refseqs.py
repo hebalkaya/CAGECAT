@@ -5,6 +5,8 @@ import ftplib
 import time
 from sys import argv
 
+from config import CONF
+
 # genus = 'Streptomyces'
 # term = f'(((prokaryota[orgn] AND ("representative genome"[refseq category] OR "reference genome"[refseq category])) AND (latest[filter] AND all[filter] NOT anomalous[filter]))) AND {genus}[Organism]'
 
@@ -154,6 +156,13 @@ if __name__ == '__main__':
     fn = init()
 
     paths = parse_paths(fn)
+    species_count = len(paths) / 2
+    if species_count < CONF['REPRESENTATIVE_GENOMES_THRESHOLD']:
+        print(f'Skipping {argv[1].capitalize()} genus. ({species_count} species < { CONF["REPRESENTATIVE_GENOMES_THRESHOLD"]})')
+        with open('too_few_species.txt', 'w' if os.path.exists('too_few_species.txt') else 'a') as outf:
+            outf.write(f'{argv[1].capitalize()} {species_count}')
+        exit(0)
+
     download_files(paths)
 
     with open(COMPLETE_DOWNLOADS_FILE, 'w' if not os.path.exists(COMPLETE_DOWNLOADS_FILE) else 'a') as outf:

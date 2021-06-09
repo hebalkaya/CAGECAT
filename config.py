@@ -10,7 +10,8 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:///status.db',
         "HOST": "0.0.0.0",
         "PORT": 5001,
         "DOWNLOAD_FOLDER": "jobs",
-        "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases"
+        "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases",
+        "REPRESENTATIVE_GENOMES_THRESHOLD": 50
         }
 # DEBUG=True
 #
