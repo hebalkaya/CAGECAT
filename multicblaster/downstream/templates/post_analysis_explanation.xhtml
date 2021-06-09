@@ -1,5 +1,6 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpTexts %}
 
 {% block title %}Post-analysis{% endblock %}
 {% block navigationBar %}
@@ -7,6 +8,9 @@
 {% endblock %}
 
 {% block content %}
+    <h2>Homologous gene cluster search</h2>
+    {{ renderHelpTexts(helps['multicblaster_search']) }}
+
     <h2>Visualization with query clusters</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et felis in mi pharetra hendrerit. Proin in viverra enim. Fusce quis tristique turpis, in varius nisi. Pellentesque sollicitudin ligula vel venenatis interdum. Vivamus eget tempor sem. Praesent id aliquam leo, in lacinia est. Quisque faucibus convallis venenatis. Vestibulum in aliquet lectus. Aenean tincidunt laoreet felis ut convallis. Integer luctus erat ullamcorper ante aliquet tempor. Quisque ac tristique urna, varius scelerisque risus. Duis id elit cursus elit mattis finibus. Aliquam erat volutpat. Ut pulvinar risus quis nibh ullamcorper vestibulum. Pellentesque congue dignissim iaculis. Duis enim mi, pretium vel sollicitudin tempor, aliquet ac est.</p>
 

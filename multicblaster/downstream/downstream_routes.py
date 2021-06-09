@@ -10,6 +10,7 @@ from flask import Blueprint, request
 import multicblaster.parsers as pa
 import multicblaster.utils as ut
 from multicblaster.routes_helpers import show_template
+from multicblaster.const import POST_ANALYSIS_EXPLANATIONS
 
 downstream = Blueprint('downstream', __name__, template_folder="templates")
 
@@ -21,7 +22,7 @@ def post_analysis_explanation() -> str:
     Output:
         - HTML represented in string format
     """
-    return show_template("post_analysis_explanation.xhtml", help_enabled=False)
+    return show_template("post_analysis_explanation.xhtml", help_enabled=False, helps=POST_ANALYSIS_EXPLANATIONS)
 
 
 @downstream.route("/clinker_query", methods=["POST"])

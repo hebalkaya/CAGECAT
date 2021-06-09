@@ -208,3 +208,14 @@
     {% endif %}
     </ul>
 {% endmacro %}
+
+
+{% macro renderHelpTexts(texts) %}
+    {% for paragraph_title, content in texts %}
+        {% if paragraph_title %}
+            <h3>{{ paragraph_title }}</h3>
+        {% endif %}
+
+        <p>{{ content }}</p>
+    {% endfor %}
+{% endmacro %}

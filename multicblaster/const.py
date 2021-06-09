@@ -101,4 +101,8 @@ for label, d in HELP_OVERVIEW:
 
     HELP_TEXTS.update(d)
 
-print(HELP_TEXTS['selectedQuery'])
+### Post-analysis explanation section
+
+# format is: {module: [(paragraph_title, text), ...]}
+# empty paragraph title means that no header should be generated
+POST_ANALYSIS_EXPLANATIONS = {'multicblaster_search': [('', '')]}
