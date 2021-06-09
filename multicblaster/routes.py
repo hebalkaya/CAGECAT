@@ -163,12 +163,14 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     last_job_id = rthelp.enqueue_jobs(rthelp.add_title_email_to_job(
         new_jobs, request.form))
 
+    last_job = ut.fetch_job_from_db(job_id)
     return redirect(url_for("result.show_result",
                             job_id=last_job_id,
-                            pj=ut.fetch_job_from_db(last_job_id).depending_on,
+                            pj=last_job.depending_on,
                             store_job_id=True,
-                            j_type=ut.fetch_job_from_db(
-                                last_job_id).job_type))
+                            job_title=last_job.title,
+                            email=last_job.email,
+                            j_type=last_job.job_type))
 
 
 @app.route("/help")
