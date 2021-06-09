@@ -213,7 +213,7 @@
 {% macro renderHelpTexts(texts) %}
     {% for paragraph_title, content in texts %}
         {% if paragraph_title %}
-            <h3>{{ paragraph_title }}</h3>
+            <h4>{{ paragraph_title }}</h4>
         {% endif %}
 
         <p>{{ content }}</p>
