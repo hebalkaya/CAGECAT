@@ -144,7 +144,7 @@
 {#            TODO: center the iframe and still be able to click the downstream buttons#}
 
     {% if module in modules_with_plots %}
-        {% if module != 'clinker_full' %}
+        {% if module not in ('clinker_full', 'gne') %}
         <div>
             <div class="centered">
                 <button class="button smaller" onclick="showSelection('cluster')">Select clusters</button>
