@@ -4,6 +4,7 @@
 {% from "macros.xhtml" import renderHelpButton %}
 {% from "macros.xhtml" import createBackButton %}
 {% from "macros.xhtml" import showSelectedClusters %}
+{% from 'macros.xhtml' import renderJobDetailsInput %}
 
 {% block title %}clinker query{% endblock %}
 
@@ -14,11 +15,15 @@
 {% block content %}
     {{ createBackButton() }}
 
+
     <h2 class="indent">Visualize with query clusters</h2>
 
     <form action="{{ submit_url }}" method="post">
         <input type="hidden" name="job_type" value="clinker_query"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
+
+        {{ renderJobDetailsInput() }}
+
         {{ filtering_section('clusters', selected_scaffolds, selected_clusters) }}
         <label class="fieldset-label" for="outputSection">Output</label>
         <fieldset>

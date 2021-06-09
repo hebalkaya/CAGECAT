@@ -4,6 +4,7 @@
 {% from "macros.xhtml" import renderHelpButton %}
 {% from "macros.xhtml" import createBackButton %}
 {% from "macros.xhtml" import showSelectedClusters %}
+{% from 'macros.xhtml' import renderJobDetailsInput %}
 
 {% block title %}Extract clusters{% endblock %}
 
@@ -19,6 +20,8 @@
 
     <input type="hidden" name="job_type" value="extract_clusters"/>
     <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
+
+    {{ renderJobDetailsInput() }}
 
     {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}
 

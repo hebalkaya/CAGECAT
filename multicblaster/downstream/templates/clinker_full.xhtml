@@ -3,6 +3,7 @@
 {% from "macros.xhtml" import prev_session %}
 {% from "macros.xhtml" import result_table %}
 {% from "macros.xhtml" import renderHelpButton %}
+{% from 'macros.xhtml' import renderJobDetailsInput %}
 
 {% block title %}Visualization{% endblock %}
 
@@ -11,11 +12,14 @@
 {% endblock %}
 
 {% block content %}
+
     <h2 class="indent">Visualization of all results</h2>
 
     <div id="clinkerContent" class="moduleContent">
         <form action="{{submit_url}}" method="post">
             <input type="hidden" name="job_type" value="clinker_full"/>
+
+            {{ renderJobDetailsInput() }}
 
             <label class="fieldset-label" for="clinkerInputSection">Input</label>
             <fieldset id="clinkerInputSection">

@@ -37,13 +37,15 @@ initReadQueryFile();
 {#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
 </div>
 
-    {{ renderJobDetailsInput() }}
+
 <!--Module contents-->
 <div>
 
 <div id="searchModuleContent" class="moduleContent">
 <form method="post" enctype="multipart/form-data" action="{{submit_url}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
+
+    {{ renderJobDetailsInput() }}
 
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">

@@ -3,6 +3,7 @@
 {% from "macros.xhtml" import prev_session %}
 {% from "macros.xhtml" import result_table %}
 {% from "macros.xhtml" import renderHelpButton %}
+{% from 'macros.xhtml' import renderJobDetailsInput %}
 
 {% block title %}Neighbourhood{% endblock %}
 
@@ -16,8 +17,10 @@
     <div id="gneModuleContent" class="moduleContent">
         <form method="post" enctype="multipart/form-data" action="{{submit_url}}"
               name="gneOptionForm">
-
             <input type="hidden" name="job_type" value="gne" required="required"/>
+
+            {{ renderJobDetailsInput() }}
+
             <label class="fieldset-label" for="gneInputSection">Input</label>
             <fieldset id="gneInputSection">
                 {{ prev_session('gne', true, request.args['prev_id'], false) }}
