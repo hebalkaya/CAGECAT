@@ -237,13 +237,15 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
         # for parent job to finish
 
         main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job, i == len(new_jobs)-1)
-        print(main_search_job_id)
+        # print(main_search_job_id)
 
         j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
                   redis_id=job.id,
                   depending_on="null" if
                   depending_job is None else new_job[4],  # is our own job ID
-                  main_search_job=main_search_job_id)
+                  main_search_job=main_search_job_id,
+                  title=new_job[6],
+                  email=new_job[7])
 
         print(j)
 
@@ -305,7 +307,6 @@ def get_parent_job(new_job, is_last_job):
 
 
 def add_title_email_to_job(new_jobs, form):
-    # TODO: is temp until job will be a class
     all_new_jobs = []
 
     for j in new_jobs:

@@ -160,6 +160,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
+
     last_job_id = rthelp.enqueue_jobs(rthelp.add_title_email_to_job(
         new_jobs, request.form))
 

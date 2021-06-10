@@ -105,7 +105,9 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       "intermediate_max_clusters": "Max. amount of clusters to search intermediate genes for",
                       "mode": "Mode",
                       "selectedGenus": "Genus",
-                      "hmmProfiles": "HMM profile identifiers"
+                      "hmmProfiles": "HMM profile identifiers",
+                      'job_title': 'Job title',
+                      'email': 'E-mail'
                       }
 
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",

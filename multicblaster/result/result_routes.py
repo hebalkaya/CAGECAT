@@ -90,6 +90,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status,
                                  settings=settings,
                                  store_job_id=store_job_id,
+                                 j_title=ut.fetch_job_from_db(job_id).title,
                                  j_type=j_type,
                                  stat_code=302)
 
@@ -101,6 +102,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status="waiting for preceding job to finish",
                                  settings=settings,
                                  parent_job=pj,
+                                 j_title=ut.fetch_job_from_db(job_id).title,
                                  store_job_id=store_job_id,
                                  j_type=j_type)
         else:

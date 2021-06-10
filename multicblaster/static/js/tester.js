@@ -627,14 +627,15 @@ function addRequiredSeqs(){
     document.getElementById("requiredSequences").value = selected.join(";");
 }
 
-function storeJobId(id, j_type){
+function storeJobId(id, j_type, j_title){
     let maxToShow = 250;
 
     for (let i=0; i<maxToShow; i++){
         let str = i.toString();
         if (localStorage.getItem(str) === null){
             // console.log("here we are");
-            let msg = id + ";" + j_type + ";" + currentTime.toLocaleString();
+            let msg = id + ";" + j_type + ";" + currentTime.toLocaleString() + ';' + j_title;
+            console.log(msg);
             localStorage.setItem(str, msg);
             // console.log(localStorage);
             return;
