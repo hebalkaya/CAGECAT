@@ -649,5 +649,5 @@ input[type="submit"]{
 }
 
 .selector-custom-height {
-    height: 230px;
+    height: 230px; /*could be different when more downstream modules become available*/
 }

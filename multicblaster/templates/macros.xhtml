@@ -214,10 +214,22 @@
 {% macro renderHelpTexts(texts) %}
     {% for paragraph_title, content in texts %}
         {% if paragraph_title %}
-            <h4>{{ paragraph_title }}</h4>
+            {% if paragraph_title == 'list' %}
+                <ol>
+                {% for point in content %}
+                    <li>{{ point }}</li>
+                {% endfor %}
+                </ol>
+            {% else %}
+                <h4>{{ paragraph_title }}</h4>
+                <p>{{ content }}</p>
+            {% endif %}
         {% endif %}
 
-        <p>{{ content }}</p>
+        {% if not paragraph_title %}
+            <p>{{ content }}</p>
+        {% endif %}
+
     {% endfor %}
 {% endmacro %}
 
