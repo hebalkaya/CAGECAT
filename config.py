@@ -11,8 +11,14 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:///status.db',
         "PORT": 5001,
         "DOWNLOAD_FOLDER": "jobs",
         "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases",
-        "REPRESENTATIVE_GENOMES_THRESHOLD": 50
+        "REPRESENTATIVE_GENOMES_THRESHOLD": 50,
+        'DOMAIN': 'http://192.168.2.65:5001/'
         }
+
+EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
+         'SENDER_EMAIL': 'ranberg1892124a2@gmail.com',
+         'PASSWORD': '', # intentionally left out
+         }
 # DEBUG=True
 #
 # HOST="0.0.0.0"

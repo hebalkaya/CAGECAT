@@ -1,10 +1,14 @@
 # package imports
 import subprocess
 import os
+import ssl
+import smtplib
 
 # own project imports
-from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status
+from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status, \
+    fetch_job_from_db
 from multicblaster import db
+from config import EMAIL, CONF
 
 # typing imports
 import werkzeug.datastructures
@@ -179,9 +183,33 @@ def pre_job_formalities(job_id: str) -> None:
     mutate_status(job_id, "start", db)
 
 
-def send_notification_email():
-    # TODO: actually create
-    pass
+def send_notification_email(job):
+
+    port = 465
+    # TODO: possibly change sender_email and create a better message
+    subj = f'Your job: {job.title}' if job.title else f'Your job with ID {job.id}'
+    message = f"""Subject: {subj} has finished\n\nDear researcher,
+    
+The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).
+
+You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{CONF['DOMAIN']}/results/{job.id}\n
+Also, downloading your results is available on this web page.
+
+Thank you for using our service. 
+
+>> If you found this service useful, spread the word.
+    
+Kind regards,
+    
+The multicblaster team
+    """
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(EMAIL['SMTP_SERVER'], port, context=context) as server:
+        server.login(EMAIL['SENDER_EMAIL'], EMAIL['PASSWORD'])
+        server.sendmail(EMAIL['SENDER_EMAIL'], job.email, message)
+
+    # print('Successfully sent email!')
 
 
 def post_job_formalities(job_id: str, return_code: int) -> None:
@@ -203,7 +231,9 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
 
-    send_notification_email()
+    j =  fetch_job_from_db(job_id)
+    if j.email:
+        send_notification_email(j)
 
 
 def store_query_sequences_headers(log_path, input_type, data):
