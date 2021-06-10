@@ -699,6 +699,10 @@ function showDetailedPreviousJobs(){
         td2.innerText = msg[2];
         tr.appendChild(td2);
 
+        let td3 = document.createElement("td");
+        td3.innerText = msg[3];
+        tr.appendChild(td3);
+
         overview.insertBefore(tr, overview.childNodes[0]);
     }
     let tr = document.createElement("tr");
@@ -714,6 +718,10 @@ function showDetailedPreviousJobs(){
     let th2 = document.createElement("th");
     th2.innerText = "Date";
     tr.appendChild(th2);
+
+    let th3 = document.createElement("th");
+    th3.innerText = "Title";
+    tr.appendChild(th3);
 
     overview.insertBefore(tr, overview.childNodes[0]);
 }
