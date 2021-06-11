@@ -37,13 +37,7 @@ function changeFooterVisibility(){
 }
 
 function toggleElementVisibility(id) {
-    var elem = document.getElementById(id);
-
-    if (elem.style.display === "none") {
-        elem.style.display = "block";
-    } else {
-        elem.style.display = "none";
-    }
+    $('#'+id)[0].classList.toggle('no-display');
 }
 
 function toggleDisabled(){
@@ -738,17 +732,6 @@ function showHelp(textType){
     }
 }
 
-function jalala () {
-
-    let elem = document.getElementById("explanationColumn");
-
-    if (elem.style.display === "none") {
-        elem.style.display = "block";
-    }
-    else {
-        elem.style.display = "none";
-    }
-}
 
 function toggleExplanationColumn() {
     let rightCol = document.getElementById('explanationColumn');
@@ -834,25 +817,25 @@ function lastPage () {
     window.history.back();
 }
 
-function addAnimation() {
-    let elem = document.getElementById('jalala');
-
-    if (elem.style.display === 'block'){
-        elem.classList.add('ani-tester');
-        elem.classList.remove('ani-fadein');
-        setTimeout(function () {
-            elem.style.display = 'none';
-            // TODO: create class for it
-        }, 499)
-    }
-    else {
-        elem.classList.remove('ani-tester')
-        elem.style.display = 'block';
-        elem.classList.add('ani-fadein');
-
-    }
-
-}
+// function addAnimation() {
+//     let elem = document.getElementById('jalala');
+//
+//     if (elem.style.display === 'block'){
+//         elem.classList.add('ani-tester');
+//         elem.classList.remove('ani-fadein');
+//         setTimeout(function () {
+//             elem.style.display = 'none';
+//             // TODO: create class for it
+//         }, 499)
+//     }
+//     else {
+//         elem.classList.remove('ani-tester')
+//         elem.style.display = 'block';
+//         elem.classList.add('ani-fadein');
+//
+//     }
+//
+// }
 
 function determineHeight() {
     var body = document.body,
