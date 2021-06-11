@@ -192,7 +192,7 @@ def send_notification_email(job):
     
 The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).
 
-You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{CONF['DOMAIN']}/results/{job.id}\n
+You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{CONF['DOMAIN']}results/{job.id}\n
 Also, downloading your results is available on this web page.
 
 Thank you for using our service. 

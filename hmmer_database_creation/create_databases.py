@@ -1,8 +1,7 @@
 import subprocess
 import time
 import os
-from download_refseqs import BASE_DIR, COMPLETE_DOWNLOADS_FILE
-from config import CONF
+from config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
 
 SLEEPING_TIME = 60
 CPUS = "10"
