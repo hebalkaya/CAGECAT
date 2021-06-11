@@ -65,13 +65,17 @@ function removeRequiredAndEnabled(id){
 }
 
 function showInputOptions(selectionOption, resetQueries){
+    let genomeFileUploadDiv = $('#genomeFileUploadDiv')[0];
+    let ncbiEntriesDiv = $('#ncbiEntriesDiv')[0];
+    let searchPrevJobOptions = $('#searchPrevJobOptions')[0];
+
     if (resetQueries){
-        document.getElementById("requiredSequencesSelector").options.length = 0;
+        $('#requiredSequencesSelector')[0].options.length = 0;
     }
     if (selectionOption === 'fasta'){
-        document.getElementById('genomeFileUploadDiv').style.display = 'block';
-        document.getElementById('ncbiEntriesDiv').style.display = 'none';
-        document.getElementById('searchPrevJobOptions').style.display = 'none';
+        genomeFileUploadDiv.classList.remove('no-display');
+        ncbiEntriesDiv.classList.add('no-display');
+        searchPrevJobOptions.classList.add('no-display');
 
         // enable
         setRequiredAndEnabled('genomeFile');
@@ -83,14 +87,14 @@ function showInputOptions(selectionOption, resetQueries){
 
         enableOrDisableOption('searchSection', true);
 
-        document.getElementById("accessionsError").style.display = "none";
+        document.getElementById("accessionsError").classList.add('no-display');
         document.getElementById("submitSearchForm").removeAttribute("disabled");
 
     }
     else if (selectionOption === 'ncbi_entries'){
-        document.getElementById('genomeFileUploadDiv').style.display = 'none';
-        document.getElementById('ncbiEntriesDiv').style.display = 'block';
-        document.getElementById('searchPrevJobOptions').style.display = 'none';
+        genomeFileUploadDiv.classList.add('no-display');
+        ncbiEntriesDiv.classList.remove('no-display');
+        searchPrevJobOptions.classList.add('no-display');
 
         // enable
         setRequiredAndEnabled('ncbiEntriesTextArea')
@@ -104,9 +108,9 @@ function showInputOptions(selectionOption, resetQueries){
         validateNCBIEntries();
 
     } else if (selectionOption === 'prev_session'){
-        document.getElementById('genomeFileUploadDiv').style.display = 'none';
-        document.getElementById('ncbiEntriesDiv').style.display = 'none';
-        document.getElementById('searchPrevJobOptions').style.display = 'block';
+        genomeFileUploadDiv.classList.add('no-display');
+        ncbiEntriesDiv.classList.add('no-display');
+        searchPrevJobOptions.classList.remove('no-display');
 
         //enable
         setRequiredAndEnabled('searchEnteredJobId');
@@ -119,7 +123,7 @@ function showInputOptions(selectionOption, resetQueries){
 
         enableOrDisableOption('searchSection', false);
 
-        document.getElementById("accessionsError").style.display = "none";
+        document.getElementById("accessionsError").classList.add('no-display');
         document.getElementById("submitSearchForm").removeAttribute("disabled");
 
         if (!resetQueries){
@@ -133,10 +137,10 @@ function showModule(ev, moduleName){
 
     moduleContent = document.getElementsByClassName('moduleContent');
     for (i=0; i < moduleContent.length; i++){
-        moduleContent[i].style.display ="none";
+        moduleContent[i].classList.add('no-display');
     }
 
-    document.getElementById(moduleName).style.display = "block";
+    document.getElementById(moduleName).classList.remove('no-display');
 
     // Could add "active" to the moduleSelector class for better visualisation
 }
@@ -185,14 +189,14 @@ function validateNCBIEntries() {
         if (!lines[i].match(ncbiPattern)) {
             if (lines[i] !== "") {
                 incorrectAcc.push(lines[i]);
-                errorBox.style.display = "block";
+                errorBox.classList.remove('no-display');
                 valid = false;
             }
         }
 
         if (correctAcc.includes(lines[i])){
             incorrectAcc.push(lines[i]);
-            errorBox.style.display = "block";
+            errorBox.classList.remove('no-display');
             valid = false;
         }
 
@@ -201,7 +205,7 @@ function validateNCBIEntries() {
 
     if (valid) {
         textArea.classList.remove("invalid");
-        errorBox.style.display = "none";
+        errorBox.classList.add('no-display');
         document.getElementById("submitSearchForm").disabled = false;
 
         let requiredSequences = document.getElementById("requiredSequencesSelector");
@@ -487,8 +491,7 @@ function getOutputFromPlot(plotting_type){
 
 function postLoadingIFrame(){
     document.getElementById("resultLoadedMessage").classList.add('fade-out');
-    document.getElementById("loadingImage").style.display = "none";
-    // TODO: use classes for display: none of elements
+    document.getElementById("loadingImage").classList.add('no-display');
 }
 
 
@@ -585,12 +588,12 @@ function readFileContents() {
     reader.onload = function(evt){
         // TODO: check if file adheres to FASTA format
         if (!valid_ext.includes(ext)){
-            document.getElementById("fileUploadIncorExt").style.display = "block";
+            document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
             return;
         }
         else {
-            document.getElementById("fileUploadIncorExt").style.display = "none";
+            document.getElementById("fileUploadIncorExt").classList.add('no-display');
         }
         let splitted = reader.result.split("\n");
         for (let i=0; i<splitted.length; i++){

@@ -651,3 +651,15 @@ input[type="submit"]{
 .selector-custom-height {
     height: 230px; /*could be different when more downstream modules become available*/
 }
+
+.job-display{
+    font-family: monospace;
+    font-size: 16px;
+}
+
+.downstream-div{
+    height: 310px;
+    width: 20%;
+    border-bottom: 2px solid #5284a7;
+    border-bottom-right-radius: 5px;
+}

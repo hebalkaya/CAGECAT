@@ -85,17 +85,17 @@ initReadQueryFile();
                        required="required" accept=".fasta, .fa .fsa .fna .faa" onchange="readFileContents()"/>Query file</label>
                 {{ renderHelpButton('genomeFile') }}
 
-                <div class="error-message" id="fileUploadIncorExt" style="display: none">
+                <div class="error-message no-display" id="fileUploadIncorExt">
                     <span id="fileUploadIncorExtText"></span>
                 </div>
             </div>
 
-            <div id="ncbiEntriesDiv" style="display: none">
+            <div id="ncbiEntriesDiv" class="no-display">
                 <textarea rows="6" cols="25" class="ncbi-entries" id="ncbiEntriesTextArea"
                           name="ncbiEntriesTextArea" placeholder="NCBI accessions" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
                 {{ renderHelpButton('ncbiEntriesTextArea') }}
             </div>
-            <div class="error-message" id="accessionsError" style="display: none">
+            <div class="error-message no-display" id="accessionsError">
                 <span id="accessionsErrorText"></span>
             </div>
             {{ prev_session('search', false, prev_run_id, false) }}

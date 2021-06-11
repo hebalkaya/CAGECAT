@@ -49,7 +49,7 @@
 
         {% for id, module, status, job_category in connected_jobs %}
             <tr>
-                <td style="font-family: monospace;font-size: 16px;"><a href="{{ url_for('result.show_result', job_id=id) }}">{{ id }}</a></td>
+                <td class="job-display"><a href="{{ url_for('result.show_result', job_id=id) }}">{{ id }}</a></td>
                 <td>{{ module }}</td>
                 <td>{{ status }}</td>
                 <td>{{ job_category }}</td>
@@ -62,7 +62,7 @@
 {% if downstream_modules %}
             <div class="partly-height">
     <div>
-            <div class="column leftColumn" id="downStreamModulesDiv" style="height: 310px;width: 20%;border-bottom: 2px solid #5284a7;border-bottom-right-radius: 5px;">
+            <div class="column leftColumn downstream-div" id="downStreamModulesDiv">
 {#            TODO: make class for style except width#}
 
         {% if 'clinker_query' in downstream_modules %}
