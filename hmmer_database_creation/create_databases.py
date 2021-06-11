@@ -44,7 +44,7 @@ def list_present_databases(path):
     return genera
 
 
-def main():
+if __name__ == '__main__':
     init()
 
     try:
@@ -90,5 +90,3 @@ def main():
                         outf.write(f'{genus}\n')
     except KeyboardInterrupt:
         print('Exiting...')
-
-main()

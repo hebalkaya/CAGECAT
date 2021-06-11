@@ -6,6 +6,7 @@ import time
 from sys import argv
 
 from config import CONF
+import create_databases as cr
 
 # genus = 'Streptomyces'
 # term = f'(((prokaryota[orgn] AND ("representative genome"[refseq category] OR "reference genome"[refseq category])) AND (latest[filter] AND all[filter] NOT anomalous[filter]))) AND {genus}[Organism]'
@@ -152,9 +153,28 @@ def download_files(paths, blocksize=33554432):
 
         validate_file(gb_path, key)
 
-if __name__ == '__main__':
-    fn = init()
 
+def check_if_already_has_too_few_species():
+    with open('too_few_species.txt') as inf:
+        genera = [g.strip().split()[0] for g in inf.readlines()]
+
+    if argv[1].capitalize() in genera:
+        print(f'Skipping {argv[1].capitalize()}: (known: too few species)')
+        exit(0)
+
+
+def check_if_db_already_exists():
+    if argv[1] in cr.list_present_databases(CONF['DATABASE_FOLDER']):
+        print(f'{argv[1].capitalize()} database already present. Skipped.')
+        exit(0)
+
+
+if __name__ == '__main__':
+    check_if_already_has_too_few_species()
+    check_if_db_already_exists()  # TODO: not efficient as everytime the
+    # script is ran the file gets parsed again
+
+    fn = init()
     paths = parse_paths(fn)
     species_count = len(paths.values())
     if species_count < CONF['REPRESENTATIVE_GENOMES_THRESHOLD']:
