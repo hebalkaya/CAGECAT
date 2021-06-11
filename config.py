@@ -17,8 +17,14 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:///status.db',
 
 EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
          'SENDER_EMAIL': 'ranberg1892124a2@gmail.com',
-         'PASSWORD': '', # intentionally left out
+         'PASSWORD': '!kjasd2SA2qSA;', # intentionally left out
          }
+
+BASE_URL = 'ftp.ncbi.nlm.nih.gov'
+BASE_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
+COMPLETE_DOWNLOADS_FILE = '/lustre/BIF/nobackup/belt017/complete_downloads.txt'
+SUCCESSFULL_DOWNLOADS_FN = 'successfull_downloads.txt'
+
 # DEBUG=True
 #
 # HOST="0.0.0.0"
