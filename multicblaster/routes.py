@@ -141,15 +141,24 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
     elif job_type == "clinker_full":
         prev_job_id = request.form["clinkerEnteredJobId"]
-        extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-        # TODO: change options?
+        prev_job = ut.fetch_job_from_db(prev_job_id)
 
-        file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                                               f"{prev_job_id}_session.json")
-        genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
 
-        new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
-        new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, job_id, "clinker_full"))
+        if prev_job.job_type == 'extract_clusters':
+            genome_files_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results")
+            depending_job = None
+        else:
+            extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
+            # TODO: change options?
+
+            file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                                                   f"{prev_job_id}_session.json")
+            new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
+
+            genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
+            depending_job = job_id
+
+        new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, depending_job, "clinker_full"))
 
     elif job_type == "clinker_query":
         prev_job_id = request.form["prev_job_id"]
@@ -164,7 +173,8 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
     last_job_id = rthelp.enqueue_jobs(rthelp.add_title_email_to_job(
         new_jobs, request.form))
 
-    last_job = ut.fetch_job_from_db(job_id)
+    last_job = ut.fetch_job_from_db(last_job_id)
+    # print(last_job)
     return redirect(url_for("result.show_result",
                             job_id=last_job_id,
                             pj=last_job.depending_on,
