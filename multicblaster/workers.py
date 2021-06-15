@@ -101,9 +101,10 @@ def cblaster_search(job_id, options=None, file_path=None):
 
 
     # add filtering options
-    cmd.extend(["--max_evalue", options["max_evalue"],
-                "--min_identity", options["min_identity"],
-                "--min_coverage", options["min_query_coverage"]])
+    if options['mode'] != 'hmm':
+        cmd.extend(["--max_evalue", options["max_evalue"],
+                    "--min_identity", options["min_identity"],
+                    "--min_coverage", options["min_query_coverage"]])
 
     # add clustering options
     cmd.extend(["--gap", options["max_intergenic_gap"],
