@@ -259,8 +259,19 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
     return last_job_id
 
 
-def add_parent_search_and_child_jobs_to_db(new_job, is_last_job):
-    # TODO: documentation
+def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
+                                                            "TODO", t.Union[str, None],
+                                                            t.Union[str, None], str],
+                                           is_last_job: bool) -> str:
+    """Adds the main search job and its children to the new_job in db
+
+    Input:
+        - a job to be added with its options. For index explanation: see the
+            enqueue_jobs function
+
+    Output:
+        - job id of the main search job
+    """
     if new_job[5] == "search":
         main_search_job_id = "null"
     else:
