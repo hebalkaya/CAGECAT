@@ -7,7 +7,6 @@ RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker
 
 RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
 
-RUN cat "Copying files"
 COPY supervisord.conf /etc/supervisord.conf
 COPY repo/ /repo/
 COPY process_logs/ /process_logs/
