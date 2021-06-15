@@ -11,6 +11,6 @@ COPY supervisord.conf /etc/supervisord.conf
 COPY repo/ /repo/
 COPY process_logs/ /process_logs/
 
-RUN cblaster config --email "server@server.com"
+RUN cblaster config --email "matthias.vandenbelt@wur.nl"
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
