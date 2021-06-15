@@ -10,8 +10,8 @@ RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip inst
 COPY supervisord.conf /etc/supervisord.conf
 COPY repo/ /repo/
 COPY process_logs/ /process_logs/
+COPY present_databases.txt /present_databases.txt
 
-RUN python /repo/get_databases.py /hmm_databases
 RUN cblaster config --email "matthias.vandenbelt@wur.nl"
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
