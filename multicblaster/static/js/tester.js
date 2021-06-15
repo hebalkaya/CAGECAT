@@ -499,8 +499,8 @@ function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
         // document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
         // document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
-        console.log(getSelectedQueries());
-        console.log($('#selectedQueriesSelector option'))
+        // console.log(getSelectedQueries());
+        // console.log($('#selectedQueriesSelector option'))
         $('#selectedQueries')[0].value = getSelectedQueries();
     }
     else if (downstream_prog === "clusters"){
@@ -510,7 +510,8 @@ function addSelectedToForm(downstream_prog) {
     else if (downstream_prog === "corason"){
         //TODO: modify how clusters are given
         $('#selectedQuery')[0].value = getSelectedQueries();
-        $('#selectedClusters2')[0].value = getSelectedClusters();
+        $('#selectedClusters2')[0].value = getSelectedClusters('');
+        $('#unselectedClusters2')[0].value = getSelectedClusters('un');
         // document.getElementById("selectedQuery").value = document.getElementById("selectedQueriesOverview").innerText;
         // document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
         // document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
@@ -531,12 +532,14 @@ function addSelectedToForm(downstream_prog) {
 }
 
 // TODO: modularize below functions
-function getSelectedClusters(){
+function getSelectedClusters(prefix){
     let msg = '';
-    $('#selectedClustersSelector option').each(function(){
+    $('#' + prefix + 'selectedClustersSelector option').each(function(){
         msg += this.innerText;
         msg += '\n'
     });
+    console.log(prefix);
+    console.log(msg);
     return msg.trimEnd('\n');
 }
 
@@ -1023,3 +1026,19 @@ function addAccordionListeners() {
         });
     }
 }
+
+// function getClusterNumbers(){
+//     console.log();
+//     let splitted = getSelectedClusters('un').split('\n');
+//     for (let i=0; i < splitted.length; i++){
+//         let index = splitted[i].indexOf('Cluster ') + 8;
+//         let index2 = splitted[i].indexOf(',');
+//         console.log(index);
+//         console.log(splitted[i][index])
+//         console.log(index2);
+//         console.log(splitted[i][index2])
+//         if (index2 !== index + 1){
+//             console.log()
+//         }
+//     }
+// }

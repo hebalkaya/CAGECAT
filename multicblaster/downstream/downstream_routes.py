@@ -122,10 +122,21 @@ def corason() -> str:
 
     query = request.form["selectedQuery"]
 
+    selected_clusters = request.form["selectedClusters"].split('\r\n')
+
+    if len(selected_clusters) == 1:
+        clust_numbers = pa.parse_selected_cluster_numbers(
+            request.form["unselectedClusters"],
+            ut.CLUST_NUMBER_PATTERN_W_SCORE, format_nicely=False).split(',')
+    else:
+        clust_numbers = pa.parse_selected_cluster_numbers(
+            request.form["selectedClusters"],
+            ut.CLUST_NUMBER_PATTERN_W_SCORE , format_nicely=False).split(',')
+
     return show_template("corason.xhtml", submit_url=ut.SUBMIT_URL,
                          query=query,
-                         cluster_headers=
-                         request.form["selectedClusters"].split('\r\n'),
+                         cluster_headers=selected_clusters,
+                         clust_numbers=clust_numbers,
                          # cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
 

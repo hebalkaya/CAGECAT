@@ -34,8 +34,18 @@ Corason
             <div class="input-layer">
                 <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>
                 {{ renderHelpButton('selectedReferenceCluster') }}
-                <input readonly="readonly" type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>
+                <select required="required" name="selectedReferenceCluster" id="selectedReferenceCluster">
+                        {% for num in clust_numbers %}
+                            <option value="{{ num }}">{{ num }}</option>
+                        {% endfor %}
+                </select>
             </div>
+{#            <div class="input-layer">#}
+{#                <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>#}
+{#                {{ renderHelpButton('selectedReferenceCluster') }}#}
+{#                <input readonly="readonly" type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>#}
+{#                #}
+{#            </div>#}
 
             <div class="input-layer">
 {#                TODO: change how this is shown. Also make it readonly#}

@@ -89,8 +89,8 @@ def format_cluster_numbers(cluster_numbers: t.List[int]) -> t.List[str]:
     return [f"{g[0]}-{g[-1]}" if len(g) != 1 else str(g[0]) for g in groups]
 
 
-def parse_selected_cluster_numbers(selected_clusters: str, pattern) -> str:
-    # TODO: pattern documentation
+def parse_selected_cluster_numbers(selected_clusters: str, pattern, format_nicely=True) -> str:
+    # TODO: pattern documentation: has changed
     """Parses the cluster numbers of the user-selected clusters
 
     Input:
@@ -107,12 +107,16 @@ def parse_selected_cluster_numbers(selected_clusters: str, pattern) -> str:
     """
     if selected_clusters:  # empty string evaluates to False
         cluster_numbers = []
-
+        # print(selected_clusters)
         for cluster in selected_clusters.split("\r\n"):
             cluster_numbers.append(int(re.findall(pattern,
                                                   cluster)[0]))
 
-        cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
+        # print(cluster_numbers)
+        if format_nicely:
+            cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
+        else:
+            cluster_numbers = ",".join([str(n) for n in cluster_numbers])
     else:
         cluster_numbers = ""
 

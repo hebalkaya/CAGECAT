@@ -73,7 +73,7 @@ EXTR_SEQS_HELPS = {'downloadSeqs': {'title': 'Download sequences', 'module': '',
 EXTR_CLUST_HELPS = {'prefix': {'title': 'File prefix', 'module': '', 'text': 'Start of the name for each created cluster file, e.g. <prefix>_cluster1.\n\nRequired: no'},
                     'format': {'title': 'File format', 'module': '', 'text': 'Format of the resulting files.\n\nRequired: no'}}
 CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'text': 'Query to be analyzed\n\nRequired: yes'},
-                 'selectedReferenceCluster': {'title': 'Selected reference cluster', 'module': '', 'text': 'TODO'},
+                 'selectedReferenceCluster': {'title': 'Selected reference cluster', 'module': '', 'text': 'The cluster number of which cluster should act as the reference cluster. The cluster numbers correspond with the cluster numbers of the preceding job. Note that the reference cluster must include the query gene, or Corason will fail to execute.\n\nRequired: yes'},
                  'selectedClustersToSearch': {'title': 'Selected clusters to search in', 'module': '', 'text': 'TODO'}, # is this list parameter?
                  'evalue': {'title': 'Minimal e-value', 'module': '', 'text': 'Minimal e-value for a gene to be considered a hit.\n\nRequired: yes'},
                  'bitscore': {'title': 'Bitscore', 'module': '', 'text': 'TODO'},
