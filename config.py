@@ -12,7 +12,8 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:///status.db',
         "DOWNLOAD_FOLDER": "jobs",
         "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases",
         "REPRESENTATIVE_GENOMES_THRESHOLD": 50,
-        'DOMAIN': 'http://192.168.2.65:5001/'
+        'DOMAIN': 'http://192.168.2.65:5001/',
+        'PRESENT_DATABASES_LOCATION': '/present_databases.txt'
         }
 
 EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',

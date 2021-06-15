@@ -16,7 +16,6 @@ if __name__ == '__main__':
     if len(argv) == 1 or len(argv) > 2:
         raise IOError(f'Invalid number of arguments: {len(argv)}')
 
-
     genera = list_present_databases(argv[1])
     with open('present_databases.txt', 'w') as outf:
         outf.write(','.join(genera))
