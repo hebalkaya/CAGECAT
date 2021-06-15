@@ -504,7 +504,7 @@ function addSelectedToForm(downstream_prog) {
         $('#selectedQueries')[0].value = getSelectedQueries();
     }
     else if (downstream_prog === "clusters"){
-        $('#selectedClusters1')[0].value = getSelectedClusters();
+        $('#selectedClusters1')[0].value = getSelectedClusters('');
         // document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
     }
     else if (downstream_prog === "corason"){
@@ -538,8 +538,6 @@ function getSelectedClusters(prefix){
         msg += this.innerText;
         msg += '\n'
     });
-    console.log(prefix);
-    console.log(msg);
     return msg.trimEnd('\n');
 }
 
