@@ -91,7 +91,7 @@ def cblaster_search(job_id, options=None, file_path=None):
         cmd.extend(options["hmmProfiles"].split())
 
         # PFAM database
-        cmd.extend(['--database_pfam', config.DATABASE_FOLDER])
+        cmd.extend(['--database_pfam', config.CONF['PFAM_DB_FOLDER']])
 
         # database to search in
         # cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])

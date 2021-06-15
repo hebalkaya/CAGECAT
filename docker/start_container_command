@@ -3,6 +3,7 @@
  # 2. cwd has empty process_logs folder
  # 3. cwd has supervisord.conf file
  # 4. cwd has get_databases.py file
+ # 5. cwd has empty pfam_db folder
 
 docker rm multicblaster_trial && \
 rm -rf repo && git clone git@git.wur.nl:belt017/thesis_repo.git && \
