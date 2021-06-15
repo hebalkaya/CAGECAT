@@ -109,7 +109,10 @@ initReadQueryFile();
                 <div class="input-layer">
                     <label class="select-label" for="selectedGenus">Genus</label>
                     <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">
-                        <option value="Streptomyces">Streptomyces</option>
+
+                        {% for g in genera %}
+                            <option value="{{ g }}">{{ g }}</option>
+                        {% endfor %}
                     </select>
                     {{ renderHelpButton('selectedGenus') }}
                 </div>

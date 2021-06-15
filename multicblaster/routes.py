@@ -17,6 +17,7 @@ import multicblaster.parsers as pa
 import multicblaster.const as co
 import multicblaster.routes_helpers as rthelp
 import multicblaster.workers as rf
+import multicblaster.const as const
 
 # !!!! TODO: Note that the return types could change when deploying Flask !!!!
 
@@ -46,7 +47,7 @@ def home_page(prev_run_id: str = None) -> str:
                                 submit_url=ut.SUBMIT_URL,
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
-                                headers=headers)
+                                headers=headers, genera=const.PRESENT_DATABASES)
 
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])

@@ -19,7 +19,7 @@ def forge_database_args(options):
     # TODO: handle recompute scenario
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
-        base.append(os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta'))
+        base.append(os.path.join(config.DATABASE_FOLDER, f'{options["selectedGenus"]}.fasta'))
         # TODO: should me modular
 
     if options['mode'] in ('remote', 'combi_remote'):
