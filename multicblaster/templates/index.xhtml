@@ -42,7 +42,7 @@ initReadQueryFile();
 <div>
 
 <div id="searchModuleContent" class="moduleContent">
-<form method="post" enctype="multipart/form-data" action="{{submit_url}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
+<form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     {{ renderJobDetailsInput() }}
