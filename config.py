@@ -4,7 +4,7 @@
 # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # changeable
-CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:///status.db',
+CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////database.db',
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "DEBUG": True,
         "HOST": "0.0.0.0",
