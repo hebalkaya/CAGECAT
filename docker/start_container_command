@@ -10,7 +10,7 @@ rm -rf repo && git clone git@git.wur.nl:belt017/thesis_repo.git && \
 mv thesis_repo/ repo && \
 python get_databases.py /lustre/BIF/nobackup/belt017/databases && \
 docker build -t multicblaster . && \
-docker run --name multicblaster_trial -p 5001:80 --ip 172.17.0.14 --mount source=multicblaster_storage,target=/repo/multicblaster -v /lustre/BIF/nobackup/belt017/databases:/hmm_databases -d multicblaster
+docker run --name multicblaster_trial -p 5001:88 --ip 172.17.0.14 --mount source=multicblaster_storage,target=/repo/multicblaster -v /lustre/BIF/nobackup/belt017/databases:/hmm_databases -d multicblaster
 
 
 # if we want to run the container
