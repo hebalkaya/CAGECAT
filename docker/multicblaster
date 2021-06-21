@@ -20,6 +20,6 @@ server {
 
     location / {
         uwsgi_pass  flask;
-        include     /repo/uwsgi_params;
+        include     /repo/docker/uwsgi_params;
     }
 }
