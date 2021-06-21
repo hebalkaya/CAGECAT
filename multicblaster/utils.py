@@ -26,7 +26,7 @@ CLUST_NUMBER_PATTERN_W_CLINKER_SCORE = r"\(Cluster (\d+), \d+\.\d+ score\)"
 
 JOBS_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
-SUBMIT_URL = "/multicblaster/submit_job" # TODO: change when root URL is changed
+SUBMIT_URL = "/submit_job"
 PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
