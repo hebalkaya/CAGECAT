@@ -13,6 +13,7 @@ COPY repo/ /repo/
 COPY process_logs/ /process_logs/
 COPY present_databases.txt /present_databases.txt
 
+COPY uwsgi_params /repo/uwsgi_params
 COPY multicblaster /etc/nginx/sites-available/multicblaster
 COPY multicblaster.ini /repo/multicblaster.ini
 COPY config.ini /.config/cblaster/config.ini
