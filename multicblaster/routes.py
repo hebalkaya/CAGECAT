@@ -176,13 +176,13 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
 
     last_job = ut.fetch_job_from_db(last_job_id)
     # print(last_job)
-    return redirect(url_for("result.show_result",
-                            job_id=last_job_id,
-                            pj=last_job.depending_on,
-                            store_job_id=True,
-                            job_title=last_job.title,
-                            email=last_job.email,
-                            j_type=last_job.job_type))
+    return rthelp.show_template('redirect.xhtml', redir_url=url_for("result.show_result",
+                                                                    job_id=last_job_id,
+                                                                    pj=last_job.depending_on,
+                                                                    store_job_id=True,
+                                                                    job_title=last_job.title,
+                                                                    email=last_job.email,
+                                                                    j_type=last_job.job_type))
 
 
 @app.route("/help")
