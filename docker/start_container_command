@@ -1,6 +1,6 @@
 # if we want to recreate the container. Make sure that:
  # 1. cwd has Dockerfile
- # 2. cwd has empty process_logs folder
+ # 2. cwd process_logs folder with maintenance folder in it
  # 3. cwd has supervisord.conf file
  # 4. cwd has get_databases.py file
  # 5. cwd has empty pfam_db folder

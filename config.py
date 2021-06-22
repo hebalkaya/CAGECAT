@@ -14,8 +14,9 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/multicblaster/database.db',
         'PFAM_DB_FOLDER': '/pfam_db',
         'MOUNTED_DB_FOLDER': '/hmm_databases',
         "REPRESENTATIVE_GENOMES_THRESHOLD": 50,
-        'DOMAIN': 'http://192.168.2.65:5001/',
-        'PRESENT_DATABASES_LOCATION': '/present_databases.txt'
+        'DOMAIN': 'http://www.bioinformatics.nl/multicblaster/',
+        'PRESENT_DATABASES_LOCATION': '/present_databases.txt',
+        'MAINTENANCE_LOGS': '/process_logs/maintenance'
         }
 
 EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
