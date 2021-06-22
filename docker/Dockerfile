@@ -19,11 +19,11 @@ COPY present_databases.txt /present_databases.txt
 #COPY multicblaster.ini /repo/multicblaster.ini DONE
 #COPY config.ini /.config/cblaster/config.ini
 
-RUN mkdir -p /.config/cblaster
+RUN mkdir -p /root/.config/cblaster
 
 #RUN cblaster config --email "matthias.vandenbelt@wur.nl"
 RUN mv /repo/docker/multicblaster /etc/nginx/sites-available/multicblaster
-RUN mv /repo/docker/config.ini /.config/cblaster/config.ini
+RUN mv /repo/docker/config.ini /root/.config/cblaster/config.ini
 RUN mv /repo/aux_files/crontab /etc/crontab
 
 RUN ln -s /etc/nginx/sites-available/multicblaster /etc/nginx/sites-enabled
