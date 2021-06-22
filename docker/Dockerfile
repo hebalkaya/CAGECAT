@@ -27,6 +27,5 @@ RUN mv /repo/docker/config.ini /.config/cblaster/config.ini
 RUN mv /repo/aux_files/crontab /etc/crontab
 
 RUN ln -s /etc/nginx/sites-available/multicblaster /etc/nginx/sites-enabled
-RUN cron
 
 CMD ["/usr/bin/supervisord", "-c", "/repo/docker/supervisord.conf"]
