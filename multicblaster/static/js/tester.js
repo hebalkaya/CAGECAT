@@ -667,7 +667,7 @@ function showPreviousJobs(disableBodyOnLoad){
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.classList.add("no-link-decoration");
-    a.href = ROOT_URL + "/results";
+    a.href = ROOT_URL + "/results/";
     a.innerText =  "Previous jobs";
     li.appendChild(a);
 
