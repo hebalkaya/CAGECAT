@@ -658,7 +658,7 @@ function showPreviousJobs(disableBodyOnLoad){
         li.classList.add("jobs");
 
         let a = document.createElement("a");
-        a.href = "/results/" + jobId;
+        a.href = ROOT_URL + "/results/" + jobId;
         a.innerText = jobId;
 
         li.appendChild(a);
@@ -685,7 +685,7 @@ function showDetailedPreviousJobs(){
         let a = document.createElement("a");
         a.style = 'font-size: 17px;';
         a.classList.add('monospaced');
-        a.href = "/results/" + msg[0];
+        a.href = ROOT_URL + "/results/" + msg[0];
         a.innerText = msg[0]
         td.appendChild(a);
         tr.appendChild(td);
