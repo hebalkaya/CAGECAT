@@ -4,6 +4,7 @@ var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 var selectedQueries = []
 var currentTime = Date();
+var ROOT_URL = '/multicblaster'     // TODO: change root if root changes
  // TODO: remove unused functions
 
 function enableOrDisableOption(id, enable) {
@@ -666,7 +667,7 @@ function showPreviousJobs(disableBodyOnLoad){
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.classList.add("no-link-decoration");
-    a.href = "/results";
+    a.href = ROOT_URL + "/results";
     a.innerText =  "Previous jobs";
     li.appendChild(a);
 
@@ -725,8 +726,7 @@ function showDetailedPreviousJobs(){
 }
 
 function showHelp(textType){
-    // TODO: change root if root changes
-    $.get('/multicblaster/docs/' + textType, function(data, status){
+    $.get(ROOT_URL + '/docs/' + textType, function(data, status){
         document.getElementById("explanationTitle").innerText = data.title;
         document.getElementById("explanationModule").innerText = "Module: " + data.module;
         document.getElementById("explanationText").innerText = data.text;
