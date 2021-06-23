@@ -17,7 +17,7 @@
 
     <h2 class="indent">Visualize with query clusters</h2>
 
-    <form action="{{ submit_url }}" method="post">
+    <form action="{{url_for('submit_job')}}" method="post">
         <input type="hidden" name="job_type" value="clinker_query"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 

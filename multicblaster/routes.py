@@ -44,7 +44,6 @@ def home_page(prev_run_id: str = None) -> str:
         module_to_show = None
 
     return rthelp.show_template("index.xhtml",
-                                submit_url=ut.SUBMIT_URL,
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
                                 headers=headers, genera=const.PRESENT_DATABASES)

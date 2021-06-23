@@ -16,7 +16,7 @@
 {#    {{ createBackButton() }}#}
     <h2 class="indent">Extract clusters</h2>
 
-<form action="{{submit_url}}" method="post">
+<form action="{{url_for('submit_job')}}" method="post">
 
     <input type="hidden" name="job_type" value="extract_clusters"/>
     <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>

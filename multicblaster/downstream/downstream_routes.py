@@ -40,7 +40,6 @@ def clinker_query() -> str:
         request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
     return show_template("clinker_query.xhtml",
-                         submit_url=ut.SUBMIT_URL,
                          prev_job_id=request.form["job_id"],
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
@@ -64,7 +63,7 @@ def extract_sequences() -> str:
     # if selected_queries == "No queries selected":
     #     selected_queries = None
 
-    return show_template("extract-sequences.xhtml", submit_url=ut.SUBMIT_URL,
+    return show_template("extract-sequences.xhtml",
                          selected_queries=request.form["selectedQueries"].split('\r\n'),
                          # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])
@@ -94,7 +93,7 @@ def extract_clusters() -> str:
     cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters,
                                                         pattern)
 
-    return show_template("extract-clusters.xhtml", submit_url=ut.SUBMIT_URL,
+    return show_template("extract-clusters.xhtml",
                          # selected_scaffolds=selected_scaffolds,
                          cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
@@ -133,7 +132,7 @@ def corason() -> str:
             request.form["selectedClusters"],
             ut.CLUST_NUMBER_PATTERN_W_SCORE , format_nicely=False).split(',')
 
-    return show_template("corason.xhtml", submit_url=ut.SUBMIT_URL,
+    return show_template("corason.xhtml",
                          query=query,
                          cluster_headers=selected_clusters,
                          clust_numbers=clust_numbers,
@@ -142,9 +141,9 @@ def corason() -> str:
 
 @downstream.route('/neighbourhood')
 def neighbourhood() -> str:
-    return show_template('neighbourhood.xhtml', submit_url=ut.SUBMIT_URL)
+    return show_template('neighbourhood.xhtml')
 
 @downstream.route('/clinker_full')
 def clinker_full() -> str:
 
-    return show_template('clinker_full.xhtml', submit_url=ut.SUBMIT_URL)
+    return show_template('clinker_full.xhtml')

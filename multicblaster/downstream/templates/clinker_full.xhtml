@@ -16,7 +16,7 @@
     <h2 class="indent">Visualization of all results</h2>
 
     <div id="clinkerContent" class="moduleContent">
-        <form action="{{submit_url}}" method="post">
+        <form action="{{url_for('submit_job')}}" method="post">
             <input type="hidden" name="job_type" value="clinker_full"/>
 
             {{ renderJobDetailsInput() }}
