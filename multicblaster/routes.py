@@ -185,7 +185,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                   j_type=last_job.job_type)
     print(url)
     print(url[14:])
-    return redirect(url)
+    return rthelp.show_template('redirect.xhtml', url=url)
 
 
 @app.route("/help")
