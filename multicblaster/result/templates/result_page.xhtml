@@ -13,9 +13,12 @@
 {% block content %}
     <div>
         <div class="indent">
+        {% if job_title %}
+            <h2>{{ job_title }}</h2>
+        {% endif %}
+            <h3>{{ module }} ({{ j_id }})</h3>
+            <p>Current status: <b>{{ status }}</b></p>
 
-            <p>The status of job: <b>{{ j_id }}</b> is: {{ status }}</p>
-            <p>Job type: <b>{{ module }}</b></p>
 
             <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
                   enctype="multipart/form-data" name="download_settings">

@@ -63,6 +63,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  content_size=ut.format_size(size),
                                  module=module, modules_with_plots=
                                  ut.MODULES_WHICH_HAVE_PLOTS,
+                                 job_title=job.title,
                                  # log_contents=log_contents,
                                  downstream_modules=
                                  co.DOWNSTREAM_MODULES_OPTIONS[module],
@@ -89,7 +90,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status,
                                  settings=settings,
                                  store_job_id=store_job_id,
-                                 j_title=ut.fetch_job_from_db(job_id).title,
+                                 j_title=job.title,
                                  j_type=j_type,
                                  stat_code=302)
 
@@ -101,7 +102,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status="waiting for preceding job to finish",
                                  settings=settings,
                                  parent_job=pj,
-                                 j_title=ut.fetch_job_from_db(job_id).title,
+                                 j_title=job.title,
                                  store_job_id=store_job_id,
                                  j_type=j_type)
         else:
