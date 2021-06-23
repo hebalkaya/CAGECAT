@@ -6,7 +6,6 @@ from multicblaster import app
 with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
     PRESENT_DATABASES = inf.read().strip().split(',')
     PRESENT_DATABASES.sort()
-    # print(PRESENT_DATABASES)
 
 EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "selectedScaffolds": "",  # empty strings as

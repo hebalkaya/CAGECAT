@@ -17,7 +17,8 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/multicblaster/database.db',
         'DOMAIN': 'http://www.bioinformatics.nl/multicblaster/',
         'PRESENT_DATABASES_LOCATION': '/present_databases.txt',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
-        'SERVER_PREFIX': '/repo/multicblaster'
+        'SERVER_PREFIX': '/repo/multicblaster',
+        'DEV_TEAM_EMAIL': 'matthias.vandenbelt@wur.nl'
         }
 
 EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',

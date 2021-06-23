@@ -18,6 +18,7 @@ import multicblaster.const as co
 import multicblaster.routes_helpers as rthelp
 import multicblaster.workers as rf
 import multicblaster.const as const
+from config import CONF
 
 # !!!! TODO: Note that the return types could change when deploying Flask !!!!
 
@@ -206,26 +207,26 @@ def feedback_page():
 
 @app.route('/feedback/submit', methods=['POST'])
 def submit_feedback():
+    for email in (CONF['DEV_TEAM_EMAIL'], request.form['email']):
     # TODO: send an email to us as well as a copy to the submitter
-    contents = f"""Subject: multicblaster feedback report\n\n#########################################
-    Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly. We kindly ask you for future replies to reply above the '#####' line for smooth correspondence.
-    
-    Submitted info:
-    
-    Feedback type: {request.form['feedback_type']}
-    E-mail address: {request.form['email']}
-    Job ID: {request.form['job_id']}
-    Message: {request.form['message']}
-    
-    Kind regards,
-    
-    The Multicblaster team
-    https://wwww.bioinformatics.nl/multicblaster
-    """
+        ut.send_email('multicblaster feedback report',
+                      f'''#########################################
 
-    print(contents)
+Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly. We kindly ask you for future replies to reply above the '#####' line for smooth correspondence.
+
+-----------------------------------------
+Submitted info:
+
+Feedback type: {request.form['feedback_type']}
+E-mail address: {request.form['email']}
+Job ID: {request.form['job_id']}
+Message: {request.form['message']}
+
+-----------------------------------------''',
+                      email)
 
     return redirect(url_for('feedback_submitted'))
+
 
 @app.route('/feedback/submitted')
 def feedback_submitted():

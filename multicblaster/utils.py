@@ -7,10 +7,12 @@ import os
 import random
 from rq.registry import StartedJobRegistry
 from datetime import datetime
-import signal
+import smtplib
+import ssl
 
 # own project imports
 from multicblaster.models import Job, Statistic
+from config import EMAIL
 
 # typing imports
 import werkzeug.datastructures
@@ -400,9 +402,20 @@ def read_headers(job_id):
 
     return headers
 
-# Below are experimental functions
-def handle_soft_interrupt(signalNumber, frame):
-    print(f"Terminated by signal {signalNumber}")
-    print(frame)
+def send_email(subject, message, receiving_email):
+    port = 465
 
-signal.signal(signal.SIGTERM, handle_soft_interrupt)
+    message = f'''Subject: {subject}\n\n{message}\nThank you for using our service. 
+
+>> If you found this service useful, spread the word.
+    
+Kind regards,
+    
+The multicblaster team
+https://www.bioinformatics.nl/multicblaster'''
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(EMAIL['SMTP_SERVER'], port, context=context) as server:
+        server.login(EMAIL['SENDER_EMAIL'], EMAIL['PASSWORD'])
+        server.sendmail(EMAIL['SENDER_EMAIL'], receiving_email, message)
