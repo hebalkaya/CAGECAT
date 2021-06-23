@@ -1,0 +1,33 @@
+{% extends "base.xhtml" %}
+{% from "macros.xhtml" import showNavigationBar %}
+
+{% block title %}Tools{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('tools') }}
+{% endblock %}
+
+{% block content %}
+    <div class="indent">
+        <div>
+            <h1>Implemented tools</h1>
+            <p>This page displays an overview of the implemented tools on ^this service^.</this></p>
+        </div>
+
+        <div>
+            <h2>multicblaster</h2>
+            <p><a href="https://github.com/gamcil/cblaster">GitHub repository</a></p>
+            <p>Wiki</p>
+            <p>Publication</p>
+        </div>
+
+        <div>
+            <h2>Corason</h2>
+            <p>GitHub repository</p>
+            <p>Wiki</p>
+            <p>Publication</p>
+        </div>
+    </div>
+
+
+{% endblock %}

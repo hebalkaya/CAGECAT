@@ -232,6 +232,10 @@ Message: {request.form['message']}
 def feedback_submitted():
     return rthelp.show_template('feedback_submitted.xhtml', help_enabled=False)
 
+@app.route('/tools')
+def tools_page():
+    return rthelp.show_template('implemented_tools.xhtml', help_enabled=False)
+
 @app.route("/docs/<input_type>")
 def get_help_text(input_type):
     """Returns help text corresponding to the requested input parameter

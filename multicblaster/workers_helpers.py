@@ -1,14 +1,12 @@
 # package imports
 import subprocess
 import os
-import ssl
-import smtplib
 
 # own project imports
 from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status, \
     fetch_job_from_db, send_email
 from multicblaster import db
-from config import EMAIL, CONF
+from config import CONF
 
 # typing imports
 import werkzeug.datastructures
