@@ -166,7 +166,7 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
     else:  # can only be POST as GET and POST are the only allowed methods
         job_id = request.form["job_id"]
         if ut.fetch_job_from_db(job_id) is not None:
-            return redirect(url_for('result.show_result', job_id=job_id))
+            return show_template('redirect.xhtml', url=url_for('result.show_result', job_id=job_id))
         else:
             return show_template("job_not_found.xhtml", job_id=job_id)
             # TODO: create invalid job ID template

@@ -182,8 +182,6 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
                   job_title=last_job.title,
                   email=last_job.email,
                   j_type=last_job.job_type)
-    print(url)
-    print(url[14:])
     return rthelp.show_template('redirect.xhtml', url=url)
 
 
@@ -240,24 +238,3 @@ def invalid_method():
     """
     return redirect(url_for("home_page"))
 
-
-@app.route("/testing")
-def testing():
-    # TODO: remove
-    html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1; console.log(document.getElementById('counter'));
-    console.log("hi");window.postMessage("This is the actual message", "*");}</script><span id="counter" style="color: white">0</span>
-    <button id="TestingSomething" onclick="a()">Testerrr</>
-    """
-
-    html = """<script>let var1 = 0;function a(){var1 += 1; document.getElementById('counter').textContent = var1;parent.window.postMessage("how should", "*");}</script><span id="counter" style="color: white">0</span>
-    <button id="TestingSomething" onclick="a()">Testerrr</>
-    """
-
-    with open(r"test_runs\tester.html") as inf:
-        html = inf.read()
-
-    return rthelp.show_template("testing.xhtml", html_contents=html)
-
-@app.route("/jala")
-def ani_tester():
-    return rthelp.show_template('ani_tester.xhtml')
