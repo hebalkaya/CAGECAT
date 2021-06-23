@@ -61,7 +61,6 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             return show_template("result_page.xhtml", j_id=job_id,
                                  status=status,
                                  content_size=ut.format_size(size),
-                                 compr_formats=ut.COMPRESSION_FORMATS,
                                  module=module, modules_with_plots=
                                  ut.MODULES_WHICH_HAVE_PLOTS,
                                  # log_contents=log_contents,
@@ -122,26 +121,13 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
 
     Output:
         - Downloads zipped file to the client's side. Therefore, the files
-            stored on the server are transferred to the client
+            stored on the server are transferred to the client.
 
-    Currently only supports downloading of the .zip file. No other
-    compression formats are currently supported, even though the user has the
-    ability to select a different compression format.
+    Currently only supports downloading of the .zip file.
     """
-    # execute convert_compression.py
-    submitted_data = request.form
-
-    # if len(submitted_data) != 2:  # should be job_id and compression_type
-    #     return redirect(url_for("home_page"))
-    if 'compression_type' in submitted_data:
-        compr_type = submitted_data["compression_type"]
-
-        # TODO: first, execute compression_conversion script
-        # to go from ours server-default compression to the desired compresion
-        # format
 
     # TODO: send_from_directory is a safer approach, but this suits for now
-    # as Flask should not be serving files when deployed
+    # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
     return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"],
                                   job_id, "results", f"{job_id}.zip"))
 
