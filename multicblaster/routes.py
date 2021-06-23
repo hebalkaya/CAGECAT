@@ -195,6 +195,41 @@ def help_page() -> str:
     # TODO: actually create
     return rthelp.show_template("help.xhtml", help_enabled=False)
 
+# TODO: all feedback things could be in a blueprint
+@app.route('/feedback')
+def feedback_page():
+    """ TODO: document
+
+    :return:
+    """
+    return rthelp.show_template('feedback.xhtml', help_enabled=False)
+
+@app.route('/feedback/submit', methods=['POST'])
+def submit_feedback():
+    # TODO: send an email to us as well as a copy to the submitter
+    contents = f"""Subject: multicblaster feedback report\n\n#########################################
+    Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly. We kindly ask you for future replies to reply above the '#####' line for smooth correspondence.
+    
+    Submitted info:
+    
+    Feedback type: {request.form['feedback_type']}
+    E-mail address: {request.form['email']}
+    Job ID: {request.form['job_id']}
+    Message: {request.form['message']}
+    
+    Kind regards,
+    
+    The Multicblaster team
+    https://wwww.bioinformatics.nl/multicblaster
+    """
+
+    print(contents)
+
+    return redirect(url_for('feedback_submitted'))
+
+@app.route('/feedback/submitted')
+def feedback_submitted():
+    return rthelp.show_template('feedback_submitted.xhtml', help_enabled=False)
 
 @app.route("/docs/<input_type>")
 def get_help_text(input_type):
@@ -220,6 +255,7 @@ def get_help_text(input_type):
         return rthelp.show_template("page_not_found.xhtml", stat_code=404)
 
     return co.HELP_TEXTS[input_type]
+
 
 
 # Error handlers

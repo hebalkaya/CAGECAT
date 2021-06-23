@@ -1,0 +1,16 @@
+{% extends "base.xhtml" %}
+{% from "macros.xhtml" import showNavigationBar %}
+
+{% block title %}
+    Submitted
+{% endblock %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('feedback') }}
+{% endblock %}
+
+{% block content %}
+    <div class="indent">
+        <h3>Your feedback has been submitted.</h3>
+    </div>
+{% endblock %}
