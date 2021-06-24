@@ -7,12 +7,10 @@
     <title>{% block title %}{% endblock %}</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
     <script type="application/javascript"
-            src="{{ url_for('static', filename='js/tester.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='new_styles.css') }}"></link>
-    <link rel="apple-touch-icon" sizes="180x180"
-          href="{{url_for('static', filename='/images/icon/apple-touch-icon.png')}}"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='/images/icon/favicon-32x32.png')}}"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='/images/icon/favicon-16x16.png')}}"/>
+            src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"></link>
+{#    <link rel="icon" type="image/svg" href="{{ url_for('static', filename='images/icon_multicblaster.svg') }}"/>#}
+{#TODO: change icon#}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <body onload="showPreviousJobs(false);{% block scripts %}{% endblock %}determineHeight();">

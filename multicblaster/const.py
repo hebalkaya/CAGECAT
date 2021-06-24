@@ -41,7 +41,7 @@ GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': '
                  'generalDecimals': {'title': 'Number of decimals', 'module': '', 'text': 'Total decimal places to use when saving score values.\n\nRequired: no'},
                  'generalHideHeaders': {'title': 'Hide headers', 'module': '', 'text': 'Hide headers when saving result output.\n\nRequired: no'}}
 SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'FASTA file containing protein sequences to be searched.'},
-                'ncbiEntriesTextArea': {'title': 'Search from NCBI entries', 'module': '', 'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nEntering the same identifier twice will prevent you from continuing.'},
+                'ncbiEntriesTextArea': {'title': 'Search from NCBI entries', 'module': '', 'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering the same identifier twice will prevent you from continuing.'},
                 'entrez_query': {'title': 'Filter using Entrez query', 'module': '', 'text': 'An NCBI Entrez search term for pre-search filtering of an NCBI database when using command line BLASTp (e.g. Aspergillus[organism]\n\nRequired: no'},
                 'database_type': {'title': 'Database to search in', 'module': '', 'text': 'Database to be searched: NCBI database name.\n\nRequired: yes'},
                 'max_hits': {'title': 'Maximum hits to show', 'module': '', 'text': 'Maximum total hits to save from a remote BLAST search. Setting this value too low may result in missed hits/clusters.\n\nRequired: yes'},
