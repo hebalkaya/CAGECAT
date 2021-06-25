@@ -2,6 +2,7 @@
 {% from "macros.xhtml" import show_options %}
 {% from "macros.xhtml" import showNavigationBar %}
 
+{% block head %}<meta http-equiv="refresh" content="30">{% endblock %}
 {% block title %}Status: {{j_id}}{% endblock %}
 
 {% block navigationBar %}
@@ -16,6 +17,7 @@ redirect('{{  url_for('result.show_result', job_id=j_id)}}');
 {% endblock %}
 
 {% block content %}
+<p>This page refreshes automatically every 30 seconds.</p>
 <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 
 {% if parent_job != "null" %}

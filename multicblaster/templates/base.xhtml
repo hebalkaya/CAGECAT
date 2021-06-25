@@ -12,6 +12,7 @@
 {#    <link rel="icon" type="image/svg" href="{{ url_for('static', filename='images/icon_multicblaster.svg') }}"/>#}
 {#TODO: change icon#}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+{% block head %}{% endblock %}
 </head>
 <body onload="showPreviousJobs(false);{% block scripts %}{% endblock %}determineHeight();">
 
