@@ -1,0 +1,60 @@
+{% extends "base.xhtml" %}
+{% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import renderHelpButton %}
+{% from 'macros.xhtml' import renderJobDetailsInput %}
+
+{% block title %}BiG-SCAPE{% endblock %}
+
+{% block navigationBar %}
+{{ showNavigationBar('post-analysis') }}{% endblock %}
+
+{% block content %}
+    <div class="indent">
+        <h2 class="">BiG-SCAPE</h2>
+
+        <form action="{{ url_for('submit_job') }}">
+            <input type="hidden" name="job_type" value="big_scape"/>
+            {{ renderJobDetailsInput() }}
+
+            <div class="input-layer">
+                <label class="input-label">Label</label>
+                {{ renderHelpButton('big_scape-label') }}
+                <input name="label" type="text"/>
+            </div>
+
+            <div class="input-layer">
+
+            </div>
+
+            <div class="input-layer">
+
+            </div>
+
+            <div class="input-layer">
+
+            </div>
+
+            <div class="input-layer">
+
+            </div>
+
+            <div class="input-layer">
+
+            </div>
+
+            <div class="input-layer">
+
+            </div>
+
+            <div class="input-layer">
+
+            </div><label>Label</label>
+
+            <div class="input-layer centered">
+                <input class="button" type="submit"/>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
