@@ -17,38 +17,119 @@
             {{ renderJobDetailsInput() }}
 
             <div class="input-layer">
-                <label class="input-label">Label</label>
+                <label for="big_scape-label" class="input-label">Label</label>
                 {{ renderHelpButton('big_scape-label') }}
-                <input name="label" type="text"/>
+                <input id="big_scape-label" name="label" type="text"/>
             </div>
 
             <div class="input-layer">
-
+                <label class="checkbox-label" for="singletons">Include singletons</label>
+                {{ renderHelpButton('big_scape-singletons') }}
+                <input id="singletons" name="include_singletons" type="checkbox"/>
             </div>
 
             <div class="input-layer">
-
+                <label class="input-label" for="domain_overlap_cutoff">Domain overlap cutoff</label>
+                {{ renderHelpButton('big_scape-domain_overlap_cutoff') }}
+                <input id="domain_overlap_cutoff" name="domain_overlap_cutoff" type="number"/>
+{#                TODO: check accepted values#}
             </div>
 
             <div class="input-layer">
-
+                <label class="input-label" for="min_bgc_size">Min. BGC size</label>
+                {{ renderHelpButton('big_scape-min_bgc_size') }}
+                <input id="min_bgc_size" name="min_bgc_size" type="number"/>
             </div>
 
             <div class="input-layer">
-
+                <label class="checkbox-label" for="mix">Mix</label>
+                {{ renderHelpButton('big_scape-mix') }}
+                <input id="mix" name="mix" type="checkbox"/>
             </div>
 
             <div class="input-layer">
-
+                <label class="checkbox-label" for="classify">No classify</label>
+                {{ renderHelpButton('big_scape-classify') }}
+                <input id="classify" name="classify" type="checkbox"/>
             </div>
 
             <div class="input-layer">
-
+                <label class="select-label" for="banned_classes">Banned classes</label>
+                {{ renderHelpButton('big_scape-') }}
+                <select multiple="multiple" name="banned_classes" id="banned_classes">
+                    <option value="test">tester</option>
+{#                    TODO: add more options#}
+                </select>
             </div>
 
             <div class="input-layer">
+                <label class="input-label" for="cutoffs">Cutoffs</label>
+                {{ renderHelpButton('big_scape-cutoffs') }}
+                <input id="cutoffs" name="cutoffs" type="text" pattern="\d\.\d+"/>
+{#                Multiple numbers are allowed, separated by spaces#}
+            </div>
 
-            </div><label>Label</label>
+            <div class="input-layer">
+                <label class="checkbox-label" for="clans_off">Clans off</label>
+                {{ renderHelpButton('big_scape-clans_off') }}
+                <input name="clans_off" id="clans_off" type="checkbox"/>
+{#                TODO: activate or deactivate options when toggled#}
+            </div>
+
+            <div class="input-layer">
+                <label class="input-label" for="clan_cutoff">Clan cutoff</label>
+                {{ renderHelpButton('big_scape-clan_cutoff') }}
+                <input type="text" pattern="\d.\d+ \d.\d+" name="clan_cutoff" id="clan_cutoff" value="0.3 0.7"/>
+{#                TODO: check if values are between 0.0 and 1.0 when field is left#}
+{#                TODO: should be 2 numbers#}
+            </div>
+
+            <div class="input-layer">
+                <label class="checkbox-label" for="hybrids">Hybrids off</label>
+                {{ renderHelpButton('big_scape-hybrids') }}
+                <input name="hybrids" id="hybrids" type="checkbox"/>
+            </div>
+
+            <div class="input-layer">
+                <label class="select-label" for="mode">Mode</label>
+                {{ renderHelpButton('big_scape-mode') }}
+                <select id="mode" name="mode">
+                    <option value="global">global</option>
+                    <option value="glocal">glocal</option>
+                    <option value="auto">auto</option>
+                </select>
+
+            </div>
+
+            <label for="mibig-fieldset" class="fieldset-label">Use BGCs from MIBiG</label>
+            <fieldset id="mibig-fieldset">
+                <div class="input-layer">
+                    <label class="checkbox-label" for="mibig">Use MIBiG 2.1</label>
+                    {{ renderHelpButton('big_scape-mibig') }}
+                    <input name="mibig" id="mibig" type="checkbox"/>
+                </div>
+
+                <div class="input-layer">
+                    <label class="checkbox-label" for="mibig14">Include MIBiG 1.4</label>
+                    {{ renderHelpButton('big_scape-mibig14') }}
+                    <input name="mibig14" id="mibig14" type="checkbox"/>
+                </div>
+
+                <div class="input-layer">
+                    <label class="checkbox-label" for="mibig13">Include MIBiG 1.3</label>
+                    {{ renderHelpButton('big_scape-mibig13') }}
+                    <input name="mibig13" id="mibig13" type="checkbox"/>
+                </div>
+            </fieldset>
+
+            <div class="input-layer">
+                <label class="select-label" for="query_bgc">Query BGC</label>
+                {{ renderHelpButton('big_scape-query_bgc') }}
+                <select id="query_bgc" name="query_bgc">
+                    <option>TODO</option>
+{#                    TODO: add selected clusters programmatically#}
+                </select>
+            </div>
 
             <div class="input-layer centered">
                 <input class="button" type="submit"/>
