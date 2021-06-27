@@ -91,10 +91,9 @@
 
                 <div>
                     <label class="checkbox-label" >
-                        <input name="clans_off" type="checkbox"/>Clans off
+                        <input onchange="$('#clan_cutoff')[0].toggleAttribute('disabled');" name="clans_off" type="checkbox"/>Clans off
                     </label>
                     {{ renderHelpButton('big_scape-clans_off', True) }}
-    {#                TODO: activate or deactivate options when toggled#}
                 </div>
 
                 <div class="input-layer">
@@ -102,7 +101,6 @@
                     {{ renderHelpButton('big_scape-clan_cutoff') }}
                     <input type="text" pattern="\d.\d+ \d.\d+" name="clan_cutoff" id="clan_cutoff" value="0.3 0.7"/>
     {#                TODO: check if values are between 0.0 and 1.0 when field is left#}
-    {#                TODO: should be 2 numbers#}
                 </div>
             </fieldset>
 
