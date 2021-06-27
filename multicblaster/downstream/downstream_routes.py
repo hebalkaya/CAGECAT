@@ -147,3 +147,7 @@ def neighbourhood() -> str:
 def clinker_full() -> str:
 
     return show_template('clinker_full.xhtml')
+
+@downstream.route('/big-scape')
+def bigscape() -> str:
+    return show_template('BiG-SCAPE.xhtml')
