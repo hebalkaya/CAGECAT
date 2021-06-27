@@ -1041,3 +1041,15 @@ function addAccordionListeners() {
 //         }
 //     }
 // }
+
+function checkClanCutoffValues(){
+    let elem = $('#clan_cutoff')[0];
+    let splitted = elem.value.split(' ');
+
+    if (parseFloat(splitted[0]) >= 0.0 && parseFloat(splitted[0]) <= 1 && parseFloat(splitted[1]) >= 0.0 && parseFloat(splitted[1]) <=1 ){
+        elem.classList.remove('invalid');
+    }
+    else {
+        elem.classList.add('invalid');
+    }
+}
