@@ -424,11 +424,13 @@ https://www.bioinformatics.nl/multicblaster'''
 
 
 def get_failure_reason(job_id):
+    print('We are in get_failure_reason')
     # TODO: tool name is not always cblaster, add extra argument
     with open(os.path.join(JOBS_DIR, job_id,
                            "logs", f"{job_id}_cblaster.log")) as inf:
         logs = inf.readlines()
 
+    print(logs)
     for l in logs:
         for fail in const.FAILURE_REASONS:
             if fail in l:
