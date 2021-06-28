@@ -40,7 +40,7 @@ def forge_database_args(options: ImmutableMultiDict[str, str]) -> t.List[str]:
 
 
 def cblaster_search(job_id: str, options: ImmutableMultiDict[str, str] = None,
-                    file_path: t.Union[str, None] = None):
+                    file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_search (forges + exec. command)
 
     Input:
@@ -173,7 +173,8 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict[str, str] = None,
     post_job_formalities(job_id, return_code)
 
 
-def cblaster_gne(job_id, options=None, file_path=None):
+def cblaster_gne(job_id: str, options: ImmutableMultiDict[str, str] = None,
+                 file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_gne (forges + exec. command)
 
     Input:
@@ -206,7 +207,9 @@ def cblaster_gne(job_id, options=None, file_path=None):
     post_job_formalities(job_id, return_code)
 
 
-def cblaster_extract_sequences(job_id, options=None, file_path=None):
+def cblaster_extract_sequences(job_id: str,
+                               options: ImmutableMultiDict[str, str] = None,
+                               file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is extract sequences of cblaster
 
     Input:
@@ -244,7 +247,9 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None):
     post_job_formalities(job_id, return_code)
 
 
-def cblaster_extract_clusters(job_id, options=None, file_path=None):
+def cblaster_extract_clusters(job_id: str,
+                              options: ImmutableMultiDict[str, str] = None,
+                              file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is extract clusters of cblaster
 
     Input:
@@ -277,7 +282,8 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
     post_job_formalities(job_id, return_code)
 
 
-def clinker_full(job_id, options=None, file_path=None):
+def clinker_full(job_id: str, options: ImmutableMultiDict[str, str] = None,
+                 file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using clinker.
 
     Input:
@@ -326,7 +332,8 @@ def clinker_full(job_id, options=None, file_path=None):
     post_job_formalities(job_id, return_code)
 
 
-def clinker_query(job_id, options=None, file_path=None):
+def clinker_query(job_id: str, options: ImmutableMultiDict[str, str] = None,
+                  file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using cblaster
 
     Input:
@@ -351,7 +358,8 @@ def clinker_query(job_id, options=None, file_path=None):
     post_job_formalities(job_id, return_code)
 
 
-def corason(job_id, options=None, file_path=None):
+def corason(job_id: str, options: ImmutableMultiDict[str, str] = None,
+            file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using cblaster
 
     Input:
