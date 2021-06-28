@@ -1,4 +1,6 @@
-""" TODO: module docstring
+"""Module to store constants such as help texts
+
+Author: Matthias van den Belt
 
 """
 from multicblaster import app

@@ -1,7 +1,6 @@
 """Stores helper functions of the workers.py module
 
 Author: Matthias van den Belt
-
 """
 
 # package imports
@@ -217,7 +216,6 @@ You are able to perform additional downstream analysis by navigating to the resu
 Also, downloading your results is available on this web page.''',
                job.email)
 
-
     # TODO: possibly change sender_email and create a better message
 
 
@@ -240,12 +238,12 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
 
-    j =  fetch_job_from_db(job_id)
+    j = fetch_job_from_db(job_id)
     if j.email:
         send_notification_email(j)
 
 
-def store_query_sequences_headers(log_path: str, input_type: str, data:str):
+def store_query_sequences_headers(log_path: str, input_type: str, data: str):
     """Saves the submitted query headers to a .csv file
 
     Input:

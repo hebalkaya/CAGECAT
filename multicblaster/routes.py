@@ -9,8 +9,6 @@ import os
 import copy
 
 # own project imports
-from typing import Dict
-
 from multicblaster import app
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
@@ -19,8 +17,6 @@ import multicblaster.routes_helpers as rthelp
 import multicblaster.workers as rf
 import multicblaster.const as const
 from config import CONF
-
-# !!!! TODO: Note that the return types could change when deploying Flask !!!!
 
 # route definitions
 @app.route("/rerun/<prev_run_id>")
@@ -51,7 +47,7 @@ def home_page(prev_run_id: str = None) -> str:
 
 
 @app.route(ut.SUBMIT_URL, methods=["POST"])
-def submit_job():  # return type: werkzeug.wrappers.response.Response:
+def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
 
     Input:
@@ -175,7 +171,7 @@ def submit_job():  # return type: werkzeug.wrappers.response.Response:
         new_jobs, request.form))
 
     last_job = ut.fetch_job_from_db(last_job_id)
-    # print(last_job)
+
     url = url_for("result.show_result",
                   job_id=last_job_id,
                   pj=last_job.depending_on,
@@ -193,20 +189,30 @@ def help_page() -> str:
     Output:
         - HTML represented in string format
     """
-    # TODO: actually create
     return rthelp.show_template("help.xhtml", help_enabled=False)
+
 
 # TODO: all feedback things could be in a blueprint
 @app.route('/feedback')
-def feedback_page():
-    """ TODO: document
+def feedback_page() -> str:
+    """Shows the feedback page to the user
 
-    :return:
+    Output:
+        - HTML represented in string format
     """
     return rthelp.show_template('feedback.xhtml', help_enabled=False)
 
+
 @app.route('/feedback/submit', methods=['POST'])
-def submit_feedback():
+def submit_feedback() -> str:
+    """Page which handles submitted feedback
+
+    Input:
+        - No input
+
+    Output:
+        - HTML represented in string format
+    """
     for email in (CONF['DEV_TEAM_EMAIL'], request.form['email']):
     # TODO: send an email to us as well as a copy to the submitter
         ut.send_email('multicblaster feedback report',
@@ -229,11 +235,21 @@ Message: {request.form['message']}
 
 
 @app.route('/feedback/submitted')
-def feedback_submitted():
+def feedback_submitted() -> str:
+    """Shows a page to the user indicating their feedback has been submitted
+
+    Output:
+        - HTML represented in string format
+    """
     return rthelp.show_template('feedback_submitted.xhtml', help_enabled=False)
 
 @app.route('/tools')
-def tools_page():
+def tools_page() -> str:
+    """Shows page to user showing all available tools
+
+    Output:
+        - HTML represented in string format
+    """
     return rthelp.show_template('implemented_tools.xhtml', help_enabled=False)
 
 @app.route("/docs/<input_type>")
@@ -262,7 +278,6 @@ def get_help_text(input_type):
     return co.HELP_TEXTS[input_type]
 
 
-
 # Error handlers
 @app.errorhandler(404)
 def page_not_found():
@@ -278,4 +293,3 @@ def invalid_method():
 
     """
     return redirect(url_for("home_page"))
-

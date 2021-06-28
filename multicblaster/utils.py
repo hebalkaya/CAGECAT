@@ -29,12 +29,14 @@ CLUST_NUMBER_PATTERN_W_CLINKER_SCORE = r"\(Cluster (\d+), \d+\.\d+ score\)"
 
 JOBS_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
-SUBMIT_URL = "/submit_job"
+SUBMIT_URL = "/submit_job" # TODO: move to config
 PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
                              "clinker_full", "clinker_query"]
+# TODO: move to config
 
+# TODO: remove PRETTY_TRANSLATION
 PRETTY_TRANSLATION = {"job_type": "Job type",
                       "inputType": "Input type",
                       "ncbiEntriesTextArea": "NCBI entries",
@@ -113,14 +115,17 @@ PRETTY_TRANSLATION = {"job_type": "Job type",
                       'email': 'E-mail'
                       }
 
+# TODO: probably remove FILE_POST_FUNCTION_ID_TRANS
 FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
                                "calculate_neighbourhood": "outputFileName"
                                }
-
+# TODO: probably removeTEST_PATH
 TEST_PATH = ".."
+
 
 ### Function definitions
 def generate_job_id(id_len: int = 15) -> str:
+    # TODO: could make length shorter
     """Generates a numeric job ID with each 4th character being a letter
 
     Input:
@@ -192,7 +197,6 @@ def get_server_info(q: rq.Queue, redis_conn: redis.Redis) \
     # finished yet: running jobs.
     queued = len(q)
     running = len(start_registry)
-
 
     if running == 0:
         status = "idle"
@@ -293,6 +297,7 @@ def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
 
 
 def load_settings(job_id: str) -> t.Dict[str, str]:
+    # TODO: check if this function is still used
     """Loads settings with which a job was submitted by a user from a file
 
     Input:
@@ -371,6 +376,7 @@ def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
 
 
 def check_valid_job(prev_job_id: str, job_type: str) -> None:
+    # TODO: check if this is still funcational and is used
     """Checks if a submitted job, relying on a previous job is valid
 
     Input:
@@ -393,18 +399,45 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
         raise NotImplementedError("Unknown job ID. Template should be created")
 
 
+def format_size(size: int) -> str:
+    """Formats the size of a file into MB
 
+    Input:
+        - size: size of the a file in bytes
 
-def format_size(size):
+    Output:
+        - formatted string showing the size of the file ..MB
+    """
     return "%3.1f MB" % (size/1000000) if size is not None else size
 
-def read_headers(job_id):
+
+def read_headers(job_id: str) -> t.List[str]:
+    """Reads headers belonging to the search of a job ID
+
+    Input:
+        - job_id: id of the job for which the query headers are asked for
+
+    Output:
+        - headers: the query headers of this job ID
+    """
     with open(os.path.join(JOBS_DIR, job_id, "logs", "query_headers.csv")) as outf:
         headers = outf.read().strip().split(",")
 
     return headers
 
-def send_email(subject, message, receiving_email):
+
+def send_email(subject: str, message: str, receiving_email: str) -> None:
+    """Send an email
+
+    Input:
+        - subject: subject of the email
+        - message: body content of the email
+        - receiving_email: e-mail address of the receiver
+
+    Output:
+        - None, sent emails
+    """
+    # TODO: move port / message to conf
     port = 465
 
     message = f'''Subject: {subject}\n\n{message}\nThank you for using our service. 
@@ -423,14 +456,21 @@ https://www.bioinformatics.nl/multicblaster'''
         server.sendmail(EMAIL['SENDER_EMAIL'], receiving_email, message)
 
 
-def get_failure_reason(job_id):
-    print('We are in get_failure_reason')
+def get_failure_reason(job_id: str) -> str:
+    """Gets the user-friendly failure reason when a job has failed
+
+    Input:
+        - job_id: job id which has failed and the reason should be looked
+            up for
+
+    Output:
+        - user-friendly failure reason
+    """
     # TODO: tool name is not always cblaster, add extra argument
     with open(os.path.join(JOBS_DIR, job_id,
                            "logs", f"{job_id}_cblaster.log")) as inf:
         logs = inf.readlines()
 
-    print(logs)
     for l in logs:
         for fail in const.FAILURE_REASONS:
             if fail in l:

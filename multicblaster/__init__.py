@@ -1,11 +1,6 @@
-"""Initializes multicblaster web service
+"""Initializes multicblaster web service (started by uwsgi
 
 Main module of the multicblaster web service
-
-Ran services:
-    - Redis-server
-    - Flask
-    - SQLAlchemy
 
 # TODO: extensive description
 
@@ -22,7 +17,6 @@ import redis
 import rq
 import config
 
-# TODO: Find out how pre-submission uploading works
 
 r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job

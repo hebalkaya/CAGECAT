@@ -1,6 +1,5 @@
 """Module to hold all parsing and formatting functions
 
-
 Author: Matthias van den Belt
 """
 
@@ -15,7 +14,8 @@ import multicblaster.utils as ut
 import typing as t
 
 ### Function definitions
-def parse_selected_cluster_names(selected_clusters: str) -> t.Union[str, None]:
+def parse_selected_cluster_names(selected_clusters: str) \
+        -> t.Union[str, None]:
     """Extracts and formats selected clusters in a readable manner
 
     Input:
@@ -43,6 +43,7 @@ def parse_selected_cluster_names(selected_clusters: str) -> t.Union[str, None]:
         cluster_names = None
 
     return cluster_names
+
 
 def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
     """Returns scaffolds of the selected clusters
@@ -89,13 +90,22 @@ def format_cluster_numbers(cluster_numbers: t.List[int]) -> t.List[str]:
     return [f"{g[0]}-{g[-1]}" if len(g) != 1 else str(g[0]) for g in groups]
 
 
-def parse_selected_cluster_numbers(selected_clusters: str, pattern, format_nicely=True) -> str:
+def parse_selected_cluster_numbers(selected_clusters: str,
+                                   pattern: str,
+                                   format_nicely: bool = True) -> str:
     # TODO: pattern documentation: has changed
     """Parses the cluster numbers of the user-selected clusters
 
     Input:
         - selected_clusters: user-selected clusters. These clusters are
             separated by "\r\n"
+        - pattern: appropriate pattern to use to parse selected cluster
+            numbers. This changes as some modules use a different format
+            to show their clusters
+        - format_nicely: create nicely formatted (e.g. 1 & 2 & 3 & 5
+            becomes 1-3 5) or create a functional format (e.g. 1,2,3,5).
+            What is desired is dependent on what code is called after this
+            function.
 
     Output:
         - cluster_numbers: extracted cluster numbers separated by a space.
@@ -107,12 +117,11 @@ def parse_selected_cluster_numbers(selected_clusters: str, pattern, format_nicel
     """
     if selected_clusters:  # empty string evaluates to False
         cluster_numbers = []
-        # print(selected_clusters)
+
         for cluster in selected_clusters.split("\r\n"):
             cluster_numbers.append(int(re.findall(pattern,
                                                   cluster)[0]))
 
-        # print(cluster_numbers)
         if format_nicely:
             cluster_numbers = " ".join(format_cluster_numbers(cluster_numbers))
         else:

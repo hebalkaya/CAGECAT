@@ -13,7 +13,6 @@ class Job(db.Model):
     """Model for creating a job entry
 
         Inherits from db.Model
-
     """
     id = db.Column(db.String(15), primary_key=True)
     job_type = db.Column(db.String(10), nullable=False)

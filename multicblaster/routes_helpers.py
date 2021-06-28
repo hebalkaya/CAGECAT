@@ -1,5 +1,6 @@
-"""TODO: module docstring
+"""Stores helper functions of the routes.py module
 
+Author: Matthias van den Belt
 """
 
 # package imports
@@ -7,8 +8,6 @@ from flask import render_template, request
 import os
 
 # own project imports
-from typing import List, Tuple
-
 import multicblaster.utils as ut
 from multicblaster import q, r
 from multicblaster.models import Job as dbJob
@@ -16,10 +15,11 @@ from multicblaster import db
 
 # typing imports
 import typing as t
+from werkzeug.datastructures import ImmutableMultiDict
 
 ### Function definitions
 def get_connected_jobs(job: t.Optional[dbJob]) -> \
-        List[Tuple[str, str, str, str], ]:
+        t.List[t.Tuple[str, str, str, str], ]:
     """Gets the connected (children, main_search, depending) jobs of a job
 
     Input:
@@ -143,7 +143,8 @@ def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
 
 
 def prepare_finished_result(job_id: str,
-                            module: str) -> t.Tuple[t.Union[str, None], str, t.Union[int, None]]:
+                            module: str) -> \
+        t.Tuple[t.Union[str, None], str, t.Union[int, None]]:
     """Returns HTML code of plots if applicable and appropriate program
 
     Input:
@@ -154,7 +155,7 @@ def prepare_finished_result(job_id: str,
     Output:
         - plot_contents: HTML code of a plot
         - program: the program that was executed by this job
-        - size: size of the returned plot IN bytes
+        - size: size of the returned plot in bytes
     """
     plot_path = os.path.join(ut.JOBS_DIR, job_id,
                              "results", f"{job_id}_plot.html")
@@ -193,8 +194,12 @@ def prepare_finished_result(job_id: str,
 
 
 def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
-                                          "TODO", t.Union[str, None],
-                                          t.Union[str, None], str]]) -> str:
+                                          ImmutableMultiDict[str, str],
+                                          t.Union[str, None],
+                                          t.Union[str, None],
+                                          str,
+                                          t.Union[str, None],
+                                          t.Union[str, None]]]) -> str:
     """Enqueues jobs on the Redis queue
 
     Input:
@@ -208,6 +213,8 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
                      previous job or an output path
                 4 -> job ID of the job where the current job depends on
                 5 -> type of the job
+                6 -> title of the job
+                7 -> email of the job
 
     Output:
         - last_job_id: job ID of the last added job. Used to show appropriate
@@ -260,14 +267,19 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
 
 
 def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
-                                                            "TODO", t.Union[str, None],
-                                                            t.Union[str, None], str],
+                                            ImmutableMultiDict[str, str],
+                                            t.Union[str, None],
+                                            t.Union[str, None], str,
+                                            t.Union[str, None],
+                                            t.Union[str, None]],
                                            is_last_job: bool) -> str:
     """Adds the main search job and its children to the new_job in db
 
     Input:
-        - a job to be added with its options. For index explanation: see the
+        - new_job: a job to be added with its options. For index explanation: see the
             enqueue_jobs function
+        - is_last_job: indicates if this is the last job being added to the
+            queue (used in enqueue_jobs())
 
     Output:
         - job id of the main search job
@@ -293,8 +305,24 @@ def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
     return main_search_job_id
 
 
-def get_parent_job(new_job, is_last_job):
-    # TODO: documentation
+def get_parent_job(new_job: t.Tuple[t.Callable, str,
+                                           ImmutableMultiDict[str, str],
+                                           t.Union[str, None],
+                                           t.Union[str, None], str,
+                                           t.Union[str, None],
+                                           t.Union[str, None]],
+                                 is_last_job: bool) -> t.Union[None, dbJob]:
+    """Gets the parent job of a job (i.e. the job this job depends on)
+
+    Input:
+        - new_job: a job to be added with its options. For index explanation: see the
+            enqueue_jobs function
+        - is_last_job: indicates if this is the last job being added to the
+            queue (used in enqueue_jobs())
+
+    Output:
+        - parent Job instance
+    """
     if new_job[5] in ("recompute", "gne", "clinker_full"):
         # are modules which use the prev_session macro to get the previous session ID
         # might change in the future
@@ -317,10 +345,32 @@ def get_parent_job(new_job, is_last_job):
     return old_job
 
 
-def add_title_email_to_job(new_jobs, form):
+def add_title_email_to_job(given_jobs: t.List[t.Tuple[t.Callable, str,
+                                          ImmutableMultiDict[str, str],
+                                          t.Union[str, None],
+                                          t.Union[str, None], str]],
+                           form: ImmutableMultiDict[str, str]):
+    """Adds title and e-mail to all given jobs
+
+    Input:
+        - given_jobs: list of jobs to be added with its options. For index
+            explanation: see the enqueue_jobs function
+        - form: user submitted parameters via HTML form
+
+    Output:
+        - all_new_jobs: list of jobs with title and email added to them
+
+        t.List[t.Tuple[t.Callable, str,
+              ImmutableMultiDict[str, str],
+              t.Union[str, None],
+              t.Union[str, None],
+              str,
+              t.Union[str, None],
+              t.Union[str, None]]]
+    """
     all_new_jobs = []
 
-    for j in new_jobs:
+    for j in given_jobs:
         nj = list(j)
         nj.append(form['job_title'] if 'job_title' in form else None)
         nj.append(form['email'] if 'email' in form else None)
