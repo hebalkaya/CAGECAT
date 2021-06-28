@@ -18,3 +18,13 @@ docker cp repo multicblaster_trial:/
 
 echo "--> Validate manually that the release number has changed"
 docker exec multicblaster_trial cat /repo/multicblaster/templates/help.xhtml
+
+echo "--> You are not done yet. Command to execute:"
+echo "    --> docker exec multicblaster_trial ps aux | grep uwsgi"
+echo "--> Find the uwsgi master process (process with the outlying pid (mostly 14))"
+echo "--> Execute the following command"
+echo "    --> docker exec multicblaster_trial kill <pid>"
+echo "--> The uwsgi process will be restarted by supervisor and you are done."
+
+
+

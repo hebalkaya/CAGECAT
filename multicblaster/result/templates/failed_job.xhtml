@@ -11,12 +11,13 @@
 {% block content %}
 <div class="indent">
     {% if job_title %}
-
         <h2>{{ job_title }}</h2>
     {% endif %}
 
+    <h3>{{ module }} ({{ j_id }})</h3>
+
     <p>Job {{job_id}} has failed during execution due to the following:</p>
-    <p>{{ failure_reason }}</p>
+    <p><b>{{ failure_reason }}</b></p>
     <p>You are able to download your log files by clicking the button below.</p>
 
     <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
