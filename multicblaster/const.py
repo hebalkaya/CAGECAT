@@ -7,6 +7,11 @@ with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
     PRESENT_DATABASES = inf.read().strip().split(',')
     PRESENT_DATABASES.sort()
 
+FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module search, hmm/hmm+remote mode, incorrect HMM profiles
+                       'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
+                   'ValueError: Search completed, but found no hits':  # module search, no hits found
+                       'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.'}
+
 EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "selectedScaffolds": "",  # empty strings as
                             "clusterNumbers": "",  # if nothing was

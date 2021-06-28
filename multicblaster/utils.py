@@ -13,6 +13,7 @@ import ssl
 # own project imports
 from multicblaster.models import Job, Statistic
 from config import EMAIL
+import const
 
 # typing imports
 import werkzeug.datastructures, werkzeug.utils
@@ -420,3 +421,17 @@ https://www.bioinformatics.nl/multicblaster'''
     with smtplib.SMTP_SSL(EMAIL['SMTP_SERVER'], port, context=context) as server:
         server.login(EMAIL['SENDER_EMAIL'], EMAIL['PASSWORD'])
         server.sendmail(EMAIL['SENDER_EMAIL'], receiving_email, message)
+
+
+def get_failure_reason(job_id):
+    # TODO: tool name is not always cblaster, add extra argument
+    with open(os.path.join(JOBS_DIR, job_id,
+                           "logs", f"{job_id}_cblaster.log")) as inf:
+        logs = inf.readlines()
+
+    for l in logs:
+        for fail in const.FAILURE_REASONS:
+            if fail in l:
+                return const.FAILURE_REASONS[fail]
+
+    return 'Unknown failure reason yet. Please submit feedback.'

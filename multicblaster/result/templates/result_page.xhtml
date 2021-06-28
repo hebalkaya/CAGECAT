@@ -23,7 +23,6 @@
             <h3>{{ module }} ({{ j_id }})</h3>
             <p>Current status: <b>{{ status }}</b></p>
 
-
             <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
                   enctype="multipart/form-data" name="download_settings">
                 <input name="job_id" type="hidden" value="{{j_id}}"/>

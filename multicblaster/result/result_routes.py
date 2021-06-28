@@ -71,12 +71,10 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  help_enabled=False)
 
         elif status == "failed":
-            with open(os.path.join(ut.JOBS_DIR, job_id,
-                                   "logs", f"{job_id}_cblaster.log")) as inf:
-                log_contents = "<br/>".join(inf.readlines())
 
-            return show_template("failed_job.xhtml", settings=settings,
-                                 j_id=job_id, log_contents=log_contents)
+            return show_template("failed_job.xhtml",
+                                 j_id=job_id,
+                                 failure_reason=ut.get_failure_reason(job_id))
 
         elif status == "queued" or status == "running":
 
@@ -90,7 +88,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status,
                                  settings=settings,
                                  store_job_id=store_job_id,
-                                 j_title=job.title,
+                                 job_title=job.title,
                                  j_type=j_type,
                                  stat_code=302)
 
@@ -102,7 +100,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status="waiting for preceding job to finish",
                                  settings=settings,
                                  parent_job=pj,
-                                 j_title=job.title,
+                                 job_title=job.title,
                                  store_job_id=store_job_id,
                                  j_type=j_type)
         else:

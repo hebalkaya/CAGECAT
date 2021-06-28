@@ -4,19 +4,23 @@
 
 {% block title %}Failed{% endblock %}
 {% block content %}
+<div class="indent">
+    {% if job_title %}
 
-    {% block navigationBar %}
-        {{ showNavigationBar('results') }}
-    {% endblock %}
+        <h2>{{ job_title }}</h2>
+        {% endif %}
 
-<p>Job {{job_id}} has failed during execution.</p>
+    <p>Job {{job_id}} has failed during execution due to the following:</p>
 
-<label>Program execution log:
-    <p class="log">
-    {{log_contents|safe}}
-    </p>
-</label>
+    <p>{{ failure_reason }}</p>
 
-<p>The following settings were submitted:</p>
-{{show_options(settings)}}
+    <p>You are able to download your log files by clicking the button below.</p>
+
+    <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
+          enctype="multipart/form-data" name="download_settings">
+    <input name="job_id" type="hidden" value="{{j_id}}"/>
+
+    <label style="margin-top: 1%;" class="button" for="download-button"><i class="fa fa-download"><span> Download results</span></i></label>
+    <input id="download-button" class="download-button" type="submit"></input>
+</div>
 {% endblock %}
