@@ -1,26 +1,31 @@
-"""Stores (helper) functions to execute when a submitted job will be executed
+"""Stores functions to execute when a submitted job will be executed
 
 Author: Matthias van den Belt
 """
-# package imports
+
+# import statements
+import os.path
+from werkzeug.datastructures import ImmutableMultiDict
 
 # own project imports
-import os.path
-
 from multicblaster.workers_helpers import *
 import config
 
-# Whenever a CMD is ran from a function, all print statements within that
-# same function are performed when the CMD has finished
-
 ### redis-queue functions
-def forge_database_args(options):
+def forge_database_args(options: ImmutableMultiDict[str, str]) -> t.List[str]:
+    """Forges command for database selection based on submitted options
+
+    Input:
+        - options: user submitted parameters via HTML form
+
+    Output:
+        - base: appropriate (based on submitted options) argument list
+    """
 
     # TODO: handle recompute scenario
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
         base.append(os.path.join(config.CONF['MOUNTED_DB_FOLDER'], f'{options["selectedGenus"]}.fasta'))
-        # TODO: should me modular
 
     if options['mode'] in ('remote', 'combi_remote'):
         if 'database_type' in options:
@@ -34,7 +39,22 @@ def forge_database_args(options):
     return base
 
 
-def cblaster_search(job_id, options=None, file_path=None):
+def cblaster_search(job_id: str, options: ImmutableMultiDict[str, str] = None,
+                    file_path: t.Union[str, None] = None):
+    """Executed when requested job is cblaster_search (forges + exec. command)
+
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: path to an uploaded file (or session file)
+
+    Output:
+        - None, execution of this module
+
+    # TODO: check if session file should still be in here
+
+    This function forges and executes a cblaster command.
+    """
     pre_job_formalities(job_id)
 
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
@@ -98,8 +118,6 @@ def cblaster_search(job_id, options=None, file_path=None):
 
     cmd.extend(["--session_file", session_path])
 
-
-
     # add filtering options
     if options['mode'] != 'hmm':
         cmd.extend(["--max_evalue", options["max_evalue"],
@@ -156,12 +174,17 @@ def cblaster_search(job_id, options=None, file_path=None):
 
 
 def cblaster_gne(job_id, options=None, file_path=None):
-    """
+    """Executed when requested job is cblaster_gne (forges + exec. command)
 
-    :param job_id:
-    :param options:
-    :param file_path: session file path
-    :return:
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: path to previous job's session file
+
+    Output:
+        - None, execution of this module
+
+    This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
 
@@ -184,6 +207,18 @@ def cblaster_gne(job_id, options=None, file_path=None):
 
 
 def cblaster_extract_sequences(job_id, options=None, file_path=None):
+    """Executed when requested job is extract sequences of cblaster
+
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: path to previous job's session file
+
+    Output:
+        - None, execution of this module
+
+    This function forges and executes a cblaster command.
+    """
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
@@ -210,6 +245,18 @@ def cblaster_extract_sequences(job_id, options=None, file_path=None):
 
 
 def cblaster_extract_clusters(job_id, options=None, file_path=None):
+    """Executed when requested job is extract clusters of cblaster
+
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: path to previous job's session file
+
+    Output:
+        - None, execution of this module
+
+    This function forges and executes a cblaster command.
+    """
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
@@ -231,13 +278,19 @@ def cblaster_extract_clusters(job_id, options=None, file_path=None):
 
 
 def clinker_full(job_id, options=None, file_path=None):
-    """
+    """Executed when requested job is visualization using clinker.
 
-    :param job_id:
-    :param options:
-    :param file_path: is path with following structure: multicblaster/jobs/prev_job_id/results/*.gbk to select all gbk files
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: path to genbank files (following structure:
+            multicblaster/jobs/prev_job_id/results/*.gbk
+            to select all gbk files)
 
-    :return:
+    Output:
+        - None, execution of this module
+
+    This function forges and executes a clinker command.
     """
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
@@ -274,8 +327,19 @@ def clinker_full(job_id, options=None, file_path=None):
 
 
 def clinker_query(job_id, options=None, file_path=None):
+    """Executed when requested job is visualization using cblaster
+
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: path to previous job's session file
+
+    Output:
+        - None, execution of this module
+
+    This function forges and executes a cblaster command.
+    """
     pre_job_formalities(job_id)
-    # print("We are in clinker_query")
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     cmd = ["cblaster", "plot_clusters", file_path,
@@ -288,6 +352,17 @@ def clinker_query(job_id, options=None, file_path=None):
 
 
 def corason(job_id, options=None, file_path=None):
+    """Executed when requested job is visualization using cblaster
+
+    Input:
+        - job_id: ID of the submitted job
+        - options: user submitted parameters via HTML form
+        - file_path: not used, should be left in, otherwise format for
+            submitting a job will break
+
+    Output:
+        - None yet. Not implemented: TODO
+    """
 
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
