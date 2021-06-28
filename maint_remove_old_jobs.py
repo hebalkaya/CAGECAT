@@ -1,5 +1,6 @@
 """Module to remove stored data of jobs that have ran > 30 days ago.
 
+Author: Matthias van den Belt
 """
 from multicblaster import db
 from multicblaster.utils import fetch_job_from_db, JOBS_DIR
@@ -8,7 +9,19 @@ import os
 import datetime
 import shutil
 
-def get_folders_to_delete(period_to_keep=31):
+import typing as t
+
+# Function definitions
+def get_folders_to_delete(period_to_keep: int = 31) -> t.List[t.Tuple[str, str]]:
+    """Returns the folders which are too old to keep (and should be deleted)
+
+    Input:
+        - period_to_keep: how many days files should be stored on the server
+
+    Output:
+        - to_delete: directory path and job ID's to delete
+    """
+
     to_delete = []
     current = datetime.datetime.now()
     j_dir = os.path.join(CONF['SERVER_PREFIX'], JOBS_DIR)
@@ -23,6 +36,12 @@ def get_folders_to_delete(period_to_keep=31):
 
 
 def delete_old_jobs():
+    """Delete old jobs from the server
+
+    Output:
+        - None, entries are removed from the database and job folders which
+            have expired the storage data are removed
+    """
     with open(os.path.join(f'{CONF["MAINTENANCE_LOGS"]}',
                            f'{datetime.datetime.now().date()}_removal.txt'),
               'w') as outf:
