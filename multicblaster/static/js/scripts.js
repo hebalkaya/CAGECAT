@@ -852,7 +852,6 @@ function determineHeight() {
     let height = height_tmp - document.getElementById('navigationBar').offsetHeight - 8;
     // -8px has been found by trying
 
-    console.log('height is ' + height)
     document.getElementById('statusColumn').style.height = height + 'px';
 
     let explanationCol = document.getElementById('explanationColumn');
