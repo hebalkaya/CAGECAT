@@ -13,7 +13,7 @@ import ssl
 # own project imports
 from multicblaster.models import Job, Statistic
 from config import EMAIL
-import const
+import multicblaster.const as const
 
 # typing imports
 import werkzeug.datastructures, werkzeug.utils
