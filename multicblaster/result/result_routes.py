@@ -74,7 +74,9 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
             return show_template("failed_job.xhtml",
                                  j_id=job_id,
-                                 failure_reason=ut.get_failure_reason(job_id))
+                                 failure_reason='This is a reason')
+                                 # failure_reason=ut.get_failure_reason(job_id))
+
 
         elif status == "queued" or status == "running":
 
