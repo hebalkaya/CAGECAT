@@ -13,7 +13,7 @@ if __name__ == "__main__":
             os.makedirs(app.config["DATABASE_FOLDER"], exist_ok=True)
 
     # TODO: should be from config file
-    # app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///status.db'
+
     # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.run(host=app.config["HOST"], port=app.config["PORT"])
 

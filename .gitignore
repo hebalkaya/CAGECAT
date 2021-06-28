@@ -6,4 +6,3 @@ antismash-models/*
 /test_runs/
 /jobs/
 todo_found_things.txt
-multicblaster/status.db
