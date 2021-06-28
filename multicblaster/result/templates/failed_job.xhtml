@@ -2,7 +2,13 @@
 {#{% from "macros.xhtml" import show_options %}#}
 {% from "macros.xhtml" import showNavigationBar %}
 
-{% block title %}Failed{% endblock %}
+{% block title %}
+    {% if job_title %}
+        {{ job_title }}: {{ status.capitalize() }}
+    {% else %}
+        {{ status.capitalize() }}
+    {% endif %}
+{% endblock %}
 
 {% block navigationBar %}
     {{ showNavigationBar('results') }}
