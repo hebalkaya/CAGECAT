@@ -3,7 +3,11 @@
 {% from "macros.xhtml" import renderHelpButton %}
 
 {% block title %}
-    Status: {{ status }}
+    {% if job_title %}
+        {{ job_title }}: {{ status }}
+    {% else %}
+        {{ status }}
+    {% endif %}
 {% endblock %}
 
 {% block navigationBar %}

@@ -3,7 +3,13 @@
 {% from "macros.xhtml" import showNavigationBar %}
 
 {% block head %}<meta http-equiv="refresh" content="30">{% endblock %}
-{% block title %}Status: {{j_id}}{% endblock %}
+{% block title %}
+    {% if job_title %}
+        {{ job_title }}: {{ status }}
+    {% else %}
+        {{ status }}
+    {% endif %}
+{% endblock %}
 
 {% block navigationBar %}
     {{ showNavigationBar('results') }}

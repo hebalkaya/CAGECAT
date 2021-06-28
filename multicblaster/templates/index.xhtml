@@ -7,12 +7,11 @@
 
 {% block title %}
     multicblaster
+{#    TODO: change into service name#}
 {% endblock %}
 {% block scripts %}
     {% if module_to_show == 'visualization' %}
 showModule(undefined, 'clinkerContent');
-{#    {% elif module_to_show == 'gne' %}#}
-{#showModule(undefined, 'gneModuleContent');#}
     {% elif module_to_show == 'recompute' %}
 showInputOptions('prev_session', 0);
 $(':radio:not(:checked)').attr('disabled', true);

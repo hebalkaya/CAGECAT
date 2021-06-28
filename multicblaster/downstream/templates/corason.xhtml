@@ -9,13 +9,11 @@
 {% block navigationBar %}
     {{ showNavigationBar('post-analysis') }}
 {% endblock %}
-{% block title %}
-Corason
-{% endblock %}
+{% block title %}CORASON{% endblock %}
 
         {% block content %}
 {#    {{ createBackButton() }}#}
-        <h2 class="indent">Corason</h2>
+        <h2 class="indent">CORASON</h2>
 
 <div>
     <form action="{{url_for('submit_job')}}" method="post" enctype="multipart/form-data" onsubmit="mergeExponentials()">
