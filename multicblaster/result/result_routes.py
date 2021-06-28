@@ -73,6 +73,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
         elif status == "failed":
 
             return show_template("failed_job.xhtml",
+                                 job_title=job.title,
                                  j_id=job_id,
                                  module=job.job_type,
                                  failure_reason=ut.get_failure_reason(job_id))
