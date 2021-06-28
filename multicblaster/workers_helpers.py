@@ -1,8 +1,14 @@
 # package imports
+import os.path
 import subprocess
 import os
 
 # own project imports
+import typing
+
+from werkzeug.datastructures import ImmutableMultiDict
+
+import config
 from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status, \
     fetch_job_from_db, send_email
 from multicblaster import db
@@ -13,6 +19,12 @@ import werkzeug.datastructures
 import typing as t
 
 def create_filtering_command(options, is_cluster_related):
+    """
+
+    :param options:
+    :param is_cluster_related:
+    :return:
+    """
     partly_cmd = []
 
     if not is_cluster_related:
@@ -230,3 +242,30 @@ def store_query_sequences_headers(log_path, input_type, data):
 
     with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
         outf.write(",".join(headers))
+
+
+def forge_database_args(options: ImmutableMultiDict[str, str]) -> t.List[str]:
+    """Forges command for database selection based on submitted options
+
+    Input:
+        - options: user submitted parameters via HTML form
+
+    Output:
+        - base: appropriate (based on submitted options) argument list
+    """
+
+    # TODO: handle recompute scenario
+    base = ['--database']
+    if options['mode'] in ('hmm', 'combi_remote'):
+        base.append(os.path.join(config.CONF['MOUNTED_DB_FOLDER'], f'{options["selectedGenus"]}.fasta'))
+
+    if options['mode'] in ('remote', 'combi_remote'):
+        if 'database_type' in options:
+            base.append(options['database_type'])
+        else:  # when recomputing it's not there
+            return []
+
+    if len(base) not in (2, 3):
+        raise IOError('Incorrect database arguments length')
+
+    return base

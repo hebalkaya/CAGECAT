@@ -5,40 +5,12 @@ Author: Matthias van den Belt
 
 # import statements
 import os.path
-from werkzeug.datastructures import ImmutableMultiDict
 
 # own project imports
 from multicblaster.workers_helpers import *
 import config
 
 ### redis-queue functions
-def forge_database_args(options: ImmutableMultiDict[str, str]) -> t.List[str]:
-    """Forges command for database selection based on submitted options
-
-    Input:
-        - options: user submitted parameters via HTML form
-
-    Output:
-        - base: appropriate (based on submitted options) argument list
-    """
-
-    # TODO: handle recompute scenario
-    base = ['--database']
-    if options['mode'] in ('hmm', 'combi_remote'):
-        base.append(os.path.join(config.CONF['MOUNTED_DB_FOLDER'], f'{options["selectedGenus"]}.fasta'))
-
-    if options['mode'] in ('remote', 'combi_remote'):
-        if 'database_type' in options:
-            base.append(options['database_type'])
-        else:  # when recomputing it's not there
-            return []
-
-    if len(base) not in (2, 3):
-        raise IOError('Incorrect database arguments length')
-
-    return base
-
-
 def cblaster_search(job_id: str, options: ImmutableMultiDict[str, str] = None,
                     file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_search (forges + exec. command)
