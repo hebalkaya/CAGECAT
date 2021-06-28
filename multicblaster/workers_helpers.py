@@ -1,29 +1,34 @@
+"""Stores helper functions of the workers.py module
+
+Author: Matthias van den Belt
+
+"""
+
 # package imports
-import os.path
 import subprocess
 import os
 
 # own project imports
-import typing
-
-from werkzeug.datastructures import ImmutableMultiDict
-
 import config
 from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status, \
     fetch_job_from_db, send_email
 from multicblaster import db
 from config import CONF
+from multicblaster.models import Job
 
 # typing imports
-import werkzeug.datastructures
+from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
-def create_filtering_command(options, is_cluster_related):
-    """
+# Function definitions
+def create_filtering_command(options: ImmutableMultiDict[str, str],
+                             is_cluster_related: bool) -> t.List[str]:
+    """Forges command for filtering based on submitted options
 
-    :param options:
-    :param is_cluster_related:
-    :return:
+    Input:
+        - options: user submitted parameters via HTML form
+        - is_cluster_related: indicates if the filtering command is meant
+            for filtering clusters
     """
     partly_cmd = []
 
@@ -55,7 +60,7 @@ def create_filtering_command(options, is_cluster_related):
 
 
 def create_summary_table_commands(
-        module: str, options: werkzeug.datastructures.ImmutableMultiDict) \
+        module: str, options: ImmutableMultiDict[str, str]) \
         -> t.List[str]:
     """Generates commands for creating a summary table
 
@@ -193,7 +198,16 @@ def pre_job_formalities(job_id: str) -> None:
     mutate_status(job_id, "start", db)
 
 
-def send_notification_email(job):
+def send_notification_email(job: Job) -> None:
+    """Sends notification mail when a job has finished running
+
+    Input:
+        - job: a job entry in the SQL database (is an object, stores all
+            job-specific details as attributes)
+
+    Output:
+        - None, an e-mail being sent to the user-defined e-mail address
+    """
     send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has finished',
                f'''Dear researcher,
     
@@ -205,7 +219,6 @@ Also, downloading your results is available on this web page.''',
 
 
     # TODO: possibly change sender_email and create a better message
-
 
 
 def post_job_formalities(job_id: str, return_code: int) -> None:
@@ -232,7 +245,18 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
         send_notification_email(j)
 
 
-def store_query_sequences_headers(log_path, input_type, data):
+def store_query_sequences_headers(log_path: str, input_type: str, data:str):
+    """Saves the submitted query headers to a .csv file
+
+    Input:
+        - log_path: path to the log directory of this job
+        - input_type: selected input_type by the user
+        - data: query headers (NCBI entries) or file_path to the uploaded
+            FASTA file
+
+    Output:
+        - None, written file
+    """
     if input_type == "ncbi_entries":  # ncbi_entries
         headers = data
     elif input_type == "fasta":
