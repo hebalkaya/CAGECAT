@@ -76,6 +76,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  job_title=job.title,
                                  j_id=job_id,
                                  module=job.job_type,
+                                 status=status,
                                  failure_reason=ut.get_failure_reason(job_id),
                                  help_enabled=False)
 
