@@ -94,7 +94,8 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  store_job_id=store_job_id,
                                  job_title=job.title,
                                  j_type=j_type,
-                                 stat_code=302)
+                                 stat_code=302,
+                                 help_enabled=False)
 
         elif status == "waiting":
             pj = ut.fetch_job_from_db(job_id).depending_on\
@@ -106,7 +107,8 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  parent_job=pj,
                                  job_title=job.title,
                                  store_job_id=store_job_id,
-                                 j_type=j_type)
+                                 j_type=j_type,
+                                 help_enabled=False)
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
