@@ -15,7 +15,7 @@ from multicblaster.models import Job, Statistic
 from config import EMAIL
 
 # typing imports
-import werkzeug.datastructures
+import werkzeug.datastructures, werkzeug.utils
 import rq
 import redis
 import typing as t
@@ -158,12 +158,15 @@ def save_file(file_obj: werkzeug.datastructures.FileStorage,
 
     Output:
         - file_path, str: path where the file has been saved
-
-    # TODO: should make filename safe (e.g. secure_filename function of Flask)
     """
-    file_path = os.path.join(f"{JOBS_DIR}", job_id,
-                             "uploads", file_obj.filename)
-    file_obj.save(file_path)
+    fn = werkzeug.utils.secure_filename(file_obj.filename)
+    if fn:
+
+        file_path = os.path.join(f"{JOBS_DIR}", job_id,
+                                 "uploads", fn)
+        file_obj.save(file_path)
+    else:
+        raise IOError('Securing filename led to an empty filename')
 
     return file_path
 
