@@ -214,7 +214,6 @@ def submit_feedback() -> str:
         - HTML represented in string format
     """
     for email in (CONF['DEV_TEAM_EMAIL'], request.form['email']):
-    # TODO: send an email to us as well as a copy to the submitter
         ut.send_email('multicblaster feedback report',
                       f'''#########################################
 

@@ -658,10 +658,13 @@ input[type="submit"]{
 }
 
 .downstream-div{
-    height: 310px;
     width: 20%;
     border-bottom: 2px solid #5284a7;
     border-bottom-right-radius: 5px;
+}
+
+.downstream-div-height {
+    height: 310px;
 }
 
 .panel {

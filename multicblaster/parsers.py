@@ -30,7 +30,6 @@ def parse_selected_cluster_names(selected_clusters: str) \
     if selected_clusters != "No clusters selected":
         cluster_names = []
 
-        print( selected_clusters.split("\r\n"))
         for cluster in selected_clusters.split("\r\n"):
             sep_index = cluster.find(")") + 1
             organism = cluster[:sep_index].split("(")[0].strip()
