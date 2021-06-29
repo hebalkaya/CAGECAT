@@ -1,3 +1,5 @@
+# Author: Matthias van den Belt
+
 echo "--> Backing up old files"
 #TODO: add folder of date and move cp files to there
 docker cp multicblaster_trial:/repo/multicblaster/database.db database.db

@@ -24,6 +24,7 @@ RUN mkdir -p /root/.config/cblaster
 #RUN cblaster config --email "matthias.vandenbelt@wur.nl"
 RUN mv /repo/docker/multicblaster /etc/nginx/sites-available/multicblaster
 RUN mv /repo/docker/config.ini /root/.config/cblaster/config.ini
+# TODO: is uwsgi params copied?
 
 RUN ln -s /etc/nginx/sites-available/multicblaster /etc/nginx/sites-enabled
 
