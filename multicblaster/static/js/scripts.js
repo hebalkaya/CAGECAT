@@ -1052,3 +1052,7 @@ function checkClanCutoffValues(){
         elem.classList.add('invalid');
     }
 }
+
+document.addEventListener('scroll', function(e){
+    $('#filler')[0].style.height = window.scrollY + 'px';
+})
