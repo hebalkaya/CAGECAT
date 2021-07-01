@@ -23,7 +23,11 @@
     <h3>{{ module }} ({{ j_id }})</h3>
 
     <p>Job {{j_id}} has failed during execution due to the following:</p>
+{% if failure_reason == 'Unknown failure reason.' %}
+    <p><b>{{ failure_reason }} <a href="{{ url_for('feedback_page', job_id=j_id) }}">Please submit feedback by clicking this sentence.</a></b></p>
+{% else %}
     <p><b>{{ failure_reason }}</b></p>
+{% endif %}
     <p>You are able to download your log files by clicking the button below.</p>
 
     <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"

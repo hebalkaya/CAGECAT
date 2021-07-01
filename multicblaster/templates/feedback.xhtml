@@ -34,7 +34,7 @@
 
                 <div class="input-layer">
                     <label class="input-label" for="job_id_input">Concerning job ID</label>
-                    <input id="job_id_input" name="job_id" type="text" maxlength="15"/>
+                    <input id="job_id_input" name="job_id" type="text" value="{{ job_id if request.args else '' }}" maxlength="15"/>
                 </div>
 
                 <div class="input-layer">

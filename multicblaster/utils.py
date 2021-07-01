@@ -476,4 +476,4 @@ def get_failure_reason(job_id: str) -> str:
             if fail in l:
                 return const.FAILURE_REASONS[fail]
 
-    return 'Unknown failure reason yet. Please submit feedback.'
+    return 'Unknown failure reason.'
