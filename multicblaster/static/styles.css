@@ -659,8 +659,7 @@ input[type="submit"]{
 
 .downstream-div{
     width: 20%;
-    border-bottom: 2px solid #5284a7;
-    border-bottom-right-radius: 5px;
+    border-bottom: 2px solid #5284a7
 }
 
 .downstream-div-height {
