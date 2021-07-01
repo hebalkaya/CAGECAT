@@ -20,7 +20,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
-def create_filtering_command(options: ImmutableMultiDict[str, str],
+def create_filtering_command(options: ImmutableMultiDict,
                              is_cluster_related: bool) -> t.List[str]:
     """Forges command for filtering based on submitted options
 
@@ -59,7 +59,7 @@ def create_filtering_command(options: ImmutableMultiDict[str, str],
 
 
 def create_summary_table_commands(
-        module: str, options: ImmutableMultiDict[str, str]) \
+        module: str, options: ImmutableMultiDict) \
         -> t.List[str]:
     """Generates commands for creating a summary table
 
@@ -266,7 +266,7 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
         outf.write(",".join(headers))
 
 
-def forge_database_args(options: ImmutableMultiDict[str, str]) -> t.List[str]:
+def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
     """Forges command for database selection based on submitted options
 
     Input:

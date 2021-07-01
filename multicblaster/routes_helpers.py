@@ -194,7 +194,7 @@ def prepare_finished_result(job_id: str,
 
 
 def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
-                                          ImmutableMultiDict[str, str],
+                                          ImmutableMultiDict,
                                           t.Union[str, None],
                                           t.Union[str, None],
                                           str,
@@ -267,7 +267,7 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
 
 
 def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
-                                            ImmutableMultiDict[str, str],
+                                            ImmutableMultiDict,
                                             t.Union[str, None],
                                             t.Union[str, None], str,
                                             t.Union[str, None],
@@ -306,7 +306,7 @@ def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
 
 
 def get_parent_job(new_job: t.Tuple[t.Callable, str,
-                                           ImmutableMultiDict[str, str],
+                                           ImmutableMultiDict,
                                            t.Union[str, None],
                                            t.Union[str, None], str,
                                            t.Union[str, None],
@@ -346,10 +346,10 @@ def get_parent_job(new_job: t.Tuple[t.Callable, str,
 
 
 def add_title_email_to_job(given_jobs: t.List[t.Tuple[t.Callable, str,
-                                          ImmutableMultiDict[str, str],
+                                          ImmutableMultiDict,
                                           t.Union[str, None],
                                           t.Union[str, None], str]],
-                           form: ImmutableMultiDict[str, str]):
+                           form: ImmutableMultiDict):
     """Adds title and e-mail to all given jobs
 
     Input:
@@ -361,13 +361,14 @@ def add_title_email_to_job(given_jobs: t.List[t.Tuple[t.Callable, str,
         - all_new_jobs: list of jobs with title and email added to them
 
         t.List[t.Tuple[t.Callable, str,
-              ImmutableMultiDict[str, str],
+              ImmutableMultiDict,
               t.Union[str, None],
               t.Union[str, None],
               str,
               t.Union[str, None],
               t.Union[str, None]]]
     """
+    # TODO: we could remove the second argument as it is also on given_jobs[1]
     all_new_jobs = []
 
     for j in given_jobs:

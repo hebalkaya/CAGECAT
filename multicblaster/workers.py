@@ -11,7 +11,7 @@ from multicblaster.workers_helpers import *
 import config
 
 ### redis-queue functions
-def cblaster_search(job_id: str, options: ImmutableMultiDict[str, str] = None,
+def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_search (forges + exec. command)
 
@@ -145,7 +145,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict[str, str] = None,
     post_job_formalities(job_id, return_code)
 
 
-def cblaster_gne(job_id: str, options: ImmutableMultiDict[str, str] = None,
+def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
                  file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_gne (forges + exec. command)
 
@@ -180,7 +180,7 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict[str, str] = None,
 
 
 def cblaster_extract_sequences(job_id: str,
-                               options: ImmutableMultiDict[str, str] = None,
+                               options: ImmutableMultiDict=None,
                                file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is extract sequences of cblaster
 
@@ -220,7 +220,7 @@ def cblaster_extract_sequences(job_id: str,
 
 
 def cblaster_extract_clusters(job_id: str,
-                              options: ImmutableMultiDict[str, str] = None,
+                              options: ImmutableMultiDict=None,
                               file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is extract clusters of cblaster
 
@@ -254,7 +254,7 @@ def cblaster_extract_clusters(job_id: str,
     post_job_formalities(job_id, return_code)
 
 
-def clinker_full(job_id: str, options: ImmutableMultiDict[str, str] = None,
+def clinker_full(job_id: str, options: ImmutableMultiDict=None,
                  file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using clinker.
 
@@ -304,7 +304,7 @@ def clinker_full(job_id: str, options: ImmutableMultiDict[str, str] = None,
     post_job_formalities(job_id, return_code)
 
 
-def clinker_query(job_id: str, options: ImmutableMultiDict[str, str] = None,
+def clinker_query(job_id: str, options: ImmutableMultiDict=None,
                   file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using cblaster
 
@@ -330,7 +330,7 @@ def clinker_query(job_id: str, options: ImmutableMultiDict[str, str] = None,
     post_job_formalities(job_id, return_code)
 
 
-def corason(job_id: str, options: ImmutableMultiDict[str, str] = None,
+def corason(job_id: str, options: ImmutableMultiDict=None,
             file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using cblaster
 
