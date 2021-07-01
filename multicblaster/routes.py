@@ -230,7 +230,7 @@ Message: {request.form['message']}
 -----------------------------------------''',
                       email)
 
-    return redirect(url_for('feedback_submitted'))
+    return rthelp.show_template('redirect.xhtml', url=url_for('feedback_submitted'))
 
 
 @app.route('/feedback/submitted')
