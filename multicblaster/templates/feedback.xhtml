@@ -34,7 +34,12 @@
 
                 <div class="input-layer">
                     <label class="input-label" for="job_id_input">Concerning job ID</label>
-                    <input id="job_id_input" name="job_id" type="text" value="{{ job_id if request.args else '' }}" maxlength="15"/>
+                    {% if request.args['job_id'] %}
+                        {% set job_id = request.args['job_id'] %}
+                    {% else %}
+                        {% set job_id = '' %}
+                    {% endif %}
+                    <input id="job_id_input" name="job_id" type="text" value="{{ job_id }}" maxlength="15"/>
                 </div>
 
                 <div class="input-layer">
