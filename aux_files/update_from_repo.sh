@@ -25,6 +25,3 @@ echo "Restarting uwsgi"
 docker exec multicblaster_trial uwsgi --reload /tmp/uwsgi-master.pid
 
 echo "Done!"
-
-
-
