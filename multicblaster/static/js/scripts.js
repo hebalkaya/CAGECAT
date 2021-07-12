@@ -646,7 +646,7 @@ function storeJobId(id, j_type, j_title){
 function showPreviousJobs(disableBodyOnLoad){
     if (disableBodyOnLoad){
         parent.document.body.onload = null;
-        // To prevent double loading as for plots thep revious jobs are loaded before the big plot is loaded
+        // To prevent double loading as for plots the previous jobs are loaded before the big plot is loaded
     }
 
     let overview = document.getElementById("previousJobsOverview");
@@ -1054,5 +1054,9 @@ function checkClanCutoffValues(){
 }
 
 document.addEventListener('scroll', function(e){
-    $('#filler')[0].style.height = window.scrollY + 'px';
+    let elem = $('#filler')[0];
+
+    if (elem !== undefined) {
+        elem.style.height = window.scrollY + 'px';
+    }
 })
