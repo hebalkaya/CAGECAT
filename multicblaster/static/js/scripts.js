@@ -652,7 +652,13 @@ function showPreviousJobs(disableBodyOnLoad){
     let overview = document.getElementById("previousJobsOverview");
 
     for (let i=0; i <localStorage.length; i++){
-        let jobId = localStorage.getItem(i).split(";")[0];
+        try{
+            let jobId = localStorage.getItem(i).split(";")[0];
+        }
+        catch (error){
+            console.log('Error fetching previous jobs')
+            determineHeight();
+        }
 
         let li = document.createElement("li");
         li.classList.add("jobs");
