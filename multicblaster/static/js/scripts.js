@@ -657,7 +657,7 @@ function showPreviousJobs(disableBodyOnLoad){
         }
         catch (error){
             console.log('Error fetching previous jobs')
-            determineHeight();
+            return;
         }
 
         let li = document.createElement("li");
