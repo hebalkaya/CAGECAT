@@ -1,8 +1,6 @@
 .idea/*
 __pycache__/*
-antismash-models/*
-./sequence.gb
 /multicblaster/static/uploads/
 /test_runs/
-/jobs/
-todo_found_things.txt
+
+/multicblaster/static/js/deprecated.js

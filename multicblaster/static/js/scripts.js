@@ -15,28 +15,6 @@ function enableOrDisableOption(id, enable) {
     elem.disabled = !enable;
 }
 
-function option5change(){
-    var elem = document.getElementById("option5")
-    var enable = !elem.checked
-
-    enableOrDisableOption("option1", enable);
-    enableOrDisableOption("option2", enable);
-}
-
-function changeFooterVisibility(){
-    var elem = document.getElementById("showFooterCheckbox");
-
-    var footer = $("#custom_footer"); // uses ID
-    let speed = "slow"
-    if (!elem.checked) {
-        footer.slideUp(speed);
-    }
-    else {
-        footer.slideDown(speed)
-    }
-
-}
-
 function toggleElementVisibility(id) {
     $('#'+id)[0].classList.toggle('no-display');
 }
@@ -134,6 +112,8 @@ function showInputOptions(selectionOption, resetQueries){
 }
 
 function showModule(ev, moduleName){
+    console.log('For future tool implementation which could be a starting point')
+    return;
     var i, moduleSelector, moduleContent;
 
     moduleContent = document.getElementsByClassName('moduleContent');
@@ -268,234 +248,6 @@ function enableOrDisableSubmitButtons(disable){
     }
 }
 
-function hasOneElementSelected(overview){
-    return overview.children.length === 1 && !overview.children[0].textContent.startsWith("No");
-}
-
-// function checkCorasonButton() {
-//     // TODO: implement that a cluster cannot be in in the cluster section and be the reference cluster at the same time
-//     let elem = document.getElementById("corasonSubmit");
-//     if (elem !== null){
-//         let queries = document.getElementById("selectedQueriesOverview");
-//         let clusters = document.getElementById("selectedClustersOverview")
-//         let referenceCluster = document.getElementById("selectedReferenceCluster");
-//
-//         if (hasOneElementSelected(queries) && clusters.children.length >= 1 && !clusters.children[0].textContent.startsWith("No") && hasOneElementSelected(referenceCluster)){
-//             elem.removeAttribute("disabled");
-//         }
-//         else {
-//             elem.setAttribute("disabled", "disabled");
-//         }
-//     }
-// }
-
-window.addEventListener("message", function(e){
-    let text;
-    let src = e.data[0];
-    let message = e.data[1]; // e.data represents the message posted by the child
-    if (src === "Queries"){
-        console.log(message);
-    }
-
-    //
-    // // -------------- TODO: check if we can generalize this function. Below
-    // // -------------- was a trial, but variable referencing is not supported in JS
-    // // if (src === "Clusters") {
-    // //     const array = selectedClusters;
-    // // }
-    // // else if (src === "Queries"){
-    // //     const array = selectedQueries;
-    // // }
-    // // else {
-    // //     console.log("Invalid src type");
-    // // }
-    // //
-    // // let index = array.indexOf(message);
-    // // if (index === 1){
-    // //     array.push(message);
-    // // } else {
-    // //     array.splice(index, 1);
-    // // }
-    // // if (array.length === 0){
-    // //     text = "No " + src.toLowerCase() + " selected";
-    // // }
-    // // else {
-    // //     text = array.join("\n")
-    // // }
-    // // document.getElementById("selected" + src + "Overview").innerText = text;
-    // // ----------------------------------------------------------------------
-    //
-    // if (src === "Clusters"){
-    //     let index = selectedClusters.indexOf(message);
-    //     if (index === -1) {
-    //         selectedClusters.push(message);
-    //     } else {
-    //         selectedClusters.splice(index, 1);
-    //     }
-    //     if (selectedClusters.length === 0) {
-    //         text = "No clusters selected";
-    //     } else {
-    //         text = selectedClusters.join("\n");
-    //     }
-    //     document.getElementById("selectedClustersOverview").innerText = text;
-    // }
-    // else if (src === "Queries"){
-        let resetMessage = "No " + src.toLowerCase() + " selected";
-        let toRemoveIndex = undefined;
-
-        let overview = document.getElementById("selected" + src + "Overview");
-
-        if (overview.children[0].textContent === resetMessage ){
-            overview.removeChild(overview.children[0]);
-        }
-
-        for (let i=0; i < overview.children.length; i++) {
-            if (overview.children[i].textContent === message) {
-                toRemoveIndex = i;
-                break;
-            }
-        }
-
-        if (toRemoveIndex === undefined){
-            let newNode = document.createElement("LI");
-            newNode.appendChild(document.createTextNode(message));
-
-            if (src === "Clusters") {
-                newNode.addEventListener("contextmenu", function (event) {
-                    event.preventDefault();
-                    let newOverview = document.getElementById("selectedReferenceCluster");
-
-                    if (overview.children.length === 1 && overview.children[0].textContent !== resetMessage && this.parentElement === overview){
-                        let newNode = document.createElement("LI");
-                        newNode.appendChild(document.createTextNode(resetMessage));
-                        overview.appendChild(newNode);
-                    }
-
-                    let newResetMessage = "No reference cluster selected";
-                    if (newOverview.children[0].textContent === newResetMessage){
-                        newOverview.removeChild(newOverview.children[0]);
-                    }
-
-                    if (this.parentElement === overview){
-                        overview.removeChild(this);
-                        newOverview.appendChild(this);
-                    }
-                    else {
-                        if (newOverview.children.length === 1) {
-                            let newNode = document.createElement("LI");
-                            newNode.appendChild(document.createTextNode(newResetMessage));
-                            newOverview.appendChild(newNode);
-                        }
-
-                        newOverview.removeChild(this);
-                    }
-                    checkCorasonButton();
-                })
-            }
-            overview.appendChild(newNode);
-        }
-        else {
-            overview.removeChild(overview.children[toRemoveIndex]);
-
-            if (overview.children.length === 0){
-                let newNode = document.createElement("LI");
-                newNode.appendChild(document.createTextNode(resetMessage));
-                overview.appendChild(newNode);
-            }
-        }
-
-    checkCorasonButton()
-}, false)
-
-// function setMultiSelectHeight() {
-//     let height = $('#downStreamModulesDiv')[0].offsetHeight - 80 + 'px';
-//     let ids = ['unselectedClustersSelector', 'selectedClustersSelector', 'unselectedQueriesSelector',
-//     'selectedQueriesSelector']
-//     // console.log(height);
-//     for (let i = 0; i < ids.length; i++) {
-//         let elem = $('#' + ids[i])[0];
-//         if (elem !== undefined){
-//             elem.style.height = '230px'
-//         }
-//     }
-//
-// }
-
-function getOutputFromPlot(plotting_type){
-    let frame = document.getElementById("newWindow");
-    let doc = frame.contentDocument || frame.contentWindow.document;
-    let clusters;
-
-    let clusterSelector = $('#unselectedClustersSelector')[0];
-    let querySelector = $('#unselectedQueriesSelector')[0];
-
-    if (plotting_type === 'search'){
-        clusters = doc.getElementsByClassName("tickTextGroup");
-
-        setTimeout(function(){
-            let ticks = doc.getElementsByClassName("tick");
-            for (let i=0; i < ticks.length; i++){
-                // // console.log(.innerHTML);
-                // let qn = ticks[i].childNodes[1];
-                // // timeout(0.1);
-                // console.log(qn.textContent);
-                const query_name = ticks[i].childNodes[1];
-                // parent.window.postMessage(["Queries", query_name.textContent], "*");
-                // app
-                // parent.console.log();
-                let text = query_name.textContent;
-
-                let option = document.createElement('option');
-                option.value = text;
-                option.innerText = text;
-                option.classList.add('smaller-font');
-
-                querySelector.appendChild(option);
-
-
-            }
-        }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
-    }
-    else if (plotting_type === 'visualize'){
-        clusters = doc.getElementsByClassName("clusters")[0].childNodes;
-    }
-    else {
-        console.log('Incorrect plotting type')
-    }
-
-    for (let i=0; i < clusters.length; i++) {
-        let text;
-        if (plotting_type === 'search') {
-            text = clusters[i].firstChild.childNodes[0].textContent;
-
-        } else if (plotting_type === 'visualize') {
-            if (clusters[i].firstChild.childNodes[0].textContent !== 'Query Cluster') {
-                text = clusters[i].firstChild.childNodes[0].textContent;
-                // continue;
-            }
-
-        } else {
-            console.log('Incorrect plotting type')
-        }
-        if (text !== undefined) { // in case of visualize and "Query Cluster"
-            let option = document.createElement('option');
-            option.value = text;
-            option.innerText = text;
-            option.classList.add('smaller-font');
-            clusterSelector.appendChild(option);
-        }
-    }
-
-    // setMultiSelectHeight();
-}
-
-
-function postLoadingIFrame(){
-    document.getElementById("resultLoadedMessage").classList.add('fade-out');
-    document.getElementById("loadingImage").classList.add('no-display');
-}
-
-
 function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
         // document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
@@ -532,7 +284,7 @@ function addSelectedToForm(downstream_prog) {
     }
 }
 
-// TODO: modularize below functions
+// TODO: could: modularize below functions
 function getSelectedClusters(prefix){
     let msg = '';
     $('#' + prefix + 'selectedClustersSelector option').each(function(){
@@ -564,21 +316,6 @@ function mergeExponentials(){
     }
 }
 
-function initReadQueryFile(){ // TODO: check if this can be removed?
-    var file = document.getElementById("genomeFile").files[0];
-    if (file) {
-        var reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function (evt) {
-            console.log(evt.target.result);
-        }
-
-        reader.onerror = function (evt) {
-            console.log("Error reading file");
-        }
-    }
-}
-
 function readFileContents() {
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
@@ -588,7 +325,7 @@ function readFileContents() {
     let ext = file.name.split(".").pop().toLowerCase();
 
     reader.onload = function(evt){
-        // TODO: check if file adheres to FASTA format
+        // TODO: could: check if file adheres to FASTA format
         if (!valid_ext.includes(ext)){
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
@@ -625,23 +362,6 @@ function addRequiredSeqs(){
     }
     document.getElementById("requiredSequences").value = selected.join(";");
 }
-
-function storeJobId(id, j_type, j_title){
-    let maxToShow = 250;
-
-    for (let i=0; i<maxToShow; i++){
-        let str = i.toString();
-        if (localStorage.getItem(str) === null){
-            // console.log("here we are");
-            let msg = id + ";" + j_type + ";" + currentTime.toLocaleString() + ';' + j_title;
-            console.log(msg);
-            localStorage.setItem(str, msg);
-            // console.log(localStorage);
-            return;
-        }
-    }
-}
-
 
 function showPreviousJobs(disableBodyOnLoad){
     if (disableBodyOnLoad){
@@ -681,56 +401,7 @@ function showPreviousJobs(disableBodyOnLoad){
     overview.insertBefore(li, overview.childNodes[0]);
 }
 
-function showDetailedPreviousJobs(){
-    let overview = document.getElementById("detailedPreviousJobs");
 
-    for (let i=0; i <localStorage.length; i++) {
-        let msg = localStorage.getItem(i).split(";");
-        let tr = document.createElement("tr");
-
-        let td = document.createElement("td");
-        let a = document.createElement("a");
-        a.style = 'font-size: 17px;';
-        a.classList.add('monospaced');
-        a.href = ROOT_URL + "/results/" + msg[0];
-        a.innerText = msg[0]
-        td.appendChild(a);
-        tr.appendChild(td);
-
-        let td1 = document.createElement("td");
-        td1.innerText = msg[1];
-        tr.appendChild(td1);
-
-        let td2 = document.createElement("td");
-        td2.innerText = msg[2];
-        tr.appendChild(td2);
-
-        let td3 = document.createElement("td");
-        td3.innerText = msg[3];
-        tr.appendChild(td3);
-
-        overview.insertBefore(tr, overview.childNodes[0]);
-    }
-    let tr = document.createElement("tr");
-
-    let th = document.createElement("th");
-    th.innerText = "Job ID";
-    tr.appendChild(th);
-
-    let th1 = document.createElement("th");
-    th1.innerText = "Type of job";
-    tr.appendChild(th1);
-
-    let th2 = document.createElement("th");
-    th2.innerText = "Date";
-    tr.appendChild(th2);
-
-    let th3 = document.createElement("th");
-    th3.innerText = "Title";
-    tr.appendChild(th3);
-
-    overview.insertBefore(tr, overview.childNodes[0]);
-}
 
 function showHelp(textType){
     $.get(ROOT_URL + '/docs/' + textType, function(data, status){
@@ -785,70 +456,6 @@ function toggleExplanationColumn() {
 
 }
 
-//
-//     rightCol.classList.toggle('visible');
-//     middleCol.classList.toggle('shrink-it');
-// }
-
-// function toggleExplanationColumn(){
-//     let wider;
-//     // TODO: make it so that classes are used
-//     let rightCol = document.getElementById('explanationColumn');
-//     let middleCol = document.getElementById('middleColumn');
-//     let toggleButton = document.getElementById('toggleHelpButton');
-//     let inputs = document.getElementsByClassName('input-layer');
-//
-//     if (rightCol.style.display === "none"){
-//         // rightCol.classList.remove('shrink');
-//         rightCol.style.display = "block";
-//         toggleButton.style.right = "20%";
-//         toggleButton.innerText = ">>";
-//         middleCol.style.width = "65%";
-//         wider = true;
-//     }
-//     else {
-//         // rightCol.classList.add('shrink');
-//         rightCol.style.display = "none";
-//         toggleButton.style.right = "8px";
-//         toggleButton.innerText = "<<";
-//         middleCol.style.width = "85%";
-//         wider = false;
-//     }
-//
-//     for (let i=0; i < inputs.length; i++){
-//         if (wider){
-//             inputs[i].classList.add('wider');
-//         }
-//         else {
-//             inputs[i].classList.remove('wider');
-//         }
-//     }
-// }
-
-function lastPage () {
-    window.history.back();
-}
-
-// function addAnimation() {
-//     let elem = document.getElementById('jalala');
-//
-//     if (elem.style.display === 'block'){
-//         elem.classList.add('ani-tester');
-//         elem.classList.remove('ani-fadein');
-//         setTimeout(function () {
-//             elem.style.display = 'none';
-//             // TODO: create class for it
-//         }, 499)
-//     }
-//     else {
-//         elem.classList.remove('ani-tester')
-//         elem.style.display = 'block';
-//         elem.classList.add('ani-fadein');
-//
-//     }
-//
-// }
-
 function determineHeight() {
     var body = document.body,
         html = document.documentElement;
@@ -865,8 +472,6 @@ function determineHeight() {
     if (explanationCol !== null) {
         explanationCol.style.height = height + 'px';
     }
-
-    // TODO: might be a class instead of using the ID's
 }
 
 function toggleRemoteOptions(enable){
@@ -902,8 +507,6 @@ function toggleRemoteOptions(enable){
             document.getElementById(sections[i]).setAttribute('disabled', 'disabled');
         }
     }
-
-
 }
 
 function changeSearchMode(mode){
@@ -968,7 +571,6 @@ function moveSelectedElements(target, selectionType){
     else if (target === 'unselected'){
         src = '#selected' + selectionType;
         dest = '#unselected' + selectionType;
-        // return !$('#selectedClusters option:selected').remove().appendTo('#unselectedClusters');
     }
     else {
         console.log('Incorrect target');
@@ -976,11 +578,8 @@ function moveSelectedElements(target, selectionType){
 
     let result = !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
     if (selectionType === 'Queries') {
-        // console.log('queries');
         let elem = $('#corasonSubmit')[0];
         if (elem !== null) {
-            // console.log($('#selectedQueriesSelector')[0]);
-            // console.log($('#selectedQueriesSelector'))
             if ($('#selectedQueriesSelector')[0].length === 1) {
                 elem.removeAttribute('disabled');
             } else {
@@ -1009,6 +608,113 @@ function showSelection(toShow){
     hide.classList.add('no-display');
 }
 
+function checkClanCutoffValues(){
+    // TODO: still to be implemented with big-scape
+    let elem = $('#clan_cutoff')[0];
+    let splitted = elem.value.split(' ');
+
+    if (parseFloat(splitted[0]) >= 0.0 && parseFloat(splitted[0]) <= 1 && parseFloat(splitted[1]) >= 0.0 && parseFloat(splitted[1]) <=1 ){
+        elem.classList.remove('invalid');
+    }
+    else {
+        elem.classList.add('invalid');
+    }
+}
+
+document.addEventListener('scroll', function(e){
+    let elem = $('#filler')[0];
+
+    if (elem !== undefined) {
+        elem.style.height = window.scrollY + 'px';
+    }
+})
+
+// Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used
+function initReadQueryFile(){ // TODO: check if this can be removed?
+    var file = document.getElementById("genomeFile").files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            console.log(evt.target.result);
+        }
+
+        reader.onerror = function (evt) {
+            console.log("Error reading file");
+        }
+    }
+}
+
+function postLoadingIFrame(){
+    document.getElementById("resultLoadedMessage").classList.add('fade-out');
+    document.getElementById("loadingImage").classList.add('no-display');
+}
+
+function storeJobId(id, j_type, j_title){
+    let maxToShow = 250;
+
+    for (let i=0; i<maxToShow; i++){
+        let str = i.toString();
+        if (localStorage.getItem(str) === null){
+            let msg = id + ";" + j_type + ";" + currentTime.toLocaleString() + ';' + j_title;
+            console.log(msg);
+            localStorage.setItem(str, msg);
+            return;
+        }
+    }
+}
+
+function showDetailedPreviousJobs(){
+    let overview = document.getElementById("detailedPreviousJobs");
+
+    for (let i=0; i <localStorage.length; i++) {
+        let msg = localStorage.getItem(i).split(";");
+        let tr = document.createElement("tr");
+
+        let td = document.createElement("td");
+        let a = document.createElement("a");
+        a.style = 'font-size: 17px;';
+        a.classList.add('monospaced');
+        a.href = ROOT_URL + "/results/" + msg[0];
+        a.innerText = msg[0]
+        td.appendChild(a);
+        tr.appendChild(td);
+
+        let td1 = document.createElement("td");
+        td1.innerText = msg[1];
+        tr.appendChild(td1);
+
+        let td2 = document.createElement("td");
+        td2.innerText = msg[2];
+        tr.appendChild(td2);
+
+        let td3 = document.createElement("td");
+        td3.innerText = msg[3];
+        tr.appendChild(td3);
+
+        overview.insertBefore(tr, overview.childNodes[0]);
+    }
+    let tr = document.createElement("tr");
+
+    let th = document.createElement("th");
+    th.innerText = "Job ID";
+    tr.appendChild(th);
+
+    let th1 = document.createElement("th");
+    th1.innerText = "Type of job";
+    tr.appendChild(th1);
+
+    let th2 = document.createElement("th");
+    th2.innerText = "Date";
+    tr.appendChild(th2);
+
+    let th3 = document.createElement("th");
+    th3.innerText = "Title";
+    tr.appendChild(th3);
+
+    overview.insertBefore(tr, overview.childNodes[0]);
+}
+
 function redirect(url){
     setTimeout(function(){
         window.location.href = url;
@@ -1031,39 +737,3 @@ function addAccordionListeners() {
         });
     }
 }
-
-// function getClusterNumbers(){
-//     console.log();
-//     let splitted = getSelectedClusters('un').split('\n');
-//     for (let i=0; i < splitted.length; i++){
-//         let index = splitted[i].indexOf('Cluster ') + 8;
-//         let index2 = splitted[i].indexOf(',');
-//         console.log(index);
-//         console.log(splitted[i][index])
-//         console.log(index2);
-//         console.log(splitted[i][index2])
-//         if (index2 !== index + 1){
-//             console.log()
-//         }
-//     }
-// }
-
-function checkClanCutoffValues(){
-    let elem = $('#clan_cutoff')[0];
-    let splitted = elem.value.split(' ');
-
-    if (parseFloat(splitted[0]) >= 0.0 && parseFloat(splitted[0]) <= 1 && parseFloat(splitted[1]) >= 0.0 && parseFloat(splitted[1]) <=1 ){
-        elem.classList.remove('invalid');
-    }
-    else {
-        elem.classList.add('invalid');
-    }
-}
-
-document.addEventListener('scroll', function(e){
-    let elem = $('#filler')[0];
-
-    if (elem !== undefined) {
-        elem.style.height = window.scrollY + 'px';
-    }
-})
