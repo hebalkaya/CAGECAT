@@ -146,9 +146,6 @@ p.server-status {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.center-status {
-    /*TODO: make it so thatm middle one lookes better*/
-}
 
 .larger-font{
     font-size: 18px;
@@ -376,11 +373,6 @@ ul.statuscorrect > :first-child {
     font-weight: bold;
 }
 
-
-div.non-scrollable {
-    /*TODO: make it nonscrollable*/
-    /*top: 0;*/
-}
 
 .download-button {
     display: none;

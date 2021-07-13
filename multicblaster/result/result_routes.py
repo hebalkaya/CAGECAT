@@ -132,7 +132,7 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
     Currently only supports downloading of the .zip file.
     """
 
-    # TODO: send_from_directory is a safer approach, but this suits for now
+    # TODO: would: send_from_directory is a safer approach, but this suits for now
     # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
     return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"],
                                   job_id, "results", f"{job_id}.zip"))
@@ -140,7 +140,7 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
 
 @result.route("/", methods=["GET", "POST"])
 def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
-    # is: werkzeug.wrappers.response.Response # TODO: fix this
+    # is: werkzeug.wrappers.response.Response
     """Shows page for navigating to results page of job ID or that page itself
 
     Input:
@@ -161,7 +161,6 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
             return show_template('redirect.xhtml', url=url_for('result.show_result', job_id=job_id))
         else:
             return show_template("job_not_found.xhtml", job_id=job_id)
-            # TODO: create invalid job ID template
 
 
 @result.route("/plots/<job_id>")
