@@ -628,6 +628,74 @@ document.addEventListener('scroll', function(e){
     }
 })
 
+function getOutputFromPlot(plotting_type){
+    let frame = document.getElementById("newWindow");
+    let doc = frame.contentDocument || frame.contentWindow.document;
+    let clusters;
+
+    let clusterSelector = $('#unselectedClustersSelector')[0];
+    let querySelector = $('#unselectedQueriesSelector')[0];
+
+    if (plotting_type === 'search'){
+        clusters = doc.getElementsByClassName("tickTextGroup");
+
+        setTimeout(function(){
+            let ticks = doc.getElementsByClassName("tick");
+            for (let i=0; i < ticks.length; i++){
+                // // console.log(.innerHTML);
+                // let qn = ticks[i].childNodes[1];
+                // // timeout(0.1);
+                // console.log(qn.textContent);
+                const query_name = ticks[i].childNodes[1];
+                // parent.window.postMessage(["Queries", query_name.textContent], "*");
+                // app
+                // parent.console.log();
+                let text = query_name.textContent;
+
+                let option = document.createElement('option');
+                option.value = text;
+                option.innerText = text;
+                option.classList.add('smaller-font');
+
+                querySelector.appendChild(option);
+
+
+            }
+        }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
+    }
+    else if (plotting_type === 'visualize'){
+        clusters = doc.getElementsByClassName("clusters")[0].childNodes;
+    }
+    else {
+        console.log('Incorrect plotting type')
+    }
+
+    for (let i=0; i < clusters.length; i++) {
+        let text;
+        if (plotting_type === 'search') {
+            text = clusters[i].firstChild.childNodes[0].textContent;
+
+        } else if (plotting_type === 'visualize') {
+            if (clusters[i].firstChild.childNodes[0].textContent !== 'Query Cluster') {
+                text = clusters[i].firstChild.childNodes[0].textContent;
+                // continue;
+            }
+
+        } else {
+            console.log('Incorrect plotting type')
+        }
+        if (text !== undefined) { // in case of visualize and "Query Cluster"
+            let option = document.createElement('option');
+            option.value = text;
+            option.innerText = text;
+            option.classList.add('smaller-font');
+            clusterSelector.appendChild(option);
+        }
+    }
+
+    // setMultiSelectHeight();
+}
+
 // Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used
 function initReadQueryFile(){ // TODO: check if this can be removed?
     var file = document.getElementById("genomeFile").files[0];
