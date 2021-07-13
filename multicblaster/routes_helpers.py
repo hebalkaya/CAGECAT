@@ -97,7 +97,7 @@ def get_previous_job_properties(job_id: str, job_type: str,
     if file_type == "jobID":
         prev_job_id = request.form[f"{module}EnteredJobId"]
 
-        ut.check_valid_job(prev_job_id, job_type)
+        ut.check_valid_job(prev_job_id)
 
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                  f"{prev_job_id}_session.json")

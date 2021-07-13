@@ -222,8 +222,6 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     """
     with open(f"{os.path.join(JOBS_DIR, job_id, 'logs', job_id)}"
               f"_options.txt", "w") as outf:
-    # TODO: check if we can replace this with os.path.join(log_base, f"{job_id}_cmd.txt"), "w"
-    #     outf.write(str(dict(options)))
 
         for key, value in options.items():
             if "\r\n" in value:
@@ -245,13 +243,11 @@ def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
     return Job.query.filter_by(id=job_id).first()
 
 
-def check_valid_job(prev_job_id: str, job_type: str) -> None:
-    # TODO: check if this is still funcational and is used
+def check_valid_job(prev_job_id: str) -> None:
     """Checks if a submitted job, relying on a previous job is valid
 
     Input:
         - prev_job_id: ID of the user-submitted previous job
-        - job_type: type of the submitted job e.g. "search" or "gne"
 
     Output:
         - None
@@ -259,13 +255,8 @@ def check_valid_job(prev_job_id: str, job_type: str) -> None:
     Raises:
         - NotImplementedError: when previous_job_id was not found in
             the database
-        - NotImplementedError: when the combination of the previous job type
-            and the new job type is invalid (would cause multicblaster
-            to crash)
     """
     if fetch_job_from_db(prev_job_id) is None:
-        # TODO: create invalid job ID template
-        # TODO: OR let JS check job ID on front-end
         raise NotImplementedError("Unknown job ID. Template should be created")
 
 
