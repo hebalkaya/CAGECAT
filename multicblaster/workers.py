@@ -23,7 +23,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     Output:
         - None, execution of this module
 
-    # TODO: check if session file should still be in here
+    # TODO: should: large one: check if session file should still be in here
 
     This function forges and executes a cblaster command.
     """
@@ -126,7 +126,6 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
 
     cmd.extend(["--binary_key", options["keyFunction"]])
 
-    # TODO: maybe it can also be used with len as keyfunction
     if "hitAttribute" in options:  # only when keyFunction is not len
         cmd.extend(["--binary_attr", options["hitAttribute"]])
 
@@ -278,7 +277,6 @@ def clinker_full(job_id: str, options: ImmutableMultiDict=None,
            "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
            "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
            "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
-    # TODO: implement ranges
 
     if "noAlign" in options:
         cmd.append("--no_align")
@@ -341,14 +339,14 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
             submitting a job will break
 
     Output:
-        - None yet. Not implemented: TODO
+        - None yet. Not implemented: TODO: must: implement corason
     """
 
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     cmd = ["echo", "we should execute corason here"]
-    # TODO: implement CORASON
+    # TODO: must: implement CORASON
 
     cmd.extend(["queryfile", "tmpQUERYFILEPATH",
                 "special_org", "tmpREFERENCECLUSTERPATH",
@@ -356,7 +354,7 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
                 "e_core", options["ecore"]])
 
     if "bitscore" in options:
-        cmd.append("bitscore") # TODO: check if this is really the way, or an integer should be provided (true/false)
+        cmd.append("bitscore") # TODO: must: check if this is really the way, or an integer should be provided (true/false)
 
     cmd.extend(["cluster_radio", options["clusterRadio"],
                 "e_cluster", options["ecluster"]])

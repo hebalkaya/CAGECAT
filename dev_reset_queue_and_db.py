@@ -5,7 +5,7 @@ from rq.registry import StartedJobRegistry, FinishedJobRegistry, FailedJobRegist
 import os
 
 ### main code
-DB_PATH = "multicblaster/status.db"  # TODO: change to new location
+DB_PATH = "multicblaster/status.db"
 REGISTRIES = [StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry]
 
 print("\n" + "========== WARNING ==========")
@@ -24,7 +24,7 @@ while result not in ("y", "n", "yes", "no"):
         if not os.path.exists(DB_PATH):
             print(f"No database found at: {DB_PATH}")
         else:
-            os.remove("multicblaster/status.db")  # TODO: change to new location
+            os.remove("multicblaster/status.db")
             print("Database removed succesfully")
 
         # clean registries

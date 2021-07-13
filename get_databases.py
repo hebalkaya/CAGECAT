@@ -2,7 +2,7 @@ import os
 from sys import argv
 
 def list_present_databases(path): # is also in create_databases.py, but
-    # added here again to prevent import errors: TODO: fix
+    # added here again to prevent import errors: TODO: should: fix
     genera = []
     for root, dir, files in os.walk(path):
             for file in files:

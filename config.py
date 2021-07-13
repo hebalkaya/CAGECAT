@@ -21,9 +21,19 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/multicblaster/database.db',
         'DEV_TEAM_EMAIL': 'matthias.vandenbelt@wur.nl'
         }
 
+# TODO: must: move sensitive information to a separate file and add it to gitignore
 EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
          'SENDER_EMAIL': 'ranberg1892124a2@gmail.com',
          'PASSWORD': '!kjasd2SA2qSA;', # intentionally left out
+         'PORT': 465,
+         'FOOTER_MSG': '''Thank you for using our service. 
+
+>> If you found this service useful, spread the word.
+    
+Kind regards,
+    
+The multicblaster team
+https://www.bioinformatics.nl/multicblaster'''
          }
 
 BASE_URL = 'ftp.ncbi.nlm.nih.gov'

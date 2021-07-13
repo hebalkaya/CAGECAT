@@ -38,7 +38,7 @@ def create_filtering_command(options: ImmutableMultiDict,
 
     if options["selectedOrganisms"]:
         partly_cmd.extend(["--organisms", options['selectedOrganisms']])
-        # TODO: could also that user gives multiple patterns. separated by ?
+        # TODO: must: could also that user gives multiple patterns. separated by ;?
 
     # if options["selectedScaffolds"]:
     #     partly_cmd.append("--scaffolds")
@@ -111,8 +111,6 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
             code indicates something went wrong. An exit code of 0 indicates
             the command has executed without any problems.
 
-    # TODO: add graceful termination handling by SIGTERM. When terminated
-    # status should be changed to "failed" and "finish" time should be added
     """
     log_command(cmd, log_base, job_id)
 
@@ -216,7 +214,7 @@ You are able to perform additional downstream analysis by navigating to the resu
 Also, downloading your results is available on this web page.''',
                job.email)
 
-    # TODO: possibly change sender_email and create a better message
+    # TODO: must: possibly change sender_email
 
 
 def post_job_formalities(job_id: str, return_code: int) -> None:
@@ -276,7 +274,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
         - base: appropriate (based on submitted options) argument list
     """
 
-    # TODO: handle recompute scenario
+    # TODO: must: handle recompute scenario
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
         base.append(os.path.join(config.CONF['MOUNTED_DB_FOLDER'], f'{options["selectedGenus"]}.fasta'))

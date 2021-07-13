@@ -298,21 +298,11 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
     Output:
         - None, sent emails
     """
-    # TODO: move port / message to conf
-    port = 465
-
-    message = f'''Subject: {subject}\n\n{message}\nThank you for using our service. 
-
->> If you found this service useful, spread the word.
-    
-Kind regards,
-    
-The multicblaster team
-https://www.bioinformatics.nl/multicblaster'''
+    message = f"Subject: {subject}\n\n{message}\n{EMAIL['FOOTER_MSG']}"
 
     context = ssl.create_default_context()
 
-    with smtplib.SMTP_SSL(EMAIL['SMTP_SERVER'], port, context=context) as server:
+    with smtplib.SMTP_SSL(EMAIL['SMTP_SERVER'], EMAIL['PORT'], context=context) as server:
         server.login(EMAIL['SENDER_EMAIL'], EMAIL['PASSWORD'])
         server.sendmail(EMAIL['SENDER_EMAIL'], receiving_email, message)
 
@@ -327,7 +317,7 @@ def get_failure_reason(job_id: str) -> str:
     Output:
         - user-friendly failure reason
     """
-    # TODO: tool name is not always cblaster, add extra argument
+    # TODO: must: tool name is not always cblaster, add extra argument. Comes when implementing corason
     with open(os.path.join(JOBS_DIR, job_id,
                            "logs", f"{job_id}_cblaster.log")) as inf:
         logs = inf.readlines()
