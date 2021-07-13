@@ -98,7 +98,7 @@ CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'tex
 HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
               'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
 
-# BLANC: {'input_help': {'title': 'TODO', 'module': '', 'text': 'TODO'}}
+# BLANC: {'input_help': {'title': 'blanc', 'module': '', 'text': 'blanc'}}
 
 HELP_OVERVIEW = [('multiple', JOB_DESCRIPTOR_HELPS),
                  ('multiple', GENERAL_HELPS), ('search', SEARCH_HELPS),

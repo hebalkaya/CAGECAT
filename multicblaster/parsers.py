@@ -59,9 +59,9 @@ def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
         selected_scaffolds = []
 
         for cluster in selected_clusters.split("\n"):
-            # TODO: maybe we can use regex here
+            # TODO: would: maybe we can use regex here
             sep_index = cluster.find(")") + 1  # due to excluding last index
-            # TODO: use organism
+            # TODO: must: use organism
             organism = cluster[:sep_index].split("(")[0].strip()
             selected_scaffolds.append(
                 cluster[sep_index + 1:].strip())  # due to separation
@@ -92,7 +92,6 @@ def format_cluster_numbers(cluster_numbers: t.List[int]) -> t.List[str]:
 def parse_selected_cluster_numbers(selected_clusters: str,
                                    pattern: str,
                                    format_nicely: bool = True) -> str:
-    # TODO: pattern documentation: has changed
     """Parses the cluster numbers of the user-selected clusters
 
     Input:

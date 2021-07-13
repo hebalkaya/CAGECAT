@@ -62,7 +62,7 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    # TODO: create a class for job
+    # TODO: would: create a class for job
     new_jobs = []
 
     job_type = request.form["job_type"]
@@ -72,7 +72,7 @@ def submit_job() -> str:
     # only used if a previous job ID or previous session file will be used
 
     ut.create_directories(job_id)
-    # TODO: BIG ONE: make every job_type functional by appending it to the job list
+
     if job_type == "search":
         f = rf.cblaster_search
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
@@ -126,10 +126,10 @@ def submit_job() -> str:
         new_options = dict(request.form)
 
         # save antismash file. Empty string indicates no file was uploaded
-        if request.files["antismashFile"].filename != "":
-            ut.create_directories(corason_job_id)
-            new_options["antismashFile"] = ut.save_file(
-                request.files["antismashFile"], corason_job_id)
+        # if request.files["antismashFile"].filename != "":
+        #     ut.create_directories(corason_job_id)
+        #     new_options["antismashFile"] = ut.save_file(
+        #         request.files["antismashFile"], corason_job_id)
 
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
