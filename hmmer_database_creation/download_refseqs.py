@@ -165,8 +165,7 @@ def check_if_db_already_exists():
 
 if __name__ == '__main__':
     check_if_already_has_too_few_species()
-    check_if_db_already_exists()  # TODO: not efficient as everytime the
-    # script is ran the file gets parsed again
+    check_if_db_already_exists()
 
     fn = init()
     paths = parse_paths(fn)

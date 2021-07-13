@@ -1,9 +1,10 @@
-"""TODO: module docstring
+"""Stores routes for Flask web application for job result pages
 
+Author: Matthias van den Belt
 """
 
 # package imports
-from flask import Blueprint, request, redirect, url_for, send_file
+from flask import Blueprint, request, url_for, send_file
 
 # own project imports
 from multicblaster import app
@@ -115,7 +116,6 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
     else:  # indicates no such job exists in the database
         return show_template("job_not_found.xhtml", job_id=job_id)
-        # TODO: create not_found template
 
 
 @result.route("/download/<job_id>", methods=["GET", "POST"])

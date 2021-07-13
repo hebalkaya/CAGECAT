@@ -46,10 +46,8 @@
 {#            </div>#}
 
             <div class="input-layer">
-{#                TODO: change how this is shown. Also make it readonly#}
                 <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
                 {{ renderHelpButton('selectedClustersToSearch') }}
-{#                TODO: add input for the selected clusters#}
 {#                <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>#}
                 {{ showSelectedClusters(cluster_headers, False, False) }}
             </div>
@@ -86,7 +84,7 @@
             <div>
                 <label class="file-upload-lbl" for="antismashFile">Antismash file</label>
                 <input type="file" name="antismashFile" id="antismashFile"/>
-{#                TODO: add question mark here#}
+{#                TODO: must: add question mark here#}
             </div>
         </fieldset>
 
@@ -98,7 +96,7 @@
 
         {% endblock %}
 
-{#TODO: remove below documentation#}
+{#TODO: must: remove below documentation#}
 <!--        #     Usage:-->
 <!--        #     CORASON extense manual can be consulted at:-->
 <!--        #     https://github.com/nselem/EvoDivMet/wiki/Detailed-Tutorial/-->

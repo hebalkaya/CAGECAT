@@ -9,6 +9,8 @@ with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
     PRESENT_DATABASES = inf.read().strip().split(',')
     PRESENT_DATABASES.sort()
 
+CLINKER_MODULES = ('clinker_query', 'clinker_full')
+
 FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module search, hmm/hmm+remote mode, incorrect HMM profiles
                        'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
                    'ValueError: Search completed, but found no hits':  # module search, no hits found

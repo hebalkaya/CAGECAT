@@ -1,6 +1,6 @@
-"""TODO: docstring
+"""Stores routes for Flask web application for downstream analyses
 
-
+Author: Matthias van den Belt
 """
 
 # package imports
@@ -10,7 +10,7 @@ from flask import Blueprint, request
 import multicblaster.parsers as pa
 import multicblaster.utils as ut
 from multicblaster.routes_helpers import show_template
-from multicblaster.const import POST_ANALYSIS_EXPLANATIONS
+from multicblaster.const import POST_ANALYSIS_EXPLANATIONS, CLINKER_MODULES
 
 downstream = Blueprint('downstream', __name__, template_folder="templates")
 
@@ -86,9 +86,8 @@ def extract_clusters() -> str:
 
     pattern = ut.CLUST_NUMBER_PATTERN_W_SCORE if \
         ut.fetch_job_from_db(prev_job_id).job_type not in \
-        ('clinker_query', 'clinker_full') else \
+        CLINKER_MODULES else \
         ut.CLUST_NUMBER_PATTERN_W_CLINKER_SCORE
-    # TODO: store the now hardcoded clinker_modules in a constant
 
     cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters,
                                                         pattern)
