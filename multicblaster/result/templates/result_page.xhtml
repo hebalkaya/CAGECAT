@@ -213,7 +213,7 @@
     {% set mergedOnload = onload + 'postLoadingIFrame()' %}
 
 <iframe onload="showPreviousJobs(true)" class="no-display"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
-    <iframe onload="{{onload}}" height="800" id="newWindow" src="{{ url_for('result.get_plot_contents', job_id=j_id) }}" title="Generated HTML plot"></iframe>
+    <iframe onload="{{mergedOnload}}" height="800" id="newWindow" src="{{ url_for('result.get_plot_contents', job_id=j_id) }}" title="Generated HTML plot"></iframe>
 </div>
         {% endif %}
 
