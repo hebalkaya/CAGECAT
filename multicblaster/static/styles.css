@@ -10,7 +10,6 @@ body{
 
 }
 
-/*button section*/
 .button {
     margin: 10px auto;
     color: white;
@@ -33,16 +32,12 @@ body{
 .select-options {
     border-radius: 3px;
     box-shadow: 0 0.5px 0 0.5px #a3a2a2;
-
-    /*Border shadow?*/
 }
 
 input, select {
     margin: 3px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
-    /*border-radius: 1px;*/
-
 }
 
 .important {
@@ -77,7 +72,6 @@ ul.nav li a {
 }
 
 ul.nav li.status {
-    /*display: inline-block;*/
     margin: 0 auto;
     color: white;
     text-align: center;
@@ -92,7 +86,6 @@ ul.status {
     background-color: white;
     margin: 0 auto;
     width: 40%;
-    /*text-align: center;*/
 }
 
 ul.nav li a:hover {
@@ -118,7 +111,6 @@ ul.nav li.right-nav {
 .status {
     list-style-type: none;
     background-color: gray;
-    /*margin: auto;*/
     width: 20%;
     margin: 0;
     padding: 0;
@@ -127,22 +119,13 @@ ul.nav li.right-nav {
     color:white;
 }
 
-ul li.status {
-    /*border: 1px solid red;*/
-}
-
 p.server-status {
     margin: 0 auto;
     background: gray;
-    /*padding-left: 16px;*/
-    /*padding-top: 8px;*/
     font-size: 17px;
     width: 20%;
-    /*height: 50px;*/
     color: white;
     text-align: center;
-    /*border-radius: 0 0 3px 3px;*/
-    /*border: 2px solid white;*/
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -150,22 +133,6 @@ p.server-status {
 .larger-font{
     font-size: 18px;
 }
-
-/*.input-label{*/
-/*    font-size: 15px;*/
-/*    margin-left: 0.5%;*/
-/*    color: red;*/
-/*    font-weight: bold;*/
-/*    vertical-align: middle;*/
-/*}*/
-
-/*.hidden {*/
-/*    display: none;*/
-/*}*/
-select {
-
-}
-
 
 input[type="file"] {
     opacity: 0; /* make transparent */
@@ -181,7 +148,6 @@ label.disabled, label.disabled:hover, form button:disabled.hover{
     background-color: #cccccc;
 }
 
-
 .centered {
     text-align: center;
     position: relative;
@@ -193,11 +159,11 @@ iframe {
     border: 1px solid #555555;
     border-radius: 2px;
     width: 90%;
-    /*margin: auto;*/
+
 }
 
 .file-upload-lbl{
-    margin-top: 0px;
+    margin-top: 0;
     border: 1px solid #5284a7;
     border-radius: 5px;
     padding: 5px 15px;
@@ -239,7 +205,6 @@ fieldset {
     border-right-style: none;
     border-bottom-style: none;
     border-color: #6aabd7;
-
     margin-inline-start: 0;
     margin-inline-end: 0;
     padding-block-start: 0.35em;
@@ -257,7 +222,6 @@ textarea {
 input[type="checkbox"] {
     transform: scale(1.4);
     cursor: pointer;
-    /*filter: invert(100%) hue-rotate(18deg) brightness(1.7)*/
 }
 
 input[type="radio"]{
@@ -266,9 +230,6 @@ input[type="radio"]{
 }
 label input[type="checkbox"] {
     margin: 6px 8px 6px 0.8%;
-    /*margin-top: 6px;*/
-    /*margin-right: 8px;*/
-    /*margin-left: 0.8%;*/
 }
 
 label input[type="radio"]{
@@ -288,14 +249,6 @@ div.div-margin {
     margin: 10px 20px 0;
 }
 
-/*.checkbox-label{*/
-/*    color: blue;*/
-/*}*/
-
-/*.select-label{*/
-/*    color: chocolate;*/
-/*}*/
-
 .leftColumn {
     width: 15%;
     border-right: 2px solid #5284a7;
@@ -303,10 +256,6 @@ div.div-margin {
 
 .middleColumn{
     width: 85%;
-    /*border-left: 2px solid #6aabd7;*/
-    /*border-bottom: 2px solid #5284a7;*/
-    /*border-bottom-left-radius: 5px;*/
-
 }
 
 .rightColumn {
@@ -380,9 +329,6 @@ ul.statuscorrect > :first-child {
 
 .enlarge {
     transform: scale(1.4);
-
-    /*font-size: 18px;*/
-
 }
 
 i.fa.fa-download span {
@@ -533,7 +479,6 @@ li.jobs a:visited, td a {
     opacity: 0;
     width: 0;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, width 0.5s ease-in-out;
-    /*display: none;*/
 }
 
 .visible {
@@ -542,7 +487,6 @@ li.jobs a:visited, td a {
     width: 100%; /* as it is now part of another div */
     opacity: 1 !important;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, width 0.5s ease-in-out;
-    /*transition: opacity 0.3s ease-in-out;*/
 }
 
 .shrink-it {
@@ -631,12 +575,8 @@ div.radio-options label {
 }
 
 input[type="submit"]{
-    /*justify-content: center;*/
     width: 40%;
     float: unset !important;
-    /*margin: auto;*/
-    /*text-align: center;*/
-    /*transform: translateX(50%);*/
 }
 
 .selector-custom-height {
@@ -659,7 +599,6 @@ input[type="submit"]{
 
 .panel {
     padding: 0 18px;
-    /*background-color: white;*/
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.34s ease-out;
