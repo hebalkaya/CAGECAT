@@ -11,12 +11,18 @@ import subprocess
 import time
 import os
 from config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
+import typing as t
 
 SLEEPING_TIME = 60
 CPUS = "10"
 BATCH_SIZE = "30"
 
 def init():
+    """Creates directories if not present yet
+
+    Output:
+        - created directories
+    """
     if not os.path.exists(CONF['DATABASE_FOLDER']):
         os.makedirs(CONF['DATABASE_FOLDER'], exist_ok=True)
 
@@ -25,27 +31,48 @@ def init():
     if not os.path.exists('logs'):
         os.mkdir('logs')
 
-def read_contents():
+def read_contents() -> t.List[str]:
+    """Reads file to check if it can create a database from that genus.
+
+    Output:
+        - list of genus names
+
+    """
     with open(COMPLETE_DOWNLOADS_FILE) as inf:
-        to_create = [line.strip() for line in  inf.readlines()]
+        _to_create = [line.strip() for line in inf.readlines()]
 
-    return to_create
+    return _to_create
 
 
-def list_files(genus):
+def list_files(_genus: str) -> t.List[str]:
+    """Lists all present GenBank files for the given genus
+
+    Input:
+        - genus: name of genus to list files for
+
+    Output:
+        - list of file paths belonging to the given genus
+    """
     all_files = []
 
-    for root, dir, files in os.walk(os.path.join(BASE_DIR, genus, 'validated')):
+    for root, directory, files in os.walk(os.path.join(BASE_DIR, _genus, 'validated')):
         for f in files:
             all_files.append(os.path.join(root, f))
-    # print(all_files)
 
     return all_files
 
 
 def list_present_databases(path):
+    """Lists present databases for HMM searching
+
+    Input:
+        - path: path where to search for databases
+
+    Output:
+         - genera: names of genera databases which are present
+    """
     genera = []
-    for root, dir, files in os.walk(path):
+    for root, _, files in os.walk(path):
         for file in files:
             genera.append(file.split('.')[0])
 

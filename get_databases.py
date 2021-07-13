@@ -18,20 +18,20 @@ def list_present_databases(path: str) -> t.List[str]:
         - path: path where to search for databases
 
     Output:
-         - genera: names of genera databases which are present
-
+         - _genera: names of genera databases which are present
     """
     # is also in create_databases.py, but
     # added here again to prevent import errors TODO: could: fix
 
-    genera = []
-    for root, dir, files in os.walk(path):
+    _genera = []
+    for root, _, files in os.walk(path):
         for file in files:
             genus = file.split('.')[0]
-            if '_creation' not in genus and genus not in genera:
-                genera.append(genus)
+            if '_creation' not in genus and genus not in _genera:
+                _genera.append(genus)
 
-    return genera
+    return _genera
+
 
 if __name__ == '__main__':
     if len(argv) == 1 or len(argv) > 2:
