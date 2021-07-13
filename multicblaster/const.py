@@ -95,7 +95,6 @@ CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'tex
                  'ecluster': {'title': 'e-value of genes from reference cluster', 'module': '', 'text': 'e-value for sequences from reference cluster\n\nRequired: yes'},
                  'ecore': {'title': 'TODO', 'module': '', 'text': 'e-value for Best Bidirectional Hits used to construct genomic core from clusters.\n\nRequired: yes'},
                  'rescale': {'title': 'Rescale', 'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
-# TODO: must: missing antismash file
 HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
               'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
 
