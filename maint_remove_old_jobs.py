@@ -45,11 +45,11 @@ def delete_old_jobs():
     with open(os.path.join(f'{CONF["MAINTENANCE_LOGS"]}',
                            f'{datetime.datetime.now().date()}_removal.txt'),
               'w') as outf:
-        for dir, job_id in get_folders_to_delete():
-            shutil.rmtree(dir)
+        for directory, job_id in get_folders_to_delete():
+            shutil.rmtree(directory)
             db.session.delete(fetch_job_from_db(job_id))
 
-            outf.write(f'Deleted: {dir}\n')
+            outf.write(f'Deleted: {directory}\n')
 
     db.session.commit()
 

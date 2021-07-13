@@ -1,3 +1,8 @@
+"""Module to show the current database
+
+Author: Matthias van den Belt
+"""
+
 # package imports
 from sys import argv
 
@@ -14,8 +19,7 @@ if __name__ == "__main__":
 
                 with open(path) as inf:
                     print(inf.readlines())
-    except:
-
+    except IndexError:
         for j in Job.query.all():
             print(j)
 

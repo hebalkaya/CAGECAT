@@ -10,6 +10,6 @@ import os
 ### main code
 if __name__ == "__main__":
     if not os.path.exists(app.config["DATABASE_FOLDER"]):
-            os.makedirs(app.config["DATABASE_FOLDER"], exist_ok=True)
+        os.makedirs(app.config["DATABASE_FOLDER"], exist_ok=True)
 
     app.run()

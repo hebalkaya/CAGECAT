@@ -1,6 +1,11 @@
 from sys import argv
 
 def write_unique_genera():
+    """Writes unique genera to the output file
+
+    Output:
+        - written file
+    """
     with open(argv[1]) as inf:
         all_lines = inf.readlines()
 

@@ -39,8 +39,6 @@ class Job(db.Model):
         # print("Depending", self.depending_on)
         return f"ID: {self.id}; Type: {self.job_type}; " \
                f"Status: {self.status}; " \
-               f"Posted: {self.post_time}; " \
-               f"Started: {self.start_time}; " \
                f"Finished: {self.finish_time}"
 
 class Statistic(db.Model):

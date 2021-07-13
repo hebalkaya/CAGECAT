@@ -1,18 +1,30 @@
+"""Module which downloads RefSeqs from the NCBI database
+
+Author: Matthias van den Belt
+"""
+
 import hashlib
 import os
 import subprocess
 import ftplib
 import time
 from sys import argv
+import typing as t
 
 from config import *
 import create_databases as cr
 
-# genus = 'Streptomyces'
-# term = f'(((prokaryota[orgn] AND ("representative genome"[refseq category] OR "reference genome"[refseq category])) AND (latest[filter] AND all[filter] NOT anomalous[filter]))) AND {genus}[Organism]'
 
+def init() -> str:
+    """Fetches FTP paths of input genus
 
-def init():
+    Input:
+        - No input
+
+    Output:
+        - output_fn: name of output file
+    Uses the fetch_ftp_paths.sh script
+    """
     print(f'\nStarting: {argv[1].capitalize()}\n')
 
     genus = argv[1].capitalize()
@@ -28,13 +40,20 @@ def init():
 
     return output_fn
 
-def write_error(key, paths, db, error_fn='errors.txt'):
-    print(f'Duplicate of {key} (written to {error_fn})')
-    with open(error_fn, 'w' if os.path.exists(error_fn) else 'a') as outf:
-        outf.write(f'{key}:{paths}-{db[key]}')
+def parse_paths(ftp_paths_fn: str, ext='.gbff.gz') -> \
+        t.Dict[str, t.Tuple[str, str, str]]:
+    """Parses the paths downloaded by the fetch_ftp_paths.sh script
 
+    Input:
+        - ftp_paths_fn: filename where ftp paths are stored
 
-def parse_paths(ftp_paths_fn, ext='.gbff.gz'):
+    Output:
+        - list of tuples of parsed ftp paths which can be used to directly
+            download the corresponding file
+            [0] = base ftp path for that genus
+            [1] = GenBank suffix filename to point to the GenBank file
+            [2] = md5 suffix filename to point to the md5-checksum file
+    """
     all_paths = {}
 
     if not os.path.exists(ftp_paths_fn):
@@ -44,8 +63,6 @@ def parse_paths(ftp_paths_fn, ext='.gbff.gz'):
         all_lines = inf.readlines()
 
     for line in all_lines:
-        # print(line)
-        # print(line.strip().split())
         splitted = line.strip().split()
         path, genus, species = splitted[0], splitted[1], " ".join(splitted[2:])
         key = ' '.join([genus, species])
@@ -60,7 +77,15 @@ def parse_paths(ftp_paths_fn, ext='.gbff.gz'):
     return all_paths
 
 
-def create_dir(*args):
+def create_dir(*args) -> str:
+    """Creates directory if it does not exist yet. Recursive.
+
+    Input:
+        - unknown number of string parameters
+
+    Output:
+        - names: full path name
+    """
     names = os.path.join(*args)
     if not os.path.exists(names):
         os.makedirs(names, exist_ok=True)
@@ -69,11 +94,19 @@ def create_dir(*args):
     return names
 
 
-def validate_file(gb_path, name,
-                  incorrect_entries_fn='incorrect_entries.txt',
-                  ):
+def validate_file(gb_path: str, name,
+                  incorrect_entries_fn='incorrect_entries.txt'):
+    """Validates GenBank file using their md5-checksum
+
+    Input:
+        - gb_path: path to GenBank file
+        - name: genus name
+
+    Output:
+        - logging to output files (either successful or incorrect)
+    """
     genus = name.split()[0]
-    successfull_downloads_fn = f'{genus}_{SUCCESSFULL_DOWNLOADS_FN}'
+    successful_downloads_fn = f'{genus}_{SUCCESSFUL_DOWNLOADS_FN}'
 
     with open(os.path.join(BASE_DIR, 'md5checksums.txt')) as inf:
         for line in inf.readlines():
@@ -93,10 +126,11 @@ def validate_file(gb_path, name,
 
         p = create_dir(BASE_DIR, genus, 'validated')
 
+        # move file from downloading folder to appropriate genus folder
         os.rename(os.path.join(BASE_DIR, gb_path[:-3]), os.path.join(BASE_DIR, p, gb_path[:-3]))
         print(f'\t-> moved to {p}')
 
-        with open(successfull_downloads_fn, 'w' if not os.path.exists(successfull_downloads_fn) else 'a') as outf:
+        with open(successful_downloads_fn, 'w' if not os.path.exists(successful_downloads_fn) else 'a') as outf:
             outf.write(f'{name}:{gb_path[:-3]}\n')
     else:
         with open(incorrect_entries_fn, 'w' if not os.path.exists(incorrect_entries_fn) else 'a') as outf:
@@ -105,24 +139,18 @@ def validate_file(gb_path, name,
         print(f'\t-> failed (written to {incorrect_entries_fn})')
 
 
-def check_if_already_downloaded(name):
-    everything = {}
+def download_files(paths: t.Tuple[str, str, str], blocksize=33554432):
+    """Downloads GenBank and md5-checksums files from NCBI FTP sites
 
-    if not os.path.exists('successfully_downloaded.txt'):
-        with open('successfully_downloaded.txt', 'w') as outf:
-            pass
+    Sleeping steps are to not overload NCBI's servers: we are only allowed to
+    perform 3 requests per seconds.
 
-    fn = f'{name.split()[0]}_{SUCCESSFULL_DOWNLOADS_FN}'
-    if os.path.exists(fn):
-        with open(fn) as inf:
-            for entry in inf.readlines():
-                splitted = entry.strip().split(':')
-                everything[splitted[0]] = splitted[1]
+    Input:
+        - paths: see documentation on parse_paths()
 
-    return name in everything
-
-
-def download_files(paths, blocksize=33554432):
+    Output:
+        - downloaded, validated GenBank files
+    """
     total = len(paths)
     for count, (key, value) in enumerate(paths.items(), start=1):
         print(f'({count}/{total}): {key}')
@@ -148,7 +176,29 @@ def download_files(paths, blocksize=33554432):
         validate_file(gb_path, key)
 
 
+def check_if_already_downloaded(name):
+    # TODO: can probably be removed when this is going to be a scheduled re-download
+    # TODO: or not, as the script might fail due to NCBI, and we don't want to start all over again, so we could start from this point again
+    everything = {}
+
+    if not os.path.exists('successfully_downloaded.txt'):
+        with open('successfully_downloaded.txt', 'w') as outf:
+            pass
+
+    fn = f'{name.split()[0]}_{SUCCESSFUL_DOWNLOADS_FN}'
+    if os.path.exists(fn):
+        with open(fn) as inf:
+            for entry in inf.readlines():
+                splitted = entry.strip().split(':')
+                everything[splitted[0]] = splitted[1]
+
+    return name in everything
+
+
+
 def check_if_already_has_too_few_species():
+    # TODO: can probably be removed when this is going to be a scheduled re-download
+    # TODO: or not, as the script might fail due to NCBI, and we don't want to start all over again, so we could start from this point again
     with open('too_few_species.txt') as inf:
         genera = [g.strip().split()[0] for g in inf.readlines()]
 
@@ -158,9 +208,11 @@ def check_if_already_has_too_few_species():
 
 
 def check_if_db_already_exists():
+    # TODO: can probably be removed when this is going to be a scheduled re-download
+    # TODO: or not, as the script might fail due to NCBI, and we don't want to start all over again, so we could start from this point again
     if argv[1] in cr.list_present_databases(CONF['DATABASE_FOLDER']):
         print(f'{argv[1].capitalize()} database already present. Skipped.')
-        exit(0)
+        exit(0)  # exit as this script is ran individually for each genus
 
 
 if __name__ == '__main__':

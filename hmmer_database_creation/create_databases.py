@@ -1,3 +1,12 @@
+"""Module to create HMMer databases
+
+This script should be ran parallel to the download_repr_genomes_wrapper.sh
+script, as this script waits for a signal of that script that a database is
+ready to be created
+
+Author: Matthias van den Belt
+
+"""
 import subprocess
 import time
 import os

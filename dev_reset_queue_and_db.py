@@ -1,3 +1,11 @@
+"""Module to reset the Redis queue and db.
+
+Should only be used for development purposes. NEVER during deployment as this
+will wipe our entire database.
+
+Author: Matthias van den Belt
+"""
+
 # package imports
 from redis import Redis
 from rq import Queue
