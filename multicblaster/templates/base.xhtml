@@ -10,7 +10,6 @@
             src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"></link>
 {#    <link rel="icon" type="image/svg" href="{{ url_for('static', filename='images/icon_multicblaster.svg') }}"/>#}
-{#TODO: change icon#}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 {% block head %}{% endblock %}
 </head>
@@ -40,10 +39,8 @@
 
 {% if help_enabled %}
 <button id="toggleHelpButton" style="position: absolute;top: 8%;right: 8px; z-index: 9000" onclick="toggleExplanationColumn()">&#60&#60</button>
-{#TODO: align button properly#}
     <div class="hide-overflow">
-<div  class="column rightColumn invisible" id="explanationColumn"> {# TODO: add animation to hide help #}
-{#TODO: make explanation column not shown by default#}
+<div  class="column rightColumn invisible" id="explanationColumn">
     <div id="filler" style="height: 0"></div>
         <h2 id="explanationTitle">Explanation</h2>
         <h4 id="explanationModule">Module: </h4>

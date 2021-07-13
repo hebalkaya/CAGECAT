@@ -1,8 +1,8 @@
 """Initializes multicblaster web service (started by uwsgi
 
-Main module of the multicblaster web service
+Main module of the TODO: must: web service name
 
-# TODO: extensive description
+# TODO: must: extensive description
 
 Author: Matthias van den Belt
 """

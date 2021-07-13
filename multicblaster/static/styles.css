@@ -441,7 +441,6 @@ input, div.input-layer select{
 
 div.input-layer label {
     margin-top: 6px;
-    /*TODO: change that it is automatically aligned. not using px*/
 }
 
 .bigger {

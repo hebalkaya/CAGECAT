@@ -6,7 +6,6 @@
     {% set uploadedSessionFile = '%sUploadedSessionFile' % module %}
 
     <div class="radio-options {{"" if mainInput else "no-display" }}" id="{{ '%sPrevJobOptions' % module }}">
-{#    TODO: change style to classes#}
         <div>
             <label class="radioLabel">
             <input type="radio" class="radio-margin" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
@@ -23,7 +22,7 @@
 
         <span>or</span>
         <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ uploadedSessionFile }}">
-{#            TODO: possibly insert help button#}
+{#            TODO: should: possibly insert help button#}
         <input type="file"
                id="{{ uploadedSessionFile }}"
                name="{{uploadedSessionFile }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
@@ -96,7 +95,7 @@
 
 
 {% macro show_options(settings) %}
-{#    TODO: curerntly not used anymore, could be removed in the future#}
+{#  currently not used anymore, could be removed/used in the future. #}
 <label for="optionsList">Selected options</label>
 <ul id="optionsList">
     {% for label, option in settings.items() %}
@@ -149,7 +148,7 @@
 
     {% macro create_scientific_input(label, type, default_value) %}
 <div style="display: table;width: 25%;margin-left: 1%">
-{#TODO: change style#}
+{#TODO: should: change style#}
     <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
 
     <label class="input-label" for="base{{type}}">{{label}}</label>
@@ -184,7 +183,7 @@
 {% endmacro %}
 
 {% macro createBackButton() %}
-{#    TODO: check if we use it. otherwise, remove it#}
+    {#  currently not used anymore, could be removed/used in the future. #}
     <div class="indent">
         <button class="button smaller" onclick="lastPage();">Previous page</button>
     </div>

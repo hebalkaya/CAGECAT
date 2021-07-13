@@ -38,9 +38,9 @@ DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                               "gne": [],
                               "extract_sequences": [],
                               "extract_clusters": ["clinker_full"],
-                              # TODO: possible corason and clinker_query. Get query headers from .csv file
+                              # TODO: would: possible corason and clinker_query. Get query headers from .csv file
                               "clinker_full": [],
-                              "clinker_query": ["extract_clusters"] # TODO: possibly also corason?
+                              "clinker_query": ["extract_clusters"] # TODO: would: possibly also corason?
                               }
 
 JOB_DESCRIPTOR_HELPS = {'job_title': {'title': 'Job title', 'module': '', 'text': 'Enter a job title for easy identification of jobs.\n\nRequired: no\n\nMaximum length: 60 characters'},
@@ -77,7 +77,7 @@ CLINKER_FULL_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': ''
 BINARY_TABLE_HELPS = {'keyFunction': {'title': 'Key function', 'module': '', 'text': 'Key function used when generating binary table cell values.\n\nRequired: yes'},
                       'hitAttribute': {'title': 'Hit attribute', 'module': '', 'text': 'Hit attribute used when generating binary table cell values.\n\nRequired: yes'}}
 FILTERING_HELPS = {'selectedOrganisms': {'title': 'Organisms to filter fot', 'module': '', 'text': 'Organism names to filter hits for. When entering multiple organisms, separate by a space.\n\nRequired: no'},
-                   'selectedScaffolds': {'title': 'TODO', 'module': '', 'text': 'TODO'},  # TODO: check if we still use it
+                   # 'selectedScaffolds': {'title': '', 'module': '', 'text': ''},
                    'clusterNumbers': {'title': 'Cluster numbers', 'module': '', 'text': 'Cluster numbers/ranges provided by the summary file of the \'search\' command or selected online. If no numbers are entered, no filtering takes place.\n\nRequired: no'},
                    'clusterScoreThreshold': {'title': 'Cluster score threshold', 'module': '', 'text': 'Minimum score of a cluster in order to be included. If no score is entered, no filtering takes place.\n\nRequired: no'},
                    'selectedQueries': {'title': 'Query filtering', 'module': '', 'text': 'IDs of query sequences to filter for.\n\nRequired: no'}}
@@ -95,7 +95,7 @@ CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'tex
                  'ecluster': {'title': 'e-value of genes from reference cluster', 'module': '', 'text': 'e-value for sequences from reference cluster\n\nRequired: yes'},
                  'ecore': {'title': 'TODO', 'module': '', 'text': 'e-value for Best Bidirectional Hits used to construct genomic core from clusters.\n\nRequired: yes'},
                  'rescale': {'title': 'Rescale', 'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
-# TODO: missing antismash file
+# TODO: must: missing antismash file
 HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
               'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
 

@@ -7,7 +7,7 @@
 
 {% block title %}
     multicblaster
-{#    TODO: change into service name#}
+{#    TODO: must: change into service name#}
 {% endblock %}
 {% block scripts %}
     {% if module_to_show == 'visualization' %}
@@ -119,7 +119,7 @@ initReadQueryFile();
                     <label class="textarea-label">HMM profiles</label>
                     <textarea rows="6" cols="25" required="required" id="hmmProfiles"
                               name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
-                        {#        TODO: add Pfam identifier validation#}
+                        {#        TODO: could: add Pfam identifier validation#}
                         {{ renderHelpButton('hmmProfiles') }}
                 </div>
             </div>
@@ -214,7 +214,7 @@ initReadQueryFile();
                    name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
         </div>
 
-        <div class="input-layer"> {#  TODO: maybe as class=input-layer #}
+        <div class="input-layer">
             <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
             <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
             {{ renderHelpButton('requiredSequencesSelector') }}
