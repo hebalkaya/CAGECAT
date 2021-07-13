@@ -31,17 +31,10 @@ JOBS_DIR = os.path.join("multicblaster", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 
-# TODO: probably remove FILE_POST_FUNCTION_ID_TRANS
-FILE_POST_FUNCTION_ID_TRANS = {"create_database": "genomeFiles",
-                               "calculate_neighbourhood": "outputFileName"
-                               }
-# TODO: probably removeTEST_PATH
-TEST_PATH = ".."
-
 
 ### Function definitions
 def generate_job_id(id_len: int = 15) -> str:
-    # TODO: could make length shorter
+    # TODO: would: could make length shorter
     """Generates a numeric job ID with each 4th character being a letter
 
     Input:
@@ -106,7 +99,7 @@ def get_server_info(q: rq.Queue, redis_conn: redis.Redis) \
         - dict: info about the current status of the server and queued
             or running jobs
     """
-    # TODO: maybe we can instantiate this registry once instead of every time
+    # TODO: would, optimization: maybe we can instantiate this registry once instead of every time
 
     start_registry = StartedJobRegistry('default', connection=redis_conn)
     # above registry has the jobs in it which have been started, but are not
@@ -210,45 +203,6 @@ def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
 
     job.status = new_status
     db.session.commit()
-
-
-def load_settings(job_id: str) -> t.Dict[str, str]:
-    # TODO: check if this function is still used
-    """Loads settings with which a job was submitted by a user from a file
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - settings_dict: to be used when generating HTML. With the format
-            {pretty_label_of_setting : submitted_value}
-
-    Loads file written by the [save_settings] function
-    """
-    settings_dict = {}
-
-    with open(os.path.join(JOBS_DIR, job_id, "logs",
-                           f"{job_id}_options.txt")) as inf:
-        settings = inf.readlines()
-
-    rewritten_settings = {}
-    for line in settings:
-        splitted = line.strip().split(",")
-
-        if len(splitted) == 2:
-            rewritten_settings[splitted[0]] = splitted[1]
-        elif len(splitted) > 2:
-            rewritten_settings[splitted[0]] = ", ".join(splitted[1:])
-        else:
-            raise IOError("Invalid setting length")
-
-    for key, value in rewritten_settings.items():
-        label = PRETTY_TRANSLATION[key]
-
-        if label is not None:
-            settings_dict[label] = value
-
-    return settings_dict
 
 
 def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,

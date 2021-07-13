@@ -46,7 +46,6 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
     job = ut.fetch_job_from_db(job_id)
 
     if job is not None:
-        settings = ut.load_settings(job_id)
         status = job.status
 
         if status == "finished":
@@ -93,7 +92,6 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             return show_template("status_page.xhtml", j_id=job_id,
                                  parent_job=pj,
                                  status=status,
-                                 settings=settings,
                                  store_job_id=store_job_id,
                                  job_title=job.title,
                                  j_type=j_type,
@@ -106,7 +104,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
             return show_template("status_page.xhtml", j_id=job_id,
                                  status="waiting for preceding job to finish",
-                                 settings=settings,
+
                                  parent_job=pj,
                                  job_title=job.title,
                                  store_job_id=store_job_id,
