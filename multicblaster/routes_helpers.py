@@ -62,7 +62,7 @@ def show_template(template_name: str, help_enabled:bool = True,
     Input:
         - template_name: name of template to be rendered. By default,
             templates should be located in the templates/ folder
-        - help_enabled :TODO
+        - help_enabled: show help pane
         - stat_code, int: HTTP status code to be returned to the client
         - kwargs: keyword arguments used during rendering of the template
 
@@ -172,8 +172,8 @@ def prepare_finished_result(job_id: str,
         size = os.path.getsize(plot_path)
 
     elif module == "corason":
-        program = "echo"  # TODO: will be someting else later
-        plot_contents = None  # TODO: for now
+        program = "echo"  # TODO: must: will be someting else later
+        plot_contents = None  # TODO: must: for now
 
     elif module == "clinker_full":
         program = "clinker"
@@ -296,7 +296,7 @@ def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
 
             sep = "" if not main_search_job.child_jobs else ","
             main_search_job.child_jobs += f"{sep}{new_job[1]}"
-            # TODO: index on else statement could change when the base_path is changed
+            # TODO: note: index on else statement could change when the base_path is changed
             # empty string for the first child job
 
         else:
@@ -368,7 +368,8 @@ def add_title_email_to_job(given_jobs: t.List[t.Tuple[t.Callable, str,
               t.Union[str, None],
               t.Union[str, None]]]
     """
-    # TODO: we could remove the second argument as it is also on given_jobs[1]
+    # TODO: would: we could remove the second argument as it is also on given_jobs[1]
+    # TODO: would: we could remove this function when using classes for Jobs
     all_new_jobs = []
 
     for j in given_jobs:

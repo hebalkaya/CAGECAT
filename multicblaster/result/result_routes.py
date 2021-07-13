@@ -7,6 +7,7 @@ Author: Matthias van den Belt
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
+import multicblaster.const
 from multicblaster import app
 import multicblaster.utils as ut
 import multicblaster.const as co
@@ -63,7 +64,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status,
                                  content_size=ut.format_size(size),
                                  module=module, modules_with_plots=
-                                 ut.MODULES_WHICH_HAVE_PLOTS,
+                                 multicblaster.const.MODULES_WHICH_HAVE_PLOTS,
                                  job_title=job.title,
                                  # log_contents=log_contents,
                                  downstream_modules=

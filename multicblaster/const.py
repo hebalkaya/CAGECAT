@@ -22,7 +22,7 @@ EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "clusterScoreThreshold": "",  # filled in in the
                             "prefix": "",  # submission form
                             "format": "genbank",
-                            "maxclusters": "99999"}  # indicates no maximum
+                            "maxclusters": "200"}  # indicates no maximum
 
 # values can also be tuples
 DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
@@ -165,3 +165,7 @@ POST_ANALYSIS_EXPLANATIONS = {'multicblaster_search':
                                                    ],
                               'recompute': [('', 'You can recompute a previous job using new filter thresholds to filter previous results.')]
                               }
+
+SUBMIT_URL = "/submit_job"
+MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
+                             "clinker_full", "clinker_query"]

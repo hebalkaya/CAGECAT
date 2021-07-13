@@ -9,6 +9,7 @@ import os
 import copy
 
 # own project imports
+import multicblaster.const
 from multicblaster import app
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
@@ -46,7 +47,7 @@ def home_page(prev_run_id: str = None) -> str:
                                 headers=headers, genera=const.PRESENT_DATABASES)
 
 
-@app.route(ut.SUBMIT_URL, methods=["POST"])
+@app.route(multicblaster.const.SUBMIT_URL, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
 
@@ -120,7 +121,7 @@ def submit_job() -> str:
         merged = "\r\n".join([request.form["selectedClustersToSearch"], request.form["selectedReferenceCluster"]])
         extr_clust_options["clusterNumbers"] = pa.parse_selected_cluster_numbers(merged, ut.CLUST_NUMBER_PATTERN_WITHOUT_SCORE)
 
-        # TODO: extract query sequence
+        # TODO: must: extract query sequence
 
         corason_job_id = ut.generate_job_id()
         new_options = dict(request.form)
@@ -128,7 +129,7 @@ def submit_job() -> str:
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
 
-        # TODO: file path corason --> for corason, the file path is the path to where the extracted clusters will be
+        # TODO: must: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
     elif job_type == "clinker_full":
         prev_job_id = request.form["clinkerEnteredJobId"]
@@ -140,7 +141,6 @@ def submit_job() -> str:
             depending_job = None
         else:
             extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-            # TODO: change options?
 
             file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                                                    f"{prev_job_id}_session.json")
@@ -155,7 +155,7 @@ def submit_job() -> str:
         prev_job_id = request.form["prev_job_id"]
         file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
 
-        new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))  # TODO: depending job could change in future
+        new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))
 
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
@@ -186,7 +186,7 @@ def help_page() -> str:
     return rthelp.show_template("help.xhtml", help_enabled=False)
 
 
-# TODO: all feedback things could be in a blueprint
+# TODO: could: all feedback things could be in a blueprint
 @app.route('/feedback')
 def feedback_page() -> str:
     """Shows the feedback page to the user
@@ -257,7 +257,7 @@ def get_help_text(input_type):
     """
 
     if input_type not in co.HELP_TEXTS:
-        ##### TODO: REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
+        ##### TODO: must: REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
         with open('not_registered_helps.txt', "r+") as outf:
             all_unregistrered_helps = [line.strip() for line in outf.readlines()]
             # print(all_unregistrered_helps)
