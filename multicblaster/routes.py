@@ -125,12 +125,6 @@ def submit_job() -> str:
         corason_job_id = ut.generate_job_id()
         new_options = dict(request.form)
 
-        # save antismash file. Empty string indicates no file was uploaded
-        # if request.files["antismashFile"].filename != "":
-        #     ut.create_directories(corason_job_id)
-        #     new_options["antismashFile"] = ut.save_file(
-        #         request.files["antismashFile"], corason_job_id)
-
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
 
