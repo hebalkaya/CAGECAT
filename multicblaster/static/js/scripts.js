@@ -654,21 +654,22 @@ function showPreviousJobs(disableBodyOnLoad){
     for (let i=0; i <localStorage.length; i++){
         try{
             let jobId = localStorage.getItem(i).split(";")[0];
+
+            let li = document.createElement("li");
+            li.classList.add("jobs");
+
+            let a = document.createElement("a");
+            a.href = ROOT_URL + "/results/" + jobId;
+            a.innerText = jobId;
+
+            li.appendChild(a);
+            overview.insertBefore(li, overview.childNodes[0]);
         }
         catch (error){
             console.log('Error fetching previous jobs')
+            determineHeight();
             return;
         }
-
-        let li = document.createElement("li");
-        li.classList.add("jobs");
-
-        let a = document.createElement("a");
-        a.href = ROOT_URL + "/results/" + jobId;
-        a.innerText = jobId;
-
-        li.appendChild(a);
-        overview.insertBefore(li, overview.childNodes[0]);
     }
     let li = document.createElement("li");
     let a = document.createElement("a");
