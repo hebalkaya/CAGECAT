@@ -10,6 +10,7 @@ import copy
 
 # own project imports
 import multicblaster.const
+import multicblaster.help_texts
 from multicblaster import app
 import multicblaster.utils as ut
 import multicblaster.parsers as pa
@@ -256,7 +257,7 @@ def get_help_text(input_type):
         - help texts of input parameter. Keys: "title", "module", "text"
     """
 
-    if input_type not in co.HELP_TEXTS:
+    if input_type not in multicblaster.help_texts.HELP_TEXTS:
         ##### TODO: must: REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
         with open('not_registered_helps.txt', "r+") as outf:
             all_unregistrered_helps = [line.strip() for line in outf.readlines()]
@@ -268,7 +269,7 @@ def get_help_text(input_type):
 
         return rthelp.show_template("page_not_found.xhtml", stat_code=404)
 
-    return co.HELP_TEXTS[input_type]
+    return multicblaster.help_texts.HELP_TEXTS[input_type]
 
 
 # Error handlers
