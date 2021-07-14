@@ -118,7 +118,7 @@ def submit_job() -> str:
                                f"{prev_job_id}_session.json")
 
         extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-        clust_numbers = dict(request.form['selectedClustersToUse'])
+        clust_numbers = dict(request.form)
 
         extr_clust_options['clusterNumbers'] = \
             clust_numbers['selectedClustersToUse'].append(
