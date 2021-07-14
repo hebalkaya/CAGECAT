@@ -121,8 +121,7 @@ def submit_job() -> str:
         clust_numbers = dict(request.form)
 
         extr_clust_options['clusterNumbers'] = \
-            clust_numbers['selectedClustersToUse'].append(
-                request.form['selectedReferenceCluster']) # as we also need the cluster file for the reference bgc
+            clust_numbers['selectedClustersToUse'] + f' {request.form["selectedReferenceCluster"]}' # as we also need the cluster file for the reference bgc
 
         # TODO: must: extract query sequence
 
