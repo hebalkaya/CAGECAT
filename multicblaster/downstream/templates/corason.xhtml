@@ -16,7 +16,7 @@
         <h2 class="indent">CORASON</h2>
 
 <div>
-    <form action="{{url_for('submit_job')}}" method="post" enctype="multipart/form-data" onsubmit="mergeExponentials()">
+    <form action="{{url_for('submit_job')}}" method="post" onsubmit="mergeExponentials()">
         <input type="hidden" name="job_type" value="corason"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
