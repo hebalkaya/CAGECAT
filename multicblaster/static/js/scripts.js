@@ -619,6 +619,20 @@ function checkClanCutoffValues(){
         elem.classList.add('invalid');
     }
 }
+function addClustersToUse(){
+    let elem = $('#selectedReferenceCluster')[0];
+    let merged = []
+    // let selectedRefCluster = $('#selectedReferenceCluster')
+
+    for (let i=0; i < elem.children.length; i++){
+        if (i !== elem.selectedIndex) {
+            // console.log(elem.children[i]);
+            merged.push(elem.children[i].value)
+        }
+    }
+    $('#selectedClustersToUse')[0].value = merged.join(' ');
+}
+
 
 document.addEventListener('scroll', function(e){
     let elem = $('#filler')[0];

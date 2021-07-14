@@ -118,14 +118,13 @@ def submit_job() -> str:
                                f"{prev_job_id}_session.json")
 
         extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-
-        merged = "\r\n".join([request.form["selectedClustersToSearch"], request.form["selectedReferenceCluster"]])
-        extr_clust_options["clusterNumbers"] = pa.parse_selected_cluster_numbers(merged, ut.CLUST_NUMBER_PATTERN_WITHOUT_SCORE)
+        extr_clust_options['clusterNumbers'] = request.form['selectedClustersToUse']
+        # no need to split here, as this is already done in the extract_clusters worker function
 
         # TODO: must: extract query sequence
 
         corason_job_id = ut.generate_job_id()
-        new_options = dict(request.form)
+        new_options = dict(request.form) # TODO: should: can we remove this?
 
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
@@ -135,7 +134,6 @@ def submit_job() -> str:
     elif job_type == "clinker_full":
         prev_job_id = request.form["clinkerEnteredJobId"]
         prev_job = ut.fetch_job_from_db(prev_job_id)
-
 
         if prev_job.job_type == 'extract_clusters':
             genome_files_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results")

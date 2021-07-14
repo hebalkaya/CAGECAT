@@ -16,7 +16,7 @@
         <h2 class="indent">CORASON</h2>
 
 <div>
-    <form action="{{url_for('submit_job')}}" method="post" onsubmit="mergeExponentials()">
+    <form action="{{url_for('submit_job')}}" method="post" onsubmit="mergeExponentials();addClustersToUse()">
         <input type="hidden" name="job_type" value="corason"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
@@ -50,6 +50,7 @@
                 {{ renderHelpButton('selectedClustersToSearch') }}
 {#                <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>#}
                 {{ showSelectedClusters(cluster_headers, False, False) }}
+                <input type="hidden" name="selectedClustersToUse" id="selectedClustersToUse" value=""/>
             </div>
 
         </fieldset>
