@@ -118,8 +118,11 @@ def submit_job() -> str:
                                f"{prev_job_id}_session.json")
 
         extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-        extr_clust_options['clusterNumbers'] = request.form['selectedClustersToUse']
-        # no need to split here, as this is already done in the extract_clusters worker function
+        clust_numbers = dict(request.form['selectedClustersToUse'])
+
+        extr_clust_options['clusterNumbers'] = \
+            clust_numbers['selectedClustersToUse'].append(
+                request.form['selectedReferenceCluster']) # as we also need the cluster file for the reference bgc
 
         # TODO: must: extract query sequence
 

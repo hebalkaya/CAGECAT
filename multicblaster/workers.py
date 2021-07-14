@@ -365,8 +365,9 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
 
     cmd.extend(["rescale", options["rescale"]])
 
-    if "antismashFile" in options:
-        cmd.extend(["antismash", options["antismashFile"]])
+    # we removed antismash on 13th of July 2021
+    # if "antismashFile" in options:
+    #     cmd.extend(["antismash", options["antismashFile"]])
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
