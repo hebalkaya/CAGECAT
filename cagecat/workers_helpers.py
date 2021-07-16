@@ -9,11 +9,11 @@ import os
 
 # own project imports
 import config
-from multicblaster.utils import JOBS_DIR, add_time_to_db, mutate_status, \
+from cagecat.utils import JOBS_DIR, add_time_to_db, mutate_status, \
     fetch_job_from_db, send_email
-from multicblaster import db
+from cagecat import db
 from config import CONF
-from multicblaster.models import Job
+from cagecat.models import Job
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
@@ -103,7 +103,7 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
         - cmd: split command to be executed. All elements in the
             list are joined together with a space to form a full command
         - log_base: base directory for logging. Has the following structure:
-            "multicblaster/jobs/{job_id}/logs/"
+            "cagecat/jobs/{job_id}/logs/"
         - job_id: ID corresponding to the job the function is called for
 
     Output:
@@ -154,7 +154,7 @@ def zip_results(job_id: str) -> None:
 
     cmd = ["zip", "-r", os.path.join("results", f"{job_id}.zip"), "."]
     # all files and folders in the current directory
-    # (multicblaster/jobs/{job_id}/ under the base folder
+    # (cagecat/jobs/{job_id}/ under the base folder
 
     run_command(cmd, "logs", job_id)
     # invalid path: 'logs/U812J131P392S71_zip.txt/U812J131P392S71_cmd.txt'
@@ -168,7 +168,7 @@ def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
         - cmd: split command to be executed. All elements in the
             list are joined together with a space to form a full command
         - log_base: base directory for logging. Has the following structure:
-            "multicblaster/jobs/{job_id}/logs/"
+            "cagecat/jobs/{job_id}/logs/"
         - job_id: ID corresponding to the job the function is called for
 
     Output:

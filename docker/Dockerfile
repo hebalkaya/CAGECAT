@@ -17,12 +17,11 @@ COPY present_databases.txt /present_databases.txt
 RUN mkdir -p /root/.config/cblaster
 
 #RUN cblaster config --email "matthias.vandenbelt@wur.nl"
-RUN mv /repo/docker/multicblaster /etc/nginx/sites-available/multicblaster
+RUN mv /repo/docker/cagecat /etc/nginx/sites-available/cagecat
 RUN mv /repo/docker/config.ini /root/.config/cblaster/config.ini
 
-# We don't have to copy uwsgi_params, as in multicblaster the /repo/docker/uwsgi_params file is referenced to
-# TODO: must: change service name
+# We don't have to copy uwsgi_params, as in cagecat the /repo/docker/uwsgi_params file is referenced to
 
-RUN ln -s /etc/nginx/sites-available/multicblaster /etc/nginx/sites-enabled
+RUN ln -s /etc/nginx/sites-available/cagecat /etc/nginx/sites-enabled
 
 CMD ["/usr/bin/supervisord", "-c", "/repo/docker/supervisord.conf"]

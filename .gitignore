@@ -1,6 +1,6 @@
 .idea/*
 __pycache__/*
-/multicblaster/static/uploads/
+/cagecat/static/uploads/
 /test_runs/
 
-/multicblaster/static/js/deprecated.js
+/cagecat/static/js/deprecated.js

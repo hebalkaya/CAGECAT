@@ -6,7 +6,7 @@ Author: Matthias van den Belt
 from datetime import datetime
 
 # own project imports
-from multicblaster import db
+from cagecat import db
 
 ## SQLAlchemy database classes
 class Job(db.Model):

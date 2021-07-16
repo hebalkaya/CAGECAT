@@ -1,4 +1,4 @@
-"""Utility module to support the multicblaster web service
+"""Utility module to support the CAGECAT web service
 
 Author: Matthias van den Belt
 """
@@ -11,9 +11,9 @@ import smtplib
 import ssl
 
 # own project imports
-from multicblaster.models import Job, Statistic
+from cagecat.models import Job, Statistic
 from config import EMAIL
-import multicblaster.const as const
+import cagecat.const as const
 
 # typing imports
 import werkzeug.datastructures, werkzeug.utils
@@ -27,7 +27,7 @@ CLUST_NUMBER_PATTERN_W_SCORE = r"\(Cluster (\d+), score: \d+\.\d+\)"
 CLUST_NUMBER_PATTERN_WITHOUT_SCORE = r"\(Cluster (\d+)"
 CLUST_NUMBER_PATTERN_W_CLINKER_SCORE = r"\(Cluster (\d+), \d+\.\d+ score\)"
 
-JOBS_DIR = os.path.join("multicblaster", "jobs")
+JOBS_DIR = os.path.join("cagecat", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 

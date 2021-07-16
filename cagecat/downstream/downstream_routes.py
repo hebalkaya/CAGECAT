@@ -7,10 +7,10 @@ Author: Matthias van den Belt
 from flask import Blueprint, request
 
 # own project imports
-import multicblaster.parsers as pa
-import multicblaster.utils as ut
-from multicblaster.routes_helpers import show_template
-from multicblaster.const import POST_ANALYSIS_EXPLANATIONS, CLINKER_MODULES
+import cagecat.parsers as pa
+import cagecat.utils as ut
+from cagecat.routes_helpers import show_template
+from cagecat.const import POST_ANALYSIS_EXPLANATIONS, CLINKER_MODULES
 
 downstream = Blueprint('downstream', __name__, template_folder="templates")
 

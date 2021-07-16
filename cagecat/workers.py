@@ -7,8 +7,8 @@ Author: Matthias van den Belt
 import os.path
 
 # own project imports
-from multicblaster.workers_helpers import *
-import multicblaster.utils as ut
+from cagecat.workers_helpers import *
+import cagecat.utils as ut
 import config
 
 ### redis-queue functions
@@ -262,7 +262,7 @@ def clinker_full(job_id: str, options: ImmutableMultiDict=None,
         - job_id: ID of the submitted job
         - options: user submitted parameters via HTML form
         - file_path: path to genbank files (following structure:
-            multicblaster/jobs/prev_job_id/results/*.gbk
+            cagecat/jobs/prev_job_id/results/*.gbk
             to select all gbk files)
 
     Output:

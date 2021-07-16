@@ -4,7 +4,7 @@ Author: Matthias van den Belt
 """
 
 # changeable
-CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/multicblaster/database.db',
+CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         # "DEBUG": True,
         # "HOST": "0.0.0.0",
@@ -14,7 +14,7 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/multicblaster/database.db',
         'PFAM_DB_FOLDER': '/pfam_db',
         'MOUNTED_DB_FOLDER': '/hmm_databases',
         "REPRESENTATIVE_GENOMES_THRESHOLD": 50,
-        'DOMAIN': 'http://www.bioinformatics.nl/multicblaster/',
+        'DOMAIN': 'http://www.bioinformatics.nl/cagecat/',
         'PRESENT_DATABASES_LOCATION': '/present_databases.txt',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
         'SERVER_PREFIX': '/repo',
@@ -32,8 +32,8 @@ EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
     
 Kind regards,
     
-The multicblaster team
-https://www.bioinformatics.nl/multicblaster'''
+The CAGECAT team
+https://www.bioinformatics.nl/cagecat'''
          }
 
 BASE_URL = 'ftp.ncbi.nlm.nih.gov'

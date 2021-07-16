@@ -8,7 +8,7 @@ import re
 from more_itertools import consecutive_groups
 
 # own project imports
-import multicblaster.utils as ut
+import cagecat.utils as ut
 
 # typing imports
 import typing as t

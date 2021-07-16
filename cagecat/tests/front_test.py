@@ -4,7 +4,7 @@ from selenium.webdriver.support.select import Select
 from random import randint
 import time
 from sys import argv
-from multicblaster.utils import fetch_job_from_db
+from cagecat.utils import fetch_job_from_db
 
 # For now, only testable on local Windows machine
 URL = "http://192.168.2.65:5000/" # localhost

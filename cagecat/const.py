@@ -3,8 +3,8 @@
 Author: Matthias van den Belt
 
 """
-from multicblaster import app
-from multicblaster.help_texts import HELP_OVERVIEW, HELP_TEXTS
+from cagecat import app
+from cagecat.help_texts import HELP_OVERVIEW, HELP_TEXTS
 
 with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
     PRESENT_DATABASES = inf.read().strip().split(',')

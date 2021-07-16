@@ -9,15 +9,15 @@ import os
 import copy
 
 # own project imports
-import multicblaster.const
-import multicblaster.help_texts
-from multicblaster import app
-import multicblaster.utils as ut
-import multicblaster.parsers as pa
-import multicblaster.const as co
-import multicblaster.routes_helpers as rthelp
-import multicblaster.workers as rf
-import multicblaster.const as const
+import cagecat.const
+import cagecat.help_texts
+from cagecat import app
+import cagecat.utils as ut
+import cagecat.parsers as pa
+import cagecat.const as co
+import cagecat.routes_helpers as rthelp
+import cagecat.workers as rf
+import cagecat.const as const
 from config import CONF
 
 # route definitions
@@ -48,7 +48,7 @@ def home_page(prev_run_id: str = None) -> str:
                                 headers=headers, genera=const.PRESENT_DATABASES)
 
 
-@app.route(multicblaster.const.SUBMIT_URL, methods=["POST"])
+@app.route(cagecat.const.SUBMIT_URL, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
 
@@ -209,7 +209,7 @@ def submit_feedback() -> str:
         - HTML represented in string format
     """
     for email in (CONF['DEV_TEAM_EMAIL'], request.form['email']):
-        ut.send_email('multicblaster feedback report',
+        ut.send_email('CAGECAT feedback report',
                       f'''#########################################
 
 Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly. We kindly ask you for future replies to reply above the '#####' line for smooth correspondence.
@@ -257,7 +257,7 @@ def get_help_text(input_type):
         - help texts of input parameter. Keys: "title", "module", "text"
     """
 
-    if input_type not in multicblaster.help_texts.HELP_TEXTS:
+    if input_type not in cagecat.help_texts.HELP_TEXTS:
         ##### TODO: must: REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
         with open('not_registered_helps.txt', "r+") as outf:
             all_unregistrered_helps = [line.strip() for line in outf.readlines()]
@@ -269,7 +269,7 @@ def get_help_text(input_type):
 
         return rthelp.show_template("page_not_found.xhtml", stat_code=404)
 
-    return multicblaster.help_texts.HELP_TEXTS[input_type]
+    return cagecat.help_texts.HELP_TEXTS[input_type]
 
 
 # Error handlers

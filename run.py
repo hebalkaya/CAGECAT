@@ -1,10 +1,10 @@
-"""Runs the multicblaster web service
+"""Runs the CAGECAT web service
 
 Author: Matthias van den Belt
 """
 
 # own project imports
-from multicblaster import app
+from cagecat import app
 import os
 
 ### main code

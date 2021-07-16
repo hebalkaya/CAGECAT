@@ -7,12 +7,12 @@ Author: Matthias van den Belt
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
-import multicblaster.const
-from multicblaster import app
-import multicblaster.utils as ut
-import multicblaster.const as co
-from multicblaster.routes_helpers import show_template
-import multicblaster.routes_helpers as rthelp
+import cagecat.const
+from cagecat import app
+import cagecat.utils as ut
+import cagecat.const as co
+from cagecat.routes_helpers import show_template
+import cagecat.routes_helpers as rthelp
 
 # other imports
 import os
@@ -63,7 +63,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status,
                                  content_size=ut.format_size(size),
                                  module=module, modules_with_plots=
-                                 multicblaster.const.MODULES_WHICH_HAVE_PLOTS,
+                                 cagecat.const.MODULES_WHICH_HAVE_PLOTS,
                                  job_title=job.title,
                                  # log_contents=log_contents,
                                  downstream_modules=

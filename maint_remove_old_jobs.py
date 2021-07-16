@@ -2,8 +2,8 @@
 
 Author: Matthias van den Belt
 """
-from multicblaster import db
-from multicblaster.utils import fetch_job_from_db, JOBS_DIR
+from cagecat import db
+from cagecat.utils import fetch_job_from_db, JOBS_DIR
 from config import CONF
 import os
 import datetime

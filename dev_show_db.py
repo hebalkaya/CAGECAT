@@ -7,7 +7,7 @@ Author: Matthias van den Belt
 from sys import argv
 
 # own project imports
-from multicblaster.models import Job, Statistic
+from cagecat.models import Job, Statistic
 
 ### main code
 if __name__ == "__main__":
@@ -15,7 +15,7 @@ if __name__ == "__main__":
         if argv[1] == "failed":
             for j in Job.query.filter_by(status="failed").all():
                 print(j)
-                path = f"multicblaster/jobs/{j.id}/logs/{j.id}_cblaster.log"
+                path = f"cagecat/jobs/{j.id}/logs/{j.id}_cblaster.log"
 
                 with open(path) as inf:
                     print(inf.readlines())

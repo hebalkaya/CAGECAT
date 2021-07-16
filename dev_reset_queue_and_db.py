@@ -13,7 +13,7 @@ from rq.registry import StartedJobRegistry, FinishedJobRegistry, FailedJobRegist
 import os
 
 ### main code
-DB_PATH = "multicblaster/status.db"
+DB_PATH = "cagecat/status.db"
 REGISTRIES = [StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry]
 
 print("\n" + "========== WARNING ==========")
@@ -32,7 +32,7 @@ while result not in ("y", "n", "yes", "no"):
         if not os.path.exists(DB_PATH):
             print(f"No database found at: {DB_PATH}")
         else:
-            os.remove("multicblaster/status.db")
+            os.remove("cagecat/status.db")
             print("Database removed succesfully")
 
         # clean registries

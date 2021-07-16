@@ -1,4 +1,4 @@
-"""Initializes multicblaster web service (started by uwsgi
+"""Initializes CAGECAT web service (started by uwsgi
 
 Main module of the TODO: must: web service name
 
@@ -21,15 +21,15 @@ import config
 r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
-app = Flask("multicblaster")
+app = Flask("CAGECAT")
 app.config.update(config.CONF)
 
 db = SQLAlchemy(app)
 
-from multicblaster import routes
-import multicblaster.models as m
-from multicblaster.downstream.downstream_routes import downstream
-from multicblaster.result.result_routes import result
+from cagecat import routes
+import cagecat.models as m
+from cagecat.downstream.downstream_routes import downstream
+from cagecat.result.result_routes import result
 
 app.register_blueprint(downstream, url_prefix="/downstream")
 app.register_blueprint(result, url_prefix="/results")

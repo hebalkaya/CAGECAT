@@ -1,6 +1,6 @@
 # the upstream component nginx needs to connect to
 upstream flask {
-    server unix:///tmp/multicblaster.sock; # for a file socket
+    server unix:///tmp/cagecat.sock; # for a file socket
 }
 
 # configuration of the server
@@ -15,7 +15,7 @@ server {
     #client_max_body_size 75M;   # adjust to taste
 
     location /static {
-        alias /repo/multicblaster/static;
+        alias /repo/cagecat/static;
     }
 
     location / {

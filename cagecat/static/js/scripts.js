@@ -4,7 +4,7 @@ var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 var selectedQueries = []
 var currentTime = Date();
-var ROOT_URL = '/multicblaster'     // TODO: must: change root if root changes
+var ROOT_URL = '/cagecat'     // TODO: must: change root if root changes
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes

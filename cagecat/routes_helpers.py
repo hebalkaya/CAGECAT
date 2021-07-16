@@ -8,10 +8,10 @@ from flask import render_template, request
 import os
 
 # own project imports
-import multicblaster.utils as ut
-from multicblaster import q, r
-from multicblaster.models import Job as dbJob
-from multicblaster import db
+import cagecat.utils as ut
+from cagecat import q, r
+from cagecat.models import Job as dbJob
+from cagecat import db
 
 # typing imports
 import typing as t
