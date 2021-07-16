@@ -8,6 +8,7 @@ import os.path
 
 # own project imports
 from multicblaster.workers_helpers import *
+import multicblaster.utils as ut
 import config
 
 ### redis-queue functions
@@ -345,11 +346,20 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
+    __, ___, parent_job_results_path =  ut.fetch_job_from_db(
+        job_id).depending_on
+
     cmd = ["echo", "we should execute corason here"]
     # TODO: must: implement CORASON
-
-    cmd.extend(["queryfile", "tmpQUERYFILEPATH",
-                "special_org", "tmpREFERENCECLUSTERPATH",
+    #
+    # cmd.extend(["queryfile", "tmpQUERYFILEPATH",
+    #             "special_org", "tmpREFERENCECLUSTERPATH",
+    # TODO: make query.fasta
+    cmd.extend([os.path.join(LOG_PATH, 'query.fasta'), # query
+                parent_job_results_path, # directory where gbks are
+                os.path.join(parent_job_results_path, # reference cluster
+                     f'cluster{options["selectedReferenceCluster"]}.gbk'),
+                '-g',
                 "e_value", options["evalue"],
                 "e_core", options["ecore"]])
 
