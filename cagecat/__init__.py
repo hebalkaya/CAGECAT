@@ -11,17 +11,14 @@ Author: Matthias van den Belt
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-
-import os
 import redis
 import rq
 import config
 
-
 r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
-app = Flask("CAGECAT")
+app = Flask("cagecat")
 app.config.update(config.CONF)
 
 db = SQLAlchemy(app)
