@@ -2,8 +2,8 @@
 
 echo "--> Backing up old files"
 #TODO: would: add folder of date and move cp files to there
-docker cp cagecat_trial:/repo/cagecat/database.db database.db
-docker cp cagecat_trial:/repo/cagecat/jobs jobs
+docker cp cagecat_service:/repo/cagecat/database.db database.db
+docker cp cagecat_service:/repo/cagecat/jobs jobs
 
 echo "--> Removing old repo"
 rm -rf repo
