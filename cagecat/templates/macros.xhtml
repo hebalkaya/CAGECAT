@@ -127,7 +127,7 @@
             <label class="textarea-label" for="selectedQueries">Queries</label>
             {{ renderHelpButton('selectedQueries') }}
             {{ showSelectedClusters(selected_queries_or_cluster_numbers, False, True) }}
-            <input type="hidden" name="selectedQueries" value="{{ selected_queries_or_cluster_numbers|join(',') }}"/>
+            <input type="hidden" name="selectedQueries" value="{{ selected_queries_or_cluster_numbers|join(' ') }}"/>
 {#            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>#}
         </div>
         {% elif extraction_type == 'clusters' %}
