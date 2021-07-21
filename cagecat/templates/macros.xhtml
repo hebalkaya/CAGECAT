@@ -106,6 +106,7 @@
 
 
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
+{#    TODO: maybe selected scaffolds could be removed#}
 <div>
     <label class="fieldset-label" for="filteringSection">Filtering</label>
     <fieldset id="filteringSection">
@@ -126,6 +127,7 @@
             <label class="textarea-label" for="selectedQueries">Queries</label>
             {{ renderHelpButton('selectedQueries') }}
             {{ showSelectedClusters(selected_queries_or_cluster_numbers, False, True) }}
+            <input type="hidden" name="selectedQueries" value="{{ selected_queries_or_cluster_numbers|join(',') }}"/>
 {#            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>#}
         </div>
         {% elif extraction_type == 'clusters' %}
