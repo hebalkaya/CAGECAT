@@ -12,7 +12,7 @@ COPY repo/ /repo/
 COPY present_databases.txt /present_databases.txt
 
 RUN mkdir /backups
-RUN mkdir /process_logs
+RUN mkdir -p /process_logs/maintenance
 RUN mkdir /pfam_db
 RUN mkdir -p /root/.config/cblaster
 
