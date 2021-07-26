@@ -96,7 +96,8 @@ def create_summary_table_commands(
     return summary_cmds
 
 
-def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
+def run_command(cmd: t.List[str], log_base: str, job_id: str,
+                log_output: bool = True) -> int:
     """Executes a command on the command line
 
     Input:
@@ -107,16 +108,23 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
         - job_id: ID corresponding to the job the function is called for
 
     Output:
-        - res.returncode: exit code of the executed command. A non-zero exit
+        - return_code: exit code of the executed command. A non-zero exit
             code indicates something went wrong. An exit code of 0 indicates
             the command has executed without any problems.
 
     """
-    log_command(cmd, log_base, job_id)
+    if log_output:
+        log_command(cmd, log_base, job_id)
 
-    with open(os.path.join(log_base, f"{job_id}_{cmd[0]}.log"), "w") as outf:
+        with open(os.path.join(log_base, f"{job_id}_{cmd[0]}.log"), "w") as outf:
+            try:
+                res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+                return_code = res.returncode
+            except:  # purposely broad except clause to catch all exceptions
+                return_code = 1
+    else:
         try:
-            res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+            res = subprocess.run(cmd)
             return_code = res.returncode
         except:  # purposely broad except clause to catch all exceptions
             return_code = 1
@@ -160,7 +168,7 @@ def zip_results(job_id: str) -> None:
     # all files and folders in the current directory
     # (cagecat/jobs/{job_id}/ under the base folder
 
-    run_command(cmd, "logs", job_id)
+    run_command(cmd, "logs", job_id, log_output=False)
     # invalid path: 'logs/U812J131P392S71_zip.txt/U812J131P392S71_cmd.txt'
     # something is going wrong
 
