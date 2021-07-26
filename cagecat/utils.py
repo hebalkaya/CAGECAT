@@ -318,13 +318,16 @@ def get_failure_reason(job_id: str) -> str:
         - user-friendly failure reason
     """
     # TODO: must: tool name is not always cblaster, add extra argument. Comes when implementing corason
-    with open(os.path.join(JOBS_DIR, job_id,
-                           "logs", f"{job_id}_cblaster.log")) as inf:
-        logs = inf.readlines()
+    try:
+        with open(os.path.join(JOBS_DIR, job_id,
+                               "logs", f"{job_id}_cblaster.log")) as inf:
+            logs = inf.readlines()
 
-    for l in logs:
-        for fail in const.FAILURE_REASONS:
-            if fail in l:
-                return const.FAILURE_REASONS[fail]
+        for l in logs:
+            for fail in const.FAILURE_REASONS:
+                if fail in l:
+                    return const.FAILURE_REASONS[fail]
+    except FileNotFoundError:
+        return 'Command construction failed (no log file).'
 
     return 'Unknown failure reason.'
