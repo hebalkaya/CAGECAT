@@ -13,18 +13,18 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases",
         'PFAM_DB_FOLDER': '/pfam_db',
         'MOUNTED_DB_FOLDER': '/hmm_databases',
-        "REPRESENTATIVE_GENOMES_THRESHOLD": 50,
         'DOMAIN': 'http://www.bioinformatics.nl/cagecat/',
         'PRESENT_DATABASES_LOCATION': '/present_databases.txt',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
         'SERVER_PREFIX': '/repo',
         'DEV_TEAM_EMAIL': 'matthias.vandenbelt@wur.nl',
-        'MAX_CLUSTERS_TO_PLOT': 75
         }
 
 THRESHOLDS = {
     'maximum_clusters_to_extract': 150,
-    'maximum_gne_samples': 300
+    'maximum_gne_samples': 300,
+    'max_clusters_to_plot': 75,
+    "representative_genomes_number": 50
 }
 
 # TODO: must: move sensitive information to a separate file and add it to gitignore

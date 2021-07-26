@@ -17,9 +17,9 @@ FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module searc
                        'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
                    'ValueError: Search completed, but found no hits':  # module search, no hits found
                        'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.',
-                   'Too many selected clusters':
-                       'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.',  # clinker_full, extract_clusters
-                   'Too many samples':
+                   'Too many selected clusters':  # clinker_full, clinker_query, extract_clusters
+                       'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.',
+                   'Too many samples':  # gne module
                        'You set the value for the number of samples parameter too high. Change it to the maximum value and try again.'
                    }
 

@@ -293,10 +293,10 @@ def clinker_full(job_id: str, options: ImmutableMultiDict=None,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     to_plot = len(os.listdir(file_path))  # number of plots to plot
-    if to_plot > config.CONF['MAX_CLUSTERS_TO_PLOT']:
+    if to_plot > config.THRESHOLDS['max_clusters_to_plot']:
         with open(os.path.join(LOG_PATH, f"{job_id}_clinker.log"), 'w') as outf:
             outf.write(f'Too many selected clusters to plot ({to_plot} > '
-                       f'{config.CONF["MAX_CLUSTERS_TO_PLOT"]})')
+                       f'{config.THRESHOLDS["max_clusters_to_plot"]})')
 
         post_job_formalities(job_id, 999)
         return
@@ -348,10 +348,10 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    if int(options['maxclusters']) > config.CONF['MAX_CLUSTERS_TO_PLOT']:
+    if int(options['maxclusters']) > config.THRESHOLDS['max_clusters_to_plot']:
         with open(os.path.join(LOG_PATH, f'{job_id}_cblaster.log'), 'w') as outf:
             outf.write(f'Too many selected clusters to plot ({options["maxclusters"]} > '
-                       f'{config.CONF["MAX_CLUSTERS_TO_PLOT"]})')
+                       f'{config.THRESHOLDS["max_clusters_to_plot"]})')
 
         post_job_formalities(job_id, 999)
         return
