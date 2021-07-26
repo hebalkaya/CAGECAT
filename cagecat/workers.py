@@ -275,8 +275,17 @@ def clinker_full(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
+    to_plot = len(os.listdir(file_path))
+    if to_plot > config.CONF['MAX_CLUSTERS_TO_PLOT']:
+        with open(os.path.join(LOG_PATH, f"{job_id}_clinker.log"), 'w') as outf:
+            outf.write(f'Too many selected clusters to plot ({to_plot} > '
+                       f'{config.CONF["MAX_CLUSTERS_TO_PLOT"]})')
+
+        post_job_formalities(job_id, 999)
+        return
+
     cmd = ["clinker", file_path,
-           "--jobs", "1",
+           "--jobs", "2",
            "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
            "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
            "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
