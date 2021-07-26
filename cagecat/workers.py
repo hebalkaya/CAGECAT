@@ -140,11 +140,13 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     "--max_distance", options["intermediate_max_distance"],
                     "--maximum_clusters", options["intermediate_max_clusters"],
                     "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
+
+        return_code = run_command(cmd, LOG_PATH, job_id)
+        post_job_formalities(job_id, return_code)
     except:  # intentionally broad except clause
         post_job_formalities(job_id, 999)
 
-    return_code = run_command(cmd, LOG_PATH, job_id)
-    post_job_formalities(job_id, return_code)
+
 
 
 def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
