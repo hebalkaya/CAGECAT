@@ -348,6 +348,14 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
+    if int(options['maxclusters']) > config.CONF['MAX_CLUSTERS_TO_PLOT']:
+        with open(os.path.join(LOG_PATH, f'{job_id}_cblaster.log'), 'w') as outf:
+            outf.write(f'Too many selected clusters to plot ({options["maxclusters"]} > '
+                       f'{config.CONF["MAX_CLUSTERS_TO_PLOT"]})')
+
+        post_job_formalities(job_id, 999)
+        return
+
     cmd = ["cblaster", "plot_clusters", file_path,
            "--output", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
 

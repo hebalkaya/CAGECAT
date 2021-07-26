@@ -19,7 +19,7 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
         'SERVER_PREFIX': '/repo',
         'DEV_TEAM_EMAIL': 'matthias.vandenbelt@wur.nl',
-        'MAX_CLUSTERS_TO_PLOT' : 75
+        'MAX_CLUSTERS_TO_PLOT': 75
         }
 
 THRESHOLDS = {

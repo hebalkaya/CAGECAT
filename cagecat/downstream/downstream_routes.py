@@ -44,7 +44,8 @@ def clinker_query() -> str:
                          prev_job_id=request.form["job_id"],
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
-                         selected_clusters=clusters)
+                         selected_clusters=clusters,
+                         max_clusters_to_plot=config.CONF['MAX_CLUSTERS_TO_PLOT'])
 
 
 @downstream.route("/extract-sequences", methods=["GET", "POST"])

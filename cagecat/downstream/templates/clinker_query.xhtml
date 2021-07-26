@@ -29,7 +29,7 @@
             <div class="input-layer">
                 <label class="input-label" for="maxclusters">Maximum clusters</label>
                 {{ renderHelpButton('maxclusters') }}
-                <input type="number" name="maxclusters" min="1" max="250" value="50" step="1" id="maxclusters" required="required"/>
+                <input type="number" name="maxclusters" min="1" max="{{ max_clusters_to_plot }}" value="50" step="1" id="maxclusters" required="required"/>
             </div>
         </fieldset>
 
