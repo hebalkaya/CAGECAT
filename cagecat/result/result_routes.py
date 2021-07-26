@@ -21,6 +21,8 @@ import os
 import flask.wrappers
 import typing as t
 
+from cagecat.workers_helpers import generate_paths
+
 result = Blueprint('result', __name__, template_folder="templates")
 
 ### Route function definitions
@@ -133,8 +135,8 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
 
     # TODO: would: send_from_directory is a safer approach, but this suits for now
     # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
-    return send_file(os.path.join(app.config["DOWNLOAD_FOLDER"],
-                                  job_id, "results", f"{job_id}.zip"))
+    _, __, result_path = generate_paths(job_id)
+    return send_file(os.path.join(result_path, f"{job_id}.zip"))
 
 
 @result.route("/", methods=["GET", "POST"])
