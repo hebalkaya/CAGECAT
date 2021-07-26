@@ -2,18 +2,18 @@ FROM ubuntu:latest
 FROM python:3
 
 RUN apt-get update
-RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron
+RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu
 RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI
 
 RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
 
 
 # TODO: could: create  dirs inside container instead of copying
-COPY pfam_db/ /pfam_db/
-COPY repo/ /repo/
-COPY process_logs/ /process_logs/
 COPY present_databases.txt /present_databases.txt
 
+RUN mkdir /backups
+RUN mkdir /repo
+RUN mkdir /process_logs
 RUN mkdir -p /root/.config/cblaster
 
 #RUN cblaster config --email "matthias.vandenbelt@wur.nl"

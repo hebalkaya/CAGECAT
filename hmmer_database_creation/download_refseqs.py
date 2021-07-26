@@ -40,6 +40,7 @@ def init() -> str:
 
     return output_fn
 
+
 def parse_paths(ftp_paths_fn: str, ext='.gbff.gz') -> \
         t.Dict[str, t.Tuple[str, str, str]]:
     """Parses the paths downloaded by the fetch_ftp_paths.sh script
