@@ -219,7 +219,7 @@ You are able to perform additional downstream analysis by navigating to the resu
 Also, downloading your results is available on this web page.''' \
         if job.status == 'finished' else f'''
 
-To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{job.id}\nIf the failure reason is unknown, please submit feedback to help us improve CAGECAT.'''
+To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{job.id}\n .If the failure reason is unknown, please submit feedback to help us improve CAGECAT.\n'''
 
     send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
                contents,job.email)
