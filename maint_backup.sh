@@ -19,4 +19,4 @@ cp -r /process_logs "$fp"
 echo "Compressing in to $fp.tar.gz"
 tar cvf - $fp --remove-files | gzip -9 - > $fp.tar.gz
 
-echo "Finished. Backup available at $1.tar.gz"
+echo "Finished. Backup available at $fp.tar.gz"
