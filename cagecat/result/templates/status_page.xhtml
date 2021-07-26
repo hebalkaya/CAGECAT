@@ -1,7 +1,6 @@
 {% extends "base.xhtml" %}
 {#{% from "macros.xhtml" import show_options %}#}
 {% from "macros.xhtml" import showNavigationBar %}
-{% from "macros.xhtml" import store_job_and_redirect %}
 
 {% block head %}<meta http-equiv="refresh" content="30">{% endblock %}
 {% block title %}
@@ -17,7 +16,10 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ store_job_and_redirect() }}
+    {% if request.args.get('store_job_id') == "True" %}
+        storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
+        redirect('{{  url_for('result.show_result', job_id=j_id)}}');
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -26,7 +28,7 @@
         <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 
         {% if parent_job != "null" %}
-        <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
+            <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
         {% endif %}
 
         <p>In future releases, it will be possible to start downstream analyses from this page.</p>

@@ -8,7 +8,7 @@
     <div class="radio-options {{"" if mainInput else "no-display" }}" id="{{ '%sPrevJobOptions' % module }}">
         <div>
             <label class="radioLabel">
-            <input type="radio" class="radio-margin" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
+                <input type="radio" class="radio-margin" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
             </label>
 
             <label class="radioLabel">
@@ -22,10 +22,10 @@
 
         <span>or</span>
         <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ uploadedSessionFile }}">
-{#            TODO: should: possibly insert help button#}
-        <input type="file"
-               id="{{ uploadedSessionFile }}"
-               name="{{uploadedSessionFile }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
+            {#            TODO: should: possibly insert help button#}
+            <input type="file"
+                   id="{{ uploadedSessionFile }}"
+                   name="{{uploadedSessionFile }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
     </div>
 {% endmacro %}
 
@@ -36,7 +36,7 @@
     {% set tableDecimals = '%s%sTableDecimals' % (module, type) %}
     {% set tableHideHeaders = '%s%sTableHideHeaders' % (module, type) %}
 
-<div>
+    <div>
     <label class="fieldset-label"  for="{{ tableSection }}">
         {{ 'Summary table' if type == 'Sum' else 'Binary table'}}</label>
     <fieldset id="{{ tableSection }}">
@@ -67,47 +67,47 @@
         </div>
 
         {% if type == 'Bin' %}
-        <div class="input-layer">
-            <label class="select-label" for="keyFunction">Key function</label>
-            {{ renderHelpButton('keyFunction') }}
+            <div class="input-layer">
+                <label class="select-label" for="keyFunction">Key function</label>
+                {{ renderHelpButton('keyFunction') }}
                 <select class="select-options" name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
                     <option name="functionLen" value="len">len</option>
                     <option name="functionSum" value="sum">sum</option>
                     <option name="functionMax" value="max">max</option>
                 </select>
-        </div>
+            </div>
 
-        <div class="input-layer">
-            <label class="select-label" for="hitAttribute">Hit attribute</label>
-            {{ renderHelpButton('hitAttribute') }}
-            <select class="select-options" name="hitAttribute" id="hitAttribute" disabled="disabled">
-                <option name="hitAttrIdentity" value="identity">identity</option>
-                <option name="hitAttrCoverage" value="coverage">coverage</option>
-                <option name="hitAttrBitscore" value="bitscore">bitscore</option>
-                <option name="hitAttrEValue" value="evalue">e-value</option>
-            </select>
-        </div>
+            <div class="input-layer">
+                <label class="select-label" for="hitAttribute">Hit attribute</label>
+                {{ renderHelpButton('hitAttribute') }}
+                <select class="select-options" name="hitAttribute" id="hitAttribute" disabled="disabled">
+                    <option name="hitAttrIdentity" value="identity">identity</option>
+                    <option name="hitAttrCoverage" value="coverage">coverage</option>
+                    <option name="hitAttrBitscore" value="bitscore">bitscore</option>
+                    <option name="hitAttrEValue" value="evalue">e-value</option>
+                </select>
+            </div>
 
         {% endif %}
     </fieldset>
-</div>
+    </div>
 {% endmacro %}
 
 
 {% macro show_options(settings) %}
-{#  currently not used anymore, could be removed/used in the future. #}
-<label for="optionsList">Selected options</label>
-<ul id="optionsList">
+    {#  currently not used anymore, could be removed/used in the future. #}
+    <label for="optionsList">Selected options</label>
+    <ul id="optionsList">
     {% for label, option in settings.items() %}
         <li>{{label}}: {{option}}</li>
     {% endfor %}
-</ul>
+    </ul>
 {% endmacro %}
 
 
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
-{#    TODO: maybe selected scaffolds could be removed#}
-<div>
+    {#    TODO: maybe selected scaffolds could be removed#}
+    <div>
     <label class="fieldset-label" for="filteringSection">Filtering</label>
     <fieldset id="filteringSection">
         <div class="input-layer">
@@ -115,42 +115,42 @@
             {{ renderHelpButton('selectedOrganisms') }}
             <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
         </div>
-{#        <div class="input-layer">#}
-{#            <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>#}
-{#            {{ renderHelpButton('selectedScaffolds') }}#}
-{#            <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>#}
-{#        </div>#}
+        {#        <div class="input-layer">#}
+        {#            <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>#}
+        {#            {{ renderHelpButton('selectedScaffolds') }}#}
+        {#            <textarea cols="30" rows="8" id="selectedScaffolds" name="selectedScaffolds" placeholder="Scaffolds to filter for">{{selected_scaffolds if selected_scaffolds is not none}}</textarea>#}
+        {#        </div>#}
 
         {% if extraction_type == 'sequences' %}
-        <div class="input-layer">
+            <div class="input-layer">
 
-            <label class="textarea-label" for="selectedQueries">Queries</label>
-            {{ renderHelpButton('selectedQueries') }}
-            {{ showSelectedClusters(selected_queries_or_cluster_numbers, False, True) }}
-            <input type="hidden" name="selectedQueries" value="{{ selected_queries_or_cluster_numbers|join(' ') }}"/>
-{#            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>#}
-        </div>
+                <label class="textarea-label" for="selectedQueries">Queries</label>
+                {{ renderHelpButton('selectedQueries') }}
+                {{ showSelectedClusters(selected_queries_or_cluster_numbers, False, True) }}
+                <input type="hidden" name="selectedQueries" value="{{ selected_queries_or_cluster_numbers|join(' ') }}"/>
+                {#            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>#}
+            </div>
         {% elif extraction_type == 'clusters' %}
-        <div class="input-layer">
-            <label class="input-label" for="clusterNumbers">Clusters</label>
-            {{ renderHelpButton('clusterNumbers') }}
-            <input type="text" readonly="readonly" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
-        </div>
-        <div class="input-layer">
-            <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
-            {{ renderHelpButton('clusterScoreThreshold') }}
-            <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
-        </div>
+            <div class="input-layer">
+                <label class="input-label" for="clusterNumbers">Clusters</label>
+                {{ renderHelpButton('clusterNumbers') }}
+                <input type="text" readonly="readonly" name="clusterNumbers" id="clusterNumbers" value="{{selected_queries_or_cluster_numbers}}"/>
+            </div>
+            <div class="input-layer">
+                <label class="input-label" for="clusterScoreThreshold">Score threshold</label>
+                {{ renderHelpButton('clusterScoreThreshold') }}
+                <input type="number" step="0.001" name="clusterScoreThreshold" id="clusterScoreThreshold"/>
+            </div>
         {% endif %}
 
     </fieldset>
-</div>
+    </div>
 {% endmacro %}
 
 
-    {% macro create_scientific_input(label, type, default_value) %}
-<div style="display: table;width: 25%;margin-left: 1%">
-{#TODO: should: change style#}
+{% macro create_scientific_input(label, type, default_value) %}
+    <div style="display: table;width: 25%;margin-left: 1%">
+    {#TODO: should: change style#}
     <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
 
     <label class="input-label" for="base{{type}}">{{label}}</label>
@@ -161,21 +161,21 @@
         <button type="button" class="scientificnotation" onclick="changePower(-1, 'power{{type}}')">&#9660</button>
         <button type="button" class="scientificnotation" onclick="changePower(1, 'power{{type}}')">&#9650</button>
     </div>
-</div>
-        {% endmacro %}
+    </div>
+{% endmacro %}
 
 
 {% macro showNavigationBar(page)  %}
-<div id="navigationBar">
-<ul class="nav">
-    <li><a {{ '' if page != 'home' else 'class=active' }} href="{{url_for('home_page')}}">Home</a></li>
-    <li><a {{ '' if page != 'results' else 'class=active' }} href="{{url_for('result.result_from_job_id')}}">Results</a></li>
-    <li><a {{ '' if page != 'post-analysis' else 'class=active' }} href="{{ url_for('downstream.post_analysis_explanation') }}">Post-analysis</a></li>
-    <li class="right-nav"><a {{ '' if page != 'help' else 'class=active' }} href="{{ url_for('help_page') }}">Contact / Help</a></li>
-    <li class="right-nav"><a {{ '' if page != 'feedback' else 'class=active' }} href="{{ url_for('feedback_page') }}">Feedback</a></li>
-    <li class="right-nav"><a {{ '' if page != 'tools' else 'class=active' }} href="{{ url_for('tools_page') }}">Available tools</a></li>
-</ul>
-</div>
+    <div id="navigationBar">
+    <ul class="nav">
+        <li><a {{ '' if page != 'home' else 'class=active' }} href="{{url_for('home_page')}}">Home</a></li>
+        <li><a {{ '' if page != 'results' else 'class=active' }} href="{{url_for('result.result_from_job_id')}}">Results</a></li>
+        <li><a {{ '' if page != 'post-analysis' else 'class=active' }} href="{{ url_for('downstream.post_analysis_explanation') }}">Post-analysis</a></li>
+        <li class="right-nav"><a {{ '' if page != 'help' else 'class=active' }} href="{{ url_for('help_page') }}">Contact / Help</a></li>
+        <li class="right-nav"><a {{ '' if page != 'feedback' else 'class=active' }} href="{{ url_for('feedback_page') }}">Feedback</a></li>
+        <li class="right-nav"><a {{ '' if page != 'tools' else 'class=active' }} href="{{ url_for('tools_page') }}">Available tools</a></li>
+    </ul>
+    </div>
 {% endmacro %}
 
 
@@ -187,7 +187,7 @@
 {% macro createBackButton() %}
     {#  currently not used anymore, could be removed/used in the future. #}
     <div class="indent">
-        <button class="button smaller" onclick="lastPage();">Previous page</button>
+    <button class="button smaller" onclick="lastPage();">Previous page</button>
     </div>
 {% endmacro %}
 
@@ -237,7 +237,7 @@
 {% endmacro %}
 
 {% macro renderJobDetailsInput() %}
-<div>
+    <div>
     <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
     <fieldset id="jobDetailsInputFieldset">
         <div class="input-layer">
@@ -252,12 +252,5 @@
             {{ renderHelpButton('email_notification') }}
         </div>
     </fieldset>
-</div>
-{% endmacro %}
-
-{% macro store_job_and_redirect() %}
-    {% if request.args.get('store_job_id') == "True" %}
-        storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
-        redirect('{{  url_for('result.show_result', job_id=j_id)}}');
-    {% endif %}
+    </div>
 {% endmacro %}

@@ -1,7 +1,6 @@
 {% extends "base.xhtml" %}
 {#{% from "macros.xhtml" import show_options %}#}
 {% from "macros.xhtml" import showNavigationBar %}
-{% from "macros.xhtml" import store_job_and_redirect %}
 
 {% block title %}
     {% if job_title %}
@@ -11,36 +10,32 @@
     {% endif %}
 {% endblock %}
 
-{% block scripts %}
-    {{ store_job_and_redirect() }}
-{% endblock %}
-
 {% block navigationBar %}
     {{ showNavigationBar('results') }}
 {% endblock %}
 
 {% block content %}
-<div class="indent">
-    {% if job_title %}
-        <h2>{{ job_title }}</h2>
-    {% endif %}
+    <div class="indent">
+        {% if job_title %}
+            <h2>{{ job_title }}</h2>
+        {% endif %}
 
-    <h3>{{ module }} ({{ j_id }})</h3>
+        <h3>{{ module }} ({{ j_id }})</h3>
 
-    <p>Job {{j_id}} has failed during execution due to the following:</p>
-{% if failure_reason == 'Unknown failure reason.' %}
-    <p><b>{{ failure_reason }} <a href="{{ url_for('feedback_page', job_id=j_id) }}">Please submit feedback by clicking this sentence.</a></b></p>
-{% else %}
-    <p><b>{{ failure_reason }}</b></p>
-{% endif %}
-    <p>You are able to download your log files by clicking the button below.</p>
+        <p>Job {{j_id}} has failed during execution due to the following:</p>
+        {% if failure_reason == 'Unknown failure reason.' %}
+            <p><b>{{ failure_reason }} <a href="{{ url_for('feedback_page', job_id=j_id) }}">Please submit feedback by clicking this sentence.</a></b></p>
+        {% else %}
+            <p><b>{{ failure_reason }}</b></p>
+        {% endif %}
+        <p>You are able to download your log files by clicking the button below.</p>
 
-    <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
-          enctype="multipart/form-data" name="download_settings">
-        <input name="job_id" type="hidden" value="{{j_id}}"/>
+        <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
+              enctype="multipart/form-data" name="download_settings">
+            <input name="job_id" type="hidden" value="{{j_id}}"/>
 
-        <label style="margin-top: 1%;" class="button" for="download-button"><i class="fa fa-download"><span> Download results</span></i></label>
-        <input id="download-button" class="download-button" type="submit"></input>
-    </form>
-</div>
+            <label style="margin-top: 1%;" class="button" for="download-button"><i class="fa fa-download"><span> Download results</span></i></label>
+            <input id="download-button" class="download-button" type="submit"></input>
+        </form>
+    </div>
 {% endblock %}
