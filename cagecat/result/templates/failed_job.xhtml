@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {#{% from "macros.xhtml" import show_options %}#}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import store_job_and_redirect %}
 
 {% block title %}
     {% if job_title %}
@@ -8,6 +9,10 @@
     {% else %}
         {{ status.capitalize() }}
     {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ store_job_and_redirect() }}
 {% endblock %}
 
 {% block navigationBar %}

@@ -209,18 +209,20 @@ def send_notification_email(job: Job) -> None:
     Output:
         - None, an e-mail being sent to the user-defined e-mail address
     """
-    send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
-               f'''Dear researcher,
+    contents = f'''Dear researcher,
     
-The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).''' + \
-                   f'''
+The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).'''
+
+    contents += f'''
 
 You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{CONF['DOMAIN']}results/{job.id}\n
-Also, downloading your results is available on this web page.''' if job.status == 'finished' else f'''
+Also, downloading your results is available on this web page.''' \
+        if job.status == 'finished' else f'''
 
+To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{job.id}\nIf the failure reason is unknown, please submit feedback to help us improve CAGECAT.'''
 
-To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{job.id}\nIf the failure reason is unknown, please submit feedback to help us improve CAGECAT.''',
-               job.email)
+    send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
+               contents,job.email)
 
     # TODO: must: possibly change sender_email
 
