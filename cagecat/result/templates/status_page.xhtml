@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {#{% from "macros.xhtml" import show_options %}#}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import store_job_and_redirect %}
 
 {% block head %}<meta http-equiv="refresh" content="30">{% endblock %}
 {% block title %}
@@ -16,10 +17,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {% if request.args.get('store_job_id') == "True" %}
-storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
-redirect('{{  url_for('result.show_result', job_id=j_id)}}');
-    {% endif %}
+    {{ store_job_and_redirect() }}
 {% endblock %}
 
 {% block content %}
