@@ -171,6 +171,9 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
             outf.write(f'Too many samples ({options["sample_number"]} > '
                        f'{config.THRESHOLDS["maximum_gne_samples"]})')
 
+        post_job_formalities(job_id, 999)
+        return
+
     session_path = file_path
 
     cmd = ["cblaster", "gne", session_path,
