@@ -308,7 +308,7 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
         server.sendmail(EMAIL['SENDER_EMAIL'], receiving_email, message)
 
 
-def get_failure_reason(job_id: str) -> str:
+def get_failure_reason(job_id: str, program: str) -> str:
     """Gets the user-friendly failure reason when a job has failed
 
     Input:
@@ -321,7 +321,7 @@ def get_failure_reason(job_id: str) -> str:
     # TODO: must: tool name is not always cblaster, add extra argument. Comes when implementing corason
     try:
         with open(os.path.join(JOBS_DIR, job_id,
-                               "logs", f"{job_id}_cblaster.log")) as inf:
+                               "logs", f"{job_id}_{program}.log")) as inf:
             logs = inf.readlines()
 
         for l in logs:

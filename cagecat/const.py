@@ -21,6 +21,15 @@ FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module searc
                        'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.'  # clinker_full, extract_clusters
                    }
 
+MODULE_TO_PROGRAM = {'search': 'cblaster',
+                     'gne': 'cblaster',
+                     'recompute': 'cblaster',
+                     'extract': 'cblaster',
+                     'extract_clusters': 'cblaster',
+                     'clinker_query': 'cblaster',
+                     'clinker_full': 'clinker'
+                     }
+
 EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "selectedScaffolds": "",  # empty strings as
                             "clusterNumbers": "",  # if nothing was
