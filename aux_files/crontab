@@ -6,4 +6,4 @@ PATH=/usr/local/bin
 
 # minute hour day_of_month month day_of_week command
 5 0 * * * cd /repo && python maint_remove_old_jobs.py
-10 0 */3 * * bash /repo/maint_backup.sh
+10 0 */3 * * bash /repo/maint_backup.sh > /process_logs/maintenance/$(date +"%Y%m%d")_backup.log
