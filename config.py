@@ -19,11 +19,12 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
         'SERVER_PREFIX': '/repo',
         'DEV_TEAM_EMAIL': 'matthias.vandenbelt@wur.nl',
-        'MAX_CLUSTERS_TO_PLOT' : 100
+        'MAX_CLUSTERS_TO_PLOT' : 75
         }
 
 THRESHOLDS = {
-    'maximum_clusters_to_extract': 500,
+    'maximum_clusters_to_extract': 150,
+    'maximum_samples_of_gne': 300
 }
 
 # TODO: must: move sensitive information to a separate file and add it to gitignore
