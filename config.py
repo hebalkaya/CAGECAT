@@ -22,6 +22,10 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         'MAX_CLUSTERS_TO_PLOT' : 100
         }
 
+THRESHOLDS = {
+    'maximum_clusters_to_extract': 500,
+}
+
 # TODO: must: move sensitive information to a separate file and add it to gitignore
 EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
          'SENDER_EMAIL': 'ranberg1892124a2@gmail.com',

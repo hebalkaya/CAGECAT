@@ -9,6 +9,7 @@ from flask import Blueprint, request
 # own project imports
 import cagecat.parsers as pa
 import cagecat.utils as ut
+import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import POST_ANALYSIS_EXPLANATIONS, CLINKER_MODULES
 
@@ -97,7 +98,8 @@ def extract_clusters() -> str:
                          cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
                          prev_job_id=prev_job_id, prev_job_type=prev_job.job_type,
-                         main_search_id=prev_job.main_search_job)
+                         main_search_id=prev_job.main_search_job,
+                         max_clusters_to_extract=config.THRESHOLDS['maximum_clusters_to_extract'])
 
 
 @downstream.route("/corason", methods=["POST"])

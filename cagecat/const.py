@@ -3,6 +3,7 @@
 Author: Matthias van den Belt
 
 """
+import config
 from cagecat import app
 from cagecat.help_texts import HELP_OVERVIEW, HELP_TEXTS
 
@@ -17,7 +18,7 @@ FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module searc
                    'ValueError: Search completed, but found no hits':  # module search, no hits found
                        'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.',
                    'Too many selected clusters':
-                       'You have selected too many clusters to use in your downstream analyses. Check the maximum number of clusters for the analysis you were trying to execute, and try again.'  # clinker_full, maybe more..
+                       'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.'  # clinker_full, extract_clusters
                    }
 
 EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
@@ -26,7 +27,7 @@ EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "clusterScoreThreshold": "",  # filled in in the
                             "prefix": "",  # submission form
                             "format": "genbank",
-                            "maxclusters": "200"}  # indicates no maximum
+                            "maxclusters": config.THRESHOLDS['maximum_clusters_to_extract']}  # indicates no maximum
 
 # values can also be tuples
 DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
