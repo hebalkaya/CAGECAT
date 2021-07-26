@@ -9,11 +9,12 @@ RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip inst
 
 
 # TODO: could: create  dirs inside container instead of copying
+COPY repo/ /repo/
 COPY present_databases.txt /present_databases.txt
 
 RUN mkdir /backups
-RUN mkdir /repo
 RUN mkdir /process_logs
+RUN mkdir /pfam_db
 RUN mkdir -p /root/.config/cblaster
 
 #RUN cblaster config --email "matthias.vandenbelt@wur.nl"
