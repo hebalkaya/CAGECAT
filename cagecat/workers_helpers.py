@@ -307,3 +307,37 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
         raise IOError('Incorrect database arguments length')
 
     return base
+
+
+def log_threshold_exceeded(parameter: int, threshold: int,
+                           job_data: t.Tuple[str, str, str],
+                           error_message: str) -> bool:
+    """Logs an error message if the given threshold was exceeded
+
+    Input:
+        - parameter: the given value by the user for a parameter
+        - threshold: the corresponding threshold for that parameter
+        - job_data: tuple of
+            [0]: log_path: path to where log files should be written
+            [1]: job_id: id of the job
+            [2]: program: name of the used program
+        - error_message: message technically describing what is incorrect.
+            Is formatted in a user-friendly error description later.
+
+    Output:
+        - boolean: whether or not the threshold was exceeded, and the worker
+            function from which this function is called should return (exit)
+
+    The logged error message will be used by when the results of a job are
+    requested to find the appropriate error message to display to the user.
+    """
+
+    if parameter > threshold:
+        log_path, job_id, program = job_data
+        with open(os.path.join(log_path, f'{job_id}_{program}.log'), 'w') as outf:
+            outf.write(f'{error_message} ({parameter} > {threshold})')
+
+        post_job_formalities(job_id, 999)
+        return True
+
+    return False

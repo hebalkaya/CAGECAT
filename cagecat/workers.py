@@ -166,12 +166,10 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
     pre_job_formalities(job_id)
     _, log_path, results_path = generate_paths(job_id)
 
-    if int(options["sample_number"]) > config.THRESHOLDS['maximum_gne_samples']:
-        with open(os.path.join(log_path, f'{job_id}_cblaster.log'), 'w') as outf:
-            outf.write(f'Too many samples ({options["sample_number"]} > '
-                       f'{config.THRESHOLDS["maximum_gne_samples"]})')
-
-        post_job_formalities(job_id, 999)
+    if log_threshold_exceeded(int(options["sample_number"]),
+                              config.THRESHOLDS['maximum_gne_samples'],
+                              (log_path, job_id, 'cblaster'),
+                          'Too many samples'):
         return
 
     session_path = file_path
@@ -248,12 +246,10 @@ def cblaster_extract_clusters(job_id: str,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    if int(options["maxclusters"]) > config.THRESHOLDS['maximum_clusters_to_extract']:
-        with open(os.path.join(LOG_PATH, f'{job_id}_cblaster.log'), 'w') as outf:
-            outf.write(f'Too many selected clusters to extract ({options["maxclusters"]} > '
-                       f'{config.THRESHOLDS["maximum_clusters_to_extract"]})')
-
-        post_job_formalities(job_id, 999)
+    if log_threshold_exceeded(int(options["maxclusters"]),
+                                  config.THRESHOLDS['maximum_clusters_to_extract'],
+                                  (LOG_PATH, job_id, 'cblaster'),
+                                  'Too many selected clusters'):
         return
 
     # cluster_dir = os.path.join(RESULTS_PATH, "clusters")
@@ -292,13 +288,10 @@ def clinker_full(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    to_plot = len(os.listdir(file_path))  # number of plots to plot
-    if to_plot > config.THRESHOLDS['max_clusters_to_plot']:
-        with open(os.path.join(LOG_PATH, f"{job_id}_clinker.log"), 'w') as outf:
-            outf.write(f'Too many selected clusters to plot ({to_plot} > '
-                       f'{config.THRESHOLDS["max_clusters_to_plot"]})')
-
-        post_job_formalities(job_id, 999)
+    if log_threshold_exceeded(len(os.listdir(file_path)),
+                              config.THRESHOLDS['max_clusters_to_plot'],
+                              (LOG_PATH, job_id, 'clinker'),
+                              'Too many selected clusters'):
         return
 
     cmd = ["clinker", file_path,
@@ -348,12 +341,10 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    if int(options['maxclusters']) > config.THRESHOLDS['max_clusters_to_plot']:
-        with open(os.path.join(LOG_PATH, f'{job_id}_cblaster.log'), 'w') as outf:
-            outf.write(f'Too many selected clusters to plot ({options["maxclusters"]} > '
-                       f'{config.THRESHOLDS["max_clusters_to_plot"]})')
-
-        post_job_formalities(job_id, 999)
+    if log_threshold_exceeded(len(os.listdir(file_path)),
+                              config.THRESHOLDS['max_clusters_to_plot'],
+                              (LOG_PATH, job_id, 'cblaster'),
+                              'Too many selected clusters'):
         return
 
     cmd = ["cblaster", "plot_clusters", file_path,
