@@ -27,7 +27,7 @@ EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
                             "clusterScoreThreshold": "",  # filled in in the
                             "prefix": "",  # submission form
                             "format": "genbank",
-                            "maxclusters": config.THRESHOLDS['maximum_clusters_to_extract']}  # indicates no maximum
+                            "maxclusters": str(config.THRESHOLDS['maximum_clusters_to_extract'])}  # indicates no maximum
 
 # values can also be tuples
 DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
