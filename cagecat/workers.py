@@ -29,117 +29,119 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
+    try:
+        _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+        recompute = False
 
-    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
-    recompute = False
+        # create the base command, with all required fields
+        cmd = ["cblaster", "search",
+               "--output", os.path.join(RESULTS_PATH, f"{job_id}_summary.txt"),
+               "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
+               "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
+               "--mode", options["mode"]]
 
-    # create the base command, with all required fields
-    cmd = ["cblaster", "search",
-           "--output", os.path.join(RESULTS_PATH, f"{job_id}_summary.txt"),
-           "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
-           "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
-           "--mode", options["mode"]]
+        cmd.extend(forge_database_args(options))
+        # add input options
+        if options['mode'] in ('remote', 'combi_remote'):
+            input_type = options["inputType"]
 
-    cmd.extend(forge_database_args(options))
-    # add input options
-    if options['mode'] in ('remote', 'combi_remote'):
-        input_type = options["inputType"]
+            if input_type == "fasta":
+                cmd.extend(["--query_file", file_path])
+                session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+                store_query_sequences_headers(LOG_PATH, input_type, file_path)
+            elif input_type == "ncbi_entries":
+                entries = options["ncbiEntriesTextArea"].split()
 
-        if input_type == "fasta":
-            cmd.extend(["--query_file", file_path])
+                cmd.append("--query_ids")
+                cmd.extend(entries)
+
+                session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+                store_query_sequences_headers(LOG_PATH, input_type, entries)
+            elif input_type == "prev_session":
+                recompute = True
+                cmd.extend(["--recompute",
+                            os.path.join(RESULTS_PATH, f"{job_id}_session.json")])
+                session_path = file_path
+
+            else:  # future input types and prev_session
+                raise NotImplementedError(f"Input type {input_type} is not supported "
+                                          f"in cblaster_search")
+
+                # add search options
+            if not recompute:
+                cmd.extend([
+                    # "--database", options["database_type"],
+                    "--hitlist_size", options["hitlist_size"]])
+
+                if options["entrez_query"]:
+                    cmd.extend(["--entrez_query", options["entrez_query"]])
+
+        if options['mode'] in ('hmm', 'combi_remote'):
             session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
-            store_query_sequences_headers(LOG_PATH, input_type, file_path)
-        elif input_type == "ncbi_entries":
-            entries = options["ncbiEntriesTextArea"].split()
 
-            cmd.append("--query_ids")
-            cmd.extend(entries)
+            # add HMM profiles
+            cmd.append('--query_profiles')
+            cmd.extend(options["hmmProfiles"].split())
 
-            session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
-            store_query_sequences_headers(LOG_PATH, input_type, entries)
-        elif input_type == "prev_session":
-            recompute = True
-            cmd.extend(["--recompute",
-                        os.path.join(RESULTS_PATH, f"{job_id}_session.json")])
-            session_path = file_path
+            # PFAM database
+            cmd.extend(['--database_pfam', config.CONF['PFAM_DB_FOLDER']])
 
-        else:  # future input types and prev_session
-            raise NotImplementedError(f"Input type {input_type} is not supported "
-                                      f"in cblaster_search")
+            # database to search in
+            # cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
 
-            # add search options
-        if not recompute:
-            cmd.extend([
-                # "--database", options["database_type"],
-                "--hitlist_size", options["hitlist_size"]])
+        cmd.extend(["--session_file", session_path])
 
-            if options["entrez_query"]:
-                cmd.extend(["--entrez_query", options["entrez_query"]])
+        # add filtering options
+        if options['mode'] != 'hmm':
+            cmd.extend(["--max_evalue", options["max_evalue"],
+                        "--min_identity", options["min_identity"],
+                        "--min_coverage", options["min_query_coverage"]])
 
-    if options['mode'] in ('hmm', 'combi_remote'):
-        session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+        # add clustering options
+        cmd.extend(["--gap", options["max_intergenic_gap"],
+                    "--unique", options["min_unique_query_hits"],
+                    "--min_hits", options["min_hits_in_clusters"],
+                    "--percentage", options["percentageQueryGenes"]])
 
-        # add HMM profiles
-        cmd.append('--query_profiles')
-        cmd.extend(options["hmmProfiles"].split())
+        if options["requiredSequences"]:  # as empty string evaluates to False
+            cmd.append("--require")
+            for q in options["requiredSequences"].split(";"):
+                cmd.append(f"{q.strip().split()[0]}")  # to prevent 1 header to be interpreted
+                                        # as multiple due to spaces in header
 
-        # PFAM database
-        cmd.extend(['--database_pfam', config.CONF['PFAM_DB_FOLDER']])
+        # add summary table
+        cmd.extend(create_summary_table_commands('search', options))
 
-        # database to search in
-        # cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
+        # add binary table
+        cmd.extend(["--binary",
+                    os.path.join(RESULTS_PATH, f"{job_id}_binary.txt")])
 
-    cmd.extend(["--session_file", session_path])
+        bin_table_delim = options["searchBinTableDelim"]
+        if bin_table_delim:
+            cmd.extend(["--binary_delimiter", bin_table_delim])
 
-    # add filtering options
-    if options['mode'] != 'hmm':
-        cmd.extend(["--max_evalue", options["max_evalue"],
-                    "--min_identity", options["min_identity"],
-                    "--min_coverage", options["min_query_coverage"]])
+        cmd.extend(["--binary_decimals", options["searchBinTableDecimals"]])
 
-    # add clustering options
-    cmd.extend(["--gap", options["max_intergenic_gap"],
-                "--unique", options["min_unique_query_hits"],
-                "--min_hits", options["min_hits_in_clusters"],
-                "--percentage", options["percentageQueryGenes"]])
+        if "searchBinTableHideHeaders" in options:
+            cmd.append("--binary_hide_headers")
 
-    if options["requiredSequences"]:  # as empty string evaluates to False
-        cmd.append("--require")
-        for q in options["requiredSequences"].split(";"):
-            cmd.append(f"{q.strip().split()[0]}")  # to prevent 1 header to be interpreted
-                                    # as multiple due to spaces in header
+        cmd.extend(["--binary_key", options["keyFunction"]])
 
-    # add summary table
-    cmd.extend(create_summary_table_commands('search', options))
+        if "hitAttribute" in options:  # only when keyFunction is not len
+            cmd.extend(["--binary_attr", options["hitAttribute"]])
 
-    # add binary table
-    cmd.extend(["--binary",
-                os.path.join(RESULTS_PATH, f"{job_id}_binary.txt")])
+        # add additional options
+        if "sortClusters" in options:
+            cmd.append("--sort_clusters")
 
-    bin_table_delim = options["searchBinTableDelim"]
-    if bin_table_delim:
-        cmd.extend(["--binary_delimiter", bin_table_delim])
-
-    cmd.extend(["--binary_decimals", options["searchBinTableDecimals"]])
-
-    if "searchBinTableHideHeaders" in options:
-        cmd.append("--binary_hide_headers")
-
-    cmd.extend(["--binary_key", options["keyFunction"]])
-
-    if "hitAttribute" in options:  # only when keyFunction is not len
-        cmd.extend(["--binary_attr", options["hitAttribute"]])
-
-    # add additional options
-    if "sortClusters" in options:
-        cmd.append("--sort_clusters")
-
-    # add intermediate genes options
-    if "intermediate_genes" in options:
-        cmd.extend(["--intermediate_genes",
-                "--max_distance", options["intermediate_max_distance"],
-                "--maximum_clusters", options["intermediate_max_clusters"],
-                "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
+        # add intermediate genes options
+        if "intermediate_genes" in options:
+            cmd.extend(["--intermediate_genes",
+                    "--max_distance", options["intermediate_max_distance"],
+                    "--maximum_clusters", options["intermediate_max_clusters"],
+                    "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
+    except:  # intentionally broad except clause
+        post_job_formalities(job_id, 999)
 
     return_code = run_command(cmd, LOG_PATH, job_id)
     post_job_formalities(job_id, return_code)
