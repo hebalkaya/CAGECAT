@@ -224,8 +224,9 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
               f"_options.txt", "w") as outf:
 
         for key, value in options.items():
-            if "\r\n" in value:
-                value = ','.join(value.split('\r\n'))
+            if type(value) == str:
+                if "\r\n" in value:
+                    value = ','.join(value.split('\r\n'))
 
             outf.write(f"{key},{value}\n")
 
