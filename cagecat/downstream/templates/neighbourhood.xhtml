@@ -38,7 +38,7 @@
                 <div class="input-layer">
                     <label class="input-label" for="sample_number">Number of samples</label>
                     {{ renderHelpButton('sample_number') }}
-                    <input type="number" id="sample_number" name="sample_number"value="100" step="1" min="1" max="400" required="required"/>
+                    <input type="number" id="sample_number" name="sample_number" value="100" step="1" min="2" max="{{ max_samples }}" required="required"/>
                 </div>
                 <div class="input-layer">
                     <label class="select-label" for="sampling_space">Sampling space</label>

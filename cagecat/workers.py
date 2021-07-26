@@ -164,8 +164,12 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
     This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
-
     _, log_path, results_path = generate_paths(job_id)
+
+    if int(options["sample_number"]) > config.THRESHOLDS['maximum_gne_samples']:
+        with open(os.path.join(log_path, f'{job_id}_cblaster.log'), 'w') as outf:
+            outf.write(f'Too many samples ({options["sample_number"]} > '
+                       f'{config.THRESHOLDS["maximum_gne_samples"]})')
 
     session_path = file_path
 

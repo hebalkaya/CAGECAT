@@ -142,7 +142,8 @@ def corason() -> str:
 
 @downstream.route('/neighbourhood')
 def neighbourhood() -> str:
-    return show_template('neighbourhood.xhtml')
+    return show_template('neighbourhood.xhtml',
+                         max_samples=config.THRESHOLDS['maximum_gne_samples'])
 
 @downstream.route('/clinker_full')
 def clinker_full() -> str:
