@@ -115,9 +115,13 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str) -> int:
     log_command(cmd, log_base, job_id)
 
     with open(os.path.join(log_base, f"{job_id}_{cmd[0]}.log"), "w") as outf:
-        res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+        try:
+            res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+            return_code = res.returncode
+        except:  # purposely broad except clause to catch all exceptions
+            return_code = 1
 
-    return res.returncode
+    return return_code
 
 
 def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
@@ -205,13 +209,17 @@ def send_notification_email(job: Job) -> None:
     Output:
         - None, an e-mail being sent to the user-defined e-mail address
     """
-    send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has finished',
+    send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
                f'''Dear researcher,
     
-The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).
+The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).''' + \
+                   f'''
 
 You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{CONF['DOMAIN']}results/{job.id}\n
-Also, downloading your results is available on this web page.''',
+Also, downloading your results is available on this web page.''' if job.status == 'finished' else f'''
+
+
+To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{job.id}\nIf the failure reason is unknown, please submit feedback to help us improve CAGECAT.''',
                job.email)
 
     # TODO: must: possibly change sender_email
