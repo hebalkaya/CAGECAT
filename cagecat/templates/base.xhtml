@@ -15,10 +15,10 @@
 </head>
 
 {% if help_enabled %}
-{% set onload = "toggleExplanationColumn()" %}
+{% set onload = ";toggleExplanationColumn()" %}
 {% endif %}
 
-<body onload="showPreviousJobs(false){{ onload }};{% block scripts %}{% endblock %}determineHeight();">
+<body onload="showPreviousJobs(false){{onload}};{% block scripts %}{% endblock %}determineHeight();">
 
 {% block navigationBar %}{% endblock %}
 <div class="flexbox-wrapper">
