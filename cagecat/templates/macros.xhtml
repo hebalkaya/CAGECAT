@@ -50,7 +50,7 @@
         </div>
         <div class="input-layer">
             <label class="input-label"
-                   for="{{ tableDecimals }}">Decimal places</label>
+                   for="{{ tableDecimals }}">Decimal places*</label>
             {{ renderHelpButton('generalDecimals') }}
             <input class="short"  type="number"
                    id="{{ tableDecimals }}"
@@ -68,7 +68,7 @@
 
         {% if type == 'Bin' %}
             <div class="input-layer">
-                <label class="select-label" for="keyFunction">Key function</label>
+                <label class="select-label" for="keyFunction">Key function*</label>
                 {{ renderHelpButton('keyFunction') }}
                 <select class="select-options" name="keyFunction" id="keyFunction" required="required" onchange="changeHitAttribute()">
                     <option name="functionLen" value="len">len</option>
@@ -253,4 +253,8 @@
         </div>
     </fieldset>
     </div>
+{% endmacro %}
+
+{% macro showRequiredInputsText() %}
+<p>Input fields with an * are required. If you don't know what value you should use, use the default value.</p>
 {% endmacro %}

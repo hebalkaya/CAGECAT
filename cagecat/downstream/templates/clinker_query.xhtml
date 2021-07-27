@@ -5,6 +5,7 @@
 {#{% from "macros.xhtml" import createBackButton %}#}
 {% from "macros.xhtml" import showSelectedClusters %}
 {% from 'macros.xhtml' import renderJobDetailsInput %}
+{% from 'macros.xhtml' import showRequiredInputsText %}
 
 {% block title %}Visualization{% endblock %}
 
@@ -16,6 +17,7 @@
 {#    {{ createBackButton() }}#}
 
     <h2 class="indent">Visualize with query clusters</h2>
+    {% showRequiredInputsText() %}
 
     <form action="{{url_for('submit_job')}}" method="post">
         <input type="hidden" name="job_type" value="clinker_query"/>
@@ -27,7 +29,7 @@
         <label class="fieldset-label" for="outputSection">Output</label>
         <fieldset>
             <div class="input-layer">
-                <label class="input-label" for="maxclusters">Maximum clusters</label>
+                <label class="input-label" for="maxclusters">Maximum clusters*</label>
                 {{ renderHelpButton('maxclusters') }}
                 <input type="number" name="maxclusters" min="1" max="{{ max_clusters_to_plot }}" value="50" step="1" id="maxclusters" required="required"/>
             </div>

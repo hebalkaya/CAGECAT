@@ -2,6 +2,7 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 {% from 'macros.xhtml' import renderJobDetailsInput %}
+{% from 'macros.xhtml' import showRequiredInputsText %}
 
 {% block title %}BiG-SCAPE{% endblock %}
 
@@ -11,6 +12,7 @@
 {% block content %}
     <div>
         <h2 class="indent">BiG-SCAPE</h2>
+        {% showRequiredInputsText() %}
 
         <form action="{{ url_for('submit_job') }}" method="post">
             <input type="hidden" name="job_type" value="big_scape"/>
@@ -27,13 +29,13 @@
                 </div>
 
                 <div class="input-layer">
-                    <label class="input-label" for="domain_overlap_cutoff">Domain overlap cutoff</label>
+                    <label class="input-label" for="domain_overlap_cutoff">Domain overlap cutoff*</label>
                     {{ renderHelpButton('big_scape-domain_overlap_cutoff') }}
                     <input required="required" id="domain_overlap_cutoff" name="domain_overlap_cutoff" type="number" value="0.1"/>
                 </div>
 
                 <div class="input-layer">
-                    <label class="input-label" for="min_bgc_size">Min. BGC size</label>
+                    <label class="input-label" for="min_bgc_size">Min. BGC size*</label>
                     {{ renderHelpButton('big_scape-min_bgc_size') }}
                     <input required="required" id="min_bgc_size" name="min_bgc_size" type="number" value="0"/>
                 </div>

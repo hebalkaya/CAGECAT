@@ -4,6 +4,7 @@
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
 {% from 'macros.xhtml' import renderJobDetailsInput %}
+{% from 'macros.xhtml' import showRequiredInputsText %}
 
 {% block title %}CAGECAT{% endblock %}
 
@@ -33,6 +34,8 @@ initReadQueryFile();
 
 {#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
 </div>
+    <h2 class="indent">multicblaster: search</h2>
+    {% showRequiredInputsText() %}
 
 
 <!--Module contents-->
@@ -79,7 +82,7 @@ initReadQueryFile();
             <div class="div-margin" id="genomeFileUploadDiv">
                 <label class="file-upload-lbl" for="genomeFile">
                 <input type="file" id="genomeFile" name="genomeFiles"
-                       required="required" accept=".fasta,.fa,.fsa,.fna,.faa" onchange="readFileContents()"/>Query file</label>
+                       required="required" accept=".fasta,.fa,.fsa,.fna,.faa" onchange="readFileContents()"/>Query file*</label>
                 {{ renderHelpButton('genomeFile') }}
 
                 <div class="error-message no-display" id="fileUploadIncorExt">
@@ -104,7 +107,7 @@ initReadQueryFile();
     <fieldset id="hmmSection" disabled="disabled">
             <div id="hmmProfilesDiv">
                 <div class="input-layer">
-                    <label class="select-label" for="selectedGenus">Genus</label>
+                    <label class="select-label" for="selectedGenus">Genus*</label>
                     <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">
 
                         {% for g in genera %}
@@ -114,7 +117,7 @@ initReadQueryFile();
                     {{ renderHelpButton('selectedGenus') }}
                 </div>
                 <div class="input-layer">
-                    <label class="textarea-label">HMM profiles</label>
+                    <label class="textarea-label">HMM profiles*</label>
                     <textarea rows="6" cols="25" required="required" id="hmmProfiles"
                               name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
                         {#        TODO: could: add Pfam identifier validation#}
@@ -136,7 +139,7 @@ initReadQueryFile();
                    id="entrez_query" placeholder="Aspergillus[organism]"/>
         </div>
         <div class="input-layer">
-            <label class="select-label" for="database_type">Database</label>
+            <label class="select-label" for="database_type">Database*</label>
             <select class="select-options" id="database_type" name="database_type" required="required">
                 <option value="nr">nr</option>
                 <option value="refseq_protein">RefSeq protein</option>
@@ -147,7 +150,7 @@ initReadQueryFile();
         </div>
 
         <div class="input-layer">
-            <label class="input-label" for="max_hits">Maximum hits</label>
+            <label class="input-label" for="max_hits">Maximum hits*</label>
             {{ renderHelpButton('max_hits') }}
             <input type="number" required="required" name="hitlist_size"
                    id="max_hits" min="1" max="99999" step="1"
@@ -160,20 +163,20 @@ initReadQueryFile();
     <label class="fieldset-label" for="filteringSection">Filtering</label>
     <fieldset id="filteringSection">
         <div class="input-layer">
-            <label class="input-label" for="max_evalue">Max. e-value</label>
+            <label class="input-label" for="max_evalue">Max. e-value*</label>
             {{ renderHelpButton('max_evalue') }}
             <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
                name="max_evalue"/>
         </div>
         <div class="input-layer">
-            <label class="input-label" for="min_identity">Min. identity (%)</label>
+            <label class="input-label" for="min_identity">Min. identity (%)*</label>
             {{ renderHelpButton('min_identity') }}
             <input type="number" required="required" value="30" min="0" max="100" step="1"
                    id="min_identity" name="min_identity"/>
         </div>
 
         <div class="input-layer">
-            <label class="input-label" for="min_query_coverage">Min. query coverage (%)</label>
+            <label class="input-label" for="min_query_coverage">Min. query coverage (%)*</label>
             {{ renderHelpButton('min_query_coverage') }}
             <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
                    name="min_query_coverage"/>
@@ -184,7 +187,7 @@ initReadQueryFile();
     <label class="fieldset-label" for="clusteringSection">Clustering</label>
     <fieldset id="clusteringSection">
         <div class="input-layer">
-            <label class="input-label" for="max_intergenic_gap">Max. intergenic gap</label>
+            <label class="input-label" for="max_intergenic_gap">Max. intergenic gap*</label>
             {{ renderHelpButton('max_intergenic_gap') }}
             <input type="number" id="max_intergenic_gap"
                    name="max_intergenic_gap" value="20000" min="0" max="999999" step="1" required="required"/>
@@ -192,13 +195,13 @@ initReadQueryFile();
         </div>
 
         <div class="input-layer">
-            <label class="input-label" for="percentageQueryGenes">Percentage</label>
+            <label class="input-label" for="percentageQueryGenes">Percentage*</label>
             {{ renderHelpButton('percentageQueryGenes') }}
             <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
         </div>
 
         <div class="input-layer">
-            <label class="input-label" for="min_unique_query_hits">Min. unique query hits</label>
+            <label class="input-label" for="min_unique_query_hits">Min. unique query hits*</label>
             {{ renderHelpButton('min_unique_query_hits') }}
             <input class="short" type="number" id="min_unique_query_hits"
                    name="min_unique_query_hits" value="3" step="1" min="0" max="150"
@@ -206,7 +209,7 @@ initReadQueryFile();
         </div>
 
         <div class="input-layer">
-            <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters</label>
+            <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters*</label>
             {{ renderHelpButton('min_hits_in_clusters') }}
             <input class="short" type="number" id="min_hits_in_clusters"
                    name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>

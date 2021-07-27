@@ -5,6 +5,7 @@
 {#{% from "macros.xhtml" import createBackButton %}#}
 {% from "macros.xhtml" import showSelectedClusters %}
 {% from 'macros.xhtml' import renderJobDetailsInput %}
+{% from 'macros.xhtml' import showRequiredInputsText %}
 
 {% block title %}Extract clusters{% endblock %}
 
@@ -15,6 +16,7 @@
 {% block content %}
 {#    {{ createBackButton() }}#}
     <h2 class="indent">Extract clusters</h2>
+    {% showRequiredInputsText() %}
 
 <form action="{{url_for('submit_job')}}" method="post">
 
@@ -33,7 +35,7 @@
             <input class="custom-width" type="text" id="prefix" name="prefix" maxlength="15"/>
         </div>
         <div class="input-layer">
-            <label class="select-label" for="format">Format</label>
+            <label class="select-label" for="format">Format*</label>
             <select class="custom-width" name="format" id="format" required="required">
                 <option value="genbank">GenBank</option>
                 <option value="bigscape">BiG-SCAPE</option>
@@ -41,7 +43,7 @@
             {{ renderHelpButton('format') }}
         </div>
         <div class="input-layer">
-            <label class="input-label" for="maxclusters">Maximum clusters</label>
+            <label class="input-label" for="maxclusters">Maximum clusters*</label>
             {{ renderHelpButton('maxclusters') }}
             <input class="short" type="number" name="maxclusters" value="50" step="1" min="1" max="{{ max_clusters_to_extract }}" id="maxclusters" required="required"/>
         </div>
