@@ -13,7 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 {% block head %}{% endblock %}
 </head>
-<body onload="showPreviousJobs(false);{% block scripts %}{% endblock %}determineHeight();">
+
+{% if help_enabled %}
+{% set onload = "toggleExplanationColumn()" %}
+{% endif %}
+
+<body onload="showPreviousJobs(false){{ onload }};{% block scripts %}{% endblock %}determineHeight();">
 
 {% block navigationBar %}{% endblock %}
 <div class="flexbox-wrapper">
