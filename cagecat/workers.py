@@ -9,7 +9,8 @@ import os.path
 # own project imports
 from cagecat.workers_helpers import *
 import cagecat.utils as ut
-import config
+from config_files import config
+
 
 ### redis-queue functions
 def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
@@ -247,8 +248,8 @@ def cblaster_extract_clusters(job_id: str,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["maxclusters"]),
-                                  config.THRESHOLDS['maximum_clusters_to_extract'],
-                                  (LOG_PATH, job_id, 'cblaster'),
+                              config.THRESHOLDS['maximum_clusters_to_extract'],
+                              (LOG_PATH, job_id, 'cblaster'),
                                   'Too many selected clusters'):
         return
 

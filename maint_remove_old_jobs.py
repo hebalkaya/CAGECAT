@@ -4,7 +4,7 @@ Author: Matthias van den Belt
 """
 from cagecat import db
 from cagecat.utils import fetch_job_from_db, JOBS_DIR
-from config import CONF
+from config_files.config import CONF
 import os
 import datetime
 import shutil

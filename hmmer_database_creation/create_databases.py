@@ -10,7 +10,7 @@ Author: Matthias van den Belt
 import subprocess
 import time
 import os
-from config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
+from config_files.config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
 import typing as t
 
 SLEEPING_TIME = 60

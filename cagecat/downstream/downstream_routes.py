@@ -9,7 +9,7 @@ from flask import Blueprint, request
 # own project imports
 import cagecat.parsers as pa
 import cagecat.utils as ut
-import config
+from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import POST_ANALYSIS_EXPLANATIONS, CLINKER_MODULES
 

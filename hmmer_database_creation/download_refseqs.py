@@ -11,7 +11,7 @@ import time
 from sys import argv
 import typing as t
 
-from config import *
+from config_files.config import *
 import create_databases as cr
 
 

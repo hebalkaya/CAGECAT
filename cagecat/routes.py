@@ -13,12 +13,11 @@ import cagecat.const
 import cagecat.help_texts
 from cagecat import app
 import cagecat.utils as ut
-import cagecat.parsers as pa
 import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 import cagecat.workers as rf
 import cagecat.const as const
-from config import CONF
+from config_files.config import CONF
 
 # route definitions
 @app.route("/rerun/<prev_run_id>")

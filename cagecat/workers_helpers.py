@@ -8,11 +8,11 @@ import subprocess
 import os
 
 # own project imports
-import config
+from config_files import config
 from cagecat.utils import JOBS_DIR, add_time_to_db, mutate_status, \
     fetch_job_from_db, send_email
 from cagecat import db
-from config import CONF
+from config_files.config import CONF
 from cagecat.models import Job
 
 # typing imports

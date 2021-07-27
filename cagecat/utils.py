@@ -12,7 +12,7 @@ import ssl
 
 # own project imports
 from cagecat.models import Job, Statistic
-from config import EMAIL
+from config_files.config import EMAIL
 import cagecat.const as const
 
 # typing imports
