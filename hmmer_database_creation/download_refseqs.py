@@ -202,12 +202,15 @@ def check_if_already_downloaded(name):
 def check_if_already_has_too_few_species():
     # TODO: can probably be removed when this is going to be a scheduled re-download
     # TODO: or not, as the script might fail due to NCBI, and we don't want to start all over again, so we could start from this point again
-    with open('too_few_species.txt') as inf:
-        genera = [g.strip().split()[0] for g in inf.readlines()]
+    try:
+        with open('too_few_species.txt') as inf:
+            genera = [g.strip().split()[0] for g in inf.readlines()]
 
-    if argv[1].capitalize() in genera:
-        print(f'Skipping {argv[1].capitalize()}: (known: too few species)')
-        exit(0)
+        if argv[1].capitalize() in genera:
+            print(f'Skipping {argv[1].capitalize()}: (known: too few species)')
+            exit(0)
+    except FileNotFoundError:
+        print(' -> No too_few_species.txt file found')
 
 
 def check_if_db_already_exists():
