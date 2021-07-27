@@ -10,8 +10,11 @@ Author: Matthias van den Belt
 import subprocess
 import time
 import os
-from config_files.config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
+import sys
 import typing as t
+
+sys.path.append('..')
+from config_files.config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
 
 SLEEPING_TIME = 60
 CPUS = "10"

@@ -10,7 +10,9 @@ import ftplib
 import time
 from sys import argv
 import typing as t
+import sys
 
+sys.path.append('..')
 from config_files.config import *
 import create_databases as cr
 
