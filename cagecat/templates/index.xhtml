@@ -34,13 +34,14 @@ initReadQueryFile();
 {##}
 {#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
 {#</div>#}
-    <div class="indent">
-    <h2>Search (multicblaster)</h2>
+
+    <h2 class="indent">Search (multicblaster)</h2>
     {{  showRequiredInputsText() }}
-    </div>
 
 
 <!--Module contents-->
+
+
 <div id="searchModuleContent" class="moduleContent">
 <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
