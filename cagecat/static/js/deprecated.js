@@ -3,7 +3,6 @@ function hasOneElementSelected(overview){
 }
 
 // function checkCorasonButton() {
-//     // TODO: implement that a cluster cannot be in in the cluster section and be the reference cluster at the same time
 //     let elem = document.getElementById("corasonSubmit");
 //     if (elem !== null){
 //         let queries = document.getElementById("selectedQueriesOverview");
@@ -28,7 +27,6 @@ window.addEventListener("message", function(e){
     }
 
     //
-    // // -------------- TODO: check if we can generalize this function. Below
     // // -------------- was a trial, but variable referencing is not supported in JS
     // // if (src === "Clusters") {
     // //     const array = selectedClusters;

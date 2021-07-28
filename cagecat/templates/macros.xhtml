@@ -22,7 +22,7 @@
 
         <span>or</span>
         <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ uploadedSessionFile }}">
-            {#            TODO: should: possibly insert help button#}
+            {#            TODO: should: remove session file #}
             <input type="file"
                    id="{{ uploadedSessionFile }}"
                    name="{{uploadedSessionFile }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
@@ -106,7 +106,6 @@
 
 
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
-    {#    TODO: maybe selected scaffolds could be removed#}
     <div>
     <label class="fieldset-label" for="filteringSection">Filtering</label>
     <fieldset id="filteringSection">
@@ -115,6 +114,7 @@
             {{ renderHelpButton('selectedOrganisms') }}
             <input class="bigger" type="text" id="selectedOrganisms" name="selectedOrganisms" placeholder="Organisms to filter for"/>
         </div>
+    {# Below code intentionally left in if scaffolds are wished to be implemented in a future release #}
         {#        <div class="input-layer">#}
         {#            <label class="textarea-label" for="selectedScaffolds">Scaffolds</label>#}
         {#            {{ renderHelpButton('selectedScaffolds') }}#}

@@ -127,24 +127,9 @@
             </div>
     {% if module != 'extract_clusters' %}
         <div class="column middleColumn downstream-div-height" id="middleColumnDiv" style="border-bottom: 2px solid #5284a7;width: 80%;">
-{#            <label for="selectedQueriesOverview">Selected queries</label>#}
-{#            <ul id="selectedQueriesOverview">#}
-{#                <li>No queries selected</li>#}
-{#            </ul>#}
-{##}
-{#            <label for="selectedClustersOverview">Selected clusters</label>#}
-{#            <ul id="selectedClustersOverview">#}
-{#                <li>No clusters selected</li>#}
-{#            </ul>#}
-{#            <label for="selectedReferenceCluster">Selected reference cluster</label>#}
-{#            <ul id="selectedReferenceCluster">#}
-{#                <li>No reference cluster selected</li>#}
-{#            </ul>#}
-{#        </div>#}
     {% endif %}
 
     {% endif %}
-{#            TODO: could: center the iframe and still be able to click the downstream buttons#}
 
     {% if module in modules_with_plots %}
         {% if module not in ('clinker_full', 'gne') %}

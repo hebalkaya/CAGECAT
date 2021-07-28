@@ -1,8 +1,8 @@
 """Initializes CAGECAT web service (started by uwsgi
 
-Main module of the TODO: must: web service name
-
-# TODO: must: extensive description
+Initialization module of the CAGECAT web service. This module executes any
+preparational steps before starting CAGECAT. This file is ran from
+/repo/run.py
 
 Author: Matthias van den Belt
 """

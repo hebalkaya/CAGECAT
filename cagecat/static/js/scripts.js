@@ -4,7 +4,7 @@ var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var selectedClusters = []
 var selectedQueries = []
 var currentTime = Date();
-var ROOT_URL = '/cagecat'     // TODO: must: change root if root changes
+var ROOT_URL = '/cagecat'
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -324,7 +324,7 @@ function readFileContents() {
     let ext = file.name.split(".").pop().toLowerCase();
 
     reader.onload = function(evt){
-        // TODO: could: check if file adheres to FASTA format
+
         if (!valid_ext.includes(ext)){
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
@@ -608,7 +608,7 @@ function showSelection(toShow){
 }
 
 function checkClanCutoffValues(){
-    // TODO: still to be implemented with big-scape
+    // currently not used. Still to be implemented with big-scape
     let elem = $('#clan_cutoff')[0];
     let splitted = elem.value.split(' ');
 
@@ -710,8 +710,8 @@ function getOutputFromPlot(plotting_type){
     // setMultiSelectHeight();
 }
 
-// Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used
-function initReadQueryFile(){ // TODO: check if this can be removed?
+// Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used (check usages manually)
+function initReadQueryFile(){
     var file = document.getElementById("genomeFile").files[0];
     if (file) {
         var reader = new FileReader();
