@@ -18,7 +18,7 @@
 
         <div>
             <form method="post" action="{{ url_for('feedback.submit_feedback') }}">
-                {{  showRequiredInputsText() }}
+                 <p>Input fields with an * are required.</p>
 
                 <div class="input-layer">
                     <label class="select-label" for="feedback_type_input">Type of feedback*</label>
