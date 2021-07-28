@@ -17,7 +17,7 @@
         <p>After you submitted feedback, a copy of your report will be sent to your e-mail address. Note that this e-mail address will be used for future correspondence about your report.</p>
 
         <div>
-            <form method="post" action="{{ url_for('submit_feedback') }}">
+            <form method="post" action="{{ url_for('feedback.submit_feedback') }}">
                 {{  showRequiredInputsText() }}
 
                 <div class="input-layer">
