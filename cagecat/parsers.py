@@ -44,36 +44,6 @@ def parse_selected_cluster_names(selected_clusters: str) \
     return cluster_names
 
 
-def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
-    """Returns scaffolds of the selected clusters
-
-    Input:
-        - selected_clusters: user-selected clusters. These clusters are
-            separated by "\r\n"
-
-    Output:
-        - selected_scaffolds: parsed scaffolds. Is None when no clusters have
-            been selected for downstream processing
-    """
-    if selected_clusters != "No clusters selected":
-        selected_scaffolds = []
-
-        for cluster in selected_clusters.split("\n"):
-            # TODO: would: maybe we can use regex here
-            sep_index = cluster.find(")") + 1  # due to excluding last index
-            # TODO: must: use organism
-            organism = cluster[:sep_index].split("(")[0].strip()
-            selected_scaffolds.append(
-                cluster[sep_index + 1:].strip())  # due to separation
-            # character between organism and scaffold
-
-        selected_scaffolds = "\n".join(selected_scaffolds)
-    else:
-        selected_scaffolds = None
-
-    return selected_scaffolds
-
-
 def format_cluster_numbers(cluster_numbers: t.List[int]) -> t.List[str]:
     """Pretty formats the selected cluster numbers in a sorted way
 

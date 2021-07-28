@@ -33,8 +33,8 @@ def clinker_query() -> str:
     Output:
         - HTML represented in string format
     """
-    selected_scaffolds = pa.parse_selected_scaffolds(
-        request.form["selectedClusters"])
+    # selected_scaffolds = pa.parse_selected_scaffolds(
+    #     request.form["selectedClusters"])
 
     # print(request.form['selectedClusters'])
     clusters = pa.parse_selected_cluster_numbers(

@@ -125,7 +125,7 @@ def submit_job() -> str:
         # TODO: must: extract query sequence
 
         corason_job_id = ut.generate_job_id()
-        new_options = dict(request.form) # TODO: should: can we remove this?
+        new_options = dict(request.form)  # TODO: should: can we remove this?
 
         new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
         new_jobs.append((rf.corason, corason_job_id, new_options, "CORASONPATHTODO", job_id, "corason"))
