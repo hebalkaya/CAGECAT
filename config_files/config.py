@@ -3,7 +3,7 @@
 Author: Matthias van den Belt
 """
 
-from sensitive import *
+from config_files.sensitive import *
 
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
