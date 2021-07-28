@@ -3,6 +3,8 @@
 Author: Matthias van den Belt
 """
 
+from sensitive import *
+
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,

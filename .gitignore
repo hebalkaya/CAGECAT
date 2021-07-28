@@ -1,6 +1,7 @@
 .idea/*
 __pycache__/*
-/cagecat/static/uploads/
-/test_runs/
 
+/test_runs/
 /cagecat/static/js/deprecated.js
+
+/config_files/sensitive.py

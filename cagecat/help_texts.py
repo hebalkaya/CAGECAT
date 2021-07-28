@@ -2,7 +2,7 @@ JOB_DESCRIPTOR_HELPS = {'job_title': {'title': 'Job title', 'module': '', 'text'
                         'email_notification': {'title': 'Email notification', 'module': '', 'text': 'Enter your e-mail to get notified when your job has finished.\n\nRequired: no'}}
 GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': '', 'text': 'The ID of the job which\' results are wished to be used.'},
                  'generalDelimiter': {'title': 'Output file delimiter', 'module': '', 'text': 'Single delimiter character to use when writing results to a file.\n\nResults will be separated of each other in the output file by the specified character.\n\nRequired: no\nDefault: no delimiter (human readable)'},
-                 'generalDecimals': {'title': 'Number of decimals', 'module': '', 'text': 'Total decimal places to use when saving score values.\n\nRequired: no'},
+                 'generalDecimals': {'title': 'Number of decimals', 'module': '', 'text': 'Total decimal places to use when saving score values.\n\nRequired: yes'},
                  'generalHideHeaders': {'title': 'Hide headers', 'module': '', 'text': 'Hide headers when saving result output.\n\nRequired: no'}}
 SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'FASTA file containing protein sequences to be searched.'},
                 'ncbiEntriesTextArea': {'title': 'Search from NCBI entries', 'module': '', 'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering the same identifier twice will prevent you from continuing.'},

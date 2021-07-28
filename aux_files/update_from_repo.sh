@@ -1,7 +1,6 @@
 # Author: Matthias van den Belt
 
-echo "--> Backing up old files"
-#TODO: would: add folder of date and move cp files to there
+echo "--> Copying jobs folder and database.db to host"
 docker cp cagecat_service:/repo/cagecat/database.db database.db
 docker cp cagecat_service:/repo/cagecat/jobs jobs
 
