@@ -374,8 +374,8 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    __, ___, parent_job_results_path =  ut.fetch_job_from_db(
-        job_id).depending_on
+    __, ___, parent_job_results_path = generate_paths(ut.fetch_job_from_db(
+        job_id).depending_on)
 
     cmd = ["echo", "we should execute corason here"]
     # TODO: must: implement CORASON
