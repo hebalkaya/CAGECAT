@@ -47,7 +47,7 @@ Message: {request.form['message']}
 -----------------------------------------''',
                       email)
 
-    return rthelp.show_template('redirect.xhtml', url=url_for('feedback_submitted'))
+    return rthelp.show_template('redirect.xhtml', url=url_for('feedback.feedback_submitted'))
 
 
 @feedback.route('/submitted')
