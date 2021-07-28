@@ -7,7 +7,6 @@ RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker
 
 RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
 
-# TODO: could: create  dirs inside container instead of copying
 COPY repo/ /repo/
 COPY present_databases.txt /present_databases.txt
 
