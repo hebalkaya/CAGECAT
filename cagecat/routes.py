@@ -204,16 +204,9 @@ def get_help_text(input_type):
     """
 
     if input_type not in cagecat.help_texts.HELP_TEXTS:
-        ##### TODO: must: REMOVE LATER BETWEEN LINES: DEVELOPMENT PURPOSES #####
-        with open('not_registered_helps.txt', "r+") as outf:
-            all_unregistrered_helps = [line.strip() for line in outf.readlines()]
-            # print(all_unregistrered_helps)
-
-            if input_type not in all_unregistrered_helps:
-                outf.write(f"{input_type}\n")
-        ##### UNTIL HERE #####
-
-        return rthelp.show_template("page_not_found.xhtml", stat_code=404)
+        return {'title': 'Missing help text', 'module': '', 'text':
+            'This help text is missing. Please submit feedback and indicate'
+            ' of which parameter the help text is missing.\n\nThanks in advance.'}
 
     return cagecat.help_texts.HELP_TEXTS[input_type]
 
