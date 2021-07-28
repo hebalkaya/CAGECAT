@@ -27,9 +27,11 @@ from cagecat import routes
 import cagecat.models as m
 from cagecat.downstream.downstream_routes import downstream
 from cagecat.result.result_routes import result
+from cagecat.feedback.feedback_routes import feedback
 
 app.register_blueprint(downstream, url_prefix="/downstream")
 app.register_blueprint(result, url_prefix="/results")
+app.register_blueprint(feedback, url_prefix="/feedback")
 
 db.create_all()
 
