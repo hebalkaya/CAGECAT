@@ -2,6 +2,6 @@
 __pycache__/*
 
 /test_runs/
-/cagecat/static/js/deprecated.js
+cagecat/static/js/deprecated.js
 
-/config_files/sensitive.py
+config_files/sensitive.py

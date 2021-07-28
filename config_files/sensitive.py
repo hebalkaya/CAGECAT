@@ -3,4 +3,4 @@
 Author: Matthias van den Belt
 """
 
-email_password = "!kA92An+sa@la!;@hsaAisSnaLam?"
+email_password = "" # TODO: change it
