@@ -24,7 +24,7 @@
 
         <p>Job {{j_id}} has failed during execution due to the following:</p>
         {% if (failure_reason == 'Unknown failure reason.' or failure_reason == "Command construction failed (no log file).") %}
-            <p><b>{{ failure_reason }} <a href="{{ url_for('feedback_page', job_id=j_id) }}">Please submit feedback by clicking this sentence.</a></b></p>
+            <p><b>{{ failure_reason }} <a href="{{ url_for('feedback.feedback_page', job_id=j_id) }}">Please submit feedback by clicking this sentence.</a></b></p>
         {% else %}
             <p><b>{{ failure_reason }}</b></p>
         {% endif %}
