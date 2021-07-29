@@ -318,7 +318,7 @@ function mergeExponentials(){
 function readFileContents() {
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
-    var valid_ext = ["fasta", "fa", "fsa", "fna", "faa"]
+    var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", ".gbk", ".gb", ".genbank", ".gbf", ".gbff"]
     var file = document.getElementById("genomeFile").files[0];
     var reader = new FileReader();
     let ext = file.name.split(".").pop().toLowerCase();
@@ -328,10 +328,12 @@ function readFileContents() {
         if (!valid_ext.includes(ext)){
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
+            $('#submitSearchForm')[0].setAttribute('disabled', 'disabled')
             return;
         }
         else {
             document.getElementById("fileUploadIncorExt").classList.add('no-display');
+            $('#submitSearchForm')[0].removeAttribute('disabled');
         }
         let splitted = reader.result.split("\n");
         for (let i=0; i<splitted.length; i++){

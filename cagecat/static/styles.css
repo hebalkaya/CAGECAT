@@ -144,7 +144,7 @@ input:disabled, textarea:disabled, label.disabled, select:disabled, form button:
     cursor: not-allowed;
 }
 
-label.disabled, label.disabled:hover, form button:disabled.hover{
+label.disabled, label.disabled:hover, form button:disabled.hover, input:disabled {
     background-color: #cccccc;
 }
 
@@ -181,7 +181,7 @@ iframe {
     background-color: #304f63;
 }
 
-form button:disabled, form button:disabled:hover {
+form button:disabled, form button:disabled:hover, input:disabled {
     background-color: #cccccc;
 }
 
