@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {#{% from "macros.xhtml" import show_options %}#}
 {% from "macros.xhtml" import showNavigationBar %}
+{% from "macros.xhtml" import showBookMarkButton %}
 
 {% block head %}<meta http-equiv="refresh" content="30">{% endblock %}
 {% block title %}
@@ -32,6 +33,8 @@
         {% endif %}
 
         <p>In future releases, it will be possible to start downstream analyses from this page.</p>
+
+        {{ showBookMarkButton() }}
     </div>
 
 {% endblock %}

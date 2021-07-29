@@ -258,3 +258,7 @@
 {% macro showRequiredInputsText() %}
 <p class="indent">Input fields with an * are required. If you don't know what value you should use, use the default value.</p>
 {% endmacro %}
+
+{% macro showBookMarkButton() %}
+    <input class="button" style="text-align: center" onclick="alert('Press CTRL + D to bookmark this page')" value="Bookmark this page"/>
+{% endmacro %}

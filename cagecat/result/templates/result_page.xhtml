@@ -1,6 +1,7 @@
 {% extends "base.xhtml" %}
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
+{% from "macros.xhtml" import showBookMarkButton %}
 
 {% block title %}
     {% if job_title %}
@@ -31,6 +32,7 @@
                 <input id="download-button" class="download-button" type="submit"></input>
 
             </form>
+            {{ showBookMarkButton() }}
         </br>
         </div>
 
