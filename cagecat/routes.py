@@ -17,6 +17,7 @@ import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 import cagecat.workers as rf
 import cagecat.const as const
+from classes import CAGECATJob
 
 
 # route definitions
@@ -75,47 +76,46 @@ def submit_job() -> str:
     ut.create_directories(job_id)
 
     if job_type == "search":
-        f = rf.cblaster_search
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
 
-        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=request.form,
+                                   job_type=job_type,
+                                   file_path=file_path))
 
     elif job_type == "gne":
-        f = rf.cblaster_gne
-        file_path = rthelp.get_previous_job_properties(job_id, job_type, "gne")
-
-        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=request.form,
+                                   file_path=rthelp.get_previous_job_properties(job_id, job_type, "gne")))
 
     elif job_type == "extract_sequences":
         # For now, only when coming from a results page (using a previous job
         # id) is supported
-        f = rf.cblaster_extract_sequences
 
-        prev_job_id = request.form["prev_job_id"]
-        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                                 f"{prev_job_id}_session.json")
-
-        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=request.form,
+                                   file_path=os.path.join(ut.JOBS_DIR,
+                                              request.form['prev_job_id'],
+                                              "results",
+                                              f"{request.form['prev_job_id']}_session.json")))
 
     elif job_type == "extract_clusters":
-        f = rf.cblaster_extract_clusters
+        prev_job_id = ut.fetch_job_from_db(
+            request.form["prev_job_id"]).main_search_job
 
-        prev_job_id = ut.fetch_job_from_db(request.form["prev_job_id"]).main_search_job
         if prev_job_id == "null":
             prev_job_id = request.form["prev_job_id"]
-
-        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                                 f"{prev_job_id}_session.json")
         # For now, only when coming from a results page (using a previous job
         # id) is supported
 
-        new_jobs.append((f, job_id, request.form, file_path, None, job_type))
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=request.form,
+                                   file_path=os.path.join(ut.JOBS_DIR,
+                                              prev_job_id,
+                                              "results",
+                                              f"{prev_job_id}_session.json")))
 
     elif job_type == "corason":
-        prev_job_id = request.form["prev_job_id"]
-        file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                               f"{prev_job_id}_session.json")
-
         extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
         clust_numbers = dict(request.form)
 
@@ -124,35 +124,52 @@ def submit_job() -> str:
 
         # TODO: must: extract query sequence
 
-        new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
-        new_jobs.append((rf.corason, ut.generate_job_id(), request.form, "CORASONPATHTODO", job_id, "corason"))
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=extr_clust_options,
+                                   job_type='extract_clusters',
+                                   file_path=os.path.join(ut.JOBS_DIR,
+                                          request.form['prev_job_id'],
+                                          "results",
+                                          f"{request.form['prev_job_id']}_session.json")))
+
+        new_jobs.append(CAGECATJob(job_id=ut.generate_job_id(),
+                                   options=request.form,
+                                   file_path='TODOCORASONPATH',
+                                   depending_on=new_jobs[-1]))  # get the last CAGECATJob object
 
         # TODO: must: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
     elif job_type == "clinker_full":
         prev_job_id = request.form["clinkerEnteredJobId"]
-        prev_job = ut.fetch_job_from_db(prev_job_id)
 
-        if prev_job.job_type == 'extract_clusters':
+        if ut.fetch_job_from_db(prev_job_id).job_type == 'extract_clusters':
             genome_files_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results")
-            depending_job = None
+            depending_on = None
         else:
-            extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-
-            file_path_extract_clust = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                                                   f"{prev_job_id}_session.json")
-            new_jobs.append((rf.cblaster_extract_clusters, job_id, extr_clust_options, file_path_extract_clust, None, "extract_clusters"))
+            new_jobs.append(CAGECATJob(job_id=job_id,
+                                       options=copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS),
+                                       file_path=os.path.join(ut.JOBS_DIR,
+                                                      prev_job_id,
+                                                      "results",
+                                                      f"{prev_job_id}_session.json")))
 
             genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
-            depending_job = job_id
+            # depending_on = job_id
+            depending_on = new_jobs[-1]
 
-        new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, depending_job, "clinker_full"))
+        # new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, depending_on, "clinker_full"))
+        new_jobs.append(CAGECATJob(job_id=job_id if depending_on is None else ut.generate_job_id(),
+                                   options=request.form,
+                                   file_path=genome_files_path,
+                                   depending_on=depending_on))
 
     elif job_type == "clinker_query":
-        prev_job_id = request.form["prev_job_id"]
-        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results", f"{prev_job_id}_session.json")
-
-        new_jobs.append((rf.clinker_query, job_id, request.form, file_path, None, "clinker_query"))
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=request.form,
+                                   file_path=os.path.join(ut.JOBS_DIR,
+                                          request.form['prev_job_id'],
+                                          "results",
+                                          f"{request.form['prev_job_id']}_session.json")))
 
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
