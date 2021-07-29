@@ -17,9 +17,6 @@ echo "--> Copying files from host to container"
 # Nevertheless, we created a backup of them earlier
 docker cp repo cagecat_service:/
 
-echo "--> Validate manually that the release number has changed"
-docker exec cagecat_service cat /repo/cagecat/templates/help.xhtml
-
 echo "Restarting uwsgi"
 docker exec cagecat_service uwsgi --reload /tmp/uwsgi-master.pid
 

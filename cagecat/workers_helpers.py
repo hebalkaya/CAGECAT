@@ -8,6 +8,7 @@ import subprocess
 import os
 
 # own project imports
+import config_files.config
 from config_files import config
 from cagecat.utils import JOBS_DIR, add_time_to_db, mutate_status, \
     fetch_job_from_db, send_email
@@ -235,6 +236,20 @@ To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{jo
     # TODO: must: possibly change sender_email
 
 
+def log_cagecat_version(job_id: str) -> None:
+    """Logs the version of CAGECAT to the job's logs folder
+
+    Input:
+        - job_id: ID of job for which CAGECAT's version should be logged
+
+    Output:
+        - written file with CAGECAT's version
+
+    """
+    with open(os.path.join(generate_paths(job_id)[1], 'CAGECAT_version.txt'), 'w') as outf:
+        outf.write(f'CAGECAT_version={config_files.config.CAGECAT_VERSION}')
+
+
 def post_job_formalities(job_id: str, return_code: int) -> None:
     """Wrapper function for functions to be executed post-job execution
 
@@ -250,6 +265,7 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
             outputs
     """
 
+    log_cagecat_version(job_id)
     zip_results(job_id)
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
