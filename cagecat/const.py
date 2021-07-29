@@ -31,7 +31,8 @@ MODULE_TO_PROGRAM = {'search': 'cblaster',
                      'clinker_full': 'clinker'
                      }
 
-EXTRACT_CLUSTERS_OPTIONS = {"selectedOrganisms": "",
+EXTRACT_CLUSTERS_OPTIONS = {'job_type': 'extract_clusters',
+                            "selectedOrganisms": "",
                             "selectedScaffolds": "",  # empty strings as
                             "clusterNumbers": "",  # if nothing was
                             "clusterScoreThreshold": "",  # filled in in the
