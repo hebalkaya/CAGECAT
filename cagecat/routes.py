@@ -45,7 +45,9 @@ def home_page(prev_run_id: str = None) -> str:
     return rthelp.show_template("index.xhtml",
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
-                                headers=headers, genera=const.PRESENT_DATABASES)
+                                headers=headers,
+                                genera=const.PRESENT_DATABASES,
+                                query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES))
 
 
 @app.route(co.SUBMIT_URL, methods=["POST"])

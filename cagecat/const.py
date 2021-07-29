@@ -11,6 +11,9 @@ with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
     PRESENT_DATABASES.sort()
 
 CLINKER_MODULES = ('clinker_query', 'clinker_full')
+FASTA_SUFFIXES = (".fa", ".fsa", ".fna", ".fasta", ".faa")
+GENBANK_SUFFIXES = (".gbk", ".gb", ".genbank", ".gbf", ".gbff")
+
 
 FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module search, hmm/hmm+remote mode, incorrect HMM profiles
                        'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
