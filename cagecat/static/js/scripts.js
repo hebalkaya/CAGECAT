@@ -318,7 +318,7 @@ function mergeExponentials(){
 function readFileContents() {
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
-    var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", ".gbk", ".gb", ".genbank", ".gbf", ".gbff"]
+    var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", "gbk", "gb", "genbank", "gbf", "gbff"]
     var file = document.getElementById("genomeFile").files[0];
     var reader = new FileReader();
     let ext = file.name.split(".").pop().toLowerCase();
