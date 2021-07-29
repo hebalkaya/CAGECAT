@@ -6,6 +6,7 @@ Author: Matthias van den Belt
 import cagecat.workers as w
 
 function_dict = {'search': w.cblaster_search,
+                 'recompute': w.cblaster_search,
                  'gne': w.cblaster_gne,
                  'extract_sequences': w.cblaster_extract_sequences,
                  'extract_clusters': w.cblaster_extract_clusters,
@@ -26,7 +27,6 @@ class CAGECATJob:
 
         self.title = options['job_title'] if 'job_title' in options else None
         self.email = options['email'] if 'email' in options else None
-
 
     def get_job_type(self):
         return self.options['job_type']
