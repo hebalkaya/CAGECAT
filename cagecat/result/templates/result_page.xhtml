@@ -83,7 +83,7 @@
         {% if 'clinker_full' in downstream_modules %}
             <form action="{{url_for('downstream.clinker_full')}}" method="get">
                 <input type="hidden" name="prev_id" value="{{ j_id }}"/>
-                <button class="button button-small" type="submit">Visualize everything</button>
+                <button class="button button-small" type="submit">clinker</button>
             </form>
 {#            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>#}
         {% endif %}
