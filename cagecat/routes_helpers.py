@@ -250,7 +250,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
         db.session.add(j)
         db.session.commit()
 
-        created_redis_jobs_ids.append((cc_job.job_id, job.job_id))
+        created_redis_jobs_ids.append((cc_job.job_id, job.id))
         last_job_id = cc_job.job_id
 
     return last_job_id
