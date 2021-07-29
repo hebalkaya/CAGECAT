@@ -241,7 +241,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
         j = dbJob(id=cc_job.job_id,
                   status="queued" if depending_on is None else "waiting",  # for parent job to finish
                   job_type=cc_job.get_job_type(),
-                  redis_id=job.job_id,
+                  redis_id=job.id,
                   depending_on='null' if depending_on is None else cc_job.depends_on_job_id,
                   main_search_job=main_search_job_id,
                   title=cc_job.title,
