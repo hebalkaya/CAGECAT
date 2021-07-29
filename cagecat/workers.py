@@ -148,8 +148,6 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
         post_job_formalities(job_id, 999)
 
 
-
-
 def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
                  file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_gne (forges + exec. command)

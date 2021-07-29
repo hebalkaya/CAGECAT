@@ -147,6 +147,7 @@ def submit_job() -> str:
         else:
             new_jobs.append(CAGECATJob(job_id=job_id,
                                        options=copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS),
+                                       job_type='extract_clusters',
                                        file_path=os.path.join(ut.JOBS_DIR,
                                                       prev_job_id,
                                                       "results",
