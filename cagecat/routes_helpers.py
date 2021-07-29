@@ -12,6 +12,7 @@ import cagecat.utils as ut
 from cagecat import q, r
 from cagecat.models import Job as dbJob
 from cagecat import db
+from classes import CAGECATJob
 
 # typing imports
 import typing as t
@@ -193,13 +194,8 @@ def prepare_finished_result(job_id: str,
     return plot_contents, program, size
 
 
-def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
-                                          ImmutableMultiDict,
-                                          t.Union[str, None],
-                                          t.Union[str, None],
-                                          str,
-                                          t.Union[str, None],
-                                          t.Union[str, None]]]) -> str:
+def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
+    # TODO: documentation
     """Enqueues jobs on the Redis queue
 
     Input:
@@ -226,53 +222,43 @@ def enqueue_jobs(new_jobs: t.List[t.Tuple[t.Callable, str,
 
     created_redis_jobs_ids = []
 
-    for i, new_job in enumerate(new_jobs):
-        ut.create_directories(new_job[1])
-        ut.save_settings(new_job[2], new_job[1])
+    for i, cc_job in enumerate(new_jobs):  # cc_job = cagecat_job (CAGECATJob)
+        ut.create_directories(cc_job.job_id)
+        ut.save_settings(cc_job.options, cc_job.job_id)
 
-        # depends_on kwarg could be None if it is not dependent.
-        depending_job = None if new_job[4] is None else \
+        depending_on = None if cc_job.depending_on.job_id is None else \
             created_redis_jobs_ids[i-1][1]
 
-        job = q.enqueue(new_job[0], args=(new_job[1],),
-                        kwargs={"options": new_job[2],
-                                "file_path": new_job[3]},
-                        depends_on=depending_job,
+        job = q.enqueue(cc_job.function,
+                        args=(cc_job.job_id),
+                        kwargs={'options': cc_job.options,
+                                'file_path': cc_job.file_path},
+                        depends_on=depending_on,
                         result_ttl=86400)
 
-        status = "queued" if depending_job is None else "waiting"
-        # for parent job to finish
+        main_search_job_id = add_parent_search_and_child_jobs_to_db(cc_job, i == len(new_jobs)-1)
 
-        main_search_job_id = add_parent_search_and_child_jobs_to_db(new_job, i == len(new_jobs)-1)
-        # print(main_search_job_id)
-
-        j = dbJob(id=new_job[1], status=status, job_type=new_job[5],
-                  redis_id=job.id,
-                  depending_on="null" if
-                  depending_job is None else new_job[4],  # is our own job ID
+        j = dbJob(id=cc_job.job_id,
+                  status="queued" if depending_on is None else "waiting",  # for parent job to finish
+                  job_type=cc_job.get_job_type(),
+                  redis_id=job.job_id,
+                  depending_on='null' if depending_on is None else cc_job.depending_on.job_id,
                   main_search_job=main_search_job_id,
-                  title=new_job[6],
-                  email=new_job[7])
-
-        print(j)
+                  title=cc_job.title,
+                  email=cc_job.email)
 
         db.session.add(j)
         db.session.commit()
 
-        created_redis_jobs_ids.append((new_job[1], job.id)) # own ID, redis id
-
-        last_job_id = new_job[1]
+        created_redis_jobs_ids.append((cc_job.job_id, job.job_id))
+        last_job_id = cc_job.job_id
 
     return last_job_id
 
 
-def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
-                                            ImmutableMultiDict,
-                                            t.Union[str, None],
-                                            t.Union[str, None], str,
-                                            t.Union[str, None],
-                                            t.Union[str, None]],
+def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
                                            is_last_job: bool) -> str:
+    # TODO: change documentation
     """Adds the main search job and its children to the new_job in db
 
     Input:
@@ -284,34 +270,26 @@ def add_parent_search_and_child_jobs_to_db(new_job: t.Tuple[t.Callable, str,
     Output:
         - job id of the main search job
     """
-    if new_job[5] == "search":
+    if new_job.get_job_type() == 'search':
         main_search_job_id = "null"
     else:
         old_job = get_parent_job(new_job, is_last_job)
-        # parse main search job ID from given file_path
 
         if old_job.job_type == "search":
-            main_search_job_id = old_job.id
-            main_search_job = ut.fetch_job_from_db(main_search_job_id)
+            main_search_job = ut.fetch_job_from_db(old_job.id)
 
             sep = "" if not main_search_job.child_jobs else ","
-            main_search_job.child_jobs += f"{sep}{new_job[1]}"
-            # TODO: note: index on else statement could change when the base_path is changed
+            main_search_job.child_jobs += f"{sep}{new_job.job_id}"
             # empty string for the first child job
-
         else:
             main_search_job_id = old_job.main_search_job
 
     return main_search_job_id
 
 
-def get_parent_job(new_job: t.Tuple[t.Callable, str,
-                                           ImmutableMultiDict,
-                                           t.Union[str, None],
-                                           t.Union[str, None], str,
-                                           t.Union[str, None],
-                                           t.Union[str, None]],
+def get_parent_job(new_job: CAGECATJob,
                                  is_last_job: bool) -> t.Union[None, dbJob]:
+    # TODO: change documentation
     """Gets the parent job of a job (i.e. the job this job depends on)
 
     Input:
@@ -323,60 +301,22 @@ def get_parent_job(new_job: t.Tuple[t.Callable, str,
     Output:
         - parent Job instance
     """
-    if new_job[5] in ("recompute", "gne", "clinker_full"):
+    j_type = new_job.get_job_type()
+    if j_type in ("recompute", "gne", "clinker_full"):
         # are modules which use the prev_session macro to get the previous session ID
         # might change in the future
 
         # below lines are required due to the naming in the HTML input fields
-        if new_job[5] == "recompute":
+        if j_type == "recompute":
             module = "search"
-        elif new_job[5] == "clinker_full":
+        elif j_type == "clinker_full":
             module = "clinker"
         else:
-            module = new_job[5]
+            module = j_type
 
         key = f"{module}EnteredJobId"
     else:
         key = "prev_job_id"
 
-    old_job = ut.fetch_job_from_db(
-        new_job[2][key] if is_last_job else new_job[3].split(os.sep)[2])
-
-    return old_job
-
-
-def add_title_email_to_job(given_jobs: t.List[t.Tuple[t.Callable, str,
-                                          ImmutableMultiDict,
-                                          t.Union[str, None],
-                                          t.Union[str, None], str]],
-                           form: ImmutableMultiDict):
-    """Adds title and e-mail to all given jobs
-
-    Input:
-        - given_jobs: list of jobs to be added with its options. For index
-            explanation: see the enqueue_jobs function
-        - form: user submitted parameters via HTML form
-
-    Output:
-        - all_new_jobs: list of jobs with title and email added to them
-
-        t.List[t.Tuple[t.Callable, str,
-              ImmutableMultiDict,
-              t.Union[str, None],
-              t.Union[str, None],
-              str,
-              t.Union[str, None],
-              t.Union[str, None]]]
-    """
-    # TODO: would: we could remove the second argument as it is also on given_jobs[1]
-    # TODO: would: we could remove this function when using classes for Jobs
-    all_new_jobs = []
-
-    for j in given_jobs:
-        nj = list(j)
-        nj.append(form['job_title'] if 'job_title' in form else None)
-        nj.append(form['email'] if 'email' in form else None)
-
-        all_new_jobs.append(tuple(nj))
-
-    return all_new_jobs
+    return ut.fetch_job_from_db(
+        new_job.options[key] if is_last_job else new_job.file_path.split(os.sep)[2])

@@ -14,13 +14,17 @@ function_dict = {'search': w.cblaster_search,
                  'clinker_query': w.clinker_query}
 
 class CAGECATJob:
+    # TODO: documentation
 
     def __init__(self, job_id, options, job_type=None, file_path=None, depending_on=None):
-        self.id = job_id
+        self.job_id = job_id
         self.options = options
         self.file_path = file_path
-        self.depending = depending_on
+        self.depending_on = depending_on
         self.set_job_function(job_type)
+
+        self.title = options['job_title'] if 'job_title' in options else None
+        self.email = options['email'] if 'email' in options else None
 
 
     def set_job_function(self, job_type):
@@ -28,6 +32,9 @@ class CAGECATJob:
             self.function = function_dict[self.options['job_type']]
         else:
             self.function = function_dict[job_type]
+
+    def get_job_type(self):
+        return self.options['job_type']
 
 
 

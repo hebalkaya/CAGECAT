@@ -15,7 +15,7 @@ if __name__ == "__main__":
         if argv[1] == "failed":
             for j in Job.query.filter_by(status="failed").all():
                 print(j)
-                path = f"cagecat/jobs/{j.id}/logs/{j.id}_cblaster.log"
+                path = f"cagecat/jobs/{j.job_id}/logs/{j.job_id}_cblaster.log"
 
                 with open(path) as inf:
                     print(inf.readlines())

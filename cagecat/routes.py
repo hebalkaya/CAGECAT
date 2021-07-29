@@ -174,19 +174,16 @@ def submit_job() -> str:
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
-
-    last_job_id = rthelp.enqueue_jobs(rthelp.add_title_email_to_job(
-        new_jobs, request.form))
-
-    last_job = ut.fetch_job_from_db(last_job_id)
+    last_job = ut.fetch_job_from_db(rthelp.enqueue_jobs(new_jobs))
 
     url = url_for("result.show_result",
-                  job_id=last_job_id,
+                  job_id=last_job.id,
                   pj=last_job.depending_on,
                   store_job_id=True,
                   job_title=last_job.title,
                   email=last_job.email,
                   j_type=last_job.job_type)
+
     return rthelp.show_template('redirect.xhtml', url=url)
 
 
