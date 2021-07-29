@@ -15,24 +15,17 @@
     </div>
 
     <div class="indent">
-        <h2 class="accordion">Homologous gene cluster search</h2>
+    <h1 class="accordion">multicblaster: homologous gene cluster searches</h1>
         <div class="panel" id="multicblaster_search_div">
             {{ renderHelpTexts(helps['multicblaster_search']) }}
         </div>
 
-        <h2 class="accordion">Visualization with query clusters</h2>
-        <div class="panel" id="cblaster_query_visualization">
-            {{ renderHelpTexts(helps['cblaster_query_visualization']) }}
+        <h2 class="accordion">Recompute</h2>
+        <div class="panel" id="recompute">
+            {{ renderHelpTexts(helps['recompute']) }}
         </div>
 
-
-        <h2 class="accordion">Visualization of all results</h2>
-        <div class="panel" id="clinker_full_visualization">
-            {{ renderHelpTexts(helps['clinker_full_visualization']) }}
-        </div>
-
-
-        <h2 class="accordion">Neighbourhood estimation</h2>
+        <h2 class="accordion">Gene Neighbourhood Estimation</h2>
         <div class="panel" id="neighbourhood_estimation">
             {{ renderHelpTexts(helps['neighbourhood_estimation']) }}
         </div>
@@ -47,13 +40,21 @@
             {{ renderHelpTexts(helps['extract_clusters']) }}
         </div>
 
-        <h2 class="accordion">Corason</h2>
-        <p>TODO</p>
+        <h2 class="accordion">Visualization with query clusters</h2>
+        <div class="panel" id="cblaster_query_visualization">
+            {{ renderHelpTexts(helps['cblaster_query_visualization']) }}
+        </div>
+
+    <h1 class="accordion">clinker: Visualization of all results</h1>
+    <div class="panel" id="clinker_full_visualization">
+        {{ renderHelpTexts(helps['clinker_full_visualization']) }}
+    </div>
+
+
+    <h1 class="accordion">Corason</h1>
+    <p>TODO</p>
 {#        TODO: must: add explanation#}
 
-        <h2 class="accordion">Recompute</h2>
-        <div class="panel" id="recompute">
-            {{ renderHelpTexts(helps['recompute']) }}
-        </div>
+
     </div>
 {% endblock %}
