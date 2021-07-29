@@ -276,7 +276,8 @@ def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
         old_job = get_parent_job(new_job, is_last_job)
 
         if old_job.job_type == "search":
-            main_search_job = ut.fetch_job_from_db(old_job.id)
+            main_search_job_id = old_job.id
+            main_search_job = ut.fetch_job_from_db(main_search_job_id)
 
             sep = "" if not main_search_job.child_jobs else ","
             main_search_job.child_jobs += f"{sep}{new_job.job_id}"
