@@ -134,7 +134,7 @@ def submit_job() -> str:
         new_jobs.append(CAGECATJob(job_id=ut.generate_job_id(),
                                    options=request.form,
                                    file_path='TODOCORASONPATH',
-                                   depending_on=new_jobs[-1]))  # get the last CAGECATJob object
+                                   depends_on_job_id=new_jobs[-1].job_id))  # get the last CAGECATJob object
 
         # TODO: must: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
@@ -154,13 +154,13 @@ def submit_job() -> str:
 
             genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
             # depending_on = job_id
-            depending_on = new_jobs[-1]
+            depending_on = new_jobs[-1].job_id
 
         # new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, depending_on, "clinker_full"))
         new_jobs.append(CAGECATJob(job_id=job_id if depending_on is None else ut.generate_job_id(),
                                    options=request.form,
                                    file_path=genome_files_path,
-                                   depending_on=depending_on))
+                                   depends_on_job_id=depending_on))
 
     elif job_type == "clinker_query":
         new_jobs.append(CAGECATJob(job_id=job_id,

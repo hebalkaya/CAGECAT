@@ -226,7 +226,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
         ut.create_directories(cc_job.job_id)
         ut.save_settings(cc_job.options, cc_job.job_id)
 
-        depending_on = None if cc_job.depending_on.job_id is None else \
+        depending_on = None if cc_job.depends_on_job_id is None else \
             created_redis_jobs_ids[i-1][1]
 
         job = q.enqueue(cc_job.function,
@@ -242,7 +242,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
                   status="queued" if depending_on is None else "waiting",  # for parent job to finish
                   job_type=cc_job.get_job_type(),
                   redis_id=job.job_id,
-                  depending_on='null' if depending_on is None else cc_job.depending_on.job_id,
+                  depending_on='null' if depending_on is None else cc_job.depends_on_job_id,
                   main_search_job=main_search_job_id,
                   title=cc_job.title,
                   email=cc_job.email)

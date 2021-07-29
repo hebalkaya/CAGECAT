@@ -16,11 +16,11 @@ function_dict = {'search': w.cblaster_search,
 class CAGECATJob:
     # TODO: documentation
 
-    def __init__(self, job_id, options, job_type=None, file_path=None, depending_on=None):
+    def __init__(self, job_id, options, job_type=None, file_path=None, depends_on_job_id=None):
         self.job_id = job_id
         self.options = options
         self.file_path = file_path
-        self.depending_on = depending_on
+        self.depends_on_job_id = depends_on_job_id
         self.set_job_function(job_type)
 
         self.title = options['job_title'] if 'job_title' in options else None
