@@ -15,9 +15,8 @@ from cagecat import app
 import cagecat.utils as ut
 import cagecat.const as co
 import cagecat.routes_helpers as rthelp
-import cagecat.workers as rf
 import cagecat.const as const
-from classes import CAGECATJob
+from cagecat.classes import CAGECATJob
 
 
 # route definitions

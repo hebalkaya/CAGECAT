@@ -12,7 +12,7 @@ import cagecat.utils as ut
 from cagecat import q, r
 from cagecat.models import Job as dbJob
 from cagecat import db
-from classes import CAGECATJob
+from cagecat.classes import CAGECATJob
 
 # typing imports
 import typing as t
