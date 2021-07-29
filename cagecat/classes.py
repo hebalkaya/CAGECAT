@@ -3,7 +3,7 @@
 Author: Matthias van den Belt
 """
 
-import workers as w
+import cagecat.workers as w
 
 function_dict = {'search': w.cblaster_search,
                  'gne': w.cblaster_gne,
