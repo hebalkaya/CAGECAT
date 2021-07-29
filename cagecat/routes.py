@@ -17,6 +17,7 @@ import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 import cagecat.const as const
 from cagecat.classes import CAGECATJob
+from config_files.config import CAGECAT_VERSION
 
 
 # route definitions
@@ -47,7 +48,7 @@ def home_page(prev_run_id: str = None) -> str:
                                 headers=headers, genera=const.PRESENT_DATABASES)
 
 
-@app.route(cagecat.const.SUBMIT_URL, methods=["POST"])
+@app.route(co.SUBMIT_URL, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
 
@@ -194,7 +195,7 @@ def help_page() -> str:
     Output:
         - HTML represented in string format
     """
-    return rthelp.show_template("help.xhtml", help_enabled=False)
+    return rthelp.show_template("help.xhtml", version=CAGECAT_VERSION, help_enabled=False)
 
 
 @app.route('/tools')
