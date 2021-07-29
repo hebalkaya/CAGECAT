@@ -230,7 +230,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
             created_redis_jobs_ids[i-1][1]
 
         job = q.enqueue(cc_job.function,
-                        args=(cc_job.job_id),
+                        args=(cc_job.job_id, ),
                         kwargs={'options': cc_job.options,
                                 'file_path': cc_job.file_path},
                         depends_on=depending_on,
