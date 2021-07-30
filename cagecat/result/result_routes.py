@@ -59,7 +59,6 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             with open(os.path.join(ut.JOBS_DIR, job_id, "logs",
                                    f"{job_id}_{program}.log")) as inf:
                 log_contents = "<br/>".join(inf.readlines())
-            connected_jobs = rthelp.get_connected_jobs(job)
 
             return show_template("result_page.xhtml", j_id=job_id,
                                  status=status,
@@ -70,7 +69,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  # log_contents=log_contents,
                                  downstream_modules=
                                  co.DOWNSTREAM_MODULES_OPTIONS[module],
-                                 connected_jobs=connected_jobs,
+                                 connected_jobs=rthelp.get_connected_jobs(job),
                                  help_enabled=False)
 
         elif status == "failed":

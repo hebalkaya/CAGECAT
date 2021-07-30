@@ -49,14 +49,16 @@
         <table>
             <tr>
                 <th>Job ID</th>
+                <th>Title</th>
                 <th>Module</th>
                 <th>Status</th>
                 <th>Category</th>
             </tr>
 
-        {% for id, module, status, job_category in connected_jobs %}
+        {% for id, title, module, status, job_category in connected_jobs %}
             <tr>
                 <td class="job-display"><a href="{{ url_for('result.show_result', job_id=id) }}">{{ id }}</a></td>
+                <td>{{ title }}</td>
                 <td>{{ module }}</td>
                 <td>{{ status }}</td>
                 <td>{{ job_category }}</td>

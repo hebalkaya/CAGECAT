@@ -20,7 +20,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 
 ### Function definitions
 def get_connected_jobs(job: t.Optional[dbJob]) -> \
-        t.List[t.Tuple[str, str, str, str], ]:
+        t.List[t.Tuple[str, str, str, str, str], ]:
     """Gets the connected (children, main_search, depending) jobs of a job
 
     Input:
@@ -28,7 +28,7 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
 
     Output:
         - connected jobs. Format of connected job:
-            [job_id, job_type, job_status, connection_type]
+            [job_id, job_title, job_type, job_status, connection_type]
 
     Child jobs: jobs which use the output of preceding jobs as input
     Main search: job which was used to search (initial job)
@@ -43,15 +43,15 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
         if children:  # empty string evaluates to False
             for j_id in children.split(","):
                 child_job = ut.fetch_job_from_db(j_id)
-                connected_jobs.append((child_job.id, child_job.job_type, child_job.status, "child"))
+                connected_jobs.append((child_job.id, child_job.title, child_job.job_type, child_job.status, "child"))
 
     else:
         main_job = ut.fetch_job_from_db(job.main_search_job)
-        connected_jobs.append((main_job.id, main_job.job_type, main_job.status, "main search"))
+        connected_jobs.append((main_job.id, main_job.title, main_job.job_type, main_job.status, "main search"))
 
         if job.depending_on != "null":
             parent_job = ut.fetch_job_from_db(job.depending_on)
-            connected_jobs.append((parent_job.id, parent_job.job_type, parent_job.status, "depending"))
+            connected_jobs.append((parent_job.id, parent_job.title, parent_job.job_type, parent_job.status, "depending"))
 
     return connected_jobs
 
