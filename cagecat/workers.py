@@ -340,7 +340,7 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    if log_threshold_exceeded(len(os.listdir(file_path)),
+    if log_threshold_exceeded(int(options['--maximum_clusters']),
                               config.THRESHOLDS['max_clusters_to_plot'],
                               (LOG_PATH, job_id, 'cblaster'),
                               'Too many selected clusters'):
