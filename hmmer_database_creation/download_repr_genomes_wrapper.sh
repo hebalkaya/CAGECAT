@@ -21,3 +21,4 @@ echo "Removing $fn"
 rm "$fn"
 
 echo "Finished!"
+touch

@@ -16,10 +16,14 @@ def write_unique_genera():
         if genus not in all_genera:
             all_genera.append(genus)
 
-    print(f"{len(all_genera)} genera found")
+
 
     with open(argv[2], 'w') as outf:
         for g in all_genera:
             outf.write(f'{g}\n')
+
+    print(len(all_genera))
+    # total number of genera is used in bash script from which this script
+    # is called
 
 write_unique_genera()
