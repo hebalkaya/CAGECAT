@@ -336,10 +336,19 @@ function readFileContents() {
             $('#submitSearchForm')[0].removeAttribute('disabled');
         }
         let splitted = reader.result.split("\n");
+        let starter;
+        let splitter;
         for (let i=0; i<splitted.length; i++){
-
-            if (splitted[i].startsWith(">")){
-                let txt = splitted[i].slice(1, splitted[i].length);
+            if (["fasta", "fa", "fsa", "fna", "faa"].includes(ext)){
+                starter = '>';
+                splitter = '>';
+            }
+            else {
+                starter = '/protein_id='
+                splitter = '"'
+            }
+            if (splitted[i].includes(starter)){
+                let txt = splitted[i].trim().split(splitter)[1].split(' ')[0];
                 let opt = document.createElement("option");
                 opt.text = txt;
                 opt.value = txt;
