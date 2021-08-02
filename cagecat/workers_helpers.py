@@ -8,6 +8,7 @@ import subprocess
 import os
 
 # own project imports
+import cagecat.const as co
 import config_files.config
 from config_files import config
 from cagecat.utils import JOBS_DIR, add_time_to_db, mutate_status, \
@@ -290,9 +291,16 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
     if input_type == "ncbi_entries":  # ncbi_entries
         headers = data
     elif input_type == "fasta":
-        with open(data) as inf:
-            headers = [line.strip()[1:] for line in
-                       inf.readlines() if line.startswith(">")]
+        ext = '.' + data.split('.')[-1]
+        if ext in co.FASTA_SUFFIXES:
+            with open(data) as inf:
+                headers = [line.strip()[1:].split()[0] for line in
+                           inf.readlines() if line.startswith(">")]
+        elif ext in co.GENBANK_SUFFIXES:
+            with open(data) as inf:
+                headers = [line.strip().split('"')[1] for line in inf.readlines() if '/protein_id=' in line]
+        else:
+            raise ValueError(f'Invalid extension: {ext}. Did the user upload a file with dots in it?')
 
     with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
         outf.write(",".join(headers))
