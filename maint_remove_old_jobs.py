@@ -46,7 +46,11 @@ def delete_old_jobs():
                            f'{datetime.datetime.now().date()}_removal.txt'),
               'w') as outf:
         for directory, job_id in get_folders_to_delete():
-            shutil.rmtree(directory)
+            try:
+                shutil.rmtree(directory)
+            except FileNotFoundError:
+                print(f'Directory not found: {directory}')
+
             db.session.delete(fetch_job_from_db(job_id))
 
             outf.write(f'Deleted: {directory}\n')
