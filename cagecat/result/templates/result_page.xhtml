@@ -141,9 +141,9 @@
         {% if module not in ('clinker_full', 'gne') %}
         <div>
             <div class="centered">
-                <button class="button smaller" onclick="showSelection('cluster')">Select clusters</button>
+                <button class="button smaller" id="selectClusterButton" onclick="showSelection('cluster')">Select clusters</button>
             {% if module != 'clinker_query' %}
-                <button class="button smaller" onclick="showSelection('query')">Select queries</button>
+                <button class="button smaller" id="selectQueryButton" onclick="showSelection('query')">Select queries</button>
             {% endif %}
                 {#                {{ renderHelpButton('downstream_select') }}#}
             </div>
