@@ -822,10 +822,9 @@ function addAccordionListeners() {
 }
 
 setInterval(function(){
-    let res = $.ajax(ROOT_URL + '/server-status', {
+    $.ajax(ROOT_URL + '/server-status', {
         dataType: 'json',
         success: function(data) {
-        // console.log(data['completed']);
             $('#status_server')[0].innerText = data['server_status'];
             $('#status_running')[0].innerText = data['running'];
             $('#status_queued')[0].innerText = data['queued'];
