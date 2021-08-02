@@ -16,8 +16,6 @@ def write_unique_genera():
         if genus not in all_genera:
             all_genera.append(genus)
 
-
-
     with open(argv[2], 'w') as outf:
         for g in all_genera:
             outf.write(f'{g}\n')

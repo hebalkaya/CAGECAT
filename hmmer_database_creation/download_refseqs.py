@@ -32,9 +32,9 @@ def init() -> str:
     genus = argv[1].capitalize()
     output_fn = f'{genus}_ftp_paths.txt'
 
-    if not os.path.exists(BASE_DIR):
-        os.mkdir(BASE_DIR)
-        print(f'Created directory {BASE_DIR}')
+    if not os.path.exists(REFSEQ_DIR):
+        os.mkdir(REFSEQ_DIR)
+        print(f'Created directory {REFSEQ_DIR}')
 
     print(f'Fetching FTP paths (writing to {output_fn})')
     subprocess.run(['bash', 'get_ftp_paths.sh', genus, output_fn])
@@ -111,26 +111,26 @@ def validate_file(gb_path: str, name,
     genus = name.split()[0]
     successful_downloads_fn = f'{genus}_{SUCCESSFUL_DOWNLOADS_FN}'
 
-    with open(os.path.join(BASE_DIR, 'md5checksums.txt')) as inf:
+    with open(os.path.join(REFSEQ_DIR, 'md5checksums.txt')) as inf:
         for line in inf.readlines():
             splitted = line.strip().split()
             if splitted[-1].endswith('genomic.gbff.gz'):
                 ori_chksum = splitted[0]
                 break
 
-    with open(os.path.join(BASE_DIR, gb_path), 'rb') as inf:
+    with open(os.path.join(REFSEQ_DIR, gb_path), 'rb') as inf:
         calc_chksum = hashlib.md5(inf.read()).hexdigest()
 
     if calc_chksum == ori_chksum:
         print('\t-> validated')
 
-        subprocess.run(['gzip', '-d', os.path.join(BASE_DIR, gb_path)])
+        subprocess.run(['gzip', '-d', os.path.join(REFSEQ_DIR, gb_path)])
         print('\t-> unzipped')
 
-        p = create_dir(BASE_DIR, genus, 'validated')
+        p = create_dir(REFSEQ_DIR, genus, 'validated')
 
         # move file from downloading folder to appropriate genus folder
-        os.rename(os.path.join(BASE_DIR, gb_path[:-3]), os.path.join(BASE_DIR, p, gb_path[:-3]))
+        os.rename(os.path.join(REFSEQ_DIR, gb_path[:-3]), os.path.join(REFSEQ_DIR, p, gb_path[:-3]))
         print(f'\t-> moved to {p}')
 
         with open(successful_downloads_fn, 'w' if not os.path.exists(successful_downloads_fn) else 'a') as outf:
@@ -162,7 +162,7 @@ def download_files(paths: t.Tuple[str, str, str], blocksize=33554432):
             print('\t-> skipped (already downloaded)')
             continue
 
-        ftp = ftplib.FTP(BASE_URL)
+        ftp = ftplib.FTP(NCBI_FTP_BASE_URL)
 
         time.sleep(0.34)
         ftp.login()
@@ -173,7 +173,7 @@ def download_files(paths: t.Tuple[str, str, str], blocksize=33554432):
         for counter, f in enumerate((gb_path, md5_path), start=1):
             print(f'\t-> downloading ({counter}/{2})')
             time.sleep(0.34)
-            with open(os.path.join(BASE_DIR, f), 'wb') as outf:
+            with open(os.path.join(REFSEQ_DIR, f), 'wb') as outf:
                 ftp.retrbinary(f'RETR {f}', outf.write, blocksize=blocksize)
 
         validate_file(gb_path, key)

@@ -14,7 +14,7 @@ import sys
 import typing as t
 
 sys.path.append('..')
-from config_files.config import CONF, BASE_DIR, COMPLETE_DOWNLOADS_FILE
+from config_files.config import CONF, REFSEQ_DIR, COMPLETE_DOWNLOADS_FILE
 
 SLEEPING_TIME = 60
 CPUS = "10"
@@ -58,7 +58,7 @@ def list_files(_genus: str) -> t.List[str]:
     """
     all_files = []
 
-    for root, directory, files in os.walk(os.path.join(BASE_DIR, _genus, 'validated')):
+    for root, directory, files in os.walk(os.path.join(REFSEQ_DIR, _genus, 'validated')):
         for f in files:
             all_files.append(os.path.join(root, f))
 

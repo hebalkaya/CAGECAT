@@ -19,7 +19,7 @@ def parse_paths(fp, ext='.gbff.gz'):
         # line looks like this:
         # ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/495/915/GCF_000495915.1_PseChl   Pseudomonas chloritidismutans
         splitted = line.strip().split()
-        ftp_path, genus, species = splitted[0].replace(BASE_URL, ''), splitted[1], ' '.join(splitted[2:])
+        ftp_path, genus, species = splitted[0].replace(NCBI_FTP_BASE_URL, ''), splitted[1], ' '.join(splitted[2:])
         key = ' '.join([genus, species])
 
         assembly_name = ftp_path.split('/')[-1]
@@ -64,12 +64,14 @@ def create_dir(*args) -> str:
 def validate_download(gb_path):
     print('         -> validation.. ', end='\r')
 
-    with open(os.path.join(BASE_DIR, 'md5checksums.txt')) as inf:
+    with open(os.path.join(REFSEQ_DIR, 'md5checksums.txt')) as inf:
         for line in inf.readlines():
             splitted = line.strip().split()
             if splitted[-1].endswith('genomic.gbff.gz'):
                 ori_chksum = splitted[0]
                 break
+
+                # TODO: sometimes ori checksum is referenced before assignment
 
     with open(gb_path, 'rb') as inf:
         calc_chksum = hashlib.md5(inf.read()).hexdigest()
@@ -78,6 +80,7 @@ def validate_download(gb_path):
         print('         -> validation --> ok')
     else:
         print('         -> validation --> incorrect')
+        print(f'Invalid path: {gb_path}')
         return False
         # check manually (or create script to grep the log files of cron job
         # with this line)
@@ -103,20 +106,20 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
             print(f'         -> already present: {genome_file_name[:-3]}')
         else:
             for i, fp in enumerate(paths, start=1):
-                ftp = ftplib.FTP(BASE_URL)
+                ftp = ftplib.FTP(NCBI_FTP_BASE_URL)
 
                 print(f'         -> downloading file {i} of 2')
                 file_name = fp.split('/')[-1]
                 ftp.login()
                 time.sleep(0.34)
 
-                with open(os.path.join(BASE_DIR, file_name), 'wb') as outf: # now with .gz as we download it as compressed
+                with open(os.path.join(REFSEQ_DIR, file_name), 'wb') as outf: # now with .gz as we download it as compressed
                     ftp.retrbinary(f'RETR {fp}', outf.write, blocksize=blocksize)
                 time.sleep(0.34)
 
-            genome_file_path = os.path.join(BASE_DIR, genome_file_name)
+            genome_file_path = os.path.join(REFSEQ_DIR, genome_file_name)
             if validate_download(genome_file_path):
-                os.rename(genome_file_path[:-3], os.path.join(BASE_DIR, genus,
+                os.rename(genome_file_path[:-3], os.path.join(REFSEQ_DIR, genus,
                                                          genome_file_path.split('/')[-1][:-3]))
                 # [:-3] is to remove .gz
                 print(f'         -> moved to {genus} folder')
@@ -124,7 +127,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
 
 if __name__ == '__main__':
     if argv[1] == 'everything_has_been_downloaded':
-        subprocess.run(['touch', os.path.join(BASE_DIR, 'databases_to_create', 'stop_creating_databases')])
+        subprocess.run(['touch', os.path.join(REFSEQ_DIR, 'databases_to_create', 'stop_creating_databases')])
         exit(0)
 
     genus = argv[1].split('_')[0]
@@ -140,9 +143,9 @@ if __name__ == '__main__':
                 # species,genome file ftp path, md5 checksum ftp path
         exit(0)
 
-    output_dir = create_dir(BASE_DIR, genus)
+    output_dir = create_dir(REFSEQ_DIR, genus)
     download_files(genus, paths, output_dir)
 
     # TODO: add somewhere which db's are ready to be created. Or immedidtealy create the db?
-    create_dir(BASE_DIR, 'databases_to_create')
-    subprocess.run(['touch', os.path.join(BASE_DIR, 'databases_to_create', genus)])
+    create_dir(REFSEQ_DIR, 'databases_to_create')
+    subprocess.run(['touch', os.path.join(REFSEQ_DIR, 'databases_to_create', genus)])

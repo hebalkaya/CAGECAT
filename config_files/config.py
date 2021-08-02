@@ -4,7 +4,7 @@ Author: Matthias van den Belt
 """
 
 from config_files.sensitive import *
-CAGECAT_VERSION = '0.67'
+CAGECAT_VERSION = '0.68'
 
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
@@ -44,7 +44,7 @@ The CAGECAT team
 https://www.bioinformatics.nl/cagecat'''
          }
 
-BASE_URL = 'ftp.ncbi.nlm.nih.gov'
-BASE_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
+NCBI_FTP_BASE_URL = 'ftp.ncbi.nlm.nih.gov'
+REFSEQ_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
 COMPLETE_DOWNLOADS_FILE = '/lustre/BIF/nobackup/belt017/complete_downloads.txt'
 SUCCESSFUL_DOWNLOADS_FN = 'successfull_downloads.txt'
