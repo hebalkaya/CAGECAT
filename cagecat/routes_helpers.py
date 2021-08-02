@@ -75,10 +75,10 @@ def show_template(template_name: str, help_enabled:bool = True,
     """
     if stat_code is None:
         return render_template(template_name, help_enabled=help_enabled,
-                               serv_info=ut.get_server_info(q, r), **kwargs)
+                               serv_info=get_server_info(), **kwargs)
     else:
         return render_template(template_name, help_enabled=help_enabled,
-                               serv_info=ut.get_server_info(q, r),
+                               serv_info=get_server_info(),
                                **kwargs), stat_code
 
 
@@ -321,3 +321,7 @@ def get_parent_job(new_job: CAGECATJob,
 
     return ut.fetch_job_from_db(
         new_job.options[key] if is_last_job else new_job.file_path.split(os.sep)[2])
+
+
+def get_server_info():
+    return ut.get_server_info(q, r)

@@ -104,16 +104,10 @@ def get_server_info(q: rq.Queue, redis_conn: redis.Redis) \
     start_registry = StartedJobRegistry('default', connection=redis_conn)
     # above registry has the jobs in it which have been started, but are not
     # finished yet: running jobs.
-    queued = len(q)
     running = len(start_registry)
 
-    if running == 0:
-        status = "idle"
-    else:
-        status = "running"
-
-    return {"server_status": status,
-            "queued": queued,
+    return {"server_status": 'idle' if running == 0 else 'running',
+            "queued": len(q),
             "running": running,
             "completed": Statistic.query.filter_by(
                 name="finished").first().count}

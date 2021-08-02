@@ -227,6 +227,10 @@ def get_help_text(input_type):
 
     return cagecat.help_texts.HELP_TEXTS[input_type]
 
+@app.route('/server-status')
+def get_server_status():
+    return rthelp.get_server_info()
+
 
 # Error handlers
 @app.errorhandler(404)
