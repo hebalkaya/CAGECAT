@@ -25,10 +25,10 @@
     <div id="statusColumn" class="column leftColumn">
 
         <ul class="statuscorrect">
-            <li>Server status:<span class="rightAligned">{{serv_info["server_status"]}}</span></li>
-            <li>Queued:<span class="rightAligned">{{serv_info["queued"]}}</span></li>
-            <li>Running:<span class="rightAligned">{{serv_info["running"]}}</span></li>
-            <li>Completed:<span class="rightAligned">{{serv_info["completed"]}}</span></li>
+            <li>Server status:<span class="rightAligned" id="status_server">{{serv_info["server_status"]}}</span></li>
+            <li>Running:<span class="rightAligned" id="status_running">{{serv_info["running"]}}</span></li>
+            <li>Queued:<span class="rightAligned" id="status_queued">{{serv_info["queued"]}}</span></li>
+            <li>Completed:<span class="rightAligned" id="status_completed">{{serv_info["completed"]}}</span></li>
         </ul>
         <br/>
         <div>
