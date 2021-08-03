@@ -202,9 +202,11 @@
             <li>No filtering on queries</li>
         {% elif not headers[0] %}
             <li>All clusters are selected</li>
+        {% else %}
+            <li>{{ headers[0] }}</li>
         {% endif %}
-
     {% endif %}
+
     {% if headers|length != 1 %}
         {% for header in headers %}
             <li>{{header}}</li>
