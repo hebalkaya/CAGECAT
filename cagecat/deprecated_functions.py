@@ -34,3 +34,20 @@ def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
         selected_scaffolds = None
 
     return selected_scaffolds
+
+
+def check_if_already_has_too_few_species(genus):
+    # TODO: can probably be removed when this is going to be a scheduled re-download
+    # TODO: or not, as the script might fail due to NCBI, and we don't want to start all over again, so we could start from this point again
+    try:
+        with open('too_few_species.txt') as inf:
+            for l in inf.readlines():
+                if l.strip().split(',')[0].split()[0] == genus:
+                    print(f'         -> Skipping {genus}: (found in too_few_species.txt)')
+                    # first split: split organism,gbff_file,md5_file
+                    # second split: split organism into genus / species
+
+                    exit(0)
+
+    except FileNotFoundError:
+        print(' -> No too_few_species.txt file found')
