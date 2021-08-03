@@ -305,7 +305,7 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
         msg['Subject'] = subject
         msg['From'] = EMAIL['sender_email']
         msg['To'] = receiving_email
-        msg.set_content(f'{msg}\n{EMAIL["footer_msg"]}')
+        msg.set_content(f'{message}\n{EMAIL["footer_msg"]}')
         server.send_message(msg)
 
 
