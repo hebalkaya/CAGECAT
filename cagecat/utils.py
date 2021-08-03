@@ -152,9 +152,9 @@ def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
     job = fetch_job_from_db(job_id)
 
     if time_type == "start":
-        job.start_time = datetime.utcnow()
+        job.start_time = str(datetime.utcnow()).split('.')[0]
     elif time_type == "finish":
-        job.finish_time = datetime.utcnow()
+        job.finish_time = str(datetime.utcnow()).split('.')[0]
     else:
         raise IOError("Invalid time type")
 
