@@ -13,8 +13,11 @@ cp /repo/cagecat/database.db "$fp"
 echo "Copying config.py to $fp/config.py (CAGECAT's version number)"
 cp /repo/config_files/config.py "$fp"
 
-echo "Copying multicblaster version to $fp/multicblaster_version.txt"
+echo "Writing multicblaster version to $fp/multicblaster_version.txt"
 cblaster --version > "$fp/multicblaster_version.txt"
+
+echo "Listing HMM databases to $fp/hmm_databases.txt"
+ls -l /hmm_databases/ > "$fp/hmm_databases.txt"
 
 echo "Copying logs folder to $fp/process_logs"
 cp -r /process_logs "$fp"
