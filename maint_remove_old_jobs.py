@@ -55,6 +55,8 @@ def delete_old_jobs():
 
             outf.write(f'Deleted: {directory}\n')
 
+        outf.write('Finished deleting jobs')
+
     db.session.commit()
 
 
