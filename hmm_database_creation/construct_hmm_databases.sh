@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 # TODO: remove previous databases, create them all over again to include new genomes
+# TODO: we could also adapt this script to download fungi genomes
 
 fn_non_unique="non_unique_genera.txt"
 fn_unique="unique_genera.txt"
