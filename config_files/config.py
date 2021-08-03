@@ -2,9 +2,7 @@
 
 Author: Matthias van den Belt
 """
-
-from config_files.sensitive import *
-CAGECAT_VERSION = '0.80'
+CAGECAT_VERSION = '0.81'
 
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
@@ -19,7 +17,6 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         'PRESENT_DATABASES_LOCATION': '/present_databases.txt',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
         'SERVER_PREFIX': '/repo',
-        'DEV_TEAM_EMAIL': 'matthias.vandenbelt@wur.nl',
         }
 
 THRESHOLDS = {
@@ -30,11 +27,10 @@ THRESHOLDS = {
 }
 
 # TODO: must: move sensitive information to a separate file and add it to gitignore
-EMAIL = {'SMTP_SERVER': 'smtp.gmail.com',
-         'SENDER_EMAIL': 'ranberg1892124a2@gmail.com',
-         'PASSWORD': '!kjasd2SA2qSA;', # intentionally left out
-         'PORT': 465,
-         'FOOTER_MSG': '''Thank you for using our service. 
+EMAIL = {'smtp_server': 'smtp.wur.nl',
+         'sender_email': 'cage.cat@wur.nl',  # is also the dev team email
+         'port': 25,
+         'footer_msg': '''Thank you for using our service. 
 
 >> If you found this service useful, spread the word.
     

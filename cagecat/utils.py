@@ -5,15 +5,17 @@ Author: Matthias van den Belt
 # package imports
 import os
 import random
+from email.message import EmailMessage
+
 from rq.registry import StartedJobRegistry
 from datetime import datetime
 import smtplib
-import ssl
 
 # own project imports
 from cagecat.models import Job, Statistic
 from config_files.config import EMAIL
 import cagecat.const as const
+from config_files.sensitive import *
 
 # typing imports
 import werkzeug.datastructures, werkzeug.utils
@@ -293,13 +295,18 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
     Output:
         - None, sent emails
     """
-    message = f"Subject: {subject}\n\n{message}\n{EMAIL['FOOTER_MSG']}"
+    with smtplib.SMTP(EMAIL['smtp_server'], port=EMAIL['port']) as server:
+        msg = EmailMessage()
+        server.starttls()
+        server.ehlo()
 
-    context = ssl.create_default_context()
+        server.login(account, pwd)
 
-    with smtplib.SMTP_SSL(EMAIL['SMTP_SERVER'], EMAIL['PORT'], context=context) as server:
-        server.login(EMAIL['SENDER_EMAIL'], EMAIL['PASSWORD'])
-        server.sendmail(EMAIL['SENDER_EMAIL'], receiving_email, message)
+        msg['Subject'] = subject
+        msg['From'] = EMAIL['sender_email']
+        msg['To'] = receiving_email
+        msg.set_content(message)
+        server.send_message(f'{msg}\n{EMAIL["footer_msg"]}')
 
 
 def get_failure_reason(job_id: str, program: str) -> str:
