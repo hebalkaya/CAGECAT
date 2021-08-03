@@ -80,7 +80,7 @@
         {% if 'gne' in downstream_modules %}
             <form action="{{url_for('downstream.neighbourhood')}}" method="get">
                 <input type="hidden" name="prev_id" value="{{ j_id }}"/>
-                <button class="button button-small" type="submit">Neighbourhood</button>
+                <button class="button button-small" type="submit">Gene neighbourhood estimation</button>
             </form>
             {#            <a href="{{url_for('downstream.neighbourhood')}}"><button class="button button-small">Neighbourhood</button></a>#}
         {% endif %}
@@ -106,7 +106,7 @@
             <form action="{{url_for('downstream.clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
                 <input type="hidden" name="job_id" value="{{j_id}}"/>
                 <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
-                <button class="button button-small" type="submit">Visualize with query clusters</button>
+                <button class="button button-small" type="submit">Visualize compared to query</button>
             </form>
 
         {% endif %}
@@ -114,7 +114,7 @@
         {% if 'clinker_full' in downstream_modules %}
             <form action="{{url_for('downstream.clinker_full')}}" method="get">
                 <input type="hidden" name="prev_id" value="{{ j_id }}"/>
-                <button class="button button-small" type="submit">clinker</button>
+                <button class="button button-small" type="submit">clinker: visualize everything</button>
             </form>
 {#            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>#}
         {% endif %}
