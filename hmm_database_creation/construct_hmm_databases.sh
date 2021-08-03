@@ -29,11 +29,11 @@ do
 done
 
 echo "Creating file to stop creating databases"
-python download_files 'everything_has_been_downloaded'
+python download_files.py 'everything_has_been_downloaded'
 
 echo "Removing ftp paths files"
-rm "*_ftp_paths.txt"
+rm *_ftp_paths.txt
 
 # TODO: maybe add compression for all refseqs
-# TODO: also make mount with host of container
+# TODO: remove too_few_species.txt
 echo "Done!"
