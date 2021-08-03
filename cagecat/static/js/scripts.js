@@ -264,19 +264,10 @@ function addSelectedToForm(downstream_prog) {
         $('#selectedQuery')[0].value = getSelectedQueries();
         $('#selectedClusters2')[0].value = getSelectedClusters('');
         $('#unselectedClusters2')[0].value = getSelectedClusters('un');
-        // document.getElementById("selectedQuery").value = document.getElementById("selectedQueriesOverview").innerText;
-        // document.getElementById("selectedClusters2").value = document.getElementById("selectedClustersOverview").innerText;
-        // document.getElementById("referenceCluster").value = document.getElementById("selectedReferenceCluster").innerText;
     }
-    // else if (downstream_prog === "clinker_full"){
-    //     document.getElementById("selectedClustersFullClinker").value = document.getElementById("selectedClustersOverview").innerText;
-    // }
+
     else if (downstream_prog === "clinker_query"){
-
-        // console.log(msg);
-        $('#selectedClusters3')[0].value = getSelectedClusters();
-        // document.getElementById("selectedClusters3").value = document.getElementById("selectedClustersOverview").innerText;
-
+        $('#selectedClusters3')[0].value = getSelectedClusters('');
     }
     else {
         console.log("Invalid  type");

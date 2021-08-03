@@ -4,7 +4,7 @@ Author: Matthias van den Belt
 """
 
 from config_files.sensitive import *
-CAGECAT_VERSION = '0.78'
+CAGECAT_VERSION = '0.79'
 
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
