@@ -290,7 +290,7 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
     """
     if input_type == "ncbi_entries":  # ncbi_entries
         headers = data
-    elif input_type == "fasta":
+    elif input_type == "file":
         ext = '.' + data.split('.')[-1]
         if ext in co.FASTA_SUFFIXES:
             with open(data) as inf:

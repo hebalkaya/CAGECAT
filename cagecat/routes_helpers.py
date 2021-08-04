@@ -127,7 +127,7 @@ def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
     if 'inputType' in request.form:
         input_type = request.form["inputType"]
 
-        if input_type == 'fasta':
+        if input_type == 'file':
             file_path = ut.save_file(request.files["genomeFiles"], job_id)
         elif input_type == "ncbi_entries":
             file_path = None

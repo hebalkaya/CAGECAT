@@ -50,7 +50,7 @@ function showInputOptions(selectionOption, resetQueries){
     if (resetQueries){
         $('#requiredSequencesSelector')[0].options.length = 0;
     }
-    if (selectionOption === 'fasta'){
+    if (selectionOption === 'file'){
         genomeFileUploadDiv.classList.remove('no-display');
         ncbiEntriesDiv.classList.add('no-display');
         searchPrevJobOptions.classList.add('no-display');

@@ -46,7 +46,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
         if options['mode'] in ('remote', 'combi_remote'):
             input_type = options["inputType"]
 
-            if input_type == "fasta":
+            if input_type == "file":
                 cmd.extend(["--query_file", file_path])
                 session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
                 store_query_sequences_headers(LOG_PATH, input_type, file_path)
