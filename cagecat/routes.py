@@ -227,7 +227,7 @@ def get_server_status():
 
 # Error handlers
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(error):  # should have 1 parameter, doesn't have to be used
     """Shows page displaying that the requested page was not found
 
     """

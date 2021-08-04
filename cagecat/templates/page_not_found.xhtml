@@ -8,10 +8,8 @@
 {% endblock %}
 
 {% block content %}
-    <p class="error-message">The page you tried to reach was not found</p>
+    <div class="indent">
+        <p>The page you tried to reach was not found. If encountered a problem, <a href="{{ url_for('feedback.feedback_page', job_id=j_id) }}">please submit feedback by clicking this sentence.</a></p>
+    </div>
 
-<a
-href="{{ url_for('home_page') }}"><button type="button"
-                                          class="button warning">Home page
-</button></a>
 {% endblock %}
