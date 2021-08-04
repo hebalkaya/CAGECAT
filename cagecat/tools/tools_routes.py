@@ -17,7 +17,7 @@ tools = Blueprint('tools', __name__, template_folder="templates")
 
 ### Route function definitions
 @tools.route("/expanation")
-def post_analysis_explanation() -> str:
+def tools_explanation() -> str:
     """Shows page for explanation about post analysis modules
 
     Output:
