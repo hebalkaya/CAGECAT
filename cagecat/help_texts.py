@@ -26,7 +26,7 @@ SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'Fil
 GNE_HELPS = {'max_intergenic_distance': {'title': 'Maximum intergenic distance', 'module': '', 'text': 'Maximum distance in bp between genes.\n\nRequired: yes'},
              'sample_number': {'title': 'Number of samples', 'module': '', 'text': 'Total samples taken from Maximum intergenic distance.\n\nRequired: yes'},
              'sampling_space': {'title': 'Sampling space', 'module': '', 'text': 'Draw sampling values from a linear or log scale.\n\nRequired: yes'}}
-CLINKER_FULL_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'text': 'Do not align clusters.\n\nRequired: no'},
+CLINKER_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'text': 'Do not align clusters.\n\nRequired: no'},
                       'identity': {'title': 'Minimum alignment sequence identity', 'module': '', 'text': 'Minimum alignment sequence identity.\n\nRequired: yes'},
                       'hideLinkHeaders': {'title': 'Hide alignment column headers', 'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'},
                       'hideAlignHeaders': {'title': 'Hide alignment cluster name headers', 'module': '', 'text': 'Hide alignment cluster name headers.\n\nRequired: no'},
@@ -56,7 +56,7 @@ HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text':
               'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
 HELP_OVERVIEW = [('multiple', JOB_DESCRIPTOR_HELPS),
                  ('multiple', GENERAL_HELPS), ('search', SEARCH_HELPS),
-                 ('neighbourhood', GNE_HELPS), ('clinker visualisation', CLINKER_FULL_HELPS),
+                 ('neighbourhood', GNE_HELPS), ('clinker visualisation', CLINKER_HELPS),
                  ('search', BINARY_TABLE_HELPS), ('multiple', FILTERING_HELPS),
                  ('clinker visualisation with query', CLINKER_QUERY_HELPS), ('extract sequences',
                  EXTR_SEQS_HELPS), ('extract clusters', EXTR_CLUST_HELPS),

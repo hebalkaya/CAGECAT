@@ -10,7 +10,7 @@ with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
     PRESENT_DATABASES = inf.read().strip().split(',')
     PRESENT_DATABASES.sort()
 
-CLINKER_MODULES = ('clinker_query', 'clinker_full')
+CLINKER_MODULES = ('clinker_query', 'clinker')
 FASTA_SUFFIXES = (".fa", ".fsa", ".fna", ".fasta", ".faa")
 GENBANK_SUFFIXES = (".gbk", ".gb", ".genbank", ".gbf", ".gbff")
 
@@ -19,7 +19,7 @@ FAILURE_REASONS = {'ERROR - No valid profiles could be selected': # module searc
                        'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
                    'ValueError: Search completed, but found no hits':  # module search, no hits found
                        'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.',
-                   'Too many selected clusters':  # clinker_full, clinker_query, extract_clusters
+                   'Too many selected clusters':  # clinker, clinker_query, extract_clusters
                        'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.',
                    'Too many samples':  # gne module
                        'You set the value for the number of samples parameter too high. Change it to the maximum value and try again.'
@@ -31,7 +31,7 @@ MODULE_TO_PROGRAM = {'search': 'cblaster',
                      'extract': 'cblaster',
                      'extract_clusters': 'cblaster',
                      'clinker_query': 'cblaster',
-                     'clinker_full': 'clinker'
+                     'clinker': 'clinker'
                      }
 
 EXTRACT_CLUSTERS_OPTIONS = {'job_type': 'extract_clusters',
@@ -47,17 +47,17 @@ EXTRACT_CLUSTERS_OPTIONS = {'job_type': 'extract_clusters',
 DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",
                                          "extract_sequences",
                                          "extract_clusters",
-                                         "corason", "clinker_full",
+                                         "corason", "clinker",
                                          "clinker_query"],
                               "recompute": ["gne", "extract_sequences",
                                             "extract_clusters",
-                                            "corason", "clinker_full",
+                                            "corason", "clinker",
                                             "clinker_query"],
                               "corason": [],
                               "gne": [],
                               "extract_sequences": [],
-                              "extract_clusters": ["clinker_full"],  # also possible: corason and clinker_query. Get query headers from .csv file
-                              "clinker_full": [],
+                              "extract_clusters": ["clinker"],  # also possible: corason and clinker_query. Get query headers from .csv file
+                              "clinker": [],
                               "clinker_query": ["extract_clusters"]  # possibly also corason?
                               }
 
@@ -87,7 +87,7 @@ TOOLS_EXPLANATIONS = {'multicblaster_search':
                                   [('', 'By default, the visualisation offered by cblaster shows only a heatmap of query hits per result cluster. While this is very useful for quickly identifying patterns in large datasets, we generally still want to see how these clusters compare in a more biologically relevant way.'),
                                    ('', 'The Visualize with query clusters module allows you to do precisely this. Given a previous job and some selected clusters, this module will automatically extract the clusters, then generate an interactive visualisation showing each cluster to-scale using clinker (doi: 10.1093/bioinformatics/btab007, https://github.com/gamcil/clinker).'),
                                    ],
-                      'clinker_full_visualization': [('', 'clinker: generating publication-quality gene cluster comparison figures.'),
+                      'clinker_visualization': [('', 'clinker: generating publication-quality gene cluster comparison figures.'),
                                                              ('', 'Given a job, corresponding GenBank files will be downloaded and clinker will automatically extract protein translations, perform global alignments between sequences in each cluster, determine the optimal display order based on cluster similarity, and generate an interactive visualisation that can be extensively tweaked before being exported as an SVG file.'),
                                                              ('', 'An overview of usage, as well as all changeable options, is provided in the visualisation sidebar. Briefly:'),
                                                              ('list', ('Clusters can be rearranged vertically by dragging cluster names',
@@ -113,4 +113,4 @@ TOOLS_EXPLANATIONS = {'multicblaster_search':
 
 SUBMIT_URL = "/submit_job"
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
-                             "clinker_full", "clinker_query"]
+                             "clinker", "clinker_query"]

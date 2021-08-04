@@ -11,7 +11,7 @@ function_dict = {'search': w.cblaster_search,
                  'extract_sequences': w.cblaster_extract_sequences,
                  'extract_clusters': w.cblaster_extract_clusters,
                  'corason': w.corason,
-                 'clinker_full': w.clinker_full,
+                 'clinker': w.clinker,
                  'clinker_query': w.clinker_query}
 
 class CAGECATJob:

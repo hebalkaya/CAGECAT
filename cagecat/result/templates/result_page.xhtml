@@ -110,8 +110,8 @@
 
         {% endif %}
 
-        {% if 'clinker_full' in downstream_modules %}
-            <form action="{{url_for('tools.clinker_full')}}" method="get">
+        {% if 'clinker' in downstream_modules %}
+            <form action="{{url_for('tools.clinker')}}" method="get">
                 <input type="hidden" name="prev_id" value="{{ j_id }}"/>
                 <button class="button button-small" type="submit">clinker: visualize everything</button>
             </form>
@@ -138,7 +138,7 @@
     {% endif %}
 
     {% if module in modules_with_plots %}
-        {% if module not in ('clinker_full', 'gne') %}
+        {% if module not in ('clinker', 'gne') %}
         <div>
             <div class="centered">
                 <button class="button smaller" id="selectClusterButton" onclick="showSelection('cluster')">Select clusters (0)</button>
@@ -189,7 +189,7 @@
         {% set onload = 'getOutputFromPlot("search");' %}
     {% elif module == 'clinker_query' %}
         {% set onload = 'getOutputFromPlot("visualize");' %}
-    {% elif module == 'clinker_full' %}
+    {% elif module == 'clinker' %}
         {% set onload = '' %}
         {% for connected_job in connected_jobs %}
             {% if connected_job[3] == 'depending' %}

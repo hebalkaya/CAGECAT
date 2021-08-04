@@ -40,7 +40,7 @@ def clinker_query() -> str:
     clusters = pa.parse_selected_cluster_numbers(
         request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
-    return show_template("clinker_query.xhtml",
+    return show_template("multicblaster_plot_clusters.xhtml",
                          prev_job_id=request.form["job_id"],
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
@@ -65,7 +65,7 @@ def extract_sequences() -> str:
     # if selected_queries == "No queries selected":
     #     selected_queries = None
 
-    return show_template("extract-sequences.xhtml",
+    return show_template("multicblaster_extract_sequences.xhtml",
                          selected_queries=request.form["selectedQueries"].split('\r\n'),
                          # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])
@@ -94,7 +94,7 @@ def extract_clusters() -> str:
     cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters,
                                                         pattern)
 
-    return show_template("extract-clusters.xhtml",
+    return show_template("multicblaster_extract_clusters.xhtml",
                          # selected_scaffolds=selected_scaffolds,
                          cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
@@ -143,13 +143,12 @@ def corason() -> str:
 
 @tools.route('/gne')
 def gene_neighbourhood_estimation() -> str:
-    return show_template('gene_neighbourhood_estimation.xhtml',
+    return show_template('multicblaster_gene_neighbourhood_estimation.xhtml',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'])
 
-@tools.route('/clinker_full')
-def clinker_full() -> str:
-
-    return show_template('clinker_full.xhtml')
+@tools.route('/clinker')
+def clinker() -> str:
+    return show_template('clinker.xhtml')
 
 @tools.route('/big-scape')
 def bigscape() -> str:

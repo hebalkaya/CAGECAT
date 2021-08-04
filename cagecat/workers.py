@@ -268,8 +268,8 @@ def cblaster_extract_clusters(job_id: str,
     post_job_formalities(job_id, return_code)
 
 
-def clinker_full(job_id: str, options: ImmutableMultiDict=None,
-                 file_path: t.Union[str, None] = None) -> None:
+def clinker(job_id: str, options: ImmutableMultiDict=None,
+            file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is visualization using clinker.
 
     Input:

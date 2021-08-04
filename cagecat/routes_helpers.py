@@ -176,7 +176,7 @@ def prepare_finished_result(job_id: str,
         program = "echo"  # TODO: must: will be someting else later
         plot_contents = None  # TODO: must: for now
 
-    elif module == "clinker_full":
+    elif module == "clinker":
         program = "clinker"
         with open(plot_path) as inf:
             plot_contents = inf.read()
@@ -303,14 +303,14 @@ def get_parent_job(new_job: CAGECATJob,
         - parent Job instance
     """
     j_type = new_job.get_job_type()
-    if j_type in ("recompute", "gne", "clinker_full"):
+    if j_type in ("recompute", "gne", "clinker"):
         # are modules which use the prev_session macro to get the previous session ID
         # might change in the future
 
         # below lines are required due to the naming in the HTML input fields
         if j_type == "recompute":
             module = "search"
-        elif j_type == "clinker_full":
+        elif j_type == "clinker":
             module = "clinker"
         else:
             module = j_type

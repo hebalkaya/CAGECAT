@@ -141,7 +141,7 @@ def submit_job() -> str:
 
         # TODO: must: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
-    elif job_type == "clinker_full":
+    elif job_type == "clinker":
         prev_job_id = request.form["clinkerEnteredJobId"]
 
         if ut.fetch_job_from_db(prev_job_id).job_type == 'extract_clusters':
@@ -160,7 +160,7 @@ def submit_job() -> str:
             # depending_on = job_id
             depending_on = new_jobs[-1].job_id
 
-        # new_jobs.append((rf.clinker_full, ut.generate_job_id(), request.form, genome_files_path, depending_on, "clinker_full"))
+        # new_jobs.append((rf.clinker, ut.generate_job_id(), request.form, genome_files_path, depending_on, "clinker"))
         new_jobs.append(CAGECATJob(job_id=job_id if depending_on is None else ut.generate_job_id(),
                                    options=request.form,
                                    file_path=genome_files_path,
