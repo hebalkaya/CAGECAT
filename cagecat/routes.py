@@ -231,7 +231,9 @@ def page_not_found(error):  # should have 1 parameter, doesn't have to be used
     """Shows page displaying that the requested page was not found
 
     """
-    return rthelp.show_template("page_not_found.xhtml", stat_code=404)
+    return rthelp.show_template("page_not_found.xhtml",
+                                stat_code=404,
+                                help_enabled=False)
 
 
 @app.errorhandler(405)
