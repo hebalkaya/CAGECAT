@@ -170,7 +170,7 @@
     <ul class="nav">
         <li><a {{ '' if page != 'home' else 'class=active' }} href="{{url_for('home_page')}}">Home</a></li>
         <li><a {{ '' if page != 'results' else 'class=active' }} href="{{url_for('result.result_from_job_id')}}">Results</a></li>
-        <li><a {{ '' if page != 'post-analysis' else 'class=active' }} href="{{ url_for('downstream.post_analysis_explanation') }}">Post-analysis</a></li>
+        <li><a {{ '' if page != 'post-analysis' else 'class=active' }} href="{{ url_for('tools.tools_explanation') }}">Post-analysis</a></li>
         <li class="right-nav"><a {{ '' if page != 'help' else 'class=active' }} href="{{ url_for('help_page') }}">Contact / Help</a></li>
         <li class="right-nav"><a {{ '' if page != 'feedback' else 'class=active' }} href="{{ url_for('feedback.feedback_page') }}">Feedback</a></li>
         <li class="right-nav"><a {{ '' if page != 'tools' else 'class=active' }} href="{{ url_for('tools_page') }}">Available tools</a></li>

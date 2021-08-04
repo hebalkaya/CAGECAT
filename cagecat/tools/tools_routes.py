@@ -11,22 +11,22 @@ import cagecat.parsers as pa
 import cagecat.utils as ut
 from config_files import config
 from cagecat.routes_helpers import show_template
-from cagecat.const import POST_ANALYSIS_EXPLANATIONS, CLINKER_MODULES
+from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES
 
-downstream = Blueprint('downstream', __name__, template_folder="templates")
+tools = Blueprint('tools', __name__, template_folder="templates")
 
 ### Route function definitions
-@downstream.route("/downstream")
+@tools.route("/expanation")
 def post_analysis_explanation() -> str:
     """Shows page for explanation about post analysis modules
 
     Output:
         - HTML represented in string format
     """
-    return show_template("post_analysis_explanation.xhtml", help_enabled=False, helps=POST_ANALYSIS_EXPLANATIONS)
+    return show_template("tools_explanation.xhtml", help_enabled=False, helps=TOOLS_EXPLANATIONS)
 
 
-@downstream.route("/clinker_query", methods=["POST"])
+@tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
     """Shows page for selecting options to run clinker with query genes
 
@@ -48,7 +48,7 @@ def clinker_query() -> str:
                          max_clusters_to_plot=config.THRESHOLDS['max_clusters_to_plot'])
 
 
-@downstream.route("/extract-sequences", methods=["GET", "POST"])
+@tools.route("/extract-sequences", methods=["GET", "POST"])
 def extract_sequences() -> str:
     """Shows page for extracting sequences from a previous job
 
@@ -70,7 +70,7 @@ def extract_sequences() -> str:
                          # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])
 
-@downstream.route("/extract-clusters", methods=["GET", "POST"])
+@tools.route("/extract-clusters", methods=["GET", "POST"])
 def extract_clusters() -> str:
     """Shows page for extracting clusters from a previous job
 
@@ -103,7 +103,7 @@ def extract_clusters() -> str:
                          max_clusters_to_extract=config.THRESHOLDS['maximum_clusters_to_extract'])
 
 
-@downstream.route("/corason", methods=["POST"])
+@tools.route("/corason", methods=["POST"])
 def corason() -> str:
     """Shows page for selecting settings for running Corason
 
@@ -141,16 +141,16 @@ def corason() -> str:
                          # cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
 
-@downstream.route('/neighbourhood')
-def neighbourhood() -> str:
-    return show_template('neighbourhood.xhtml',
+@tools.route('/gne')
+def gene_neighbourhood_estimation() -> str:
+    return show_template('gene_neighbourhood_estimation.xhtml',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'])
 
-@downstream.route('/clinker_full')
+@tools.route('/clinker_full')
 def clinker_full() -> str:
 
     return show_template('clinker_full.xhtml')
 
-@downstream.route('/big-scape')
+@tools.route('/big-scape')
 def bigscape() -> str:
     return show_template('BiG-SCAPE.xhtml')

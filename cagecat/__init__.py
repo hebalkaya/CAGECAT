@@ -25,11 +25,11 @@ db = SQLAlchemy(app)
 
 from cagecat import routes
 import cagecat.models as m
-from cagecat.downstream.downstream_routes import downstream
+from cagecat.tools.tools_routes import tools
 from cagecat.result.result_routes import result
 from cagecat.feedback.feedback_routes import feedback
 
-app.register_blueprint(downstream, url_prefix="/downstream")
+app.register_blueprint(tools, url_prefix="/tools")
 app.register_blueprint(result, url_prefix="/results")
 app.register_blueprint(feedback, url_prefix="/feedback")
 
