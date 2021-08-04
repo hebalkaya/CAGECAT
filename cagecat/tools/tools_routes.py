@@ -16,9 +16,19 @@ from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES
 tools = Blueprint('tools', __name__, template_folder="templates")
 
 ### Route function definitions
-@tools.route("/expanation")
+@tools.route('/')
+def tools_page() -> str:
+    """Shows page to user showing all available tools
+
+    Output:
+        - HTML represented in string format
+    """
+    return show_template('implemented_tools.xhtml', help_enabled=False)
+
+
+@tools.route("/explanation")
 def tools_explanation() -> str:
-    """Shows page for explanation about post analysis modules
+    """Shows page for explanation about implemented tools
 
     Output:
         - HTML represented in string format

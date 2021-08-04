@@ -200,14 +200,7 @@ def help_page() -> str:
     return rthelp.show_template("help.xhtml", version=CAGECAT_VERSION, help_enabled=False)
 
 
-@app.route('/tools')
-def tools_page() -> str:
-    """Shows page to user showing all available tools
 
-    Output:
-        - HTML represented in string format
-    """
-    return rthelp.show_template('implemented_tools.xhtml', help_enabled=False)
 
 @app.route("/docs/<input_type>")
 def get_help_text(input_type):
