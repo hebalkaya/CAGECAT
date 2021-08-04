@@ -173,7 +173,7 @@
         <li><a {{ '' if page != 'post-analysis' else 'class=active' }} href="{{ url_for('tools.tools_explanation') }}">Post-analysis</a></li>
         <li class="right-nav"><a {{ '' if page != 'help' else 'class=active' }} href="{{ url_for('help_page') }}">Contact / Help</a></li>
         <li class="right-nav"><a {{ '' if page != 'feedback' else 'class=active' }} href="{{ url_for('feedback.feedback_page') }}">Feedback</a></li>
-        <li class="right-nav"><a {{ '' if page != 'tools' else 'class=active' }} href="{{ url_for('tools_page') }}">Available tools</a></li>
+        <li class="right-nav"><a {{ '' if page != 'tools' else 'class=active' }} href="{{ url_for('tools.tools_page') }}">Available tools</a></li>
     </ul>
     </div>
 {% endmacro %}
