@@ -16,31 +16,39 @@
 
         <div>
             <h2>multicblaster: homologous gene cluster searches</h2>
-            <p><a href="">Explanation of multicblaster and its usages</a></p>
-            <p><a href="https://github.com/gamcil/cblaster">GitHub repository</a></p>
-            <p><a href="https://cblaster.readthedocs.io/en/latest/">Wiki</a></p>
-            <p><a href="https://doi.org/10.1101/2020.11.08.370601">Publication</a></p>
+            <ul>
+                <li><a href="{{ url_for('downstream.post_analysis_explanation') }}">Explanation of multicblaster and its usages</a></li>
+                <li><a href="https://github.com/gamcil/cblaster">GitHub repository</a></li>
+                <li><a href="https://cblaster.readthedocs.io/en/latest/">Authors' wiki</a></li>
+                <li><a href="https://doi.org/10.1101/2020.11.08.370601">Publication</a></li>
+            </ul>
 {#            <p><a>Example (by authors)</a></p>#}
         </div>
 
         <div>
             <h2>clinker: generating publication-quality gene cluster comparison figures</h2>
-            <p><a href="">Explanation of clinker and its usages</a></p>
-            <p><a href="">GitHub repository</a></p>
-            <p><a href="">Wiki</a></p>
-            <p><a href="">Publication</a></p>
+            <ul>
+                <li><a href="{{ url_for('downstream.post_analysis_explanation') }}">Explanation of clinker and its usages</a></li>
+                <li><a href="https://github.com/gamcil/clinker">GitHub repository</a></li>
+                <li><a href="https://github.com/gamcil/clinker/wiki">Authors' wiki</a></li>
+                <li><a href="http://dx.doi.org/10.1093/bioinformatics/btab007">Publication</a></li>
+            </ul>
             {#            <p><a>Example (by authors)</a></p>#}
         </div>
 
         <div>
             <h2>CORASON</h2>
-            <p><a>Explanation of CORASON and its usages</a></p>
-            <p><a href="https://github.com/nselem/corason">GitHub repository</a></p>
-            <p><a href="https://github.com/nselem/corason/wiki">Wiki</a></p>
-            <p><a href="https://www.nature.com/articles/s41589-019-0400-9">Publication</a></p>
+            <ul>
+                <li><a href="{{ url_for('downstream.post_analysis_explanation') }}">Explanation of CORASON and its usages</a></li>
+                <li><a href="https://github.com/nselem/corason">GitHub repository</a></li>
+                <li><a href="https://github.com/nselem/corason/wiki">Wiki</a></li>
+                <li><a href="https://www.nature.com/articles/s41589-019-0400-9">Publication</a></li>
+            </ul>
 {#            <p><a>Example (by authors)</a></p>#}
         </div>
     </div>
+
+{#    # TODO: insert picture showing workflow#}
 
 
 {% endblock %}

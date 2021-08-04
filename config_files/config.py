@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-CAGECAT_VERSION = '0.85'
+CAGECAT_VERSION = '0.86'
 
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
