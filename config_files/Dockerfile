@@ -8,14 +8,12 @@ RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker
 RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
 
 COPY repo/ /repo/
-COPY present_databases.txt /present_databases.txt
 
 RUN mkdir /backups
 RUN mkdir -p /process_logs/maintenance
 RUN mkdir /pfam_db
 RUN mkdir -p /root/.config/cblaster
 
-#RUN cblaster config --email "matthias.vandenbelt@wur.nl"
 RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
 RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
 
