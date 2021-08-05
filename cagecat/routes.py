@@ -15,40 +15,14 @@ from cagecat import app
 import cagecat.utils as ut
 import cagecat.const as co
 import cagecat.routes_helpers as rthelp
-import cagecat.const as const
 from cagecat.classes import CAGECATJob
 from config_files.config import CAGECAT_VERSION, CONF
 
 
 # route definitions
-@app.route("/rerun/<prev_run_id>")
-@app.route("/")
-def home_page(prev_run_id: str = None) -> str:
-    """Shows home page to the user
-
-    Input:
-        - prev_run_id: job ID of a previous run.
-
-    Output:
-        - HTML represented in string format
-
-    When the /rerun/<prev_run_id> is visited, the input fields where the user
-    can enter previous job IDs are pre-filled with the given job ID
-    """
-    if "type" in request.args:
-        headers = None if prev_run_id is None and request.args["type"] == "recompute" else ut.read_headers(prev_run_id)
-        module_to_show = request.args["type"]
-    else:
-        headers = None
-        module_to_show = None
-
-    return rthelp.show_template("index.xhtml",
-                                prev_run_id=prev_run_id,
-                                module_to_show=module_to_show,
-                                headers=headers,
-                                genera=const.PRESENT_DATABASES,
-                                query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
-                                show_examples='multicblaster_search')
+@app.route('/')
+def home_page():
+    return rthelp.show_template('index.xhtml')
 
 
 @app.route(co.SUBMIT_URL, methods=["POST"])

@@ -8,7 +8,9 @@ from flask import Blueprint, request
 
 # own project imports
 import cagecat.parsers as pa
-import cagecat.utils as ut
+# import cagecat.utils as ut
+from cagecat import app, utils as ut, routes_helpers as rthelp, const as const, \
+    const as co
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -35,6 +37,35 @@ def tools_explanation() -> str:
     """
     return show_template("tools_explanation.xhtml", help_enabled=False, helps=TOOLS_EXPLANATIONS)
 
+
+@app.route("/search/rerun/<prev_run_id>")
+@app.route("/search")
+def multicblaster_search(prev_run_id: str = None) -> str:
+    """Shows home page to the user
+
+    Input:
+        - prev_run_id: job ID of a previous run.
+
+    Output:
+        - HTML represented in string format
+
+    When the /rerun/<prev_run_id> is visited, the input fields where the user
+    can enter previous job IDs are pre-filled with the given job ID
+    """
+    if "type" in request.args:
+        headers = None if prev_run_id is None and request.args["type"] == "recompute" else ut.read_headers(prev_run_id)
+        module_to_show = request.args["type"]
+    else:
+        headers = None
+        module_to_show = None
+
+    return rthelp.show_template("multicblaster_search.xhtml",
+                                prev_run_id=prev_run_id,
+                                module_to_show=module_to_show,
+                                headers=headers,
+                                genera=const.PRESENT_DATABASES,
+                                query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
+                                show_examples='multicblaster_search')
 
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
@@ -164,3 +195,5 @@ def clinker() -> str:
 @tools.route('/big-scape')
 def bigscape() -> str:
     return show_template('BiG-SCAPE.xhtml')
+
+
