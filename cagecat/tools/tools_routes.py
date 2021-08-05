@@ -39,8 +39,8 @@ def tools_explanation() -> str:
     return show_template("tools_explanation.xhtml", help_enabled=False, helps=TOOLS_EXPLANATIONS)
 
 
-@app.route("/search/rerun/<prev_run_id>")
-@app.route("/search")
+@tools.route("/search/rerun/<prev_run_id>")
+@tools.route("/search")
 def multicblaster_search(prev_run_id: str = None) -> str:
     """Shows home page to the user
 
