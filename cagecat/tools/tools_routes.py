@@ -192,7 +192,8 @@ def gene_neighbourhood_estimation() -> str:
 def clinker() -> str:
     return show_template('clinker.xhtml',
                          query_file_extensions=','.join(GENBANK_SUFFIXES),
-                         show_examples='clinker')
+                         show_examples='clinker',
+                         prev_job_id=None if 'job_id' not in request.form else request.form['job_id'])
 
 @tools.route('/big-scape')
 def bigscape() -> str:
