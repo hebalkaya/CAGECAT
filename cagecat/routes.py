@@ -209,6 +209,7 @@ def get_server_status():
 
 @app.route('/update-hmm-databases')
 def update_hmm_databases():
+    global PRESENT_DATABASES
     # Doesn't have to return anything, only trigger
     genera = []
 
@@ -240,7 +241,7 @@ def invalid_method():
     """
     return redirect(url_for("home_page"))
 
-PRESENT_DATABASES = update_hmm_databases()
+update_hmm_databases()
 # within routes.py to prevent circular import (as it was first in const.py).
 # Additionally, this variable does not have to be updated manually, and
 # is therefore left out of const.py
