@@ -9,7 +9,6 @@ import os
 import copy
 
 # own project imports
-import cagecat.const
 import cagecat.help_texts
 from cagecat import app
 import cagecat.utils as ut
@@ -218,7 +217,7 @@ def update_hmm_databases():
         if genus not in genera:
             genera.append(genus)
 
-    co.PRESENT_DATABASES = genera
+    PRESENT_DATABASES = genera
 
     return '1'  # indicating everything went well
 
@@ -240,3 +239,8 @@ def invalid_method():
 
     """
     return redirect(url_for("home_page"))
+
+PRESENT_DATABASES = update_hmm_databases()
+# within routes.py to prevent circular import (as it was first in const.py).
+# Additionally, this variable does not have to be updated manually, and
+# is therefore left out of const.py

@@ -9,7 +9,8 @@ from flask import Blueprint, request
 # own project imports
 import cagecat.parsers as pa
 # import cagecat.utils as ut
-from cagecat import app, utils as ut, routes_helpers as rthelp, const as const, \
+import cagecat.routes
+from cagecat import app, utils as ut, routes_helpers as rthelp, \
     const as co
 from config_files import config
 from cagecat.routes_helpers import show_template
@@ -63,7 +64,7 @@ def multicblaster_search(prev_run_id: str = None) -> str:
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
                                 headers=headers,
-                                genera=const.PRESENT_DATABASES,
+                                genera=cagecat.routes.PRESENT_DATABASES,
                                 query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
                                 show_examples='multicblaster_search')
 
