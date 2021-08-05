@@ -1,5 +1,4 @@
 {% extends "base.xhtml" %}
-{% from "macros.xhtml" import prev_session %}
 {% from "macros.xhtml" import result_table %}
 {% from "macros.xhtml" import showNavigationBar %}
 {% from "macros.xhtml" import renderHelpButton %}
@@ -108,7 +107,6 @@ $(':radio:not(:checked)').attr('disabled', true);
             <div class="error-message no-display" id="accessionsError">
                 <span id="accessionsErrorText"></span>
             </div>
-{#            {{ prev_session('search', false, prev_run_id, false) }}#}
         </div>
     </fieldset>
 

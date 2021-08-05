@@ -1,35 +1,5 @@
 <!--Here we can have code block which are used more than once-->
 
-{% macro prev_session(module, mainInput, job_id, allow_multiple) %}
-    {% set previousType = '%sPreviousType' % module %}
-    {% set enteredJobId = '%sEnteredJobId' % module %}
-    {% set uploadedSessionFile = '%sUploadedSessionFile' % module %}
-
-    <div class="radio-options {{"" if mainInput else "no-display" }}" id="{{ '%sPrevJobOptions' % module }}">
-        <div>
-            <label class="radioLabel">
-                <input type="radio" class="radio-margin" name="{{previousType}}" id="{{'%sPrevJobId' % module}}" value="jobID" onclick="changePrevSessionType()" checked="checked">Job ID</input>
-            </label>
-
-            <label class="radioLabel">
-                <input type="radio" name="{{previousType}}" id="{{'%sPrevSessFile' % module}}" value="sessionFile" onclick="changePrevSessionType()">Session file</input>
-            </label>
-        </div>
-        <label class="input-label" for="{{ enteredJobId }}">Previous job ID</label>
-        {{ renderHelpButton('generalEnteredJobId') }}
-        <input type="text"  id="{{ enteredJobId }}" name="{{ enteredJobId }}" onfocusout="validateJobID()"
-               placeholder="A123B456C789D01" size="15" maxlength="15" {{ "" if job_id is none else "value=%s" % job_id }} {{ '' if mainInput else 'disabled="disabled"'}}/>
-
-        <span>or</span>
-        <label class="file-upload-lbl disabled" id="{{'%sLabelSessionFile' % module }}" for="{{ uploadedSessionFile }}">
-            {#            TODO: should: remove session file #}
-            <input type="file"
-                   id="{{ uploadedSessionFile }}"
-                   name="{{uploadedSessionFile }}" {{ "" if not allow_multiple else "multiple=multiple" }} disabled="disabled"/>Session file</label>
-    </div>
-{% endmacro %}
-
-
 {% macro result_table(module, type) %}
     {% set tableSection = '%s%sTableSection' % (module, type) %}
     {% set tableDelim = '%s%sTableDelim' % (module, type) %}
