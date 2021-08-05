@@ -22,12 +22,12 @@
             <input type="hidden" name="job_type" value="clinker"/>
 
             {{ renderJobDetailsInput() }}
-
-            <label class="fieldset-label" for="clinkerInputSection">Input</label>
-            <fieldset id="clinkerInputSection">
                 {% if prev_job_id is not none %}
                     <input type="hidden" name="clinkerEnteredJobId" value="{{ prev_job_id }}"/>
                 {% else %}
+                    <label class="fieldset-label" for="clinkerInputSection">Input</label>
+                    <fieldset id="clinkerInputSection">
+
                     <div class="div-margin" id="genomeFileUploadDiv">
                         <label class="file-upload-lbl" for="fileUploadClinker">
                             <input type="file" id="fileUploadClinker" name="fileUploadClinker" multiple="multiple"

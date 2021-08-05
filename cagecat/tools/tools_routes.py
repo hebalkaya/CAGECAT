@@ -188,7 +188,7 @@ def gene_neighbourhood_estimation() -> str:
     return show_template('multicblaster_gene_neighbourhood_estimation.xhtml',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'])
 
-@tools.route('/clinker')
+@tools.route('/clinker', methods=['GET', 'POST'])
 def clinker() -> str:
     return show_template('clinker.xhtml',
                          query_file_extensions=','.join(GENBANK_SUFFIXES),
