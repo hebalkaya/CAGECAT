@@ -15,9 +15,24 @@ function_dict = {'search': w.cblaster_search,
                  'clinker_query': w.clinker_query}
 
 class CAGECATJob:
-    # TODO: documentation
+    """Class to temporarily store settings required to create a CAGECAT job
 
-    def __init__(self, job_id, options, job_type=None, file_path=None, depends_on_job_id=None):
+    Input:
+        - job_id: CAGECAT generated job ID
+        - options: dictionary of options submitted by the user via the HTML
+            front-end
+        - job_type: the type of job
+        - file_path: file path used during execution of the worker function
+            (i.e. refers to a session file of previous job)
+        - depends_on_job_id: ID of the job on which the current job depends
+            if so
+    """
+
+    def __init__(self, job_id, options,
+                 job_type=None,
+                 file_path=None,
+                 depends_on_job_id=None):
+
         self.job_id = job_id
         self.options = options
         self.file_path = file_path

@@ -197,22 +197,10 @@ def prepare_finished_result(job_id: str,
 
 
 def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
-    # TODO: documentation
     """Enqueues jobs on the Redis queue
 
     Input:
-        - new_jobs: list of tuples where each tuple represents an entire job,
-            storing all required properties of a job within that tuple.
-            Indexes:
-                0 -> appropriate worker function
-                1 -> job ID
-                2 -> client form submitted by user
-                3 -> file path: represents either path to a session file of
-                     previous job or an output path
-                4 -> job ID of the job where the current job depends on
-                5 -> type of the job
-                6 -> title of the job
-                7 -> email of the job
+        - new_jobs: list of CAGECAT jobs that should be enqueued
 
     Output:
         - last_job_id: job ID of the last added job. Used to show appropriate
@@ -261,12 +249,11 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
 
 def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
                                            is_last_job: bool) -> str:
-    # TODO: change documentation
     """Adds the main search job and its children to the new_job in db
 
     Input:
-        - new_job: a job to be added with its options. For index explanation: see the
-            enqueue_jobs function
+        - new_job: a CAGECAT job of which the connected jobs should be
+            added to the SQL db
         - is_last_job: indicates if this is the last job being added to the
             queue (used in enqueue_jobs())
 
@@ -294,13 +281,11 @@ def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
 
 
 def get_parent_job(new_job: CAGECATJob,
-                                 is_last_job: bool) -> t.Union[str, dbJob, None]:
-    # TODO: change documentation
+                   is_last_job: bool) -> t.Union[str, dbJob, None]:
     """Gets the parent job of a job (i.e. the job this job depends on)
 
     Input:
-        - new_job: a job to be added with its options. For index explanation: see the
-            enqueue_jobs function
+        - new_job: a CAGECAT job of which the parent job should be fetched
         - is_last_job: indicates if this is the last job being added to the
             queue (used in enqueue_jobs())
 
