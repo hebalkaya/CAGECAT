@@ -34,7 +34,6 @@ THRESHOLDS = {
     "representative_genomes_number": 50
 }
 
-# TODO: must: move sensitive information to a separate file and add it to gitignore
 EMAIL = {'smtp_server': 'smtp.wur.nl',
          'sender_email': 'cage.cat@wur.nl',  # is also the dev team email
          'port': 25,
