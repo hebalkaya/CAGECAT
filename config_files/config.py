@@ -2,12 +2,12 @@
 
 Author: Matthias van den Belt
 """
-CAGECAT_VERSION = '0.96'
+CAGECAT_VERSION = '0.97'
 
 # jobs to persist on server (i.e. example outputs)
-PERSISTENT_JOBS = ('', # TODO: make them correct ones
-                   '',
-                   '')
+PERSISTENT_JOBS = ('W885A828D304Y06',
+                   'N250X793I290S34',
+                   'K814Y501M103S02')
 
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',

@@ -4,7 +4,7 @@ Author: Matthias van den Belt
 """
 from cagecat import db
 from cagecat.utils import fetch_job_from_db, JOBS_DIR
-from config_files.config import CONF
+from config_files.config import CONF, PERSISTENT_JOBS
 import os
 import datetime
 import shutil
@@ -46,9 +46,14 @@ def delete_old_jobs():
                            f'{datetime.datetime.now().date()}_removal.txt'),
               'w') as outf:
         for directory, job_id in get_folders_to_delete():
+
+            if job_id in PERSISTENT_JOBS:
+                print(f'Skipped: {job_id} (in persistent jobs)')
+                continue
             try:
                 shutil.rmtree(directory)
-            except FileNotFoundError:
+            except FileNotFoundError:  # occurred during development.
+                #  will not happen in production
                 print(f'Directory not found: {directory}')
 
             db.session.delete(fetch_job_from_db(job_id))
