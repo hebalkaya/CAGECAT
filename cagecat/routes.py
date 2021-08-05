@@ -21,7 +21,7 @@ from config_files.config import CAGECAT_VERSION, CONF
 # route definitions
 @app.route('/')
 def home_page():
-    return rthelp.show_template('index.xhtml')
+    return rthelp.show_template('index.xhtml', help_enabled=False)
 
 
 @app.route(co.SUBMIT_URL, methods=["POST"])
