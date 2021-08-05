@@ -18,6 +18,7 @@ from cagecat.classes import CAGECATJob
 from config_files.config import CAGECAT_VERSION, CONF
 
 
+global PRESENT_DATABASES
 # route definitions
 @app.route('/')
 def home_page():

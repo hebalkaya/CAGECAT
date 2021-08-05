@@ -65,6 +65,7 @@ initReadQueryFile();
 
         <div class="radio-options" id="remoteOptionsSection">
                 <div>
+                {% if prev_run_id is none%}
                     <label class="radioLabel">
                     <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
                            name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
@@ -73,11 +74,13 @@ initReadQueryFile();
                            name="inputType"
                            onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
                     </label>
+                {% else %}
                     <label class="radioLabel">
-                    <input type="radio" value="prev_session" id="radioPrevSession"
+                    <input type="radio" class="radio-margin" value="prev_session" id="radioPrevSession"
                            name="inputType"
                             onclick="showInputOptions('prev_session', 1)"/>Recompute
                     </label>
+                {% endif %}
                 </div>
 
             <div class="div-margin" id="genomeFileUploadDiv">
