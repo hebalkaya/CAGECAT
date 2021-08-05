@@ -85,6 +85,7 @@ initReadQueryFile();
                 <input type="file" id="genomeFile" name="genomeFiles"
                        required="required" accept="{{ query_file_extensions }}" onchange="readFileContents()"/>Query file*</label>
                 {{ renderHelpButton('genomeFile') }}
+                <span id="selectedFileName" class="no-display" style="margin-left:1%;"></span>
 
                 <div class="error-message no-display" id="fileUploadIncorExt">
                     <span id="fileUploadIncorExtText"></span>

@@ -314,6 +314,8 @@ function readFileContents() {
     var reader = new FileReader();
     let ext = file.name.split(".").pop().toLowerCase();
 
+    $('#selectedFileName')[0].innerText = 'Selected file: ' + file.name
+
     reader.onload = function(evt){
 
         if (!valid_ext.includes(ext)){
