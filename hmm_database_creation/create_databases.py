@@ -12,6 +12,7 @@ import os
 import sys
 import typing as t
 import shutil
+import requests
 
 sys.path.append('..')
 from config_files.config import CONF, REFSEQ_DIR, CREATE_HMM_DB_SETTINGS
@@ -60,7 +61,15 @@ if __name__ == '__main__':
         elif len(dbs_to_create) == 1 and dbs_to_create[0] == 'stop_creating_databases':
             print('Encountered the stop_creating_databases file', flush=True)
             subprocess.run(['rm', os.path.join(dbs_to_create_path, 'stop_creating_databases')])
-            print('Finished creating all databases. Exiting', flush=True)
+            print('Finished creating all databases.', flush=True)
+
+            res = requests.get('https://www.bioinformatics.nl/cagecat/update-hmm-databases')
+
+            if res.text == '1':
+                print('Successfully updated the available databases variable in the back-end, which is used to create the front-end')
+            else:
+                print('Something did not go well when updating the available databases')
+
             exit(0)
         else:
             for genus in dbs_to_create:

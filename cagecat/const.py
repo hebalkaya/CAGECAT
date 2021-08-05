@@ -4,11 +4,9 @@ Author: Matthias van den Belt
 
 """
 from config_files import config
-from cagecat import app
+from cagecat.routes import update_hmm_databases
 
-with open(app.config['PRESENT_DATABASES_LOCATION']) as inf:
-    PRESENT_DATABASES = inf.read().strip().split(',')
-    PRESENT_DATABASES.sort()
+PRESENT_DATABASES = update_hmm_databases()
 
 CLINKER_MODULES = ('clinker_query', 'clinker')
 FASTA_SUFFIXES = (".fa", ".fsa", ".fna", ".fasta", ".faa")

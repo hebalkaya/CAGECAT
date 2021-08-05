@@ -17,7 +17,7 @@ import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 import cagecat.const as const
 from cagecat.classes import CAGECATJob
-from config_files.config import CAGECAT_VERSION
+from config_files.config import CAGECAT_VERSION, CONF
 
 
 # route definitions
@@ -232,6 +232,21 @@ def get_help_text(input_type):
 @app.route('/server-status')
 def get_server_status():
     return rthelp.get_server_info()
+
+
+@app.route('/update-hmm-databases')
+def update_hmm_databases():
+    # Doesn't have to return anything, only trigger
+    genera = []
+
+    for f in os.listdir(CONF['finished_hmm_db_folder']):
+        genus = f.split('.')[0]
+        if genus not in genera:
+            genera.append(genus)
+
+    co.PRESENT_DATABASES = genera
+
+    return '1'  # indicating everything went well
 
 
 # Error handlers

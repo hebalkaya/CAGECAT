@@ -39,4 +39,4 @@ python download_files.py 'everything_has_been_downloaded'
 echo "Removing ftp paths files"
 rm *_ftp_paths.txt
 
-echo "Done!
+echo "Done!"
