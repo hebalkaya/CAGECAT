@@ -53,15 +53,15 @@ function showInputOptions(selectionOption, resetQueries){
     if (selectionOption === 'file'){
         genomeFileUploadDiv.classList.remove('no-display');
         ncbiEntriesDiv.classList.add('no-display');
-        searchPrevJobOptions.classList.add('no-display');
+        // searchPrevJobOptions.classList.add('no-display');
 
         // enable
         setRequiredAndEnabled('genomeFile');
 
         // disable elements
         removeRequiredAndEnabled('ncbiEntriesTextArea');
-        removeRequiredAndEnabled('searchEnteredJobId');
-        removeRequiredAndEnabled('searchUploadedSessionFile');
+        // removeRequiredAndEnabled('searchEnteredJobId');
+        // removeRequiredAndEnabled('searchUploadedSessionFile');
 
         enableOrDisableOption('searchSection', true);
 
@@ -72,15 +72,15 @@ function showInputOptions(selectionOption, resetQueries){
     else if (selectionOption === 'ncbi_entries'){
         genomeFileUploadDiv.classList.add('no-display');
         ncbiEntriesDiv.classList.remove('no-display');
-        searchPrevJobOptions.classList.add('no-display');
+        // searchPrevJobOptions.classList.add('no-display');
 
         // enable
         setRequiredAndEnabled('ncbiEntriesTextArea')
 
         // disable elements
         removeRequiredAndEnabled('genomeFile');
-        removeRequiredAndEnabled('searchEnteredJobId');
-        removeRequiredAndEnabled('searchUploadedSessionFile');
+        // removeRequiredAndEnabled('searchEnteredJobId');
+        // removeRequiredAndEnabled('searchUploadedSessionFile');
 
         enableOrDisableOption('searchSection', true);
         validateNCBIEntries();
@@ -91,13 +91,13 @@ function showInputOptions(selectionOption, resetQueries){
         searchPrevJobOptions.classList.remove('no-display');
 
         //enable
-        setRequiredAndEnabled('searchEnteredJobId');
+        // setRequiredAndEnabled('searchEnteredJobId');
 
         // disable elements
         removeRequiredAndEnabled('genomeFile');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
         document.getElementById("searchLabelSessionFile").classList.add("disabled");
-        removeRequiredAndEnabled("searchUploadedSessionFile");
+        // removeRequiredAndEnabled("searchUploadedSessionFile");
 
         enableOrDisableOption('searchSection', false);
 
@@ -546,8 +546,6 @@ function changeSearchMode(mode){
         radioFasta.click()
         document.getElementById('entrez_query').removeAttribute('disabled');
         document.getElementById('database_type').removeAttribute('disabled');
-
-        console.log('remote');
     }
     else if (mode === 'hmm'){
         fieldsetDiv.classList.remove('no-display');
@@ -558,8 +556,6 @@ function changeSearchMode(mode){
         toggleRemoteOptions(false);
         document.getElementById('entrez_query').setAttribute('disabled', 'disabled');
         document.getElementById('database_type').setAttribute('disabled', 'disabled');
-
-        console.log('hmm');
     }
     else if (mode === 'combi_remote'){
         fieldsetDiv.classList.remove('no-display');
@@ -571,8 +567,6 @@ function changeSearchMode(mode){
         radioFasta.click()
         document.getElementById('entrez_query').removeAttribute('disabled');
         document.getElementById('database_type').removeAttribute('disabled');
-
-        console.log('combi_remote');
     }
     else {
         console.log('Invalid mode');

@@ -6,16 +6,27 @@
 {% from 'macros.xhtml' import renderJobDetailsInput %}
 {% from 'macros.xhtml' import showRequiredInputsText %}
 
-{% block title %}Search{% endblock %}
+{% block title %}
+
+    {% if module_to_show is none %}
+        {% set module_name = "Search" %}
+    {% else %}
+        {% set module_name = module_to_show.capitalize()  %}
+    {% endif %}
+    {{ module_name }}
+{% endblock %}
 
 {% block scripts %}
-    {% if module_to_show == 'visualization' %}
-showModule(undefined, 'clinkerContent');
-    {% elif module_to_show == 'recompute' %}
-showInputOptions('prev_session', 0);
+{#    {% if module_to_show == 'visualization' %}#}
+{#showModule(undefined, 'clinkerContent');#}
+
+    {% if module_to_show == 'recompute' %}
 $(':radio:not(:checked)').attr('disabled', true);
+
+    {% else %}
+        initReadQueryFile();
     {% endif %}
-initReadQueryFile();
+
 {% endblock %}
 
 {% block navigationBar %}
@@ -35,19 +46,21 @@ initReadQueryFile();
 {#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
 {#</div>#}
 
-    <h2 class="indent">Search (multicblaster)</h2>
+    {% if module_to_show is none %}
+        {% set module_name = "Search" %}
+    {% else %}
+        {% set module_name = module_to_show.capitalize()  %}
+    {% endif %}
+
+    <h2 class="indent">{{ module_name }} (multicblaster)</h2>
     {{  showRequiredInputsText() }}
-
-
-<!--Module contents-->
-
 
 <div id="searchModuleContent" class="moduleContent">
 <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     {{ renderJobDetailsInput() }}
-
+    {% if prev_run_id is none %}
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
 
@@ -65,7 +78,6 @@ initReadQueryFile();
 
         <div class="radio-options" id="remoteOptionsSection">
                 <div>
-                {% if prev_run_id is none%}
                     <label class="radioLabel">
                     <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
                            name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
@@ -74,13 +86,6 @@ initReadQueryFile();
                            name="inputType"
                            onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
                     </label>
-                {% else %}
-                    <label class="radioLabel">
-                    <input type="radio" class="radio-margin" value="prev_session" id="radioPrevSession"
-                           name="inputType"
-                            onclick="showInputOptions('prev_session', 1)"/>Recompute
-                    </label>
-                {% endif %}
                 </div>
 
             <div class="div-margin" id="genomeFileUploadDiv">
@@ -103,7 +108,7 @@ initReadQueryFile();
             <div class="error-message no-display" id="accessionsError">
                 <span id="accessionsErrorText"></span>
             </div>
-            {{ prev_session('search', false, prev_run_id, false) }}
+{#            {{ prev_session('search', false, prev_run_id, false) }}#}
         </div>
     </fieldset>
 
@@ -163,6 +168,13 @@ initReadQueryFile();
         </div>
     </fieldset>
 </div>
+
+{% else %}
+        <input type="hidden" name="searchEnteredJobId" value="{{ prev_run_id }}"></input>
+        <input type="hidden" value="prev_session" id="radioPrevSession" name="inputType"/>
+        <input type="hidden" name="mode" value="remote"></input>
+{#        // TODO: mode is not always remote, find way to als use it for HMM / HMM+remote#}
+{% endif %}
 
 <div id="filteringSectionFullFieldset">
     <label class="fieldset-label" for="filteringSection">Filtering</label>

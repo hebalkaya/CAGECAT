@@ -40,8 +40,9 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
                "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
                "--mode", options["mode"]]
-
+        print('testttinggg here')
         cmd.extend(forge_database_args(options))
+        print('tes other here')
         # add input options
         if options['mode'] in ('remote', 'combi_remote'):
             input_type = options["inputType"]

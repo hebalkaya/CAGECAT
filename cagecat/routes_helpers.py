@@ -97,7 +97,9 @@ def get_previous_job_properties(job_id: str, job_type: str,
         - file_path: appropriate file path to be used in the next steps
     """
     # file_type = request.form[f"{module}PreviousType"]
+    print('herrreee')
     prev_job_id = request.form[f"{module}EnteredJobId"]
+    print('WE ARE HERE')
 
     ut.check_valid_job(prev_job_id)
 
@@ -235,8 +237,9 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
                                 'file_path': cc_job.file_path},
                         depends_on=depending_on,
                         result_ttl=86400)
-
+        print('or heree')
         main_search_job_id = add_parent_search_and_child_jobs_to_db(cc_job, i == len(new_jobs)-1)
+        print('HERRRRRRRRRRRRRRRRRRRE')
 
         j = dbJob(id=cc_job.job_id,
                   status="queued" if depending_on is None else "waiting",  # for parent job to finish
