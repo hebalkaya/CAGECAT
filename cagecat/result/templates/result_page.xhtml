@@ -74,7 +74,7 @@
             <div class="column leftColumn downstream-div downstream-div-height" id="downStreamModulesDiv">
 
         {% if 'recompute' in downstream_modules %}
-            <a href="{{url_for('tools.multicblaster_search', prev_run_id=j_id)}}?type=recompute&resetQueries=0"><button class="button button-small">Recompute</button></a>
+            <a href="{{url_for('multicblaster_search', prev_run_id=j_id)}}?type=recompute&resetQueries=0"><button class="button button-small">Recompute</button></a>
         {% endif %}
 
         {% if 'gne' in downstream_modules %}
