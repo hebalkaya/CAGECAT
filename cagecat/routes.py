@@ -48,7 +48,7 @@ def home_page(prev_run_id: str = None) -> str:
                                 headers=headers,
                                 genera=const.PRESENT_DATABASES,
                                 query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
-                                show_example_input='multicblaster_search')
+                                show_examples='multicblaster_search')
 
 
 @app.route(co.SUBMIT_URL, methods=["POST"])
