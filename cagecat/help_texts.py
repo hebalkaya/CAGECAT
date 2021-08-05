@@ -41,7 +41,7 @@ FILTERING_HELPS = {'selectedOrganisms': {'title': 'Organisms to filter fot', 'mo
 CLINKER_QUERY_HELPS = {'maxclusters': {'title': 'Maximum number of clusters to plot', 'module': '', 'text': 'The maximum amount of clusters that will be plotted. Ordered on score.\n\nRequired: yes'}}
 EXTR_SEQS_HELPS = {'downloadSeqs': {'title': 'Download sequences', 'module': '', 'text': 'Download protein sequences for the selected proteins. The resulting summary will have a FASTA format.\n\nRequired: no'},
                    'nameOnly': {'title': 'Name only', 'module': '', 'text': 'Do not save sequence descriptions (i.e. no genomic coordinates).\n\nRequired: no'}}
-EXTR_CLUST_HELPS = {'prefix': {'title': 'File prefix', 'module': '', 'text': 'Start of the name for each created cluster file, e.g. <prefix>_cluster1.\n\nRequired: no'},
+EXTR_CLUST_HELPS = {'prefix': {'title': 'File prefix', 'module': '', 'text': 'Start of the name for each created cluster file, e.g. <prefix>cluster1.\n\nRequired: no'},
                     'format': {'title': 'File format', 'module': '', 'text': 'Format of the resulting files.\n\nRequired: no'}}
 CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'text': 'Query to be analyzed\n\nRequired: yes'},
                  'selectedReferenceCluster': {'title': 'Selected reference cluster', 'module': '', 'text': 'The cluster number of which cluster should act as the reference cluster. The cluster numbers correspond with the cluster numbers of the preceding job. Note that the reference cluster must include the query gene, or Corason will fail to execute.\n\nRequired: yes'},

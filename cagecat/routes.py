@@ -136,9 +136,13 @@ def submit_job() -> str:
 
         elif request.files:  # started as individual tool
             for f in request.files.getlist('fileUploadClinker'):
-                ut.save_file(f, job_id)
+                if f.filename:
+                    ut.save_file(f, job_id)
+                    genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "uploads")
+                else: # indicates the example was posted
+                    genome_files_path = os.path.join('cagecat', 'example_files')
             depending_on = None
-            genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "uploads")
+
         else:
             raise ValueError('Incorrect submitted options (clinker)')
 

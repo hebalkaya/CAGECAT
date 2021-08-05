@@ -687,9 +687,27 @@ function setExampleInput(tool_name){
         $('#ncbiEntriesTextArea')[0].value = exampleQueries;
         radio.click();  // to make required sequences pop up
     }
+    else if (tool_name === 'clinker'){
+        $('#identity')[0].value = '0.28';
+        $('#clinkerDecimals')[0].value = '3';
+        $('#job_title')[0].value = 'Example visualization input (BA)';
+        $('#selectedFileName')[0].innerText = 'Selected files: A_alliaceus.gbk, A_mulundensis.gbk, A_puulaauensis.gbk, Asp_versicolor.gbk'
+        $('#fileUploadClinker')[0].removeAttribute('required');
+    }
     else {
         console.log('Incorrect tool name:' + tool_name)
     }
+}
+
+function validateForm(){
+//    function to check if user wants to use the example output, as we cannot programmatically
+//    set a file to be uploaded from our server, we "show" that we upload a file,
+//    but actually we send no files along, but use the files stored on the server
+    if ($('#job_title')[0].value === 'Example visualization input (BA)'){
+
+    }
+
+
 }
 
 function getOutputFromPlot(plotting_type){
