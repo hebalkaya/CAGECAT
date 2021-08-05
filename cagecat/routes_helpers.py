@@ -175,8 +175,8 @@ def prepare_finished_result(job_id: str,
         size = os.path.getsize(plot_path)
 
     elif module == "corason":
-        program = "echo"  # TODO: must: will be someting else later
-        plot_contents = None  # TODO: must: for now
+        program = "echo"  # TODO future: will be someting else later
+        plot_contents = None  # TODO future: for now
 
     elif module == "clinker":
         program = "clinker"

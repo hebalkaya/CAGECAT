@@ -25,8 +25,6 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     Output:
         - None, execution of this module
 
-    # TODO: should: large one: check if session file should still be in here
-
     This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
@@ -367,7 +365,7 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
             submitting a job will break
 
     Output:
-        - None yet. Not implemented: TODO: must: implement corason
+        - None yet. Not implemented: TODO future: must: implement corason
     """
 
     pre_job_formalities(job_id)
@@ -377,7 +375,6 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
         job_id).depending_on)
 
     cmd = ["echo", "we should execute corason here"]
-    # TODO: must: implement CORASON
     #
     # cmd.extend(["queryfile", "tmpQUERYFILEPATH",
     #             "special_org", "tmpREFERENCECLUSTERPATH",
@@ -391,7 +388,7 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
                 "e_core", options["ecore"]])
 
     if "bitscore" in options:
-        cmd.append("bitscore") # TODO: must: check if this is really the way, or an integer should be provided (true/false)
+        cmd.append("bitscore") # TODO future: must: check if this is really the way, or an integer should be provided (true/false)
 
     cmd.extend(["cluster_radio", options["clusterRadio"],
                 "e_cluster", options["ecluster"]])

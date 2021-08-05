@@ -120,7 +120,7 @@
 
 {% macro create_scientific_input(label, type, default_value) %}
     <div style="display: table;width: 25%;margin-left: 1%">
-    {#TODO: should: change style#}
+    {#TODO future: change style as it is not user-friendly yet#}
     <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
 
     <label class="input-label" for="base{{type}}">{{label}}</label>

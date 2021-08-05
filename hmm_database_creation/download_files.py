@@ -71,8 +71,6 @@ def validate_download(gb_path):
                 ori_chksum = splitted[0]
                 break
 
-                # TODO: sometimes ori checksum is referenced before assignment
-
     with open(gb_path, 'rb') as inf:
         calc_chksum = hashlib.md5(inf.read()).hexdigest()
 
@@ -92,8 +90,6 @@ def validate_download(gb_path):
 
 
 def download_files(genus, paths, output_dir, blocksize=33554432):
-    # TODO: check if checksum has changed
-
     present_files = os.listdir(output_dir)
     species_count = len(paths)
 
@@ -146,6 +142,5 @@ if __name__ == '__main__':
     output_dir = create_dir(REFSEQ_DIR, genus)
     download_files(genus, paths, output_dir)
 
-    # TODO: add somewhere which db's are ready to be created. Or immedidtealy create the db?
     create_dir(REFSEQ_DIR, 'databases_to_create')
     subprocess.run(['touch', os.path.join(REFSEQ_DIR, 'databases_to_create', genus)])

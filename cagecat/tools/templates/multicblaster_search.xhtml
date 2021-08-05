@@ -128,7 +128,7 @@ $(':radio:not(:checked)').attr('disabled', true);
                     <label class="textarea-label">HMM profiles*</label>
                     <textarea rows="6" cols="25" required="required" id="hmmProfiles"
                               name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
-                        {#        TODO: could: add Pfam identifier validation#}
+                        {#        TODO future: add Pfam identifier validation#}
                         {{ renderHelpButton('hmmProfiles') }}
                 </div>
             </div>
@@ -171,7 +171,7 @@ $(':radio:not(:checked)').attr('disabled', true);
         <input type="hidden" name="searchEnteredJobId" value="{{ prev_run_id }}"></input>
         <input type="hidden" value="prev_session" id="radioPrevSession" name="inputType"/>
         <input type="hidden" name="mode" value="remote"></input>
-{#        // TODO: mode is not always remote, find way to als use it for HMM / HMM+remote#}
+{#        // TODO future: mode is not always remote, find way to als use it for HMM / HMM+remote#}
 {% endif %}
 
 <div id="filteringSectionFullFieldset">

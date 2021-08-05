@@ -260,7 +260,6 @@ function addSelectedToForm(downstream_prog) {
         // document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
     }
     else if (downstream_prog === "corason"){
-        //TODO: modify how clusters are given
         $('#selectedQuery')[0].value = getSelectedQueries();
         $('#selectedClusters2')[0].value = getSelectedClusters('');
         $('#unselectedClusters2')[0].value = getSelectedClusters('un');
@@ -274,7 +273,7 @@ function addSelectedToForm(downstream_prog) {
     }
 }
 
-// TODO: could: modularize below functions
+// TODO future: modularize below functions
 function getSelectedClusters(prefix){
     let msg = '';
     $('#' + prefix + 'selectedClustersSelector option').each(function(){

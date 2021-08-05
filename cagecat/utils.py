@@ -36,7 +36,6 @@ PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 
 ### Function definitions
 def generate_job_id(id_len: int = 15) -> str:
-    # TODO: would: could make length shorter
     """Generates a numeric job ID with each 4th character being a letter
 
     Input:
@@ -101,7 +100,7 @@ def get_server_info(q: rq.Queue, redis_conn: redis.Redis) \
         - dict: info about the current status of the server and queued
             or running jobs
     """
-    # TODO: would, optimization: maybe we can instantiate this registry once instead of every time
+    # TODO future: optimization: maybe we can instantiate this registry once instead of every time
 
     start_registry = StartedJobRegistry('default', connection=redis_conn)
     # above registry has the jobs in it which have been started, but are not
@@ -151,7 +150,7 @@ def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
     """
     job = fetch_job_from_db(job_id)
 
-    # TODO: remove millisseconds when logging time
+    # TODO future: remove milliseconds when logging time
     if time_type == "start":
         job.start_time = datetime.utcnow()
     elif time_type == "finish":

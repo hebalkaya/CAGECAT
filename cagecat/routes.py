@@ -98,7 +98,7 @@ def submit_job() -> str:
         extr_clust_options['clusterNumbers'] = \
             clust_numbers['selectedClustersToUse'] + f' {request.form["selectedReferenceCluster"]}' # as we also need the cluster file for the reference bgc
 
-        # TODO: must: extract query sequence
+        # TODO future: extract query sequence
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=extr_clust_options,
@@ -113,7 +113,7 @@ def submit_job() -> str:
                                    file_path='TODOCORASONPATH',
                                    depends_on_job_id=new_jobs[-1].job_id))  # get the last CAGECATJob object
 
-        # TODO: must: file path corason --> for corason, the file path is the path to where the extracted clusters will be
+        # TODO future: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
     elif job_type == "clinker":
         if 'clinkerEnteredJobId' in request.form:  # indicates it was downstream

@@ -40,7 +40,7 @@ def create_filtering_command(options: ImmutableMultiDict,
 
     if options["selectedOrganisms"]:
         partly_cmd.extend(["--organisms", options['selectedOrganisms']])
-        # TODO: must: could also that user gives multiple patterns. separated by ;?
+        # TODO future: could also that user gives multiple patterns. separated by ;?
 
     # if options["selectedScaffolds"]:
     #     partly_cmd.append("--scaffolds")
@@ -234,8 +234,6 @@ To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{jo
     send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
                contents,job.email)
 
-    # TODO: must: possibly change sender_email
-
 
 def log_cagecat_version(job_id: str) -> None:
     """Logs the version of CAGECAT to the job's logs folder
@@ -316,7 +314,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
         - base: appropriate (based on submitted options) argument list
     """
 
-    # TODO: must: handle recompute scenario
+    # TODO future: handle recompute scenario as now mode is always given as remote, which is not always the case. The search type should be fetched from the initial search job
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
         base.append(os.path.join(config.CONF['finished_hmm_db_folder'], f'{options["selectedGenus"]}.fasta'))

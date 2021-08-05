@@ -132,7 +132,7 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
     Currently only supports downloading of the .zip file.
     """
 
-    # TODO: would: send_from_directory is a safer approach, but this suits for now
+    # TODO future: send_from_directory is a safer approach and should be used
     # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
     # result_path =
     path = f'{os.sep}'.join(generate_paths(job_id)[2].split(os.sep)[1:])

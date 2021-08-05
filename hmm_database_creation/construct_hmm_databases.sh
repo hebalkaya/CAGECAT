@@ -1,8 +1,7 @@
 #!/usr/bin/bash
 
-# TODO: remove previous databases, create them all over again to include new genomes
-# TODO: find out how we can obtain the families of organisms from NCBI
-# TODO: we could also adapt this script to download fungi genomes
+# TODO future: find out how we can obtain the families of organisms from NCBI
+# TODO future: we could also adapt this script to download fungi genomes
 
 fn_non_unique="non_unique_genera.txt"
 fn_unique="unique_genera.txt"
