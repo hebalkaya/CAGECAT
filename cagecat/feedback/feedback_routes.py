@@ -32,9 +32,9 @@ def submit_feedback() -> str:
     """
     for email in (EMAIL['sender_email'], request.form['email']):
         ut.send_email('CAGECAT feedback report',
-                      f'''#########################################
+                      f'''
 
-Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly. We kindly ask you for future replies to reply above the '#####' line for smooth correspondence.
+Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly.
 
 -----------------------------------------
 Submitted info:

@@ -221,7 +221,7 @@ def send_notification_email(job: Job) -> None:
     """
     contents = f'''Dear researcher,
     
-The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}).'''
+The job (type: {job.job_type}) you submitted on {job.post_time} has finished running on {job.finish_time}.'''
 
     contents += f'''
 
