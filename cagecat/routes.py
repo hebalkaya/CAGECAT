@@ -22,7 +22,7 @@ global PRESENT_DATABASES
 # route definitions
 @app.route('/')
 def home_page():
-    return rthelp.show_template('index.xhtml', help_enabled=False)
+    return rthelp.show_template('index.html', help_enabled=False)
 
 
 @app.route(co.SUBMIT_URL, methods=["POST"])
@@ -175,7 +175,7 @@ def submit_job() -> str:
                   email=last_job.email,
                   j_type=last_job.job_type)
 
-    return rthelp.show_template('redirect.xhtml', url=url)
+    return rthelp.show_template('redirect.html', url=url)
 
 
 @app.route("/help")
@@ -185,7 +185,7 @@ def help_page() -> str:
     Output:
         - HTML represented in string format
     """
-    return rthelp.show_template("help.xhtml", version=CAGECAT_VERSION, help_enabled=False)
+    return rthelp.show_template("help.html", version=CAGECAT_VERSION, help_enabled=False)
 
 
 
@@ -235,7 +235,7 @@ def page_not_found(error):  # should have 1 parameter, doesn't have to be used
     """Shows page displaying that the requested page was not found
 
     """
-    return rthelp.show_template("page_not_found.xhtml",
+    return rthelp.show_template("page_not_found.html",
                                 stat_code=404,
                                 help_enabled=False)
 

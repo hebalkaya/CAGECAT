@@ -26,7 +26,7 @@ def tools_page() -> str:
     Output:
         - HTML represented in string format
     """
-    return show_template('implemented_tools.xhtml', help_enabled=False)
+    return show_template('implemented_tools.html', help_enabled=False)
 
 
 @tools.route("/explanation")
@@ -36,7 +36,7 @@ def tools_explanation() -> str:
     Output:
         - HTML represented in string format
     """
-    return show_template("tools_explanation.xhtml", help_enabled=False, helps=TOOLS_EXPLANATIONS)
+    return show_template("tools_explanation.html", help_enabled=False, helps=TOOLS_EXPLANATIONS)
 
 
 @tools.route("/search/rerun/<prev_run_id>")
@@ -60,7 +60,7 @@ def multicblaster_search(prev_run_id: str = None) -> str:
         headers = None
         module_to_show = None
 
-    return rthelp.show_template("multicblaster_search.xhtml",
+    return rthelp.show_template("multicblaster_search.html",
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
                                 headers=headers,
@@ -82,7 +82,7 @@ def clinker_query() -> str:
     clusters = pa.parse_selected_cluster_numbers(
         request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
-    return show_template("multicblaster_plot_clusters.xhtml",
+    return show_template("multicblaster_plot_clusters.html",
                          prev_job_id=request.form["job_id"],
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
@@ -107,7 +107,7 @@ def extract_sequences() -> str:
     # if selected_queries == "No queries selected":
     #     selected_queries = None
 
-    return show_template("multicblaster_extract_sequences.xhtml",
+    return show_template("multicblaster_extract_sequences.html",
                          selected_queries=request.form["selectedQueries"].split('\r\n'),
                          # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])
@@ -136,7 +136,7 @@ def extract_clusters() -> str:
     cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters,
                                                         pattern)
 
-    return show_template("multicblaster_extract_clusters.xhtml",
+    return show_template("multicblaster_extract_clusters.html",
                          # selected_scaffolds=selected_scaffolds,
                          cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
@@ -176,7 +176,7 @@ def corason() -> str:
             request.form["selectedClusters"],
             ut.CLUST_NUMBER_PATTERN_W_SCORE , format_nicely=False).split(',')
 
-    return show_template("corason.xhtml",
+    return show_template("corason.html",
                          query=query,
                          cluster_headers=selected_clusters,
                          clust_numbers=clust_numbers,
@@ -185,19 +185,19 @@ def corason() -> str:
 
 @tools.route('/gne', methods=['GET', 'POST'])
 def gene_neighbourhood_estimation() -> str:
-    return show_template('multicblaster_gene_neighbourhood_estimation.xhtml',
+    return show_template('multicblaster_gene_neighbourhood_estimation.html',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'],
                          prev_job_id=request.form['job_id'])
 
 @tools.route('/clinker', methods=['GET', 'POST'])
 def clinker() -> str:
-    return show_template('clinker.xhtml',
+    return show_template('clinker.html',
                          query_file_extensions=','.join(GENBANK_SUFFIXES),
                          show_examples='clinker',
                          prev_job_id=None if 'job_id' not in request.form else request.form['job_id'])
 
 @tools.route('/big-scape')
 def bigscape() -> str:
-    return show_template('BiG-SCAPE.xhtml')
+    return show_template('BiG-SCAPE.html')
 
 

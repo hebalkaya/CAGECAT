@@ -42,7 +42,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
         - IOError: when for some reason a job's status is not valid. Currently
             valid options are: ["finished", "failed", "queued", "running"]
 
-    Shows the "job_not_found.xhtml" template when the given job ID was not
+    Shows the "job_not_found.html" template when the given job ID was not
     found in the SQL database
     """
     job = ut.fetch_job_from_db(job_id)
@@ -60,7 +60,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             #                        f"{job_id}_{program}.log")) as inf:
             #     log_contents = "<br/>".join(inf.readlines())
 
-            return show_template("result_page.xhtml", j_id=job_id,
+            return show_template("result_page.html", j_id=job_id,
                                  status=status,
                                  content_size=ut.format_size(size),
                                  module=module, modules_with_plots=
@@ -74,7 +74,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
         elif status == "failed":
 
-            return show_template("failed_job.xhtml",
+            return show_template("failed_job.html",
                                  job_title=job.title,
                                  j_id=job_id,
                                  module=job.job_type,
@@ -90,7 +90,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             else:
                 pj = request.args["pj"]
 
-            return show_template("status_page.xhtml", j_id=job_id,
+            return show_template("status_page.html", j_id=job_id,
                                  parent_job=pj,
                                  status=status,
                                  store_job_id=store_job_id,
@@ -103,7 +103,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             pj = ut.fetch_job_from_db(job_id).depending_on\
                 if "pj" not in request.args else request.args["pj"]
 
-            return show_template("status_page.xhtml", j_id=job_id,
+            return show_template("status_page.html", j_id=job_id,
                                  status="waiting for preceding job to finish",
 
                                  parent_job=pj,
@@ -115,7 +115,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             raise IOError(f"Incorrect status of job {job_id} in database")
 
     else:  # indicates no such job exists in the database
-        return show_template("job_not_found.xhtml", job_id=job_id)
+        return show_template("job_not_found.html", job_id=job_id)
 
 
 @result.route("/download/<job_id>", methods=["GET", "POST"])
@@ -157,13 +157,13 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
 
     """
     if request.method == "GET":
-        return show_template("result_from_jobid.xhtml", help_enabled=False)
+        return show_template("result_from_jobid.html", help_enabled=False)
     else:  # can only be POST as GET and POST are the only allowed methods
         job_id = request.form["job_id"]
         if ut.fetch_job_from_db(job_id) is not None:
-            return show_template('redirect.xhtml', url=url_for('result.show_result', job_id=job_id))
+            return show_template('redirect.html', url=url_for('result.show_result', job_id=job_id))
         else:
-            return show_template("job_not_found.xhtml", job_id=job_id)
+            return show_template("job_not_found.html", job_id=job_id)
 
 
 @result.route("/plots/<job_id>")

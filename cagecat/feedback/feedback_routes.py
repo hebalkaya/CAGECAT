@@ -17,7 +17,7 @@ def feedback_page() -> str:
     Output:
         - HTML represented in string format
     """
-    return rthelp.show_template('feedback.xhtml', help_enabled=False)
+    return rthelp.show_template('feedback.html', help_enabled=False)
 
 
 @feedback.route('/submit', methods=['POST'])
@@ -47,7 +47,7 @@ Message: {request.form['message']}
 -----------------------------------------''',
                       email)
 
-    return rthelp.show_template('redirect.xhtml', url=url_for('feedback.feedback_submitted'))
+    return rthelp.show_template('redirect.html', url=url_for('feedback.feedback_submitted'))
 
 
 @feedback.route('/submitted')
@@ -57,4 +57,4 @@ def feedback_submitted() -> str:
     Output:
         - HTML represented in string format
     """
-    return rthelp.show_template('feedback_submitted.xhtml', help_enabled=False)
+    return rthelp.show_template('feedback_submitted.html', help_enabled=False)
