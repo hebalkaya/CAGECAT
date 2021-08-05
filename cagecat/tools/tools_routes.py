@@ -11,7 +11,7 @@ import cagecat.parsers as pa
 import cagecat.utils as ut
 from config_files import config
 from cagecat.routes_helpers import show_template
-from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES
+from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
 
 tools = Blueprint('tools', __name__, template_folder="templates")
 
@@ -158,7 +158,8 @@ def gene_neighbourhood_estimation() -> str:
 
 @tools.route('/clinker')
 def clinker() -> str:
-    return show_template('clinker.xhtml')
+    return show_template('clinker.xhtml',
+                         query_file_extensions=','.join(GENBANK_SUFFIXES))
 
 @tools.route('/big-scape')
 def bigscape() -> str:

@@ -306,7 +306,24 @@ function mergeExponentials(){
     }
 }
 
-function readFileContents() {
+function getGenBankFileNames() {
+    let files = $('#fileUploadClinker')[0].files;
+    console.log(files);
+    let selected_files = 'Selected files: ';
+    let separator = ', '
+    for (let i=0; i < files.length; i++){
+        if (i === files.length-1) {
+            separator = ''
+        }
+        let text = files[i].name + separator;
+        selected_files += text;
+    }
+    $('#selectedFileName')[0].innerText = selected_files
+}
+
+
+function readFileContents(isForRequiredSeqs) {
+
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
     var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", "gbk", "gb", "genbank", "gbf", "gbff"]

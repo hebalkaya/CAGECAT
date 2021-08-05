@@ -25,7 +25,21 @@
 
             <label class="fieldset-label" for="clinkerInputSection">Input</label>
             <fieldset id="clinkerInputSection">
-                {{ prev_session('clinker', true, request.args['prev_id'], true) }}
+                {% if 'prev_id' in request.args %}
+                    {{ prev_session('clinker', true, request.args['prev_id'], true) }}
+                {% else %}
+                    <div class="div-margin" id="genomeFileUploadDiv">
+                        <label class="file-upload-lbl" for="fileUploadClinker">
+                            <input type="file" id="fileUploadClinker" name="fileUploadClinker" multiple="multiple"
+                                   required="required" accept="{{ query_file_extensions }}" onchange="getGenBankFileNames()"/>Genome files*</label>
+                        {{ renderHelpButton('fileUploadClinker') }}
+                        <span id="selectedFileName" style="margin-left:1%;"></span>
+
+                        <div class="error-message no-display" id="fileUploadIncorExt">
+                            <span id="fileUploadIncorExtText"></span>
+                        </div>
+                    </div>
+                {% endif %}
             </fieldset>
 
             <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
