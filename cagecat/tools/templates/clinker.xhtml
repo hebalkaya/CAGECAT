@@ -18,7 +18,7 @@
     {{  showRequiredInputsText() }}
 
     <div id="clinkerContent" class="moduleContent">
-        <form action="{{url_for('submit_job')}}" method="post">
+        <form action="{{url_for('submit_job')}}" enctype="multipart/form-data"  method="post">
             <input type="hidden" name="job_type" value="clinker"/>
 
             {{ renderJobDetailsInput() }}

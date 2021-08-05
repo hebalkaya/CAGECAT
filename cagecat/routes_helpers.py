@@ -36,7 +36,7 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
     """
     connected_jobs = []
 
-    if job.main_search_job == "null": # current job is a search job (or comes from session file?)
+    if job.main_search_job == "null": # current job is an initial job (search of clinker)
         # go and look for child jobs
         children = job.child_jobs
 
@@ -230,7 +230,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
 
         depending_on = None if cc_job.depends_on_job_id is None else \
             created_redis_jobs_ids[i-1][1]
-
+        print('Does it go wrong here?')
         job = q.enqueue(cc_job.function,
                         args=(cc_job.job_id, ),
                         kwargs={'options': cc_job.options,
@@ -277,7 +277,9 @@ def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
     else:
         old_job = get_parent_job(new_job, is_last_job)
 
-        if old_job.job_type == "search":
+        if old_job == 'null':
+            main_search_job_id = 'null'
+        elif old_job.job_type == "search":
             main_search_job_id = old_job.id
             main_search_job = ut.fetch_job_from_db(main_search_job_id)
 
@@ -291,7 +293,7 @@ def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
 
 
 def get_parent_job(new_job: CAGECATJob,
-                                 is_last_job: bool) -> t.Union[None, dbJob]:
+                                 is_last_job: bool) -> t.Union[str, dbJob, None]:
     # TODO: change documentation
     """Gets the parent job of a job (i.e. the job this job depends on)
 
@@ -314,6 +316,9 @@ def get_parent_job(new_job: CAGECATJob,
             module = "search"
         elif j_type == "clinker":
             module = "clinker"
+
+            if f"{module}EnteredJobId" not in new_job.options:
+                return 'null'
         else:
             module = j_type
 
