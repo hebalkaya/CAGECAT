@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-CAGECAT_VERSION = '0.98'
+CAGECAT_VERSION = '0.99'
 
 # jobs to persist on server (i.e. example outputs)
 PERSISTENT_JOBS = ('W885A828D304Y06',
@@ -25,8 +25,8 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         }
 
 CREATE_HMM_DB_SETTINGS = {'sleeping_time': 60,
-                          'cpus': 10,
-                          'batch_size': 30}
+                          'cpus': '10',
+                          'batch_size': '30'}
 
 THRESHOLDS = {
     'maximum_clusters_to_extract': 150,
