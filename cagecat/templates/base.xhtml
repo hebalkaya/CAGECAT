@@ -51,6 +51,12 @@
         <h4 id="explanationModule">Module: </h4>
 
         <p id="explanationText">Click a question mark next to an input field to view its explanation.</p>
+
+    {% if show_example_input %}
+        <div class="centered">
+            <button class="button" onclick="">Example input</button>
+        </div>
+    {% endif %}
 </div>
     </div>
 {% endif %}

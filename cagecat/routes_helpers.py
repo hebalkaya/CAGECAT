@@ -57,7 +57,7 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
 
 
 def show_template(template_name: str, help_enabled:bool = True,
-                  stat_code=None, **kwargs) -> t.Union[str, t.Tuple[str, int]]:
+                  stat_code=None, show_example_input=None, **kwargs) -> t.Union[str, t.Tuple[str, int]]:
     """Returns rendered templates to the client
 
     Input:
@@ -75,10 +75,12 @@ def show_template(template_name: str, help_enabled:bool = True,
     """
     if stat_code is None:
         return render_template(template_name, help_enabled=help_enabled,
-                               serv_info=get_server_info(), **kwargs)
+                               serv_info=get_server_info(),
+                               show_example_input=show_example_input, **kwargs)
     else:
         return render_template(template_name, help_enabled=help_enabled,
                                serv_info=get_server_info(),
+                               show_example_input=show_example_input,
                                **kwargs), stat_code
 
 
