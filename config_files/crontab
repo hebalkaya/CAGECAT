@@ -8,4 +8,4 @@ PATH=/usr/local/bin
 5 0 * * * cd /repo && python maint_remove_old_jobs.py
 10 0 */7 * * bash /repo/maint_backup.sh > /process_logs/maintenance/$(date +"%Y%m%d")_backup.log
 31 13 2 * * cd /repo/hmm_database_creation && bash construct_hmm_databases.sh > /process_logs/maintenance/$(date +"%Y%m%d")_hmm_downloading.log
-31 13 2 * * cd /repo/hmm_database_creation && python create_databases.py > /process_logs/maintenance/$(date +"%Y%m%d")_hmm_dbs_creation_.log
+31 13 2 * * cd /repo/hmm_database_creation && python create_databases.py > /process_logs/maintenance/$(date +"%Y%m%d")_hmm_dbs_creation.log

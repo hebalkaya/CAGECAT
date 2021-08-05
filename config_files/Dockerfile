@@ -2,7 +2,7 @@ FROM ubuntu:latest
 FROM python:3
 
 RUN apt-get update
-RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct
+RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct diamond
 RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI
 
 RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
