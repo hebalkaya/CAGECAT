@@ -319,7 +319,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
     # TODO: must: handle recompute scenario
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
-        base.append(os.path.join(config.CONF['MOUNTED_DB_FOLDER'], f'{options["selectedGenus"]}.fasta'))
+        base.append(os.path.join(config.CONF['hmm_db_folder'], f'{options["selectedGenus"]}.fasta'))
 
     if options['mode'] in ('remote', 'combi_remote'):
         if 'database_type' in options:
