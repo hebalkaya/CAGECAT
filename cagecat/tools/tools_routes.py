@@ -183,7 +183,7 @@ def corason() -> str:
                          # cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
 
-@tools.route('/gne')
+@tools.route('/gne', methods=['GET', 'POST'])
 def gene_neighbourhood_estimation() -> str:
     return show_template('multicblaster_gene_neighbourhood_estimation.xhtml',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'],

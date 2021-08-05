@@ -96,19 +96,17 @@ def get_previous_job_properties(job_id: str, job_type: str,
     Output:
         - file_path: appropriate file path to be used in the next steps
     """
-    file_type = request.form[f"{module}PreviousType"]
-    if file_type == "jobID":
-        prev_job_id = request.form[f"{module}EnteredJobId"]
+    # file_type = request.form[f"{module}PreviousType"]
+    prev_job_id = request.form[f"{module}EnteredJobId"]
 
-        ut.check_valid_job(prev_job_id)
+    ut.check_valid_job(prev_job_id)
 
-        file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
-                                 f"{prev_job_id}_session.json")
-    elif file_type == "sessionFile":
-        file_path = ut.save_file(
-            request.files[f"{module}UploadedSessionFile"], job_id)
-    else:
-        raise IOError("Not valid file type")
+    file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
+                             f"{prev_job_id}_session.json")
+    # elif job_type == "sessionFile":
+    #     raise DeprecationWarning('Session file is not used anymore')
+    # else:
+    #     raise IOError("Not valid file type")
 
     return file_path
 
