@@ -112,7 +112,7 @@
 
         {% if 'clinker' in downstream_modules %}
             <form action="{{url_for('tools.clinker')}}" method="get">
-                <input type="hidden" name="prev_id" value="{{ j_id }}"/>
+                <input type="hidden" name="job_id" value="{{ j_id }}"/>
                 <button class="button button-small" type="submit">clinker: visualize everything</button>
             </form>
 {#            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>#}
