@@ -378,7 +378,7 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
     #
     # cmd.extend(["queryfile", "tmpQUERYFILEPATH",
     #             "special_org", "tmpREFERENCECLUSTERPATH",
-    # TODO: make query.fasta
+    # TODO future: make query.fasta
     cmd.extend([os.path.join(LOG_PATH, 'query.fasta'), # query
                 parent_job_results_path, # directory where gbks are
                 os.path.join(parent_job_results_path, # reference cluster
