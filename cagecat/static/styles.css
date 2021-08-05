@@ -607,3 +607,7 @@ input[type="submit"]{
 .accordion{
     cursor: pointer;
 }
+
+.example-button {
+    width: 80%;
+}

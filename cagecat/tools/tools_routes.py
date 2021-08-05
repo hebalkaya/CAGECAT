@@ -191,7 +191,8 @@ def gene_neighbourhood_estimation() -> str:
 @tools.route('/clinker')
 def clinker() -> str:
     return show_template('clinker.xhtml',
-                         query_file_extensions=','.join(GENBANK_SUFFIXES))
+                         query_file_extensions=','.join(GENBANK_SUFFIXES),
+                         show_examples='clinker')
 
 @tools.route('/big-scape')
 def bigscape() -> str:
