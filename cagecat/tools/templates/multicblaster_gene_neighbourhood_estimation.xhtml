@@ -20,14 +20,9 @@
         <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}"
               name="gneOptionForm">
             <input type="hidden" name="job_type" value="gne" required="required"/>
+            <input type="hidden" name="gneEnteredJobId" value="{{ prev_job_id }}"/>
 
             {{ renderJobDetailsInput() }}
-
-            <label class="fieldset-label" for="gneInputSection">Input</label>
-            <fieldset id="gneInputSection">
-                {{ prev_session('gne', true, request.args['prev_id'], false) }}
-            </fieldset>
-
             {{ result_table('gne', 'Sum') }}
 
             <label class="fieldset-label" for="gneOptions">Extra options</label>

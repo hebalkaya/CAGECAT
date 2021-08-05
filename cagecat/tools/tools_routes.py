@@ -186,7 +186,8 @@ def corason() -> str:
 @tools.route('/gne')
 def gene_neighbourhood_estimation() -> str:
     return show_template('multicblaster_gene_neighbourhood_estimation.xhtml',
-                         max_samples=config.THRESHOLDS['maximum_gne_samples'])
+                         max_samples=config.THRESHOLDS['maximum_gne_samples'],
+                         prev_job_id=request.form['job_id'])
 
 @tools.route('/clinker', methods=['GET', 'POST'])
 def clinker() -> str:
