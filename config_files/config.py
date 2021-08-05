@@ -15,9 +15,9 @@ CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         # "DEBUG": True,
         # "HOST": "0.0.0.0",
         # "PORT": 5001,
-        "DATABASE_FOLDER": "/lustre/BIF/nobackup/belt017/databases",
+        # "hmm_db_download_folder": "/hmm_db_downloads",
         'PFAM_DB_FOLDER': '/pfam_db',
-        'hmm_db_folder': '/hmm_databases',
+        'finished_hmm_db_folder': '/hmm_databases',
         'DOMAIN': 'http://www.bioinformatics.nl/cagecat/',
         'PRESENT_DATABASES_LOCATION': '/present_databases.txt',
         'MAINTENANCE_LOGS': '/process_logs/maintenance',
@@ -50,4 +50,4 @@ https://www.bioinformatics.nl/cagecat'''
          }
 
 NCBI_FTP_BASE_URL = 'ftp.ncbi.nlm.nih.gov'
-REFSEQ_DIR = '/lustre/BIF/nobackup/belt017/refseq_gbks'
+REFSEQ_DIR = '/hmm_db_downloads'
