@@ -74,10 +74,6 @@ def clinker_query() -> str:
     Output:
         - HTML represented in string format
     """
-    # selected_scaffolds = pa.parse_selected_scaffolds(
-    #     request.form["selectedClusters"])
-
-    # print(request.form['selectedClusters'])
     clusters = pa.parse_selected_cluster_numbers(
         request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
@@ -100,12 +96,6 @@ def extract_sequences() -> str:
         - HTML represented in string format showing options for extracting
             sequences in the client's browser
     """
-    # selected_scaffolds = pa.parse_selected_scaffolds(
-    #     request.form["selectedClusters"])
-
-    # if selected_queries == "No queries selected":
-    #     selected_queries = None
-
     return show_template("multicblaster_extract_sequences.html",
                          selected_queries=request.form["selectedQueries"].split('\r\n'),
                          # selected_scaffolds=selected_scaffolds,
@@ -155,13 +145,6 @@ def corason() -> str:
         - HTML represented in string format showing options for running
             Corason in the client's browser
     """
-    # cluster_to_search_in = pa.parse_selected_cluster_names(
-    #     request.form["selectedClusters"])
-    # print(cluster_to_search_in)
-
-    # reference_cluster = pa.parse_selected_cluster_names(
-    #     request.form["selectedReferenceCluster"])
-
     query = request.form["selectedQuery"]
 
     selected_clusters = request.form["selectedClusters"].split('\r\n')
@@ -182,11 +165,13 @@ def corason() -> str:
                          # cluster_to_search_in=cluster_to_search_in,
                          prev_job_id=request.form["job_id"])
 
+
 @tools.route('/gne', methods=['GET', 'POST'])
 def gene_neighbourhood_estimation() -> str:
     return show_template('multicblaster_gene_neighbourhood_estimation.html',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'],
                          prev_job_id=request.form['job_id'])
+
 
 @tools.route('/clinker', methods=['GET', 'POST'])
 def clinker() -> str:
@@ -195,8 +180,7 @@ def clinker() -> str:
                          show_examples='clinker',
                          prev_job_id=None if 'job_id' not in request.form else request.form['job_id'])
 
+
 @tools.route('/big-scape')
 def bigscape() -> str:
     return show_template('BiG-SCAPE.html')
-
-

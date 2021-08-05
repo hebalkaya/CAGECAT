@@ -131,7 +131,6 @@ def submit_job() -> str:
                                                                   f"{prev_job_id}_session.json")))
 
                 genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
-                # depending_on = job_id
                 depending_on = new_jobs[-1].job_id
 
         elif request.files:  # started as individual tool
@@ -146,7 +145,6 @@ def submit_job() -> str:
         else:
             raise ValueError('Incorrect submitted options (clinker)')
 
-        # new_jobs.append((rf.clinker, ut.generate_job_id(), request.form, genome_files_path, depending_on, "clinker"))
         new_jobs.append(CAGECATJob(job_id=job_id if depending_on is None else ut.generate_job_id(),
                                    options=request.form,
                                    file_path=genome_files_path,
@@ -187,8 +185,6 @@ def help_page() -> str:
     return rthelp.show_template("help.html", version=CAGECAT_VERSION, help_enabled=False)
 
 
-
-
 @app.route("/docs/<input_type>")
 def get_help_text(input_type):
     """Returns help text corresponding to the requested input parameter
@@ -206,6 +202,7 @@ def get_help_text(input_type):
             ' of which parameter the help text is missing.\n\nThanks in advance.'}
 
     return cagecat.help_texts.HELP_TEXTS[input_type]
+
 
 @app.route('/server-status')
 def get_server_status():
@@ -245,6 +242,7 @@ def invalid_method():
 
     """
     return redirect(url_for("home_page"))
+
 
 update_hmm_databases()
 # within routes.py to prevent circular import (as it was first in const.py).

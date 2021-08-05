@@ -27,6 +27,7 @@
                    name="{{ tableDecimals }}" value="2" step="1" min="0" max="9"
                    required="required"/>
         </div>
+
         <div>
             <label class="checkbox-label">
                 <input type="checkbox"
@@ -63,18 +64,6 @@
     </div>
 {% endmacro %}
 
-
-{% macro show_options(settings) %}
-    {#  currently not used anymore, could be removed/used in the future. #}
-    <label for="optionsList">Selected options</label>
-    <ul id="optionsList">
-    {% for label, option in settings.items() %}
-        <li>{{label}}: {{option}}</li>
-    {% endfor %}
-    </ul>
-{% endmacro %}
-
-
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
     <div>
     <label class="fieldset-label" for="filteringSection">Filtering</label>
@@ -98,7 +87,6 @@
                 {{ renderHelpButton('selectedQueries') }}
                 {{ showSelectedClusters(selected_queries_or_cluster_numbers, False, True) }}
                 <input type="hidden" name="selectedQueries" value="{{ selected_queries_or_cluster_numbers|join(' ') }}"/>
-                {#            <textarea cols="24" rows="6" id="selectedQueries" name="selectedQueries" placeholder="Queries to filter for">{{selected_queries_or_cluster_numbers if selected_queries_or_cluster_numbers is not none}}</textarea>#}
             </div>
         {% elif extraction_type == 'clusters' %}
             <div class="input-layer">
@@ -117,23 +105,21 @@
     </div>
 {% endmacro %}
 
-
 {% macro create_scientific_input(label, type, default_value) %}
     <div style="display: table;width: 25%;margin-left: 1%">
-    {#TODO future: change style as it is not user-friendly yet#}
-    <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
+        {#TODO future: change style as it is not user-friendly yet#}
+        <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
 
-    <label class="input-label" for="base{{type}}">{{label}}</label>
-    <div class="scientificnotation-div">
-        <input type="number" id="base{{type}}" step="0.01" min="1" max="9.99" value="1"/>
-        {{ renderHelpButton(type.lower()) }}
-        <span class="spaced">E<sup><span id="power{{type}}">{{default_value}}</span></sup></span>
-        <button type="button" class="scientificnotation" onclick="changePower(-1, 'power{{type}}')">&#9660</button>
-        <button type="button" class="scientificnotation" onclick="changePower(1, 'power{{type}}')">&#9650</button>
-    </div>
+        <label class="input-label" for="base{{type}}">{{label}}</label>
+        <div class="scientificnotation-div">
+            <input type="number" id="base{{type}}" step="0.01" min="1" max="9.99" value="1"/>
+            {{ renderHelpButton(type.lower()) }}
+            <span class="spaced">E<sup><span id="power{{type}}">{{default_value}}</span></sup></span>
+            <button type="button" class="scientificnotation" onclick="changePower(-1, 'power{{type}}')">&#9660</button>
+            <button type="button" class="scientificnotation" onclick="changePower(1, 'power{{type}}')">&#9650</button>
+        </div>
     </div>
 {% endmacro %}
-
 
 {% macro showNavigationBar(page)  %}
     <div id="navigationBar">
@@ -148,17 +134,9 @@
     </div>
 {% endmacro %}
 
-
 {% macro renderHelpButton(help_type, for_checkbox) %}
     <img class="help-button{{ " checkbox-help" if for_checkbox else "" }}" onclick="showHelp('{{ help_type }}')"
          src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
-{% endmacro %}
-
-{% macro createBackButton() %}
-    {#  currently not used anymore, could be removed/used in the future. #}
-    <div class="indent">
-    <button class="button smaller" onclick="lastPage();">Previous page</button>
-    </div>
 {% endmacro %}
 
 {% macro showSelectedClusters(headers, show_title, is_for_filtering) %}
@@ -185,7 +163,6 @@
     </ul>
 {% endmacro %}
 
-
 {% macro renderHelpTexts(texts) %}
     {% for paragraph_title, content in texts %}
         {% if paragraph_title %}
@@ -204,7 +181,6 @@
         {% if not paragraph_title %}
             <p>{{ content }}</p>
         {% endif %}
-
     {% endfor %}
 {% endmacro %}
 

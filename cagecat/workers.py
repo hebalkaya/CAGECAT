@@ -37,9 +37,9 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
                "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
                "--mode", options["mode"]]
-        print('testttinggg here')
+
         cmd.extend(forge_database_args(options))
-        print('tes other here')
+
         # add input options
         if options['mode'] in ('remote', 'combi_remote'):
             input_type = options["inputType"]
@@ -249,9 +249,6 @@ def cblaster_extract_clusters(job_id: str,
                                   'Too many selected clusters'):
         return
 
-    # cluster_dir = os.path.join(RESULTS_PATH, "clusters")
-    # os.mkdir(cluster_dir)
-
     cmd = ["cblaster", "extract_clusters", file_path,
            "--output", RESULTS_PATH]
 
@@ -374,9 +371,10 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
         job_id).depending_on)
 
     cmd = ["echo", "we should execute corason here"]
-    #
+
     # cmd.extend(["queryfile", "tmpQUERYFILEPATH",
     #             "special_org", "tmpREFERENCECLUSTERPATH",
+
     # TODO future: make query.fasta
     cmd.extend([os.path.join(LOG_PATH, 'query.fasta'), # query
                 parent_job_results_path, # directory where gbks are

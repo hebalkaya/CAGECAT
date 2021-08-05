@@ -2,7 +2,6 @@
 {% from "macros.html" import filtering_section %}
 {% from "macros.html" import showNavigationBar %}
 {% from "macros.html" import renderHelpButton %}
-{#{% from "macros.html" import createBackButton %}#}
 {% from "macros.html" import showSelectedClusters %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
@@ -14,7 +13,6 @@
 {% endblock %}
 
 {% block content %}
-{#    {{ createBackButton() }}#}
     <h2 class="indent">Extract clusters</h2>
     {{  showRequiredInputsText() }}
 
@@ -49,7 +47,6 @@
         </div>
     </fieldset>
 
-{#    <br/>#}
     {{ showSelectedClusters(cluster_headers, True, False) }}
     {% if prev_job_type == 'clinker_query' %}
         <b><p class="indent">Note that when your previous job was a clinker_query one, all cluster hits of the <a href="{{ url_for('result.show_result', job_id=main_search_id) }}">main search job</a> will be extracted.</p></b>

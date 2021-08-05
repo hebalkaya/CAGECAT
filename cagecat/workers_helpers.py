@@ -263,7 +263,6 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
         - See documentation of executed functions for their corresponding
             outputs
     """
-
     log_cagecat_version(job_id)
     zip_results(job_id)
     add_time_to_db(job_id, "finish", db)

@@ -26,6 +26,6 @@ def write_unique_genera():
 
     print(len(all_genera))
     # total number of genera is used in bash script from which this script
-    # is called
+    # is called. Above line should be left in!
 
 write_unique_genera()

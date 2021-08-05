@@ -2,7 +2,6 @@
 {% from "macros.html" import create_scientific_input %}
 {% from "macros.html" import showNavigationBar %}
 {% from "macros.html" import renderHelpButton %}
-{#{% from "macros.html" import createBackButton %}#}
 {% from "macros.html" import showSelectedClusters %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
@@ -13,7 +12,6 @@
 {% block title %}CORASON{% endblock %}
 
         {% block content %}
-{#    {{ createBackButton() }}#}
     <h2 class="indent">CORASON</h2>
             {{  showRequiredInputsText() }}
 
@@ -40,17 +38,10 @@
                         {% endfor %}
                 </select>
             </div>
-{#            <div class="input-layer">#}
-{#                <label class="input-label" for="selectedReferenceCluster">Reference cluster</label>#}
-{#                {{ renderHelpButton('selectedReferenceCluster') }}#}
-{#                <input readonly="readonly" type="text" id="selectedReferenceCluster" name="selectedReferenceCluster" size="50" required="required" value="{{reference_cluster}}"/>#}
-{#                #}
-{#            </div>#}
 
             <div class="input-layer">
                 <label class="textarea-label" for="selectedClustersToSearch">Selected clusters</label>
                 {{ renderHelpButton('selectedClustersToSearch') }}
-{#                <textarea cols="50" rows="8" id="selectedClustersToSearch" name="selectedClustersToSearch" required="required">{{cluster_to_search_in}}</textarea>#}
                 {{ showSelectedClusters(cluster_headers, False, False) }}
                 <input type="hidden" name="selectedClustersToUse" id="selectedClustersToUse" value=""/>
             </div>

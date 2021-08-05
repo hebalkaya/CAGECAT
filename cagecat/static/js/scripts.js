@@ -1,8 +1,6 @@
 var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
-var selectedClusters = []
-var selectedQueries = []
 var currentTime = Date();
 var ROOT_URL = '/cagecat'
 
@@ -53,15 +51,12 @@ function showInputOptions(selectionOption, resetQueries){
     if (selectionOption === 'file'){
         genomeFileUploadDiv.classList.remove('no-display');
         ncbiEntriesDiv.classList.add('no-display');
-        // searchPrevJobOptions.classList.add('no-display');
 
         // enable
         setRequiredAndEnabled('genomeFile');
 
         // disable elements
         removeRequiredAndEnabled('ncbiEntriesTextArea');
-        // removeRequiredAndEnabled('searchEnteredJobId');
-        // removeRequiredAndEnabled('searchUploadedSessionFile');
 
         enableOrDisableOption('searchSection', true);
 
@@ -72,15 +67,12 @@ function showInputOptions(selectionOption, resetQueries){
     else if (selectionOption === 'ncbi_entries'){
         genomeFileUploadDiv.classList.add('no-display');
         ncbiEntriesDiv.classList.remove('no-display');
-        // searchPrevJobOptions.classList.add('no-display');
 
         // enable
         setRequiredAndEnabled('ncbiEntriesTextArea')
 
         // disable elements
         removeRequiredAndEnabled('genomeFile');
-        // removeRequiredAndEnabled('searchEnteredJobId');
-        // removeRequiredAndEnabled('searchUploadedSessionFile');
 
         enableOrDisableOption('searchSection', true);
         validateNCBIEntries();
@@ -90,14 +82,10 @@ function showInputOptions(selectionOption, resetQueries){
         ncbiEntriesDiv.classList.add('no-display');
         searchPrevJobOptions.classList.remove('no-display');
 
-        //enable
-        // setRequiredAndEnabled('searchEnteredJobId');
-
         // disable elements
         removeRequiredAndEnabled('genomeFile');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
         document.getElementById("searchLabelSessionFile").classList.add("disabled");
-        // removeRequiredAndEnabled("searchUploadedSessionFile");
 
         enableOrDisableOption('searchSection', false);
 
@@ -124,35 +112,13 @@ function showModule(ev, moduleName){
 
     // Could add "active" to the moduleSelector class for better visualisation
 }
+
 function changeHitAttribute(){
     if (document.getElementById('keyFunction').value !== "len"){
         setRequiredAndEnabled('hitAttribute');
     }
     else {
         removeRequiredAndEnabled('hitAttribute');
-    }
-}
-
-function changePrevSessionType(){
-    let clickedButton = event.target;
-    let module = clickedButton.id.split("Prev")[0];
-    let uploadSessionID = module + "UploadedSessionFile";
-    let jobIDElementID = module + "EnteredJobId";
-    let labelSession = module + "LabelSessionFile"
-
-    if (clickedButton.value === "sessionFile"){
-        setRequiredAndEnabled(uploadSessionID);
-        document.getElementById(labelSession).classList.remove("disabled");
-
-        removeRequiredAndEnabled(jobIDElementID);
-        document.getElementById(jobIDElementID).classList.remove("invalid");
-        enableOrDisableSubmitButtons(false);
-    }
-    else if (clickedButton.value === "jobID"){
-        removeRequiredAndEnabled(uploadSessionID);
-        document.getElementById(labelSession).classList.add("disabled");
-        setRequiredAndEnabled(jobIDElementID);
-        validateJobID(jobIDElementID);
     }
 }
 
@@ -179,7 +145,6 @@ function validateNCBIEntries() {
             errorBox.classList.remove('no-display');
             valid = false;
         }
-
         correctAcc.push(lines[i]);
     }
 
@@ -203,9 +168,6 @@ function validateNCBIEntries() {
                 }
             }
         }
-
-
-
     } else {
         textArea.classList.add("invalid");
         document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
@@ -249,22 +211,16 @@ function enableOrDisableSubmitButtons(disable){
 
 function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
-        // document.getElementById("selectedQueries").value = document.getElementById("selectedQueriesOverview").innerText;
-        // document.getElementById("selectedClusters").value = document.getElementById("selectedClustersOverview").innerText;
-        // console.log(getSelectedQueries());
-        // console.log($('#selectedQueriesSelector option'))
         $('#selectedQueries')[0].value = getSelectedQueries();
     }
     else if (downstream_prog === "clusters"){
         $('#selectedClusters1')[0].value = getSelectedClusters('');
-        // document.getElementById("selectedClusters1").value = document.getElementById("selectedClustersOverview").innerText;
     }
     else if (downstream_prog === "corason"){
         $('#selectedQuery')[0].value = getSelectedQueries();
         $('#selectedClusters2')[0].value = getSelectedClusters('');
         $('#unselectedClusters2')[0].value = getSelectedClusters('un');
     }
-
     else if (downstream_prog === "clinker_query"){
         $('#selectedClusters3')[0].value = getSelectedClusters('');
     }
@@ -321,8 +277,7 @@ function getGenBankFileNames() {
 }
 
 
-function readFileContents(isForRequiredSeqs) {
-
+function readFileContents() {
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
     var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", "gbk", "gb", "genbank", "gbf", "gbff"]
@@ -333,7 +288,6 @@ function readFileContents(isForRequiredSeqs) {
     $('#selectedFileName')[0].innerText = 'Selected file: ' + file.name
 
     reader.onload = function(evt){
-
         if (!valid_ext.includes(ext)){
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
@@ -365,7 +319,6 @@ function readFileContents(isForRequiredSeqs) {
                 requiredSequencesSelect.add(opt);
             }
         }
-
     }
     reader.readAsText(file, "UTF-8");
 }
@@ -449,7 +402,6 @@ function toggleExplanationColumn() {
         middleCol.classList.add('enlarge-it');
 
         toggleButton.innerText = ">>"
-
     } else {
         rightCol.classList.remove('visible');
         rightCol.classList.add('invisible');
@@ -457,22 +409,11 @@ function toggleExplanationColumn() {
         middleCol.classList.add('enlarge-it');
 
         toggleButton.innerText = "<<"
-
-        // setTimeout(function(){
-        //     rightCol.classList.add('no-display');
-        // }, 500);
     }
 
     for (let i=0; i < inputs.length; i++){
         inputs[i].classList.toggle('wider-input');
-        // if (wider){
-        //     inputs[i].classList.add('wider-input');
-        // }
-        // else {
-        //     inputs[i].classList.remove('wider-input');
-        // }
     }
-
 }
 
 function determineHeight() {
@@ -579,7 +520,6 @@ function moveSelectedElements(target, selectionType){
     if (target === 'selected') {
         src = '#unselected'+ selectionType;
         dest = '#selected' + selectionType;
-        // return !$('#unselectedClusters option:selected').remove().appendTo('#selectedClusters');
     }
     else if (target === 'unselected'){
         src = '#selected' + selectionType;
@@ -590,26 +530,25 @@ function moveSelectedElements(target, selectionType){
     }
 
     let result = !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
+    let selectedQueriesSelector = $('#selectedQueriesSelector')[0];
 
     $('#selectClusterButton')[0].innerText = 'Select clusters (' + $('#selectedClustersSelector')[0].length.toString() + ')'
-    $('#selectQueryButton')[0].innerText = 'Select queries (' + $('#selectedQueriesSelector')[0].length.toString() + ')'
+    $('#selectQueryButton')[0].innerText = 'Select queries (' + selectedQueriesSelector.length.toString() + ')'
 
     if (selectionType === 'Queries') {
         let elem = $('#corasonSubmit')[0];
         if (elem !== null) {
-            if ($('#selectedQueriesSelector')[0].length === 1) {
+            if (selectedQueriesSelector.length === 1) {
                 elem.removeAttribute('disabled');
             } else {
                 elem.setAttribute('disabled', 'disabled');
             }
         }
     }
-
     return result;
 }
 
 function showSelection(toShow){
-    // console.log($('#clusterSelection'));
     let show;
     let hide;
 
@@ -637,10 +576,10 @@ function checkClanCutoffValues(){
         elem.classList.add('invalid');
     }
 }
+
 function addClustersToUse(){
     let elem = $('#selectedReferenceCluster')[0];
     let merged = []
-    // let selectedRefCluster = $('#selectedReferenceCluster')
 
     for (let i=0; i < elem.children.length; i++){
         if (i !== elem.selectedIndex) {
@@ -692,17 +631,6 @@ function setExampleInput(tool_name){
     }
 }
 
-function validateForm(){
-//    function to check if user wants to use the example output, as we cannot programmatically
-//    set a file to be uploaded from our server, we "show" that we upload a file,
-//    but actually we send no files along, but use the files stored on the server
-    if ($('#job_title')[0].value === 'Example visualization input (BA)'){
-
-    }
-
-
-}
-
 function getOutputFromPlot(plotting_type){
     let frame = document.getElementById("newWindow");
     let doc = frame.contentDocument || frame.contentWindow.document;
@@ -717,14 +645,7 @@ function getOutputFromPlot(plotting_type){
         setTimeout(function(){
             let ticks = doc.getElementsByClassName("tick");
             for (let i=0; i < ticks.length; i++){
-                // // console.log(.innerHTML);
-                // let qn = ticks[i].childNodes[1];
-                // // timeout(0.1);
-                // console.log(qn.textContent);
                 const query_name = ticks[i].childNodes[1];
-                // parent.window.postMessage(["Queries", query_name.textContent], "*");
-                // app
-                // parent.console.log();
                 let text = query_name.textContent;
 
                 let option = document.createElement('option');
@@ -733,8 +654,6 @@ function getOutputFromPlot(plotting_type){
                 option.classList.add('smaller-font');
 
                 querySelector.appendChild(option);
-
-
             }
         }, 100); // sometimes loading would fail. A timeout leads to a succesfull load
     }
@@ -753,7 +672,6 @@ function getOutputFromPlot(plotting_type){
         } else if (plotting_type === 'visualize') {
             if (clusters[i].firstChild.childNodes[0].textContent !== 'Query Cluster') {
                 text = clusters[i].firstChild.childNodes[0].textContent;
-                // continue;
             }
 
         } else {
@@ -767,8 +685,6 @@ function getOutputFromPlot(plotting_type){
             clusterSelector.appendChild(option);
         }
     }
-
-    // setMultiSelectHeight();
 }
 
 // Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used (check usages manually)
@@ -836,6 +752,7 @@ function showDetailedPreviousJobs(){
 
         overview.insertBefore(tr, overview.childNodes[0]);
     }
+
     let tr = document.createElement("tr");
 
     let th = document.createElement("th");

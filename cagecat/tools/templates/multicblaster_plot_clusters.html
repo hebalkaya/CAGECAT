@@ -2,7 +2,6 @@
 {% from "macros.html" import filtering_section %}
 {% from "macros.html" import showNavigationBar %}
 {% from "macros.html" import renderHelpButton %}
-{#{% from "macros.html" import createBackButton %}#}
 {% from "macros.html" import showSelectedClusters %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
@@ -14,8 +13,6 @@
 {% endblock %}
 
 {% block content %}
-{#    {{ createBackButton() }}#}
-
     <h2 class="indent">Visualize with query clusters</h2>
     {{  showRequiredInputsText() }}
 
@@ -36,16 +33,6 @@
         </fieldset>
 
         {{ showSelectedClusters(cluster_headers, True, False) }}
-{#        <h3 class="indent">Overview of selected clusters</h3>#}
-{#        <ul>#}
-{#        {% for header in cluster_headers %}#}
-{#            {% if not header %}#}
-{#                <li>All clusters are selected</li>#}
-{#            {% else %}#}
-{#                <li>{{header}}</li>#}
-{#            {% endif %}#}
-{#        {% endfor %}#}
-{#        </ul>#}
 
         <div class="input-layer centered">
             <input class="button" value="Submit" type="submit"/>

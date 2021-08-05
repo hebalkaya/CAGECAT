@@ -154,3 +154,25 @@ window.addEventListener("message", function(e){
 function lastPage () {
     window.history.back();
 }
+
+function changePrevSessionType() {
+    let clickedButton = event.target;
+    let module = clickedButton.id.split("Prev")[0];
+    let uploadSessionID = module + "UploadedSessionFile";
+    let jobIDElementID = module + "EnteredJobId";
+    let labelSession = module + "LabelSessionFile"
+
+    if (clickedButton.value === "sessionFile") {
+        setRequiredAndEnabled(uploadSessionID);
+        document.getElementById(labelSession).classList.remove("disabled");
+
+        removeRequiredAndEnabled(jobIDElementID);
+        document.getElementById(jobIDElementID).classList.remove("invalid");
+        enableOrDisableSubmitButtons(false);
+    } else if (clickedButton.value === "jobID") {
+        removeRequiredAndEnabled(uploadSessionID);
+        document.getElementById(labelSession).classList.add("disabled");
+        setRequiredAndEnabled(jobIDElementID);
+        validateJobID(jobIDElementID);
+    }
+}

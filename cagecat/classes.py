@@ -1,4 +1,4 @@
-"""Module to store classes
+"""Module to store classes used in CAGECAT
 
 Author: Matthias van den Belt
 """
@@ -45,6 +45,3 @@ class CAGECATJob:
 
     def get_job_type(self):
         return self.options['job_type']
-
-
-

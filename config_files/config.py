@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-CAGECAT_VERSION = '1.06'
+CAGECAT_VERSION = '1.07'
 
 # jobs to persist on server (i.e. example outputs)
 PERSISTENT_JOBS = ('W885A828D304Y06',
@@ -12,10 +12,6 @@ PERSISTENT_JOBS = ('W885A828D304Y06',
 # changeable
 CONF = {"SQLALCHEMY_DATABASE_URI": 'sqlite:////repo/cagecat/database.db',
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-        # "DEBUG": True,
-        # "HOST": "0.0.0.0",
-        # "PORT": 5001,
-        # "hmm_db_download_folder": "/hmm_db_downloads",
         'PFAM_DB_FOLDER': '/pfam_db',
         'finished_hmm_db_folder': '/hmm_databases',
         'DOMAIN': 'http://www.bioinformatics.nl/cagecat/',

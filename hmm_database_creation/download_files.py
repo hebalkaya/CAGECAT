@@ -9,7 +9,17 @@ import sys
 sys.path.append('..')
 from config_files.config import *
 
-def parse_paths(fp, ext='.gbff.gz'):
+def parse_paths(fp: str, ext='.gbff.gz') -> dict:
+    """Parses FTP paths of genome files of a genus to use them for downloading
+
+    Input:
+        - file_path: file where all FTP paths of a genus have been dumped
+        - ext: extension to search for during downloading
+
+    Output:
+        - dictionary per genus  with species as key and the corresponding
+            FTP paths of that specie
+    """
     genus_paths = {}
 
     with open(fp) as inf:
@@ -62,6 +72,15 @@ def create_dir(*args) -> str:
 
 
 def validate_download(gb_path):
+    """Validates a downloading using their MD5 checksum
+
+    Input:
+        - gb_path: path to genome file
+
+    Output:
+        - bool: if the file was successfully validated
+
+    """
     print('         -> validation.. ', end='\r')
 
     with open(os.path.join(REFSEQ_DIR, 'md5checksums.txt')) as inf:
@@ -90,6 +109,18 @@ def validate_download(gb_path):
 
 
 def download_files(genus, paths, output_dir, blocksize=33554432):
+    """Downloads (genome) files from NCBI's FTP server
+
+    Input:
+        - genus: for which files are going to be downloaded
+        - paths: all paths per species
+        - output_dir: directory where files should be saved
+        - blocksize: blocksize to be used during downloading (current has
+            been recommended by NCBI)
+
+    Output:
+        - None, downloaded genome files
+    """
     present_files = os.listdir(output_dir)
     species_count = len(paths)
 

@@ -33,7 +33,6 @@ JOBS_DIR = os.path.join("cagecat", "jobs")
 FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
 PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"
 
-
 ### Function definitions
 def generate_job_id(id_len: int = 15) -> str:
     """Generates a numeric job ID with each 4th character being a letter

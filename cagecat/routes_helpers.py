@@ -95,19 +95,11 @@ def get_previous_job_properties(job_id: str, job_type: str,
     Output:
         - file_path: appropriate file path to be used in the next steps
     """
-    # file_type = request.form[f"{module}PreviousType"]
-    print('herrreee')
     prev_job_id = request.form[f"{module}EnteredJobId"]
-    print('WE ARE HERE')
-
     ut.check_valid_job(prev_job_id)
 
     file_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results",
                              f"{prev_job_id}_session.json")
-    # elif job_type == "sessionFile":
-    #     raise DeprecationWarning('Session file is not used anymore')
-    # else:
-    #     raise IOError("Not valid file type")
 
     return file_path
 
@@ -316,4 +308,10 @@ def get_parent_job(new_job: CAGECATJob,
 
 
 def get_server_info():
+    """Returns current state of CAGECAT's server
+
+    Output:
+        - dict: info about the current status of the server and queued
+            or running jobs
+    """
     return ut.get_server_info(q, r)

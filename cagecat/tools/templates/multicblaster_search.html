@@ -16,16 +16,11 @@
 {% endblock %}
 
 {% block scripts %}
-{#    {% if module_to_show == 'visualization' %}#}
-{#showModule(undefined, 'clinkerContent');#}
-
     {% if module_to_show == 'recompute' %}
 $(':radio:not(:checked)').attr('disabled', true);
-
     {% else %}
-        initReadQueryFile();
+initReadQueryFile();
     {% endif %}
-
 {% endblock %}
 
 {% block navigationBar %}
@@ -33,18 +28,6 @@ $(':radio:not(:checked)').attr('disabled', true);
 {% endblock %}
 
 {% block content %}
-<!--Module buttons-->
-{#<div class="modules centered">#}
-{#    <button class="button moduleSelector" onclick="showModule(event,#}
-{#    'searchModuleContent')">Multicblaster#}
-{#    </button>#}
-{#    <button class="button moduleSelector" id="showGNE"#}
-{#            onclick="showModule(event, 'gneModuleContent')">Neighbourhood#}
-{#    </button>#}
-{##}
-{#    <button class="button moduleSelector" onclick="showModule(event,'clinkerContent')">Visualization</button>#}
-{#</div>#}
-
     {% if module_to_show is none %}
         {% set module_name = "Search" %}
     {% else %}
@@ -250,10 +233,7 @@ $(':radio:not(:checked)').attr('disabled', true);
     <label class="fieldset-label" for="generalOptionSection">Additional options</label>
     <fieldset id="generalOptionSection">
         <label class="checkbox-label">
-            <input type="checkbox" id="sortClusters" name="sortClusters">Sort
-                clusters
-            </input>
-
+            <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters
         </label>
         {{ renderHelpButton('sortClusters', True) }}
     </fieldset>
@@ -281,7 +261,4 @@ $(':radio:not(:checked)').attr('disabled', true);
     </div>
     </form>
 </div>
-
-</div>
-
 {% endblock %}
