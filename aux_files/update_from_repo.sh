@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 # Author: Matthias van den Belt
 
 echo "--> Copying jobs folder and database.db to host"

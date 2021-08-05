@@ -2,9 +2,7 @@
 
 Author: Matthias van den Belt
 """
-
 import typing as t
-
 
 def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
     """Returns scaffolds of the selected clusters

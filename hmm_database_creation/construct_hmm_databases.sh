@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# Author: Matthias van den Belt
 
 # TODO future: find out how we can obtain the families of organisms from NCBI
 # TODO future: we could also adapt this script to download fungi genomes

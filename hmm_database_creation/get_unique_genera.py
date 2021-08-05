@@ -1,3 +1,7 @@
+"""Script to get the unique genera from a collection of all species
+
+Author: Matthias van den Belt
+"""
 from sys import argv
 
 def write_unique_genera():

@@ -9,7 +9,6 @@ from config_files.config import EMAIL
 
 feedback = Blueprint('feedback', __name__, template_folder="templates")
 
-
 @feedback.route('/')
 def feedback_page() -> str:
     """Shows the feedback page to the user

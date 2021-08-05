@@ -8,9 +8,8 @@ from flask import Blueprint, request
 
 # own project imports
 import cagecat.parsers as pa
-# import cagecat.utils as ut
 import cagecat.routes
-from cagecat import app, utils as ut, routes_helpers as rthelp, \
+from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
 from config_files import config
 from cagecat.routes_helpers import show_template

@@ -8,7 +8,6 @@ from flask import Blueprint, request, url_for, send_file
 
 # own project imports
 import cagecat.const
-from cagecat import app
 import cagecat.utils as ut
 import cagecat.const as co
 from cagecat.routes_helpers import show_template

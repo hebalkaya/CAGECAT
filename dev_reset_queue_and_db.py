@@ -9,7 +9,8 @@ Author: Matthias van den Belt
 # package imports
 from redis import Redis
 from rq import Queue
-from rq.registry import StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry
+from rq.registry import StartedJobRegistry, FinishedJobRegistry, \
+    FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry
 import os
 
 ### main code

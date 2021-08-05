@@ -1,3 +1,16 @@
+""""Stores help texts shown to the user when the help-button is clicked
+
+These dictionaries are referenced to when a request is made to the help-text
+URL with the key name in that URL to get the appropriate help text. After
+changes have been made to this module, uWSGI should be reloaded using:
+
+uwsgi --reload /tmp/uwsgi-master.pid
+
+within the Docker container
+
+Author: Matthias van den Belt
+"""
+
 from cagecat.const import FASTA_SUFFIXES, GENBANK_SUFFIXES
 
 JOB_DESCRIPTOR_HELPS = {'job_title': {'title': 'Job title', 'module': '', 'text': 'Enter a job title for easy identification of jobs.\n\nRequired: no\n\nMaximum length: 60 characters'},
@@ -70,6 +83,3 @@ for label, d in HELP_OVERVIEW:
         d[key]['module'] = label
 
     HELP_TEXTS.update(d)
-
-# For changes made in this file to take effect, the Docker container
-# needs to be restarted

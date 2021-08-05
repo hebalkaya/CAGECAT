@@ -16,7 +16,6 @@ from cagecat.classes import CAGECATJob
 
 # typing imports
 import typing as t
-from werkzeug.datastructures import ImmutableMultiDict
 
 ### Function definitions
 def get_connected_jobs(job: t.Optional[dbJob]) -> \

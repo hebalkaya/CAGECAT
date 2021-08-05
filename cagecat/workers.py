@@ -11,7 +11,6 @@ from cagecat.workers_helpers import *
 import cagecat.utils as ut
 from config_files import config
 
-
 ### redis-queue functions
 def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     file_path: t.Union[str, None] = None) -> None:
