@@ -21,4 +21,8 @@ RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
 
 RUN ln -s /etc/nginx/sites-available/cagecat /etc/nginx/sites-enabled
 
+RUN chmod +x /repo/maint_backup.sh
+RUN chmod +x /repo/hmm_database_construction/construct_hmm_databases.sh
+RUN mv /repo/config_files/crontab /etc/crontab
+
 CMD ["/usr/bin/supervisord", "-c", "/repo/config_files/supervisord.conf"]

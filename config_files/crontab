@@ -1,11 +1,11 @@
-# this file should be manually edited using the command:
-# crontab -e
-# as root when creating the container for the first time
+#!/bin/bash
+PATH=/bin/bash:/usr/bin:/repo
+SHELL=/bin/sh
 
-PATH=/usr/local/bin
+# make sure all sh scripts have rights to be executed (chmod +x <filename>)
 
 # minute hour day_of_month month day_of_week command
-5 0 * * * cd /repo && python maint_remove_old_jobs.py
-10 0 */7 * * bash /repo/maint_backup.sh > /process_logs/maintenance/$(date +"%Y%m%d")_backup.log
-31 13 2 * * cd /repo/hmm_database_creation && bash construct_hmm_databases.sh > /process_logs/maintenance/$(date +"%Y%m%d")_hmm_dbs_refseq_downloading.log
-31 13 2 * * cd /repo/hmm_database_creation && python create_databases.py > /process_logs/maintenance/$(date +"%Y%m%d")_hmm_dbs_creation.log
+20 0 * * * root cd /repo && python /repo/maint_remove_old_jobs.py
+10 0 */7 * root /repo/maint_backup.sh > /process_logs/maintenance/$(date +"\%Y\%m\%d")_backup.log
+30 2 2 * * root cd /repo/hmm_database_creation && /repo/hmm_database_creation/construct_hmm_databases.sh > /process_logs/maintenance/$(date +"\%Y\%m\%d")_hmm_dbs_refseq_downloading.log
+30 2 2 * * root cd /repo/hmm_database_creation && python3 /repo/hmm_database_creation/create_databases.py > /process_logs/maintenance/$(date +"\%Y\%m\%d")_hmm_dbs_creation.log

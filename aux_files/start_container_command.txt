@@ -7,7 +7,7 @@ docker rm cagecat_service && \
 rm -rf repo && git clone git@git.wur.nl:belt017/thesis_repo.git && \
 mv thesis_repo/ repo && \
 docker build -t cagecat . && \
-docker run --name cagecat_service -p 5001:88 --ip 172.17.0.14 --mount source=cagecat_storage,target=/repo/cagecat -v /lustre/BIF/nobackup/belt017/backups:/backups -d cagecat
+docker run --name cagecat_service -p 5001:88 --ip 172.17.0.14 --mount source=cagecat_storage,target=/repo/cagecat -v /lustre/BIF/nobackup/belt017/databases:/hmm_databases -v /lustre/BIF/nobackup/belt017/backups:/backups -d cagecat
 
 # !! important -- volume binding and mounting cannot be done from Dockerfile and should be done from the CLI when building the Docker container, as in with the command above
 # TODO: maybe volume bind of hmm_database genome files can be removed

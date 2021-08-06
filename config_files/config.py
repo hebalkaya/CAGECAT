@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-CAGECAT_VERSION = '1.08'
+CAGECAT_VERSION = '1.09'
 
 # jobs to persist on server (i.e. example outputs)
 PERSISTENT_JOBS = ('W885A828D304Y06',

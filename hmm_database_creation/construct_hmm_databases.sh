@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # Author: Matthias van den Belt
 
 # TODO future: find out how we can obtain the families of organisms from NCBI

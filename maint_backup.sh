@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # Author: Matthias van den Belt
 
 fp="/backups/$(date +"%Y%m%d")_backup"
