@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH=/bin/bash:/usr/bin:/repo
+PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 SHELL=/bin/sh
 
 # make sure all sh scripts have rights to be executed (chmod +x <filename>)
