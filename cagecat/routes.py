@@ -49,7 +49,7 @@ def submit_job() -> str:
     # only used if a previous job ID or previous session file will be used
 
     ut.create_directories(job_id)
-    print(request.form)
+
     if job_type == "search":
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
 
@@ -162,7 +162,6 @@ def submit_job() -> str:
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
     last_job = ut.fetch_job_from_db(rthelp.enqueue_jobs(new_jobs))
-    print('jajaa here')
 
     url = url_for("result.show_result",
                   job_id=last_job.id,

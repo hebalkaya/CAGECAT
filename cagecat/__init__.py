@@ -1,4 +1,4 @@
-"""Initializes CAGECAT web service (started by uwsgi
+"""Initializes CAGECAT web service (started by uwsgi)
 
 Initialization module of the CAGECAT web service. This module executes any
 preparational steps before starting CAGECAT. This file is ran from

@@ -209,16 +209,16 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
 
         depending_on = None if cc_job.depends_on_job_id is None else \
             created_redis_jobs_ids[i-1][1]
-        print('Does it go wrong here?')
+
         job = q.enqueue(cc_job.function,
                         args=(cc_job.job_id, ),
                         kwargs={'options': cc_job.options,
                                 'file_path': cc_job.file_path},
                         depends_on=depending_on,
                         result_ttl=86400)
-        print('or heree')
+
         main_search_job_id = add_parent_search_and_child_jobs_to_db(cc_job, i == len(new_jobs)-1)
-        print('HERRRRRRRRRRRRRRRRRRRE')
+
 
         j = dbJob(id=cc_job.job_id,
                   status="queued" if depending_on is None else "waiting",  # for parent job to finish
