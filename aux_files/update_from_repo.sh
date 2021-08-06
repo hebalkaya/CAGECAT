@@ -5,9 +5,6 @@ echo "--> Copying jobs folder and database.db to host"
 docker cp cagecat_service:/repo/cagecat/database.db database.db
 docker cp cagecat_service:/repo/cagecat/jobs jobs
 
-echo "--> Removing old repo"
-rm -rf repo
-
 echo "--> Cloning new repo"
 git clone git@git.wur.nl:belt017/thesis_repo.git && \
 mv thesis_repo/ repo
