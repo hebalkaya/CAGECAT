@@ -22,7 +22,7 @@ RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
 RUN ln -s /etc/nginx/sites-available/cagecat /etc/nginx/sites-enabled
 
 RUN chmod +x /repo/maint_backup.sh
-RUN chmod +x /repo/hmm_database_construction/construct_hmm_databases.sh
+RUN chmod +x /repo/hmm_database_creation/construct_hmm_databases.sh
 RUN chmod +x /repo/maint_remove_old_jobs.py
 RUN chmod +x /repo/hmm_database_creation/create_databases.py
 
