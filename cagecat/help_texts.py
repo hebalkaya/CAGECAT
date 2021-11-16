@@ -15,10 +15,12 @@ from cagecat.const import FASTA_SUFFIXES, GENBANK_SUFFIXES
 
 JOB_DESCRIPTOR_HELPS = {'job_title': {'title': 'Job title', 'module': '', 'text': 'Enter a job title for easy identification of jobs.\n\nRequired: no\n\nMaximum length: 60 characters'},
                         'email_notification': {'title': 'Email notification', 'module': '', 'text': 'Enter your e-mail to get notified when your job has finished.\n\nRequired: no'}}
+
 GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': '', 'text': 'The ID of the job which\' results are wished to be used.'},
                  'generalDelimiter': {'title': 'Output file delimiter', 'module': '', 'text': 'Single delimiter character to use when writing results to a file.\n\nResults will be separated of each other in the output file by the specified character.\n\nRequired: no\nDefault: no delimiter (human readable)'},
                  'generalDecimals': {'title': 'Number of decimals', 'module': '', 'text': 'Total decimal places to use when saving score values.\n\nRequired: yes'},
                  'generalHideHeaders': {'title': 'Hide headers', 'module': '', 'text': 'Hide headers when saving result output.\n\nRequired: no'}}
+
 SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'File containing protein sequences (FASTA) or a genome (GenBank) to be searched.\n\nAllowed extensions:\n  - ' + '\n  - '.join(FASTA_SUFFIXES + GENBANK_SUFFIXES)},
                 'ncbiEntriesTextArea': {'title': 'Search from NCBI entries', 'module': '', 'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering the same identifier twice will prevent you from continuing.'},
                 'entrez_query': {'title': 'Filter using Entrez query', 'module': '', 'text': 'An NCBI Entrez search term for pre-search filtering of an NCBI database when using command line BLASTp (e.g. Aspergillus[organism])\n\nRequired: no'},
@@ -36,44 +38,56 @@ SEARCH_HELPS = {'genomeFile': {'title': 'Query file', 'module': '', 'text': 'Fil
                 'intermediate_genes': {'title': 'Show intermediate genes', 'module': '', 'text': 'Show genes that in or near clusters but not part of the cluster.\n\nRequired: no'},
                 'intermediate_max_distance': {'title': 'Maximum intermediate gene distance', 'module': '', 'text': 'The maximum distance between the start/end of a cluster and an intermediate gene\n\nSetting this to a higher value will allow for a broader analysis of the genome neighbourhood of each cluster.\n\nRequired: yes'},
                 'intermediate_max_clusters': {'title': 'Maximum number of clusters to find intermediate genes for', 'module': '', 'text': 'The maximum amount of clusters will get intermediate genes assigned. Ordered on score.\n\nRequired: yes'}}
+
 GNE_HELPS = {'max_intergenic_distance': {'title': 'Maximum intergenic distance', 'module': '', 'text': 'Maximum distance in bp between genes.\n\nRequired: yes'},
              'sample_number': {'title': 'Number of samples', 'module': '', 'text': 'Total samples taken from Maximum intergenic distance.\n\nRequired: yes'},
              'sampling_space': {'title': 'Sampling space', 'module': '', 'text': 'Draw sampling values from a linear or log scale.\n\nRequired: yes'}}
+
 CLINKER_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'text': 'Do not align clusters.\n\nRequired: no'},
                       'identity': {'title': 'Minimum alignment sequence identity', 'module': '', 'text': 'Minimum alignment sequence identity.\n\nRequired: yes'},
                       'hideLinkHeaders': {'title': 'Hide alignment column headers', 'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'},
                       'hideAlignHeaders': {'title': 'Hide alignment cluster name headers', 'module': '', 'text': 'Hide alignment cluster name headers.\n\nRequired: no'},
                       'useFileOrder': {'title': 'Maintain order of input files', 'module': '', 'text': 'Display clusters in order of input files.\n\nRequired: no'}}
+
 BINARY_TABLE_HELPS = {'keyFunction': {'title': 'Key function', 'module': '', 'text': 'Key function used when generating binary table cell values.\n\nRequired: yes'},
                       'hitAttribute': {'title': 'Hit attribute', 'module': '', 'text': 'Hit attribute used when generating binary table cell values.\n\nRequired: yes'}}
+
 FILTERING_HELPS = {'selectedOrganisms': {'title': 'Organisms to filter fot', 'module': '', 'text': 'Organism names to filter hits for. When entering multiple organisms, separate by a space.\n\nRequired: no'},
                    # 'selectedScaffolds': {'title': '', 'module': '', 'text': ''},
                    'clusterNumbers': {'title': 'Cluster numbers', 'module': '', 'text': 'Cluster numbers/ranges provided by the summary file of the \'search\' command or selected online. If no numbers are entered, no filtering takes place.\n\nRequired: no'},
                    'clusterScoreThreshold': {'title': 'Cluster score threshold', 'module': '', 'text': 'Minimum score of a cluster in order to be included. If no score is entered, no filtering takes place.\n\nRequired: no'},
                    'selectedQueries': {'title': 'Query filtering', 'module': '', 'text': 'IDs of query sequences to filter for.\n\nRequired: no'}}
+
 CLINKER_QUERY_HELPS = {'maxclusters': {'title': 'Maximum number of clusters to plot', 'module': '', 'text': 'The maximum amount of clusters that will be plotted. Ordered on score.\n\nRequired: yes'}}
+
 EXTR_SEQS_HELPS = {'downloadSeqs': {'title': 'Download sequences', 'module': '', 'text': 'Download protein sequences for the selected proteins. The resulting summary will have a FASTA format.\n\nRequired: no'},
                    'nameOnly': {'title': 'Name only', 'module': '', 'text': 'Do not save sequence descriptions (i.e. no genomic coordinates).\n\nRequired: no'}}
+
 EXTR_CLUST_HELPS = {'prefix': {'title': 'File prefix', 'module': '', 'text': 'Start of the name for each created cluster file, e.g. <prefix>cluster1.\n\nRequired: no'},
                     'format': {'title': 'File format', 'module': '', 'text': 'Format of the resulting files.\n\nRequired: no'}}
-CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'text': 'Query to be analyzed\n\nRequired: yes'},
-                 'selectedReferenceCluster': {'title': 'Selected reference cluster', 'module': '', 'text': 'The cluster number of which cluster should act as the reference cluster. The cluster numbers correspond with the cluster numbers of the preceding job. Note that the reference cluster must include the query gene, or Corason will fail to execute.\n\nRequired: yes'},
-                 'selectedClustersToSearch': {'title': 'Selected clusters to search in', 'module': '', 'text': 'TODO'}, # is this list parameter?
-                 'evalue': {'title': 'Minimal e-value', 'module': '', 'text': 'Minimal e-value for a gene to be considered a hit.\n\nRequired: yes'},
-                 'bitscore': {'title': 'Bitscore', 'module': '', 'text': 'TODO'},
-                 'clusterRadio': {'title': 'Number of genes to analyze', 'module': '', 'text': 'Number of genes in the neighbourhood to analyze\n\nRequired: yes'},
-                 'ecluster': {'title': 'e-value of genes from reference cluster', 'module': '', 'text': 'e-value for sequences from reference cluster\n\nRequired: yes'},
-                 'ecore': {'title': 'TODO', 'module': '', 'text': 'e-value for Best Bidirectional Hits used to construct genomic core from clusters.\n\nRequired: yes'},
-                 'rescale': {'title': 'Rescale', 'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
+
+# CORASON_HELPS = {'selectedQuery': {'title': 'Selected query', 'module': '', 'text': 'Query to be analyzed\n\nRequired: yes'},
+#                  'selectedReferenceCluster': {'title': 'Selected reference cluster', 'module': '', 'text': 'The cluster number of which cluster should act as the reference cluster. The cluster numbers correspond with the cluster numbers of the preceding job. Note that the reference cluster must include the query gene, or Corason will fail to execute.\n\nRequired: yes'},
+#                  'selectedClustersToSearch': {'title': 'Selected clusters to search in', 'module': '', 'text': 'TODO'}, # is this list parameter?
+#                  'evalue': {'title': 'Minimal e-value', 'module': '', 'text': 'Minimal e-value for a gene to be considered a hit.\n\nRequired: yes'},
+#                  'bitscore': {'title': 'Bitscore', 'module': '', 'text': 'TODO'},
+#                  'clusterRadio': {'title': 'Number of genes to analyze', 'module': '', 'text': 'Number of genes in the neighbourhood to analyze\n\nRequired: yes'},
+#                  'ecluster': {'title': 'e-value of genes from reference cluster', 'module': '', 'text': 'e-value for sequences from reference cluster\n\nRequired: yes'},
+#                  'ecore': {'title': 'TODO', 'module': '', 'text': 'e-value for Best Bidirectional Hits used to construct genomic core from clusters.\n\nRequired: yes'},
+#                  'rescale': {'title': 'Rescale', 'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
+
 HMM_HELPS  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
               'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'HMM profile identifiers to use when searching the selected genus database.\n\nRequired: yes'}}
+
 HELP_OVERVIEW = [('multiple', JOB_DESCRIPTOR_HELPS),
                  ('multiple', GENERAL_HELPS), ('search', SEARCH_HELPS),
                  ('neighbourhood', GNE_HELPS), ('clinker visualisation', CLINKER_HELPS),
                  ('search', BINARY_TABLE_HELPS), ('multiple', FILTERING_HELPS),
                  ('clinker visualisation with query', CLINKER_QUERY_HELPS), ('extract sequences',
                  EXTR_SEQS_HELPS), ('extract clusters', EXTR_CLUST_HELPS),
-                 ('corason', CORASON_HELPS), ('HMM', HMM_HELPS)]
+                 ('HMM', HMM_HELPS),
+                 # ('corason', CORASON_HELPS)
+                 ]
 HELP_TEXTS = {}
 
 # BLANC: {'input_help': {'title': 'blanc', 'module': '', 'text': 'blanc'}}
