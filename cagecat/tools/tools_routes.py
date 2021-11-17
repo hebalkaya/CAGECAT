@@ -40,7 +40,7 @@ def tools_explanation() -> str:
 
 @tools.route("/search/rerun/<prev_run_id>")
 @tools.route("/search")
-def multicblaster_search(prev_run_id: str = None) -> str:
+def cblaster_search(prev_run_id: str = None) -> str:
     """Shows home page to the user
 
     Input:
