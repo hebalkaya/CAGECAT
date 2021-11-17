@@ -59,13 +59,13 @@ def multicblaster_search(prev_run_id: str = None) -> str:
         headers = None
         module_to_show = None
 
-    return rthelp.show_template("multicblaster_search.html",
+    return rthelp.show_template("cblaster_search.html",
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
                                 headers=headers,
                                 genera=cagecat.routes.PRESENT_DATABASES,
                                 query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
-                                show_examples='multicblaster_search')
+                                show_examples='multicblaster_search') # TODO: check if show_examples is used
 
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
@@ -77,7 +77,7 @@ def clinker_query() -> str:
     clusters = pa.parse_selected_cluster_numbers(
         request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
-    return show_template("multicblaster_plot_clusters.html",
+    return show_template("cblaster_plot_clusters.html",
                          prev_job_id=request.form["job_id"],
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
@@ -96,7 +96,7 @@ def extract_sequences() -> str:
         - HTML represented in string format showing options for extracting
             sequences in the client's browser
     """
-    return show_template("multicblaster_extract_sequences.html",
+    return show_template("cblaster_extract_sequences.html",
                          selected_queries=request.form["selectedQueries"].split('\r\n'),
                          # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])
@@ -125,7 +125,7 @@ def extract_clusters() -> str:
     cluster_numbers = pa.parse_selected_cluster_numbers(selected_clusters,
                                                         pattern)
 
-    return show_template("multicblaster_extract_clusters.html",
+    return show_template("cblaster_extract_clusters.html",
                          # selected_scaffolds=selected_scaffolds,
                          cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
@@ -168,7 +168,7 @@ def corason() -> str:
 
 @tools.route('/gne', methods=['GET', 'POST'])
 def gene_neighbourhood_estimation() -> str:
-    return show_template('multicblaster_gene_neighbourhood_estimation.html',
+    return show_template('cblaster_gene_neighbourhood_estimation.html',
                          max_samples=config.THRESHOLDS['maximum_gne_samples'],
                          prev_job_id=request.form['job_id'])
 
