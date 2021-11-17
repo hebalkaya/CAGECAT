@@ -71,7 +71,7 @@
             <div class="column leftColumn downstream-div downstream-div-height" id="downStreamModulesDiv">
 
         {% if 'recompute' in downstream_modules %}
-            <a href="{{url_for('tools.multicblaster_search', prev_run_id=j_id)}}?type=recompute&resetQueries=0"><button class="button button-small">Recompute</button></a>
+            <a href="{{url_for('tools.cblaster_search', prev_run_id=j_id)}}?type=recompute&resetQueries=0"><button class="button button-small">Recompute</button></a>
         {% endif %}
 
         {% if 'gne' in downstream_modules %}
@@ -116,16 +116,16 @@
         {% endif %}
 
 
-        {% if 'corason' in downstream_modules %}
-    <form action="{{ url_for('tools.corason')}}" method="post" onsubmit="addSelectedToForm('corason')">
-        <input type="hidden" name="job_id" value="{{j_id}}"/>
-        <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>
-        <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>
-        <input type="hidden" name="unselectedClusters" id="unselectedClusters2" value=""/>
+{#        {% if 'corason' in downstream_modules %}#}
+{#    <form action="{{ url_for('tools.corason')}}" method="post" onsubmit="addSelectedToForm('corason')">#}
+{#        <input type="hidden" name="job_id" value="{{j_id}}"/>#}
+{#        <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>#}
+{#        <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>#}
+{#        <input type="hidden" name="unselectedClusters" id="unselectedClusters2" value=""/>#}
 {#        <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>#}
-        <button class="button button-small" type="submit" id="corasonSubmit" disabled="disabled">CORASON</button>
-    </form>
-        {% endif %}
+{#        <button class="button button-small" type="submit" id="corasonSubmit" disabled="disabled">CORASON</button>#}
+{#    </form>#}
+{#        {% endif %}#}
 
             </div>
     {% if module != 'extract_clusters' %}

@@ -30,9 +30,13 @@ docker run --name cagecat_service -p 5001:88 --ip 172.17.0.14 --mount source=cag
         # mkdir /hmm_databases # if non-existing
     # create dummy sensitive.py file
         # touch /repo/config_files/sensitive.py
-    # remove cagecat URL prepend line from uwsgi-params config file
+    # remove cagecat URL prepend line from /repo/config_files/uwsgi_params file
         # no command, manually remove following line:
         # uwsgi_param  SCRIPT_NAME        /cagecat;
+    # reload nginx configuration file
+        # nginx -s reload
+    # run command below for changes to take effect:
+        # uwsgi --reload /tmp/uwsgi-master.pid
 
 # Step 4
     # viewing the development container:

@@ -19,10 +19,29 @@
 
         <div>
             <h2>Contact</h2>
-            <p>CAGECAT was created by Matthias van den Belt under supervision of Mohammad Alanjary and Marnix Medema.</p>
-            <p>Use the <a href="{{ url_for('feedback.feedback_page') }}">feedback form</a> if you wish to contact us.</p>
-    </div>
+{#            <p>CAGECAT was created by Matthias van den Belt under supervision of Marnix Medema (WUR) and Mohammad Alanjary (WUR) and in close contact with .</p>#}
+            <p>Use the <a href="{{ url_for('feedback.feedback_page') }}">feedback form</a> to contact the CAGECAT team.</p>
+        </div>
 
-    <p>Release: {{ version }}</p>
+        <div>
+            <h2>Contributions</h2>
+            <p>Contributors to the CAGECAT project:</p>
+            <div style="margin-left: 2%;">
+                <div>
+                    <h3>Wageningen University & Research</h3>
+                    <img style="margin-left: 1%;" src="{{ url_for('static', filename='images/wur_logo.png') }}" alt="Wageningen University"/>
+                </div>
+                <br/>
+                <div>
+                    <h3>The University of Western Australia</h3>
+                    <img style="margin-left: 1%;" height="140px;" src="{{ url_for('static', filename='images/UWA_logo.png') }}" alt="The University of Western Australia"/>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+    <br/>
+<hr/>
+<p class="indent">Release: {{ version }}</p>
 {% endblock %}
