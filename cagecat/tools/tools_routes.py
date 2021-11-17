@@ -65,7 +65,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
                                 headers=headers,
                                 genera=cagecat.routes.PRESENT_DATABASES,
                                 query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
-                                show_examples='multicblaster_search') # TODO: check if show_examples is used
+                                show_examples='cblaster_search')
 
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:

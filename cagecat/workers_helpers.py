@@ -66,7 +66,7 @@ def create_summary_table_commands(
     """Generates commands for creating a summary table
 
     Input:
-        - module: name of used multicblaster module to create commands for.
+        - module: name of used cblaster module to create commands for.
             Currently available are: ["search", "gne"]
         - options: user submitted options (values) via HTTP form of front-end
 
