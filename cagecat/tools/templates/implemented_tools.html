@@ -15,12 +15,12 @@
         </div>
 
         <div>
-            <h2>multicblaster: homologous gene cluster searches</h2>
+            <h2>cblaster: homologous gene cluster searches</h2>
             <ul>
-                <li><a href="{{ url_for('tools.tools_explanation') }}">Explanation of multicblaster and its usages</a></li>
+                <li><a href="{{ url_for('tools.tools_explanation') }}">Explanation of cblaster and its usages</a></li>
                 <li><a target="_blank" href="https://github.com/gamcil/cblaster">GitHub repository</a></li>
                 <li><a target="_blank" href="https://cblaster.readthedocs.io/en/latest/">Authors' wiki</a></li>
-                <li><a target="_blank" href="https://doi.org/10.1101/2020.11.08.370601">Publication</a></li>
+                <li><a target="_blank" href="https://dx.doi.org/10.1093/bioadv/vbab016">Publication</a></li>
             </ul>
         </div>
 
@@ -34,21 +34,19 @@
             </ul>
         </div>
 
-        <div>
-            <h2>CORASON (not fully implemented yet)</h2>
-            <ul>
-                <li><a href="{{ url_for('tools.tools_explanation') }}">Explanation of CORASON and its usages</a></li>
-                <li><a target="_blank" href="https://github.com/nselem/corason">GitHub repository</a></li>
-                <li><a target="_blank" href="https://github.com/nselem/corason/wiki">Wiki</a></li>
-                <li><a target="_blank" href="https://www.nature.com/articles/s41589-019-0400-9">Publication</a></li>
-            </ul>
-        </div>
+{#        <div>#}
+{#            <h2>CORASON (not fully implemented yet)</h2>#}
+{#            <ul>#}
+{#                <li><a href="{{ url_for('tools.tools_explanation') }}">Explanation of CORASON and its usages</a></li>#}
+{#                <li><a target="_blank" href="https://github.com/nselem/corason">GitHub repository</a></li>#}
+{#                <li><a target="_blank" href="https://github.com/nselem/corason/wiki">Wiki</a></li>#}
+{#                <li><a target="_blank" href="https://www.nature.com/articles/s41589-019-0400-9">Publication</a></li>#}
+{#            </ul>#}
+{#        </div>#}
 
     <h2>Tool interoperability</h2>
-    <p>MCB: multicblaster. Dotted arrows and shapes mean the base has been set for these tools to be interoperable, and to be implemented</p>
-    <img height="400px;" alt="Tools workflow" src="{{ url_for('static', filename='images/workflows.svg')}}"/>
+    <p>See figure below for an overview of how the implemented tools are connected. GNE: Gene Neighbourhood Estimation</p>
+    <img height="450px;" alt="Tools workflow" src="{{ url_for('static', filename='images/tool_compatability_overview.svg')}}"/>
     </div>
-
-
 
 {% endblock %}
