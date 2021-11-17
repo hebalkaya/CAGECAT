@@ -54,7 +54,7 @@
     {% if show_examples %}
         <div class="centered">
             <button class="button example-button" onclick="setExampleInput('{{ show_examples }}')">Example input</button>
-            {% if show_examples == 'multicblaster_search'%}
+            {% if show_examples == 'cblaster_search' %}
                 <a href="{{url_for('result.show_result', job_id='Y736N982T834D20') }}"><button class="button example-button">Example search output</button></a>
             {% elif show_examples == 'clinker' %}
                 <a href="{{url_for('result.show_result', job_id='V139R332L449N10') }}"><button class="button example-button">Example clinker output</button></a>

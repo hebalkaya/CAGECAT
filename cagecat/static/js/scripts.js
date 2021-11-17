@@ -610,7 +610,7 @@ function setExampleInput(tool_name){
         'QBE85647.1\n' +
         'QBE85648.1';
 
-    if (tool_name === 'multicblaster_search'){
+    if (tool_name === 'cblaster_search'){
         let radio = $('#radioNCBIEntries')[0];
         radio.click();
         $('#job_title')[0].value = 'Example input (Burnettramic Acids)';
