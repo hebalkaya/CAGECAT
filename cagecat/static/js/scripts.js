@@ -3,6 +3,7 @@ var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var currentTime = Date();
 var ROOT_URL = '/cagecat'
+console.log(('new version'));
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -686,6 +687,13 @@ function getOutputFromPlot(plotting_type){
         }
     }
 }
+
+function checkConsent(){
+    if (Cookies.get('consent') === '1'){
+        $('#consent').remove();
+    }
+}
+
 
 // Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used (check usages manually)
 function initReadQueryFile(){
