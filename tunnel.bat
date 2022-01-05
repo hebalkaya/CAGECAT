@@ -1,0 +1,1 @@
+ssh -A -t -l belt017 bioinformatics.nl -L 9999:localhost:9999 ssh -A -t -l belt017 thornton.bioinformatics.nl -L 9999:172.17.0.10:88
