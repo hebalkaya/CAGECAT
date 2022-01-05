@@ -10,6 +10,9 @@
 {% block navigationBar %}
     {{ showNavigationBar('analyze') }}
 {% endblock %}
+{% block scripts %}
+    addAccordionListeners();
+{% endblock %}
 
 {% block content %}
 
@@ -58,28 +61,10 @@
             <fieldset id="clinkerOutputSection">
                 <div class="input-layer">
                     <label class="input-label"
-                           for="clinkerDelim">Delimiter</label>
-                    {{ renderHelpButton('generalDelimiter') }}
-                    <input class="short" type="text" id="clinkerDelim" name="clinkerDelim" size="1" maxlength="1"/>
-                </div>
-                <div class="input-layer">
-                    <label class="input-label"
                            for="clinkerDecimals">Decimal places*</label>
                     {{ renderHelpButton('generalDecimals') }}
                     <input class="short" type="number" id="clinkerDecimals" name="clinkerDecimals" value="2" step="1" min="0" max="9"
                            required="required"/>
-                </div>
-
-                <label class="checkbox-label">
-                    <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers
-                </label>
-                {{ renderHelpButton('hideLinkHeaders', True) }}
-
-                <div>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers
-                    </label>
-                    {{ renderHelpButton('hideAlignHeaders', True) }}
                 </div>
             </fieldset>
 
@@ -90,6 +75,34 @@
                 </label>
                 {{ renderHelpButton('useFileOrder', True) }}
             </fieldset>
+
+            <label id="advancedSection" class="fieldset-label accordion">Advanced +</label>
+            <fieldset id="dummy"></fieldset>
+            <div class="panel">
+                <label class="fieldset-label" for="clinkerOutputSection">Output</label>
+                <fieldset id="clinkerOutputSection">
+                    <div class="input-layer">
+                        <label class="input-label"
+                               for="clinkerDelim">Delimiter</label>
+                        {{ renderHelpButton('generalDelimiter') }}
+                        <input class="short" type="text" id="clinkerDelim" name="clinkerDelim" size="1" maxlength="1"/>
+                    </div>
+
+                    <div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers
+                        </label>
+                        {{ renderHelpButton('hideLinkHeaders', True) }}
+                    </div>
+
+                    <div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers
+                        </label>
+                        {{ renderHelpButton('hideAlignHeaders', True) }}
+                    </div>
+                </fieldset>
+            </div>
 
             <div class="input-layer centered">
                 <input class="button" value="Submit" type="submit"/>

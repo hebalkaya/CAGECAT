@@ -21,6 +21,7 @@ $(':radio:not(:checked)').attr('disabled', true);
     {% else %}
 initReadQueryFile();
     {% endif %}
+addAccordionListeners();
 {% endblock %}
 
 {% block navigationBar %}
@@ -157,105 +158,109 @@ initReadQueryFile();
 {#        TODO future: mode is not always remote, find way to als use it for HMM / HMM+remote#}
 {% endif %}
 
-<div id="filteringSectionFullFieldset">
-    <label class="fieldset-label" for="filteringSection">Filtering</label>
-    <fieldset id="filteringSection">
-        <div class="input-layer">
-            <label class="input-label" for="max_evalue">Max. e-value*</label>
-            {{ renderHelpButton('max_evalue') }}
-            <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
-               name="max_evalue"/>
-        </div>
-        <div class="input-layer">
-            <label class="input-label" for="min_identity">Min. identity (%)*</label>
-            {{ renderHelpButton('min_identity') }}
-            <input type="number" required="required" value="30" min="0" max="100" step="1"
-                   id="min_identity" name="min_identity"/>
-        </div>
+<label id="advancedSection" class="fieldset-label accordion">Advanced +</label>
+<fieldset id="dummy"></fieldset>
+<div class="panel">
+    <div id="filteringSectionFullFieldset">
+        <label class="fieldset-label" for="filteringSection">Filtering</label>
+        <fieldset id="filteringSection">
+            <div class="input-layer">
+                <label class="input-label" for="max_evalue">Max. e-value*</label>
+                {{ renderHelpButton('max_evalue') }}
+                <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
+                   name="max_evalue"/>
+            </div>
+            <div class="input-layer">
+                <label class="input-label" for="min_identity">Min. identity (%)*</label>
+                {{ renderHelpButton('min_identity') }}
+                <input type="number" required="required" value="30" min="0" max="100" step="1"
+                       id="min_identity" name="min_identity"/>
+            </div>
 
-        <div class="input-layer">
-            <label class="input-label" for="min_query_coverage">Min. query coverage (%)*</label>
-            {{ renderHelpButton('min_query_coverage') }}
-            <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
-                   name="min_query_coverage"/>
-        </div>
-</fieldset>
+            <div class="input-layer">
+                <label class="input-label" for="min_query_coverage">Min. query coverage (%)*</label>
+                {{ renderHelpButton('min_query_coverage') }}
+                <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
+                       name="min_query_coverage"/>
+            </div>
+    </fieldset>
+    </div>
+
+        <label class="fieldset-label" for="clusteringSection">Clustering</label>
+        <fieldset id="clusteringSection">
+            <div class="input-layer">
+                <label class="input-label" for="max_intergenic_gap">Max. intergenic gap*</label>
+                {{ renderHelpButton('max_intergenic_gap') }}
+                <input type="number" id="max_intergenic_gap"
+                       name="max_intergenic_gap" value="20000" min="0" max="999999" step="1" required="required"/>
+
+            </div>
+
+            <div class="input-layer">
+                <label class="input-label" for="percentageQueryGenes">Percentage*</label>
+                {{ renderHelpButton('percentageQueryGenes') }}
+                <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
+            </div>
+
+            <div class="input-layer">
+                <label class="input-label" for="min_unique_query_hits">Min. unique query hits*</label>
+                {{ renderHelpButton('min_unique_query_hits') }}
+                <input class="short" type="number" id="min_unique_query_hits"
+                       name="min_unique_query_hits" value="3" step="1" min="0" max="150"
+                       required="required"/>
+            </div>
+
+            <div class="input-layer">
+                <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters*</label>
+                {{ renderHelpButton('min_hits_in_clusters') }}
+                <input class="short" type="number" id="min_hits_in_clusters"
+                       name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
+            </div>
+
+            <div class="input-layer">
+                <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
+                <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
+                {{ renderHelpButton('requiredSequencesSelector') }}
+                <select style="width: 60%;" id="requiredSequencesSelector" multiple="multiple">
+                    {% if headers %}
+                        {% for head in headers %}
+                        <option value="{{ head }}">{{ head }}</option>
+                        {% endfor %}
+                    {% endif %}
+
+                </select>
+            </div>
+        </fieldset>
+        {{ result_table('search', "Sum") }}
+        {{ result_table('search', "Bin") }}
+
+        <label class="fieldset-label" for="generalOptionSection">Additional options</label>
+        <fieldset id="generalOptionSection">
+            <label class="checkbox-label">
+                <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters
+            </label>
+            {{ renderHelpButton('sortClusters', True) }}
+        </fieldset>
+
+        <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
+        <fieldset id="intermediateGenesSection">
+
+            <label class="checkbox-label">
+                <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes
+            </label>
+            {{ renderHelpButton('intermediate_genes', True) }}
+            <div class="input-layer">
+                <label class="input-label" for="intermediate_max_distance">Max. distance</label>
+                {{ renderHelpButton('intermediate_max_distance') }}
+                <input type="number" min="0" max="250000" value="5000" disabled="disabled" id="intermediate_max_distance" name="intermediate_max_distance"/>
+            </div>
+            <div class="input-layer">
+                <label class="input-label" for="intermediate_max_clusters">Max. clusters</label>
+                {{ renderHelpButton('intermediate_max_clusters') }}
+                <input type="number" min="1" max="100" value="100" disabled="disabled" id="intermediate_max_clusters" name="intermediate_max_clusters"/>
+            </div>
+        </fieldset>
 </div>
-
-    <label class="fieldset-label" for="clusteringSection">Clustering</label>
-    <fieldset id="clusteringSection">
-        <div class="input-layer">
-            <label class="input-label" for="max_intergenic_gap">Max. intergenic gap*</label>
-            {{ renderHelpButton('max_intergenic_gap') }}
-            <input type="number" id="max_intergenic_gap"
-                   name="max_intergenic_gap" value="20000" min="0" max="999999" step="1" required="required"/>
-
-        </div>
-
-        <div class="input-layer">
-            <label class="input-label" for="percentageQueryGenes">Percentage*</label>
-            {{ renderHelpButton('percentageQueryGenes') }}
-            <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
-        </div>
-
-        <div class="input-layer">
-            <label class="input-label" for="min_unique_query_hits">Min. unique query hits*</label>
-            {{ renderHelpButton('min_unique_query_hits') }}
-            <input class="short" type="number" id="min_unique_query_hits"
-                   name="min_unique_query_hits" value="3" step="1" min="0" max="150"
-                   required="required"/>
-        </div>
-
-        <div class="input-layer">
-            <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters*</label>
-            {{ renderHelpButton('min_hits_in_clusters') }}
-            <input class="short" type="number" id="min_hits_in_clusters"
-                   name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
-        </div>
-
-        <div class="input-layer">
-            <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
-            <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
-            {{ renderHelpButton('requiredSequencesSelector') }}
-            <select style="width: 60%;" id="requiredSequencesSelector" multiple="multiple">
-                {% if headers %}
-                    {% for head in headers %}
-                    <option value="{{ head }}">{{ head }}</option>
-                    {% endfor %}
-                {% endif %}
-
-            </select>
-        </div>
-    </fieldset>
-    {{ result_table('search', "Sum") }}
-    {{ result_table('search', "Bin") }}
-
-    <label class="fieldset-label" for="generalOptionSection">Additional options</label>
-    <fieldset id="generalOptionSection">
-        <label class="checkbox-label">
-            <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters
-        </label>
-        {{ renderHelpButton('sortClusters', True) }}
-    </fieldset>
-
-    <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
-    <fieldset id="intermediateGenesSection">
-
-        <label class="checkbox-label">
-            <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes
-        </label>
-        {{ renderHelpButton('intermediate_genes', True) }}
-        <div class="input-layer">
-            <label class="input-label" for="intermediate_max_distance">Max. distance</label>
-            {{ renderHelpButton('intermediate_max_distance') }}
-            <input type="number" min="0" max="250000" value="5000" disabled="disabled" id="intermediate_max_distance" name="intermediate_max_distance"/>
-        </div>
-        <div class="input-layer">
-            <label class="input-label" for="intermediate_max_clusters">Max. clusters</label>
-            {{ renderHelpButton('intermediate_max_clusters') }}
-            <input type="number" min="1" max="100" value="100" disabled="disabled" id="intermediate_max_clusters" name="intermediate_max_clusters"/>
-        </div>
-    </fieldset>
     <div class="input-layer centered">
         <input class="button" value="Submit" type="submit" id="submitSearchForm"/>
     </div>

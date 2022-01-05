@@ -795,12 +795,28 @@ function addAccordionListeners() {
         acc[i].addEventListener("click", function () {
             this.classList.toggle("active");
             let panel = this.nextElementSibling;
+
+            if (panel.id === 'dummy'){
+                panel = panel.nextElementSibling;
+            }
+
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
                 panel.style.maxHeight = panel.scrollHeight + "px";
             }
+
+            if (acc[i].id === "advancedSection"){
+                if (acc[i].innerText === "Advanced +"){
+                    acc[i].innerText = "Advanced -";
+                }
+                else {
+                    acc[i].innerText = "Advanced +";
+                }
+            }
         });
+
+
     }
 }
 
