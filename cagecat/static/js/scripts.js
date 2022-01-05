@@ -1,8 +1,8 @@
 var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
-var currentTime = Date();
 var ROOT_URL = '/cagecat'
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function enableOrDisableOption(id, enable) {
     // For checkboxes
@@ -721,7 +721,13 @@ function storeJobId(id, j_type, j_title){
     for (let i=0; i<maxToShow; i++){
         let str = i.toString();
         if (localStorage.getItem(str) === null){
-            let msg = id + ";" + j_type + ";" + currentTime.toLocaleString() + ';' + j_title;
+            let date = new Date();
+            let seconds = date.getSeconds();
+            if (seconds.toString().length === 1){
+                seconds = '0' + seconds;
+            }
+            let time = [months[date.getMonth()], date.getDate(), date.getFullYear(), '-'].join(' ') + [date.getHours(), date.getMinutes(), seconds].join(':')
+            let msg = id + ";" + j_type + ";" + time + ';' + j_title;
             console.log(msg);
             localStorage.setItem(str, msg);
             return;

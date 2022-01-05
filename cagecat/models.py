@@ -29,9 +29,9 @@ class Job(db.Model):
     depending_on = db.Column(db.String(10))
 
     # timing
-    post_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    start_time = db.Column(db.DateTime)
-    finish_time = db.Column(db.DateTime)
+    post_time = db.Column(db.String(), nullable=False, default=datetime.utcnow().strftime('%B %d %Y - %H:%M:%S'))
+    start_time = db.Column(db.String())
+    finish_time = db.Column(db.String)
 
     def __repr__(self):
         # print("Main search", self.main_search_job)
