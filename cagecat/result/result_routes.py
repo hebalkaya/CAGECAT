@@ -213,8 +213,6 @@ def get_execution_stage(job_id: str):
     return json.dumps(data)
 
 
-
-
 @result.route("/plots/<job_id>")
 def get_plot_contents(job_id) -> str:
     """Returns the HTML code of a plot as a string

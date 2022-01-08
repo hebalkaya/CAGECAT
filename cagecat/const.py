@@ -121,14 +121,19 @@ def get_execution_stages_front_end(job_type: str, job_id: str):
         contents = inf.read()
 
     stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
-    indexes = {
-        'search': 5,
-        'recompute': 2
-    }
 
     if job_type in ('search', 'recompute'):
+        indexes = {
+            'search': 5,
+            'recompute': 2
+        }
+
         if '--intermediate_genes' in contents:
             stages_front_end.insert(indexes.get(job_type), 'Fetching intermediate genes from NCBI')
+
+    elif job_type == 'extract_sequences':
+        if '--extract_sequences' in contents:
+            stages_front_end.insert(2, 'Fetch sequences from NCBI')
 
     return stages_front_end
 
@@ -144,10 +149,13 @@ def get_execution_stages_log_descriptors(job_type: str, job_id: str):
     if job_type in ('search', 'recompute'):
         if '--intermediate_genes' in contents:
             stages_log_descriptors.insert(6, 'Searching for intermediate genes')
+    elif job_type == 'extract_sequences':
+        if '--extract_sequences' in contents:
+            stages_log_descriptors.insert(2, 'Querying NCBI')
 
     return stages_log_descriptors
 
-
+# TODO: merge below dictionaries
 EXECUTION_STAGES_FRONT_END = {
     'clinker': [
         'Parse genome files',
@@ -185,6 +193,12 @@ EXECUTION_STAGES_FRONT_END = {
     ],
     'clinker_query': [
         'Generate cluster plot'
+    ],
+    'extract_sequences': [
+        'Load previous results',
+        'Extract sequences matching filters',
+        # 'Fetch sequences from NCBI' will be inserted if applicable
+        'Write results'
     ]
 
 }
@@ -231,6 +245,13 @@ EXECUTION_STAGES_LOG_DESCRIPTORS = {
     ],
     'clinker_query': [
         'Starting generation of cluster plot with clinker',
+        'INFO - Done!'
+    ],
+    'extract_sequences': [
+        'Loading session from',
+        'Extracting subject sequences matching filters',
+        # 'Querying NCBI' will be inserted if applicable
+        'Writing output',
         'INFO - Done!'
     ]
 }
