@@ -1,9 +1,9 @@
-Recompute:
+Recompute: partly done
 1. Loading previous results
 2. Filtering previous results with new threshold
 3. Writing results
 
-Search:
+Search: done
 1. Send search job to NCBI
 2. Polling NCBI
 3. Retrieving results from NCBI
@@ -12,7 +12,7 @@ Search:
 (6. Fetching intermediate genes)
 7. Writing results
 
-GNE:
+GNE: done
 1. Loading previous results
 2. Computing gene neighbourhood statistics
 3. Writing results
@@ -32,7 +32,7 @@ Extract clusters:
 plot_clusters (clinker_query):
 1. Generate cluster plot
 
-Clinker:
+Clinker: done
 1. Parsing genome files
 2. Executing cluster alignments
 3. Generating results

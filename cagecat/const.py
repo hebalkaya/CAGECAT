@@ -182,6 +182,9 @@ EXECUTION_STAGES_FRONT_END = {
         'Write GenBank files',
         'Query NCBI for cluster sequences',
         'Write results',
+    ],
+    'clinker_query': [
+        'Generate cluster plot'
     ]
 
 }
@@ -224,6 +227,10 @@ EXECUTION_STAGES_LOG_DESCRIPTORS = {
         'Writing genbank files',
         'Querying NCBI',
         'Clusters have been written to',
+        'INFO - Done!'
+    ],
+    'clinker_query': [
+        'Starting generation of cluster plot with clinker',
         'INFO - Done!'
     ]
 }
