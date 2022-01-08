@@ -121,10 +121,14 @@ def get_execution_stages_front_end(job_type: str, job_id: str):
         contents = inf.read()
 
     stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
+    indexes = {
+        'search': 5,
+        'recompute': 2
+    }
 
     if job_type in ('search', 'recompute'):
         if '--intermediate_genes' in contents:
-            stages_front_end.insert(5, 'Fetching intermediate genes from NCBI')
+            stages_front_end.insert(indexes.get(job_type), 'Fetching intermediate genes from NCBI')
 
     return stages_front_end
 
@@ -160,6 +164,17 @@ EXECUTION_STAGES_FRONT_END = {
         'Fetching genomic context of hits',
         # 'Fetching intermediate genes from NCBI' will be inserted if applicable
         'Writing results'
+    ],
+    'recompute': [
+        'Loading previous results',
+        'Filtering results with new thresholds',
+        # 'Fetching intermediate genes from NCBI' will be inserted if applicable
+        'Writing results'
+    ],
+    'gne': [
+        'Loading previous results',
+        'Computing gene neighbourhood statistics',
+        'Writing results'
     ]
 
 }
@@ -181,6 +196,19 @@ EXECUTION_STAGES_LOG_DESCRIPTORS = {
         'Fetching genomic context of hits',
         # 'Searching for intermediate genes' will be inserted if applicable
         'Writing current search session',
+        'INFO - Done.'
+    ],
+    'recompute': [
+        'Loading session(s)',
+        'Filtering session with new thresholds',
+        # 'Searching for intermediate genes' will be inserted if applicable,
+        'Writing recomputed session to',
+        'INFO - Done.'
+    ],
+    'gne': [
+        'Loading session from',
+        'Computing gene neighbourhood statistics',
+        'Writing GNE table to',
         'INFO - Done.'
     ]
 }

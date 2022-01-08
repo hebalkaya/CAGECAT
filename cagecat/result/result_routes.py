@@ -174,6 +174,18 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
 @result.route("/stage/<job_id>")
 def get_execution_stage(job_id: str):
     job = ut.fetch_job_from_db(job_id)
+    # main_search_job = job.main_search_job
+    # print(job)
+    #
+    # job_type = job.job_type
+    # if job.job_type == 'search' and main_search_job != 'null':
+    #     job_type = 'recompute'
+    #     print('We changed it!')
+    #
+    # print('The new job_type is', job_type)
+    # print(main_search_job)
+    # print(type(main_search_job))
+    # print(main_search_job == 'null')
     stages = cagecat.const.get_execution_stages_log_descriptors(
         job_type=job.job_type,
         job_id=job.id
@@ -187,13 +199,15 @@ def get_execution_stage(job_id: str):
     with open(log_fn) as inf:
         logs = inf.read()
 
+
     data = {
         'finished': -1,
         'total': len(stages)
     }
-
+    print(stages)
     for stage in stages:
         if stage in logs:
+            print(stage, 'is in contents')
             data['finished'] += 1
 
     return json.dumps(data)

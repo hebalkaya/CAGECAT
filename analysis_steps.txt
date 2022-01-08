@@ -9,7 +9,7 @@ Search:
 3. Retrieving results from NCBI
 4. Parsing results
 5. Fetching genomic context of hits
-6. Fetching intermediate genes
+(6. Fetching intermediate genes)
 7. Writing results
 
 GNE:
@@ -43,3 +43,4 @@ Clinker:
 Bugs:
 1. 1 query selected: not sent to next page
 2. clinker first analyzes, than gives error message saying too many clusters
+3. Recompute analysis steps are not correct (uses regular search steps)

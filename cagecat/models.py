@@ -39,7 +39,7 @@ class Job(db.Model):
         # print("Depending", self.depending_on)
         return f"ID: {self.id}; Type: {self.job_type}; " \
                f"Status: {self.status}; " \
-               f"Finished: {self.finish_time}"
+               f"Finished: {self.finish_time}; Main job{self.main_search_job}"
 
 class Statistic(db.Model):
     """Model for creating a entry for job statistics
