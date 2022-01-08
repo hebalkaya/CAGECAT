@@ -108,3 +108,42 @@ TOOLS_EXPLANATIONS = {'cblaster_search':
 SUBMIT_URL = "/submit_job"
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
                              "clinker", "clinker_query"]
+
+EXECUTION_STAGES = {
+    'clinker': [
+        'Parsing genome files',
+        'Executing cluster alignments',
+        'Generating results',
+        'Saving session file',
+        'Writing results'
+    ],
+    'search': [
+        'Send search job to NCBI',
+        'Polling NCBI',
+        'Retrieving results from NCBI',
+        'Parsing results',
+        'Fetching genomic context of hits',
+        'Fetching intermediate genes',
+        'Writing results'
+    ]
+
+}
+
+EXECUTION_STAGES_LOG_DESCRIPTORS = {
+    'clinker': (
+        'Parsing files:',
+        'Starting cluster alignments',
+        'Generating results',
+        'Saving session to',
+        'Writing to'
+    ),
+    'search': (
+        'Launching new search',
+        'Polling NCBI for completion status',
+        'Retrieving results for search',
+        'Parsing results',
+        'Fetching genomic context of hits',
+        # TODO: implement intermediate genes
+        'Writing current search session'
+    )
+}

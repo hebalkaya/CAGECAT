@@ -2,7 +2,6 @@
 {% from "macros.html" import showNavigationBar %}
 {% from "macros.html" import showBookMarkButton %}
 
-{% block head %}<meta http-equiv="refresh" content="30">{% endblock %}
 {% block title %}
     {% if job_title %}
         {{ job_title }}: {{ status }}
@@ -20,18 +19,22 @@
         storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
         redirect('{{  url_for('result.show_result', job_id=j_id)}}');
     {% endif %}
+    updateJobExecutionStage('{{ j_id }}');
 {% endblock %}
 
 {% block content %}
     <div class="indent">
-        <p>This page refreshes automatically every 30 seconds.</p>
         <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 
         {% if parent_job != "null" %}
             <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
         {% endif %}
-
-        <p>In future releases, it will be possible to start downstream analyses from this page.</p>
+    
+        {% for stage in stages %}
+            <p>{{ loop.index }}. {{ stage }}</p>
+        {% endfor %}
+        
+{#        <p>In future releases, it will be possible to start downstream analyses from this page.</p>#}
 
         {{ showBookMarkButton() }}
     </div>

@@ -118,7 +118,7 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
     if log_output:
         log_command(cmd, log_base, job_id)
 
-        with open(os.path.join(log_base, f"{job_id}_{cmd[0]}.log"), "w") as outf:
+        with open(os.path.join(log_base, f"{job_id}.log"), "w") as outf:
             try:
                 res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
                 return_code = res.returncode
@@ -190,7 +190,7 @@ def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
         - .txt file with the executed command
     """
     with open(os.path.join(log_base,
-                           f"{job_id}_{cmd[0]}_cmd.txt"), "w") as outf:
+                           f"{job_id}_cmd.txt"), "w") as outf:
         outf.write(" ".join(cmd))
 
 

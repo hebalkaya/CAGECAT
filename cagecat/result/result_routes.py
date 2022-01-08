@@ -4,6 +4,8 @@ Author: Matthias van den Belt
 """
 
 # package imports
+import json
+
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
@@ -12,6 +14,7 @@ import cagecat.utils as ut
 import cagecat.const as co
 from cagecat.routes_helpers import show_template
 import cagecat.routes_helpers as rthelp
+
 
 # other imports
 import os
@@ -96,6 +99,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  job_title=job.title,
                                  j_type=j_type,
                                  stat_code=302,
+                                 stages=cagecat.const.EXECUTION_STAGES[job.job_type],
                                  help_enabled=False)
 
         elif status == "waiting":
@@ -163,6 +167,33 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
             return show_template('redirect.html', url=url_for('result.show_result', job_id=job_id))
         else:
             return show_template("job_not_found.html", job_id=job_id)
+
+
+@result.route("/stage/<job_id>")
+def get_execution_stage(job_id: str):
+    job = ut.fetch_job_from_db(job_id)
+    stages = cagecat.const.EXECUTION_STAGES_LOG_DESCRIPTORS[job.job_type]
+
+    log_base = generate_paths(job_id)[1]
+    log_fn = os.path.join(log_base, f'{job_id}.log')
+
+    # queued situation
+    # running situation
+    with open(log_fn) as inf:
+        logs = inf.read()
+
+    data = {
+        'finished': 0,
+        'total': len(stages)
+    }
+
+    for stage in stages:
+        if stage in logs:
+            data['finished'] += 1
+
+    return json.dumps(data)
+
+
 
 
 @result.route("/plots/<job_id>")

@@ -4,6 +4,25 @@ var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var ROOT_URL = '/cagecat'
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+function updateJobExecutionStage(job_id){
+    let url = 'http://127.0.0.1:9999/results/stage/' + job_id
+    console.log(url);
+    setInterval(function(){
+        $.ajax(url, {
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data){
+                console.log('Error fetching stage. Returned:' + data);
+            }
+
+        })
+    }, 5000)
+
+
+}
+
 function enableOrDisableOption(id, enable) {
     // For checkboxes
     var elem = document.getElementById(id);
