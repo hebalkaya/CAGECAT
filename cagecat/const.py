@@ -150,11 +150,11 @@ def get_execution_stages_log_descriptors(job_type: str, job_id: str):
 
 EXECUTION_STAGES_FRONT_END = {
     'clinker': [
-        'Parsing genome files',
-        'Executing cluster alignments',
-        'Generating results',
-        'Saving session file',
-        'Writing results'
+        'Parse genome files',
+        'Align clusters',
+        'Generate results',
+        'Save session file',
+        'Write results'
     ],
     'search': [
         'Send search job to NCBI',
@@ -166,15 +166,22 @@ EXECUTION_STAGES_FRONT_END = {
         'Writing results'
     ],
     'recompute': [
-        'Loading previous results',
+        'Load previous results',
         'Filtering results with new thresholds',
         # 'Fetching intermediate genes from NCBI' will be inserted if applicable
         'Writing results'
     ],
     'gne': [
-        'Loading previous results',
+        'Load previous results',
         'Computing gene neighbourhood statistics',
         'Writing results'
+    ],
+    'extract_clusters': [
+        'Load previous results',
+        'Extract clusters that match threshold',
+        'Write GenBank files',
+        'Query NCBI for cluster sequences',
+        'Write results',
     ]
 
 }
@@ -210,5 +217,13 @@ EXECUTION_STAGES_LOG_DESCRIPTORS = {
         'Computing gene neighbourhood statistics',
         'Writing GNE table to',
         'INFO - Done.'
+    ],
+    'extract_clusters': [
+        'Loading session from',
+        'Extracting clusters that match the filters',
+        'Writing genbank files',
+        'Querying NCBI',
+        'Clusters have been written to',
+        'INFO - Done!'
     ]
 }
