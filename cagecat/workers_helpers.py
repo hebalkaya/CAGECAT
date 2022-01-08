@@ -190,7 +190,7 @@ def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
         - .txt file with the executed command
     """
     with open(os.path.join(log_base,
-                           f"{job_id}_cmd.txt"), "w") as outf:
+                           f"{job_id}_command.txt"), "w") as outf:
         outf.write(" ".join(cmd))
 
 

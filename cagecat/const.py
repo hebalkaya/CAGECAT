@@ -3,6 +3,10 @@
 Author: Matthias van den Belt
 
 """
+import copy
+import os
+
+from cagecat.workers_helpers import generate_paths
 from config_files import config
 
 CLINKER_MODULES = ('clinker_query', 'clinker')
@@ -109,7 +113,38 @@ SUBMIT_URL = "/submit_job"
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
                              "clinker", "clinker_query"]
 
-EXECUTION_STAGES = {
+def get_execution_stages_front_end(job_type: str, job_id: str):
+    # TODO merge with get_execution_stages_log_descriptors
+    log_base = generate_paths(job_id)[1]
+    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    with open(cmd_fp) as inf:
+        contents = inf.read()
+
+    stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
+
+    if job_type in ('search', 'recompute'):
+        if '--intermediate_genes' in contents:
+            stages_front_end.insert(5, 'Fetching intermediate genes from NCBI')
+
+    return stages_front_end
+
+def get_execution_stages_log_descriptors(job_type: str, job_id: str):
+    # TODO merge with get_execution_stages_front_end
+    log_base = generate_paths(job_id)[1]
+    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    with open(cmd_fp) as inf:
+        contents = inf.read()
+
+    stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS[job_type])
+
+    if job_type in ('search', 'recompute'):
+        if '--intermediate_genes' in contents:
+            stages_log_descriptors.insert(6, 'Searching for intermediate genes')
+
+    return stages_log_descriptors
+
+
+EXECUTION_STAGES_FRONT_END = {
     'clinker': [
         'Parsing genome files',
         'Executing cluster alignments',
@@ -123,27 +158,29 @@ EXECUTION_STAGES = {
         'Retrieving results from NCBI',
         'Parsing results',
         'Fetching genomic context of hits',
-        'Fetching intermediate genes',
+        # 'Fetching intermediate genes from NCBI' will be inserted if applicable
         'Writing results'
     ]
 
 }
 
 EXECUTION_STAGES_LOG_DESCRIPTORS = {
-    'clinker': (
+    'clinker': [
         'Parsing files:',
         'Starting cluster alignments',
         'Generating results',
         'Saving session to',
-        'Writing to'
-    ),
-    'search': (
+        'Writing to',
+        'INFO - Done!'
+    ],
+    'search': [
         'Launching new search',
         'Polling NCBI for completion status',
         'Retrieving results for search',
         'Parsing results',
         'Fetching genomic context of hits',
-        # TODO: implement intermediate genes
-        'Writing current search session'
-    )
+        # 'Searching for intermediate genes' will be inserted if applicable
+        'Writing current search session',
+        'INFO - Done.'
+    ]
 }

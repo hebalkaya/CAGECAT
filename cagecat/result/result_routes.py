@@ -92,6 +92,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             else:
                 pj = request.args["pj"]
 
+
             return show_template("status_page.html", j_id=job_id,
                                  parent_job=pj,
                                  status=status,
@@ -99,7 +100,9 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  job_title=job.title,
                                  j_type=j_type,
                                  stat_code=302,
-                                 stages=cagecat.const.EXECUTION_STAGES[job.job_type],
+                                 stages=cagecat.const.get_execution_stages_front_end(
+                                     job_type=job.job_type,
+                                     job_id=job_id),
                                  help_enabled=False)
 
         elif status == "waiting":
@@ -108,7 +111,6 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
             return show_template("status_page.html", j_id=job_id,
                                  status="waiting for preceding job to finish",
-
                                  parent_job=pj,
                                  job_title=job.title,
                                  store_job_id=store_job_id,
@@ -172,7 +174,10 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
 @result.route("/stage/<job_id>")
 def get_execution_stage(job_id: str):
     job = ut.fetch_job_from_db(job_id)
-    stages = cagecat.const.EXECUTION_STAGES_LOG_DESCRIPTORS[job.job_type]
+    stages = cagecat.const.get_execution_stages_log_descriptors(
+        job_type=job.job_type,
+        job_id=job.id
+    )
 
     log_base = generate_paths(job_id)[1]
     log_fn = os.path.join(log_base, f'{job_id}.log')
@@ -183,7 +188,7 @@ def get_execution_stage(job_id: str):
         logs = inf.read()
 
     data = {
-        'finished': 0,
+        'finished': -1,
         'total': len(stages)
     }
 

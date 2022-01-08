@@ -9,11 +9,18 @@ function updateJobExecutionStage(url){
     $.ajax(url, {
         dataType: 'json',
         success: function(data){
+            if (data['finished'] === data['total'] - 1){
+                redirect(window.location.href);
+            }
+
             for (let i = 1; i < (data['finished']+1); i++){
                 let elem = document.getElementById('stage' + i.toString());
                 elem.src = checkmarkPath;
                 elem.style.width = '25px';
             }
+
+            let percentage = Math.round(data['finished'] / data['total'] * 100)
+            // console.log(percentage);
         },
         error: function(data){
             console.log('Error fetching stage. Returned:' + data);
@@ -461,7 +468,7 @@ function determineHeight() {
 
 function toggleRemoteOptions(enable){
     let individualElements = ['radioFasta', 'radioNCBIEntries', 'genomeFile', 'ncbiEntriesTextArea',
-    'searchPrevJobId', 'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile'];
+        'searchPrevJobId', 'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile'];
     let fieldsets = ['searchSectionFullFieldset', 'filteringSectionFullFieldset'];
     let sections = ['filteringSection', 'searchSection']
 
@@ -861,5 +868,5 @@ setInterval(function(){
             $('#status_running')[0].innerText = data['running'];
             $('#status_queued')[0].innerText = data['queued'];
             $('#status_completed')[0].innerText = data['completed'];
-    }})
+        }})
 }, 15000)
