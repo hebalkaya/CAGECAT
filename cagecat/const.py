@@ -3,10 +3,7 @@
 Author: Matthias van den Belt
 
 """
-import copy
-import os
 
-from cagecat.workers_helpers import generate_paths
 from config_files import config
 
 CLINKER_MODULES = ('clinker_query', 'clinker')
@@ -112,48 +109,6 @@ TOOLS_EXPLANATIONS = {'cblaster_search':
 SUBMIT_URL = "/submit_job"
 MODULES_WHICH_HAVE_PLOTS = ["search", "recompute", "gne",
                              "clinker", "clinker_query"]
-
-def get_execution_stages_front_end(job_type: str, job_id: str):
-    # TODO merge with get_execution_stages_log_descriptors
-    log_base = generate_paths(job_id)[1]
-    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
-    with open(cmd_fp) as inf:
-        contents = inf.read()
-
-    stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
-
-    if job_type in ('search', 'recompute'):
-        indexes = {
-            'search': 5,
-            'recompute': 2
-        }
-
-        if '--intermediate_genes' in contents:
-            stages_front_end.insert(indexes.get(job_type), 'Fetching intermediate genes from NCBI')
-
-    elif job_type == 'extract_sequences':
-        if '--extract_sequences' in contents:
-            stages_front_end.insert(2, 'Fetch sequences from NCBI')
-
-    return stages_front_end
-
-def get_execution_stages_log_descriptors(job_type: str, job_id: str):
-    # TODO merge with get_execution_stages_front_end
-    log_base = generate_paths(job_id)[1]
-    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
-    with open(cmd_fp) as inf:
-        contents = inf.read()
-
-    stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS[job_type])
-
-    if job_type in ('search', 'recompute'):
-        if '--intermediate_genes' in contents:
-            stages_log_descriptors.insert(6, 'Searching for intermediate genes')
-    elif job_type == 'extract_sequences':
-        if '--extract_sequences' in contents:
-            stages_log_descriptors.insert(2, 'Querying NCBI')
-
-    return stages_log_descriptors
 
 # TODO: merge below dictionaries
 EXECUTION_STAGES_FRONT_END = {

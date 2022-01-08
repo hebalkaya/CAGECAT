@@ -4,14 +4,17 @@ Author: Matthias van den Belt
 """
 
 # package imports
+import copy
 import json
 
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
 import cagecat.const
+import cagecat.result.result_routes_helpers
 import cagecat.utils as ut
 import cagecat.const as co
+from cagecat.const import EXECUTION_STAGES_FRONT_END, EXECUTION_STAGES_LOG_DESCRIPTORS
 from cagecat.routes_helpers import show_template
 import cagecat.routes_helpers as rthelp
 
@@ -100,7 +103,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  job_title=job.title,
                                  j_type=j_type,
                                  stat_code=302,
-                                 stages=cagecat.const.get_execution_stages_front_end(
+                                 stages=get_execution_stages_front_end(
                                      job_type=job.job_type,
                                      job_id=job_id),
                                  help_enabled=False)
@@ -186,7 +189,7 @@ def get_execution_stage(job_id: str):
     # print(main_search_job)
     # print(type(main_search_job))
     # print(main_search_job == 'null')
-    stages = cagecat.const.get_execution_stages_log_descriptors(
+    stages = get_execution_stages_log_descriptors(
         job_type=job.job_type,
         job_id=job.id
     )
@@ -198,7 +201,6 @@ def get_execution_stage(job_id: str):
     # running situation
     with open(log_fn) as inf:
         logs = inf.read()
-
 
     data = {
         'finished': -1,
@@ -223,3 +225,47 @@ def get_plot_contents(job_id) -> str:
     """
     return rthelp.prepare_finished_result(job_id, ut.fetch_job_from_db(
         job_id).job_type)[0]
+
+# Helper functions
+def get_execution_stages_front_end(job_type: str, job_id: str):
+    # TODO merge with get_execution_stages_log_descriptors
+    log_base = generate_paths(job_id)[1]
+    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    with open(cmd_fp) as inf:
+        contents = inf.read()
+
+    stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
+
+    if job_type in ('search', 'recompute'):
+        indexes = {
+            'search': 5,
+            'recompute': 2
+        }
+
+        if '--intermediate_genes' in contents:
+            stages_front_end.insert(indexes.get(job_type), 'Fetching intermediate genes from NCBI')
+
+    elif job_type == 'extract_sequences':
+        if '--extract_sequences' in contents:
+            stages_front_end.insert(2, 'Fetch sequences from NCBI')
+
+    return stages_front_end
+
+
+def get_execution_stages_log_descriptors(job_type: str, job_id: str):
+    # TODO merge with get_execution_stages_front_end
+    log_base = generate_paths(job_id)[1]
+    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    with open(cmd_fp) as inf:
+        contents = inf.read()
+
+    stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS[job_type])
+
+    if job_type in ('search', 'recompute'):
+        if '--intermediate_genes' in contents:
+            stages_log_descriptors.insert(6, 'Searching for intermediate genes')
+    elif job_type == 'extract_sequences':
+        if '--extract_sequences' in contents:
+            stages_log_descriptors.insert(2, 'Querying NCBI')
+
+    return stages_log_descriptors
