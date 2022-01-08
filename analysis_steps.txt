@@ -1,0 +1,45 @@
+Recompute:
+1. Loading previous results
+2. Filtering previous results with new threshold
+3. Writing results
+
+Search:
+1. Send search job to NCBI
+2. Polling NCBI
+3. Retrieving results from NCBI
+4. Parsing results
+5. Fetching genomic context of hits
+6. Fetching intermediate genes
+7. Writing results
+
+GNE:
+1. Loading previous results
+2. Computing gene neighbourhood statistics
+3. Writing results
+
+Extract sequences:
+1. Loading previous results
+2. Extracting sequences matching filters
+(3. Querying NCBI for X sequences)
+4. Writing results
+
+Extract clusters:
+1. Loading previous results
+2. Extracting clusters that match threshold
+3. Querying NCBI for cluster sequences (X/Y)
+4. Writing results
+
+plot_clusters (clinker_query):
+1. Generate cluster plot
+
+Clinker:
+1. Parsing genome files
+2. Executing cluster alignments
+3. Generating results
+4. Saving session file
+5. Writing results
+
+
+Bugs:
+1. 1 query selected: not sent to next page
+2. clinker first analyzes, than gives error message saying too many clusters

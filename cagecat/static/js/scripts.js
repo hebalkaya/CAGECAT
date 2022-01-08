@@ -3,22 +3,28 @@ var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var ROOT_URL = '/cagecat'
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var checkmarkPath = 'http://127.0.0.1:9999/static/images/checkmark.svg'
 
-function updateJobExecutionStage(job_id){
-    let url = 'http://127.0.0.1:9999/results/stage/' + job_id
-    console.log(url);
-    setInterval(function(){
-        $.ajax(url, {
-            dataType: 'json',
-            success: function(data){
-                console.log(data);
-            },
-            error: function(data){
-                console.log('Error fetching stage. Returned:' + data);
+function updateJobExecutionStage(url){
+    $.ajax(url, {
+        dataType: 'json',
+        success: function(data){
+            for (let i = 1; i < (data['finished']+1); i++){
+                let elem = document.getElementById('stage' + i.toString());
+                elem.src = checkmarkPath;
+                elem.style.width = '25px';
             }
+        },
+        error: function(data){
+            console.log('Error fetching stage. Returned:' + data);
+        }
+    })
+}
 
-        })
-    }, 5000)
+function startJobExecutionStageUpdater(job_id){
+    let url = 'http://127.0.0.1:9999/results/stage/' + job_id
+    updateJobExecutionStage(url);
+    setInterval(updateJobExecutionStage, 5000, url)
 
 
 }

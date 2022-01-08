@@ -19,7 +19,7 @@
         storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
         redirect('{{  url_for('result.show_result', job_id=j_id)}}');
     {% endif %}
-    updateJobExecutionStage('{{ j_id }}');
+    startJobExecutionStageUpdater('{{ j_id }}');
 {% endblock %}
 
 {% block content %}
@@ -31,7 +31,10 @@
         {% endif %}
     
         {% for stage in stages %}
-            <p>{{ loop.index }}. {{ stage }}</p>
+            <div style="height: 30px;">
+                <img id="stage{{ loop.index }}" style="vertical-align: middle; width: 60px; height: auto;" src="{{ url_for('static', filename='images/dna_loader.gif') }}">
+                <span>{{ loop.index }}. {{ stage }}</span>
+            </div>
         {% endfor %}
         
 {#        <p>In future releases, it will be possible to start downstream analyses from this page.</p>#}
