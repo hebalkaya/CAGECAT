@@ -2,13 +2,6 @@
 {% from "macros.html" import showNavigationBar %}
 {% from "macros.html" import showBookMarkButton %}
 
-{% block title %}
-    {% if job_title %}
-        {{ job_title }}: {{ status }}
-    {% else %}
-        {{ status.capitalize() }}
-    {% endif %}
-{% endblock %}
 
 {% block navigationBar %}
     {{ showNavigationBar('results') }}

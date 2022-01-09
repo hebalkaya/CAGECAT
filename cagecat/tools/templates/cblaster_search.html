@@ -5,16 +5,6 @@
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
 
-{% block title %}
-
-    {% if module_to_show is none %}
-        {% set module_name = "Search" %}
-    {% else %}
-        {% set module_name = module_to_show.capitalize()  %}
-    {% endif %}
-    {{ module_name }}
-{% endblock %}
-
 {% block scripts %}
     {% if module_to_show == 'recompute' %}
 $(':radio:not(:checked)').attr('disabled', true);
