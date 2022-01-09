@@ -20,6 +20,7 @@ function updateJobExecutionStage(url){
             }
 
             let percentage = Math.round(data['finished'] / data['total'] * 100)
+            // document.getElementById('progress').innerText = percentage.toString() + '%';
             // console.log(percentage);
         },
         error: function(data){

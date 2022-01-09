@@ -29,6 +29,11 @@
         {% if parent_job != "null" %}
             <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
         {% endif %}
+
+{#        TODO: possibly add progress bar in future#}
+{#        <div id="progress-bar" style="background-color: #5284a7">#}
+{#            <div id="progress">0%</div>#}
+{#        </div>#}
     
         {% for stage in stages %}
             <div style="height: 30px;">
