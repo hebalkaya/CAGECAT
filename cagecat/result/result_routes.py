@@ -236,14 +236,15 @@ def get_execution_stages_front_end(job_type: str, job_id: str):
 
     stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
 
-    if job_type in ('search', 'recompute'):
-        indexes = {
-            'search': 5,
-            'recompute': 2
-        }
+    if job_type == 'search':
+        if '--recompute' in contents:
+            stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END['recompute'])
+            index = 2
+        else:
+            index = 5
 
         if '--intermediate_genes' in contents:
-            stages_front_end.insert(indexes.get(job_type), 'Fetching intermediate genes from NCBI')
+            stages_front_end.insert(index, 'Fetching intermediate genes from NCBI')
 
     elif job_type == 'extract_sequences':
         if '--extract_sequences' in contents:
@@ -261,9 +262,16 @@ def get_execution_stages_log_descriptors(job_type: str, job_id: str):
 
     stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS[job_type])
 
-    if job_type in ('search', 'recompute'):
+    if job_type == 'search':
+        if '--recompute' in contents:
+            stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS['recompute'])
+            index = 2
+        else:
+            index = 6
+
         if '--intermediate_genes' in contents:
-            stages_log_descriptors.insert(6, 'Searching for intermediate genes')
+            stages_log_descriptors.insert(index, 'Searching for intermediate genes')
+
     elif job_type == 'extract_sequences':
         if '--extract_sequences' in contents:
             stages_log_descriptors.insert(2, 'Querying NCBI')
