@@ -11,7 +11,6 @@ from flask import Blueprint, request, url_for, send_file
 
 # own project imports
 import cagecat.const
-import cagecat.result.result_routes_helpers
 import cagecat.utils as ut
 import cagecat.const as co
 from cagecat.const import EXECUTION_STAGES_FRONT_END, EXECUTION_STAGES_LOG_DESCRIPTORS

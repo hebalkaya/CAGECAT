@@ -52,6 +52,7 @@ def submit_job() -> str:
 
     if job_type == "search":
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
+        print('Line 55 job type', job_type)
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
