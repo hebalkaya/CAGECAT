@@ -14,7 +14,7 @@ Author: Matthias van den Belt
 from cagecat.const import FASTA_SUFFIXES, GENBANK_SUFFIXES
 
 JOB_DESCRIPTOR_HELPS = {'job_title': {'title': 'Job title', 'module': '', 'text': 'Enter a job title for easy identification of jobs.\n\nRequired: no\n\nMaximum length: 60 characters'},
-                        'email_notification': {'title': 'Email notification', 'module': '', 'text': 'Enter your e-mail to get notified when your job has finished.\n\nRequired: no'}}
+                        'email_notification': {'title': 'Email notification', 'module': '', 'text': 'Enter your e-mail to get notified when your job has finished. Your e-mail will be removed from our servers after one notification mail.\n\nRequired: no'}}
 
 GENERAL_HELPS = {'generalEnteredJobId': {'title': 'Previous job ID', 'module': '', 'text': 'The ID of the job which\' results are wished to be used.'},
                  'generalDelimiter': {'title': 'Output file delimiter', 'module': '', 'text': 'Single delimiter character to use when writing results to a file.\n\nResults will be separated of each other in the output file by the specified character.\n\nRequired: no\nDefault: no delimiter (human readable)'},

@@ -199,6 +199,9 @@ def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
     job.status = new_status
     db.session.commit()
 
+def remove_email_from_db(db_job: Job):
+    if db_job.email != '':
+        db_job.email = '-'
 
 def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
                   job_id: str) -> None:

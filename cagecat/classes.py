@@ -44,6 +44,9 @@ class CAGECATJob:
         self.email = options['email'] if 'email' in options else ''
         self.job_type = job_type
 
+        if self.job_type is None:
+            self.job_type = self.options['job_type']
+
     def get_job_type(self):
         # TODO: check if this can be removed
         return self.options['job_type']

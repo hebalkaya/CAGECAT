@@ -12,7 +12,7 @@ import cagecat.const as co
 import config_files.config
 from config_files import config
 from cagecat.utils import JOBS_DIR, add_time_to_db, mutate_status, \
-    fetch_job_from_db, send_email
+    fetch_job_from_db, send_email, remove_email_from_db
 from cagecat import db
 from config_files.config import CONF
 from cagecat.models import Job
@@ -265,12 +265,16 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     """
     log_cagecat_version(job_id)
     zip_results(job_id)
-    add_time_to_db(job_id, "finish", db)
-    mutate_status(job_id, "finish", db, return_code=return_code)
 
     j = fetch_job_from_db(job_id)
     if j.email:
         send_notification_email(j)
+
+    add_time_to_db(job_id, "finish", db)
+    mutate_status(job_id, "finish", db, return_code=return_code)
+    remove_email_from_db(j)
+    db.session.commit()
+
 
 
 def store_query_sequences_headers(log_path: str, input_type: str, data: str):
