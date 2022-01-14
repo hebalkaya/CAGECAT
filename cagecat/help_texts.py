@@ -47,7 +47,12 @@ CLINKER_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'te
                       'identity': {'title': 'Minimum alignment sequence identity', 'module': '', 'text': 'Minimum alignment sequence identity.\n\nRequired: yes'},
                       'hideLinkHeaders': {'title': 'Hide alignment column headers', 'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'},
                       'hideAlignHeaders': {'title': 'Hide alignment cluster name headers', 'module': '', 'text': 'Hide alignment cluster name headers.\n\nRequired: no'},
-                      'useFileOrder': {'title': 'Maintain order of input files', 'module': '', 'text': 'Display clusters in order of input files.\n\nRequired: no'}}
+                      'useFileOrder': {'title': 'Maintain order of input files', 'module': '', 'text': 'Display clusters in order of input files.\n\nRequired: no'},
+                 'fileUploadClinker': {
+                     'title': 'Genome file(s)',
+                     'module': '',
+                     'text': 'One or more genome (GenBank) files to be searched.\n\nAllowed extensions:\n  - ' + '\n  - '.join(GENBANK_SUFFIXES)},
+                 }
 
 BINARY_TABLE_HELPS = {'keyFunction': {'title': 'Key function', 'module': '', 'text': 'Key function used when generating binary table cell values.\n\nRequired: yes'},
                       'hitAttribute': {'title': 'Hit attribute', 'module': '', 'text': 'Hit attribute used when generating binary table cell values.\n\nRequired: yes'}}
