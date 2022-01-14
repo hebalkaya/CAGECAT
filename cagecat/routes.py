@@ -19,6 +19,11 @@ from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
 # route definitions
+
+@app.route('/cagecat')
+def home_page_old_url():
+    return redirect(url_for('home_page'))
+
 @app.route('/')
 def home_page():
     return rthelp.show_template('index.html', help_enabled=False)
