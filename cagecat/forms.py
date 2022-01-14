@@ -100,8 +100,56 @@ class FilteringSectionForm(Form):
         }
     )
 
-    pass
+class ClusteringSectionForm(Form):
+    max_intergenic_gap = IntegerField(
+        label=u'Max. intergenic gap*',
+        validators=[val.input_required(), is_safe_string_value],
+        description='max_intergenic_gap',
+        default=20000,
+        render_kw={
+            'min': 0,
+            'max': 1000000,
+            'step': 1
+        }
+    )
 
+    percentageQueryGenes = IntegerField(
+        label=u'Percentage*',
+        validators=[val.input_required(), is_safe_string_value],
+        description='percentageQueryGenes',
+        default=50,
+        render_kw={
+            'min': 0,
+            'max': 100,
+            'step': 1
+        }
+    )
+
+    min_unique_query_hits = IntegerField(
+        label=u'Min. unique query hits*',
+        validators=[val.input_required(), is_safe_string_value],
+        description='min_unique_query_hits',
+        default=3,
+        render_kw={
+            'min': 0,
+            'max': 150,
+            'step': 1
+        }
+    )
+
+    min_hits_in_clusters = IntegerField(
+        label=u'Min. hits in clusters*',
+        validators=[val.input_required(), is_safe_string_value],
+        description='min_hits_in_clusters',
+        default=3,
+        render_kw={
+            'min': 0,
+            'max': 150,
+            'step': 1
+        }
+    )
+
+    # TODO: multiple selection form: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectMultipleField
 
 
 

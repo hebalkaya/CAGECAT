@@ -134,38 +134,10 @@ addAccordionListeners();
             {{ renderForm(forms.get('filtering_section')) }}
         </fieldset>
     </div>
-
+    <div id="clusteringSectionFullFieldset">
         <label class="fieldset-label" for="clusteringSection">Clustering</label>
         <fieldset id="clusteringSection">
-            <div class="input-layer">
-                <label class="input-label" for="max_intergenic_gap">Max. intergenic gap*</label>
-                {{ renderHelpButton('max_intergenic_gap') }}
-                <input type="number" id="max_intergenic_gap"
-                       name="max_intergenic_gap" value="20000" min="0" max="999999" step="1" required="required"/>
-
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="percentageQueryGenes">Percentage*</label>
-                {{ renderHelpButton('percentageQueryGenes') }}
-                <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="min_unique_query_hits">Min. unique query hits*</label>
-                {{ renderHelpButton('min_unique_query_hits') }}
-                <input class="short" type="number" id="min_unique_query_hits"
-                       name="min_unique_query_hits" value="3" step="1" min="0" max="150"
-                       required="required"/>
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters*</label>
-                {{ renderHelpButton('min_hits_in_clusters') }}
-                <input class="short" type="number" id="min_hits_in_clusters"
-                       name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
-            </div>
-
+            {{ renderForm(forms.get('clustering_section')) }}
             <div class="input-layer">
                 <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
                 <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
@@ -180,6 +152,7 @@ addAccordionListeners();
                 </select>
             </div>
         </fieldset>
+    </div>
         {{ result_table('search', "Sum") }}
         {{ result_table('search', "Bin") }}
 

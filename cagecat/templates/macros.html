@@ -215,6 +215,7 @@
     {% for field in form %}
         <div class="input-layer">
             {{ field.label(class="input-label") }}
+{#            TODO: use renderHelpButton macro here #}
             <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
             {{ field(class="bigger") }}
         </div>
