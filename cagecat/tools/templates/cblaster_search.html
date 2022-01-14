@@ -4,6 +4,7 @@
 {% from "macros.html" import renderHelpButton %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
+{% from 'macros.html' import renderForm %}
 
 {% block scripts %}
     {% if module_to_show == 'recompute' %}
@@ -113,38 +114,7 @@ addAccordionListeners();
 <div id="searchSectionFullFieldset">
     <label class="fieldset-label" for="searchSection">Search</label>
     <fieldset id="searchSection">
-        {% for field in forms.get('search_section') %}
-            <div class="input-layer">
-                {{ field.label(class="input-label") }}
-                <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
-                {{ field(class="bigger") }}
-            </div>
-        {% endfor %}
-{#        <div class="input-layer">#}
-{##}
-{#            <label class="input-label" for="entrez_query">Entrez query</label>#}
-{#            {{ renderHelpButton('entrez_query') }}#}
-{#            <input class="bigger" type="text" name="entrez_query"#}
-{#                   id="entrez_query" placeholder="Aspergillus[organism]"/>#}
-{#        </div>#}
-{#        <div class="input-layer">#}
-{#            <label class="select-label" for="database_type">Database*</label>#}
-{#            <select class="select-options" id="database_type" name="database_type" required="required">#}
-{#                <option value="nr">nr</option>#}
-{#                <option value="refseq_protein">RefSeq protein</option>#}
-{#                <option value="swissprot">Swissprot</option>#}
-{#                <option value="pdbaa">pdbaa</option>#}
-{#            </select>#}
-{#            {{ renderHelpButton('database_type') }}#}
-{#        </div>#}
-{##}
-{#        <div class="input-layer">#}
-{#            <label class="input-label" for="max_hits">Maximum hits*</label>#}
-{#            {{ renderHelpButton('max_hits') }}#}
-{#            <input type="number" required="required" name="hitlist_size"#}
-{#                   id="max_hits" min="1" max="99999" step="1"#}
-{#                   value="500"/>#}
-{#        </div>#}
+        {{ renderForm(forms.get('search_section')) }}
     </fieldset>
 </div>
 
@@ -161,14 +131,7 @@ addAccordionListeners();
     <div id="filteringSectionFullFieldset">
         <label class="fieldset-label" for="filteringSection">Filtering</label>
         <fieldset id="filteringSection">
-            {% for field in forms.get('filtering_section') %}
-                <div class="input-layer">
-                    {{ field.label(class="input-label") }}
-                    <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
-                    {{ field(class="bigger") }}
-                </div>
-            {% endfor %}
-
+            {{ renderForm(forms.get('filtering_section')) }}
 
 {#            <div class="input-layer">#}
 {#                <label class="input-label" for="max_evalue">Max. e-value*</label>#}

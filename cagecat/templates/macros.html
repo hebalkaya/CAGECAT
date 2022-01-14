@@ -210,3 +210,13 @@
 {% macro showBookMarkButton() %}
     <input class="button" style="margin-top: 1%; text-align: center" onclick="alert('Press CTRL + D to bookmark this page')" value="Bookmark this page"/>
 {% endmacro %}
+
+{% macro renderForm(form) %}
+    {% for field in form %}
+        <div class="input-layer">
+            {{ field.label(class="input-label") }}
+            <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+            {{ field(class="bigger") }}
+        </div>
+    {% endfor %}
+{% endmacro %}
