@@ -132,27 +132,7 @@ addAccordionListeners();
         <label class="fieldset-label" for="filteringSection">Filtering</label>
         <fieldset id="filteringSection">
             {{ renderForm(forms.get('filtering_section')) }}
-
-{#            <div class="input-layer">#}
-{#                <label class="input-label" for="max_evalue">Max. e-value*</label>#}
-{#                {{ renderHelpButton('max_evalue') }}#}
-{#                <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"#}
-{#                   name="max_evalue"/>#}
-{#            </div>#}
-{#            <div class="input-layer">#}
-{#                <label class="input-label" for="min_identity">Min. identity (%)*</label>#}
-{#                {{ renderHelpButton('min_identity') }}#}
-{#                <input type="number" required="required" value="30" min="0" max="100" step="1"#}
-{#                       id="min_identity" name="min_identity"/>#}
-{#            </div>#}
-{##}
-{#            <div class="input-layer">#}
-{#                <label class="input-label" for="min_query_coverage">Min. query coverage (%)*</label>#}
-{#                {{ renderHelpButton('min_query_coverage') }}#}
-{#                <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"#}
-{#                       name="min_query_coverage"/>#}
-{#            </div>#}
-    </fieldset>
+        </fieldset>
     </div>
 
         <label class="fieldset-label" for="clusteringSection">Clustering</label>

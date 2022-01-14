@@ -51,7 +51,7 @@ class SearchSectionForm(Form):
     )
 
     hitlist_size = IntegerField(
-        label=u'Maximum hits',
+        label=u'Maximum hits*',
         validators=[val.input_required(), is_safe_string_value],
         description='max_hits',
         default=500,
@@ -65,13 +65,38 @@ class SearchSectionForm(Form):
 
 class FilteringSectionForm(Form):
     max_evalue = DecimalField(
-        label=u'Max. e-value',
+        label=u'Max. e-value*',
         validators=[val.input_required(), is_safe_string_value],
         description='max_evalue',
+        default=0.01,
         render_kw={
             'min': 0.01,
             'max': 100,
             'step': 0.01
+        }
+    )
+
+    min_identity = IntegerField(
+        label=u'Min. identity (%)*',
+        validators=[val.input_required(), is_safe_string_value],
+        description='min_identity',
+        default=30,
+        render_kw={
+            'min': 0,
+            'max': 100,
+            'step': 1
+        }
+    )
+
+    min_query_coverage = IntegerField(
+        label=u'Min. query coverage (%)*',
+        validators=[val.input_required(), is_safe_string_value],
+        description='min_query_coverage',
+        default=50,
+        render_kw={
+            'min': 0,
+            'max': 100,
+            'step': 1
         }
     )
 
