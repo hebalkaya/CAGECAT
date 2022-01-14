@@ -803,18 +803,22 @@ function showDetailedPreviousJobs(){
 
     let th = document.createElement("th");
     th.innerText = "Job ID";
+    th.style.width = "15%"
     tr.appendChild(th);
 
     let th1 = document.createElement("th");
     th1.innerText = "Type of job";
+    th1.style.width = "20%"
     tr.appendChild(th1);
 
     let th2 = document.createElement("th");
     th2.innerText = "Date";
+    th2.style.width = "30%"
     tr.appendChild(th2);
 
     let th3 = document.createElement("th");
     th3.innerText = "Title";
+    th3.style.width = "30%"
     tr.appendChild(th3);
 
     overview.insertBefore(tr, overview.childNodes[0]);

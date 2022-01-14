@@ -11,6 +11,7 @@ import cagecat.parsers as pa
 import cagecat.routes
 from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
+from cagecat.forms import JobInfoForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
