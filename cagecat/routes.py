@@ -15,6 +15,7 @@ import cagecat.utils as ut
 import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
+from cagecat.forms import JobInfoForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -45,6 +46,18 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    if request.method == 'POST':
+        form = JobInfoForm(request.form)
+        print(form.title)
+        print(form.mail_address)
+
+        if not form.validate():
+            print(form.errors)
+
+        print(form)
+        print(form.validate())
+        print(form.errors)
+
     new_jobs = []
 
     job_type = request.form["job_type"]

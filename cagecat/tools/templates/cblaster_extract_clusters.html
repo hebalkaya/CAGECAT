@@ -19,7 +19,20 @@
     <input type="hidden" name="job_type" value="extract_clusters"/>
     <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
-    {{ renderJobDetailsInput() }}
+    <div>
+        <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
+        <fieldset id="jobDetailsInputFieldset">
+            {% for field in form %}
+                <div class="input-layer">
+                    {{ field.label(class="input-label") }}
+                    {{ field }}
+                    <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+                </div>
+            {% endfor %}
+
+        </fieldset>
+    </div>
+{#    {{ renderJobDetailsInput() }}#}
 
     {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}
 
