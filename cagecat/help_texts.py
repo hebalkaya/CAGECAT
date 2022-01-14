@@ -43,8 +43,17 @@ GNE_HELPS = {'max_intergenic_distance': {'title': 'Maximum intergenic distance',
              'sample_number': {'title': 'Number of samples', 'module': '', 'text': 'Total samples taken from Maximum intergenic distance.\n\nRequired: yes'},
              'sampling_space': {'title': 'Sampling space', 'module': '', 'text': 'Draw sampling values from a linear or log scale.\n\nRequired: yes'}}
 
-CLINKER_HELPS = {'noAlign': {'title': 'Do not align clusters', 'module': '', 'text': 'Do not align clusters.\n\nRequired: no'},
-                      'identity': {'title': 'Minimum alignment sequence identity', 'module': '', 'text': 'Minimum alignment sequence identity.\n\nRequired: yes'},
+CLINKER_HELPS = {
+    'noAlign': {
+        'title': 'Do not align clusters',
+        'module': '',
+        'text': 'Do not align clusters.\n\nRequired: no'
+    },
+    'identity': {
+        'title': 'Minimum alignment sequence identity',
+        'module': '',
+        'text': 'Minimum alignment sequence identity.\n\nRequired: yes'
+    },
                       'hideLinkHeaders': {'title': 'Hide alignment column headers', 'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'},
                       'hideAlignHeaders': {'title': 'Hide alignment cluster name headers', 'module': '', 'text': 'Hide alignment cluster name headers.\n\nRequired: no'},
                       'useFileOrder': {'title': 'Maintain order of input files', 'module': '', 'text': 'Display clusters in order of input files.\n\nRequired: no'},

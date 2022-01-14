@@ -95,6 +95,13 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 pj = request.args["pj"]
 
 
+            if status == 'queued':
+                stages = []
+            else:
+                stages = get_execution_stages_front_end(
+                    job_type=job.job_type,
+                    job_id=job_id)
+
             return show_template("status_page.html", j_id=job_id,
                                  parent_job=pj,
                                  status=status,
@@ -102,9 +109,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  job_title=job.title,
                                  j_type=j_type,
                                  stat_code=302,
-                                 stages=get_execution_stages_front_end(
-                                     job_type=job.job_type,
-                                     job_id=job_id),
+                                 stages=stages,
                                  help_enabled=False)
 
         elif status == "waiting":
