@@ -15,7 +15,8 @@ import cagecat.utils as ut
 import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
-from cagecat.forms import JobInfoForm
+from cagecat.forms import JobInfoForm, CblasterSearchForm, cblaster_search_databases, cblaster_search_binary_table_key_functions, \
+    cblaster_search_binary_table_hit_attributes
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -29,6 +30,58 @@ def home_page_old_url():
 def home_page():
     return rthelp.show_template('index.html', help_enabled=False)
 
+@app.route('/invalid-submission')
+def invalid_submission():
+    return rthelp.show_template('incorrect_submission.html', help_enabled=False)
+
+exceptions = {
+    'search': [
+        ('database_type', cblaster_search_databases)
+    ],
+    'binary_table': [
+        ('keyFunction', cblaster_search_binary_table_key_functions),
+        ('hitAttribute', cblaster_search_binary_table_hit_attributes)
+    ]
+}
+
+def validate_full_form(form_type, request_form):
+    large_form = form_type(request_form)
+
+    all_forms = [attr for attr in dir(large_form) if not attr.startswith('_') and attr not in ('Meta', 'meta', 'form_errors', 'errors', 'data', 'populate_obj', 'process', 'validate')]
+    # print(all_forms)
+    #
+    # print(large_form.validate())
+    # print(large_form.errors)
+    for form in all_forms:
+        # print('--')
+        # print(form)
+        smaller_form = large_form.__getattribute__(form)
+        print(smaller_form)
+        smaller_form.validate()
+
+
+        # results = exceptions.get(form)
+        # if results is not None:
+        #     for name, choices in results:
+        #         print('------')
+        #         print(name, choices)
+        #         print(smaller_form.__getattribute__(name))
+        #         print(smaller_form.__getattribute__(name).choices)
+        #         smaller_form.__getattribute__(name).choices = choices
+        #         print(smaller_form.__getattribute__(name).choices)
+        #         # smaller_form.getattr.choices = choices  # populate the validator with choices
+
+        # print(smaller_form)
+
+
+
+    # for form in all_forms:
+    #     attributes = [attr for attr in dir(form) if not attr.startswith('_') and attr not in ('Meta', 'meta', 'form_errors', 'errors', 'data')]
+    #     print(attributes)
+    #     for attr in attributes:
+    #         print(attr)
+    #         print(form.__getattribute__(attr))
+    #         form.__getattribute__(attr).validate()
 
 @app.route(co.SUBMIT_URL, methods=["POST"])
 def submit_job() -> str:
@@ -46,20 +99,6 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    if request.method == 'POST':
-        form = JobInfoForm(request.form)
-        # print(form.title)
-        print(form.mail_address)
-
-        if not form.validate():
-            # url = url_for()
-            return rthelp.show_template('incorrect_submission.html', help_enabled=False)
-            print(form.errors)
-
-        print(form)
-        print(form.validate())
-        print(form.errors)
-
     new_jobs = []
 
     job_type = request.form["job_type"]
@@ -71,6 +110,17 @@ def submit_job() -> str:
     ut.create_directories(job_id)
 
     if job_type == "search":
+        validate_full_form(CblasterSearchForm, request.form)
+        # form = CblasterSearchForm(request.form)
+        # print(form.)
+        # print(form)
+        # print(form.validate())
+        # print(form.errors)
+        # if not form.validate():
+        #     print('Incorrect form!')
+        #     url = url_for('invalid_submission')
+            # return redirect(url_for('invalid_submission'))
+
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
         print('Line 55 job type', job_type)
 

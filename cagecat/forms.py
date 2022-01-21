@@ -181,6 +181,7 @@ class ClusteringSectionForm(Form):
         label=u'Required sequences',
         validators=[is_safe_string_value],
         description='requiredSequencesSelector',
+        validate_choice=False,  # as this is generated dynamically
         render_kw={
             'style': 'width: 60%;'
         }
@@ -226,7 +227,7 @@ def get_table_form(module: str, table_type: str):
 
     hide_headers = BooleanField(
         label=u'Hide headers',
-        validators=[is_safe_string_value], # TODO: add boolean validators
+        validators=[], # TODO: add boolean validators
         description='generalHideHeaders',
         id=f'{prefix}TableHideHeaders',
         name=f'{prefix}TableHideHeaders'
@@ -240,6 +241,7 @@ class SummaryTableForm(Form):
 
 
 class BinaryTableForm(Form):
+
     delimiter, decimals, hide_headers = get_table_form('search', 'Bin')
 
     keyFunction = SelectField(
@@ -255,7 +257,7 @@ class BinaryTableForm(Form):
 
     hitAttribute = SelectField(
         label=u'Hit attribute',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.optional(), is_safe_string_value],
         description='hitAttribute',
         choices=cblaster_search_binary_table_hit_attributes,
         render_kw={
@@ -268,14 +270,14 @@ class BinaryTableForm(Form):
 class AdditionalOptionsSectionForm(Form):
     sortClusters = BooleanField(
         label=u'Sort clusters',
-        validators=[is_safe_string_value], # TODO: add boolean validator
+        validators=[], # TODO: add boolean validator
         description='sortClusters'
     )
 
 class IntermediateGenesSectionForm(Form):
     intermediate_genes = BooleanField(
         label=u'Find intermediate genes',
-        validators=[is_safe_string_value], # TODO: add boolean validator
+        validators=[], # TODO: add boolean validator
         description='intermediate_genes',
         render_kw={
             'onclick': "toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')"
@@ -323,6 +325,7 @@ class CblasterSearchForm(Form):
     additional_options = AdditionalOptionsSectionForm()
     intermediate_genes = IntermediateGenesSectionForm()
     submit = SubmitForm()
+
 
 
 class JobTypeForm(Form):
