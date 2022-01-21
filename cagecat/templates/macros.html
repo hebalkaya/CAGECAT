@@ -214,7 +214,11 @@
 {% macro renderForm(form) %}
     {% for field in form %}
         {% set is_hidden_field = field.type == 'HiddenField' %}
+        {% set classes = field.render_kw.class %}
 
+        {% if not classes %}
+            {% set classes = "bigger" %}
+        {% endif %}
 
         {% if not is_hidden_field %}
 
@@ -229,7 +233,7 @@
                     <div class="input-layer">
                     {{ field.label(class="input-label") }}{% if field.flags.required %}*{% endif %}
                     <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
-                    {{ field(class="bigger") }}
+                    {{ field(class=classes) }}
                 {% endif %}
 
     {#            TODO: use renderHelpButton macro here #}

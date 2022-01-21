@@ -165,6 +165,34 @@ class ClusteringSectionForm(Form):
         }
     )
 
+class SummaryTableForm(Form):
+
+    delimiter = StringField(
+        label=u'Delimiter',
+        validators=[val.length(max=1), is_safe_string_value],
+        description='generalDelimiter',
+        render_kw={
+            'size': 1,
+            'class': 'short'
+        }
+    )
+
+    decimals = IntegerField(
+        label=u'Decimals',
+        validators=[val.input_required(), is_safe_string_value],
+        description='generalDecimals',
+        default=2,
+        render_kw={
+            'min': 0,
+            'max': 9,
+            'step': 1,
+            'class': 'short'
+        }
+    )
+
+
+    # delimiter
+
 class AdditionalOptionsSectionForm(Form):
     sortClusters = BooleanField(
         label=u'Sort clusters',
