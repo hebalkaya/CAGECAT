@@ -48,7 +48,7 @@ def submit_job() -> str:
     """
     if request.method == 'POST':
         form = JobInfoForm(request.form)
-        print(form.title)
+        # print(form.title)
         print(form.mail_address)
 
         if not form.validate():
