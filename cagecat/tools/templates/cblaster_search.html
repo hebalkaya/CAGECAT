@@ -157,24 +157,26 @@ addAccordionListeners();
         </fieldset>
     </div>
 
-{#        {{ result_table('search', "Sum") }}#}
-{#        {{ result_table('search', "Bin") }}#}
-
+    <div>
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
             {{ renderForm(forms.get('additional_options_section')) }}
-
         </fieldset>
+    </div>
 
+    <div>
         <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
         <fieldset id="intermediateGenesSection">
             {{ renderForm(forms.get('intermediate_genes_section')) }}
-
         </fieldset>
-</div>
-    <div class="input-layer centered">
-        <input class="button" value="Submit" type="submit" id="submitSearchForm"/>
     </div>
+
+</div>
+
+<div class="input-layer centered">
+    {{ forms.get('submit').submit }}
+{#    <input class="button" value="Submit" type="submit" id="submitSearchForm"/>#}
+</div>
     </form>
 </div>
 {% endblock %}

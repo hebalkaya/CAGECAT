@@ -1,5 +1,5 @@
 import wtforms
-from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField
+from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
@@ -26,6 +26,14 @@ cblaster_search_binary_table_hit_attributes = [
     ('bitscore', 'bitscore'),
     ('evalue', 'evalue')
 ]
+
+class SubmitForm(Form):
+    submit = SubmitField(
+        default='Submit',
+        render_kw={
+            'class': 'button'
+        }
+    )
 
 
 class JobInfoForm(Form):
