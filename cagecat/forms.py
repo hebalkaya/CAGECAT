@@ -1,5 +1,5 @@
 import wtforms
-from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField
+from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
@@ -51,7 +51,7 @@ class SearchSectionForm(Form):
     )
 
     hitlist_size = IntegerField(
-        label=u'Maximum hits*',
+        label=u'Maximum hits',
         validators=[val.input_required(), is_safe_string_value],
         description='max_hits',
         default=500,
@@ -65,7 +65,7 @@ class SearchSectionForm(Form):
 
 class FilteringSectionForm(Form):
     max_evalue = DecimalField(
-        label=u'Max. e-value*',
+        label=u'Max. e-value',
         validators=[val.input_required(), is_safe_string_value],
         description='max_evalue',
         default=0.01,
@@ -77,7 +77,7 @@ class FilteringSectionForm(Form):
     )
 
     min_identity = IntegerField(
-        label=u'Min. identity (%)*',
+        label=u'Min. identity (%)',
         validators=[val.input_required(), is_safe_string_value],
         description='min_identity',
         default=30,
@@ -89,7 +89,7 @@ class FilteringSectionForm(Form):
     )
 
     min_query_coverage = IntegerField(
-        label=u'Min. query coverage (%)*',
+        label=u'Min. query coverage (%)',
         validators=[val.input_required(), is_safe_string_value],
         description='min_query_coverage',
         default=50,
@@ -102,7 +102,7 @@ class FilteringSectionForm(Form):
 
 class ClusteringSectionForm(Form):
     max_intergenic_gap = IntegerField(
-        label=u'Max. intergenic gap*',
+        label=u'Max. intergenic gap',
         validators=[val.input_required(), is_safe_string_value],
         description='max_intergenic_gap',
         default=20000,
@@ -114,7 +114,7 @@ class ClusteringSectionForm(Form):
     )
 
     percentageQueryGenes = IntegerField(
-        label=u'Percentage*',
+        label=u'Percentage',
         validators=[val.input_required(), is_safe_string_value],
         description='percentageQueryGenes',
         default=50,
@@ -126,7 +126,7 @@ class ClusteringSectionForm(Form):
     )
 
     min_unique_query_hits = IntegerField(
-        label=u'Min. unique query hits*',
+        label=u'Min. unique query hits',
         validators=[val.input_required(), is_safe_string_value],
         description='min_unique_query_hits',
         default=3,
@@ -138,7 +138,7 @@ class ClusteringSectionForm(Form):
     )
 
     min_hits_in_clusters = IntegerField(
-        label=u'Min. hits in clusters*',
+        label=u'Min. hits in clusters',
         validators=[val.input_required(), is_safe_string_value],
         description='min_hits_in_clusters',
         default=3,
@@ -164,6 +164,49 @@ class ClusteringSectionForm(Form):
             'value': ''
         }
     )
+
+class AdditionalOptionsSectionForm(Form):
+    sortClusters = BooleanField(
+        label=u'Sort clusters',
+        validators=[is_safe_string_value], # TODO: add boolean validator
+        description='sortClusters'
+    )
+
+class IntermediateGenesSectionForm(Form):
+    intermediate_genes = BooleanField(
+        label=u'Find intermediate genes',
+        validators=[is_safe_string_value], # TODO: add boolean validator
+        description='intermediate_genes',
+        render_kw={
+            'onclick': "toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')"
+        }
+    )
+
+    intermediate_max_distance = IntegerField(
+        label=u'Max. distance',
+        validators=[is_safe_string_value],
+        description='intermediate_max_distance',
+        default=5000,
+        render_kw={
+            'min': 0,
+            'max': 250000,
+            'disabled': ''
+        }
+    )
+
+    intermediate_max_clusters = IntegerField(
+        label=u'Max. clusters',
+        validators=[is_safe_string_value],
+        description='intermediate_max_clusters',
+        default=100,
+        render_kw={
+            'min': 1,
+            'max': 100,
+            'disabled': ''
+        }
+    )
+
+
 
 
 

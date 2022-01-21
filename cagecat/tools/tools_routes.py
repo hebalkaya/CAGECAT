@@ -11,7 +11,8 @@ import cagecat.parsers as pa
 import cagecat.routes
 from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
-from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm
+from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, IntermediateGenesSectionForm, \
+    AdditionalOptionsSectionForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -63,7 +64,9 @@ def cblaster_search(prev_run_id: str = None) -> str:
     forms = {
         'search_section': SearchSectionForm(),
         'filtering_section': FilteringSectionForm(),
-        'clustering_section': ClusteringSectionForm()
+        'clustering_section': ClusteringSectionForm(),
+        'additional_options_section': AdditionalOptionsSectionForm(),
+        'intermediate_genes_section': IntermediateGenesSectionForm()
     }
 
     return rthelp.show_template("cblaster_search.html",

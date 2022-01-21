@@ -146,29 +146,17 @@ addAccordionListeners();
 
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
-            <label class="checkbox-label">
-                <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters
-            </label>
-            {{ renderHelpButton('sortClusters', True) }}
+            {{ renderForm(forms.get('additional_options_section')) }}
+{#            <label class="checkbox-label">#}
+{#                <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters#}
+{#            </label>#}
+{#            {{ renderHelpButton('sortClusters', True) }}#}
         </fieldset>
 
         <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
         <fieldset id="intermediateGenesSection">
+            {{ renderForm(forms.get('intermediate_genes_section')) }}
 
-            <label class="checkbox-label">
-                <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes
-            </label>
-            {{ renderHelpButton('intermediate_genes', True) }}
-            <div class="input-layer">
-                <label class="input-label" for="intermediate_max_distance">Max. distance</label>
-                {{ renderHelpButton('intermediate_max_distance') }}
-                <input type="number" min="0" max="250000" value="5000" disabled="disabled" id="intermediate_max_distance" name="intermediate_max_distance"/>
-            </div>
-            <div class="input-layer">
-                <label class="input-label" for="intermediate_max_clusters">Max. clusters</label>
-                {{ renderHelpButton('intermediate_max_clusters') }}
-                <input type="number" min="1" max="100" value="100" disabled="disabled" id="intermediate_max_clusters" name="intermediate_max_clusters"/>
-            </div>
         </fieldset>
 </div>
     <div class="input-layer centered">

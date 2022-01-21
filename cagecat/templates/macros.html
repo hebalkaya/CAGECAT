@@ -215,13 +215,27 @@
     {% for field in form %}
         {% set is_hidden_field = field.type == 'HiddenField' %}
 
+
         {% if not is_hidden_field %}
-            <div class="input-layer">
-                {{ field.label(class="input-label") }}
+
+                {% if field.type == 'BooleanField' %}
+                    <div>
+                        <label class="checkbox-label">
+                            {{ field }}{{ field.label.text }}
+                        </label>
+                        <img class="help-button checkbox-help" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+
+                {% else %}
+                    <div class="input-layer">
+                    {{ field.label(class="input-label") }}{% if field.flags.required %}*{% endif %}
+                    <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+                    {{ field(class="bigger") }}
+                {% endif %}
+
     {#            TODO: use renderHelpButton macro here #}
-                <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+
         {% endif %}
-                {{ field(class="bigger") }}
+
         {% if not is_hidden_field %}
             </div>
         {% endif %}
