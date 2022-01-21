@@ -15,21 +15,16 @@ cblaster_search_databases = [
 ]
 
 cblaster_search_binary_table_key_functions = [
-    ('functionLen', 'len'),
-    ('functionSum', 'sum'),
-    ('functionMax', 'max')
+    ('len', 'len'),
+    ('sum', 'sum'),
+    ('max', 'max')
 ]
 
-# <option name="hitAttrIdentity" value="identity">identity</option>
-# <option name="hitAttrCoverage" value="coverage">coverage</option>
-# <option name="hitAttrBitscore" value="bitscore">bitscore</option>
-# <option name="hitAttrEValue" value="evalue">e-value</option>
-
 cblaster_search_binary_table_hit_attributes = [
-    ('hitAttrIdentity', 'identity'),
-    ('hitAttrCoverage', 'coverage'),
-    ('hitAttrBitscore', 'bitscore'),
-    ('hitAttrEValue', 'evalue')
+    ('identity', 'identity'),
+    ('coverage', 'coverage'),
+    ('bitscore', 'bitscore'),
+    ('evalue', 'evalue')
 ]
 
 
