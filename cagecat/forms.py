@@ -14,10 +14,24 @@ cblaster_search_databases = [
     ('pdbaa', 'pdbaa')
 ]
 
-# <option value="nr">nr</option>
-# <option value="refseq_protein">RefSeq protein</option>
-# <option value="swissprot">Swissprot</option>
-# <option value="pdbaa">pdbaa</option>
+cblaster_search_binary_table_key_functions = [
+    ('functionLen', 'len'),
+    ('functionSum', 'sum'),
+    ('functionMax', 'max')
+]
+
+# <option name="hitAttrIdentity" value="identity">identity</option>
+# <option name="hitAttrCoverage" value="coverage">coverage</option>
+# <option name="hitAttrBitscore" value="bitscore">bitscore</option>
+# <option name="hitAttrEValue" value="evalue">e-value</option>
+
+cblaster_search_binary_table_hit_attributes = [
+    ('hitAttrIdentity', 'identity'),
+    ('hitAttrCoverage', 'coverage'),
+    ('hitAttrBitscore', 'bitscore'),
+    ('hitAttrEValue', 'evalue')
+]
+
 
 class JobInfoForm(Form):
     job_title = StringField(
@@ -35,7 +49,7 @@ class JobInfoForm(Form):
 class SearchSectionForm(Form):
     entrez_query = StringField(
         label=u'Entrez query',
-        validators=[is_safe_string_value,],
+        validators=[is_safe_string_value],
         description='entrez_query',
         render_kw={
             'placeholder': 'Aspergillus[organism]'
@@ -46,8 +60,11 @@ class SearchSectionForm(Form):
         # TODO: when other values than choices are posted, check if it raises error
         label=u'Database',
         validators=[val.input_required(), is_safe_string_value],
+        description='database_type',
         choices=cblaster_search_databases,
-        description='database_type'
+        render_kw={
+            'class': 'select-options'
+        }
     )
 
     hitlist_size = IntegerField(
@@ -214,7 +231,27 @@ class SummaryTableForm(Form):
 class BinaryTableForm(Form):
     delimiter, decimals, hide_headers = get_table_form('search', 'Bin')
 
-    # keyFunction =
+    keyFunction = SelectField(
+        label=u'Key function',
+        validators=[val.input_required(), is_safe_string_value],
+        description='keyFunction',
+        choices=cblaster_search_binary_table_key_functions,
+        render_kw={
+            'onChange': 'changeHitAttribute()',
+            'class': 'select-options'
+        }
+    )
+
+    hitAttribute = SelectField(
+        label=u'Hit attribute',
+        validators=[val.input_required(), is_safe_string_value],
+        description='hitAttribute',
+        choices=cblaster_search_binary_table_hit_attributes,
+        render_kw={
+            'disabled': '',
+            'class': 'select-options'
+        }
+    )
 
 
 class AdditionalOptionsSectionForm(Form):
