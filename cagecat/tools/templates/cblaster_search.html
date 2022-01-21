@@ -134,6 +134,7 @@ addAccordionListeners();
             {{ renderForm(forms.get('filtering_section')) }}
         </fieldset>
     </div>
+
     <div id="clusteringSectionFullFieldset">
         <label class="fieldset-label" for="clusteringSection">Clustering</label>
         <fieldset id="clusteringSection">
@@ -141,16 +142,28 @@ addAccordionListeners();
 
         </fieldset>
     </div>
-        {{ result_table('search', "Sum") }}
-        {{ result_table('search', "Bin") }}
+
+    <div>
+        <label class="fieldset-label" for="searchSumTableSection">Summary table</label>
+        <fieldset id="searchSumTableSection">
+            {{ renderForm(forms.get('summary_table_section')) }}
+        </fieldset>
+    </div>
+
+    <div>
+        <label class="fieldset-label" for="searchBinTableSection">Binary table</label>
+        <fieldset id="searchBinTableSection">
+            {{ renderForm(forms.get('binary_table')) }}
+        </fieldset>
+    </div>
+
+{#        {{ result_table('search', "Sum") }}#}
+{#        {{ result_table('search', "Bin") }}#}
 
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
             {{ renderForm(forms.get('additional_options_section')) }}
-{#            <label class="checkbox-label">#}
-{#                <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters#}
-{#            </label>#}
-{#            {{ renderHelpButton('sortClusters', True) }}#}
+
         </fieldset>
 
         <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>

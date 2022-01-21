@@ -165,12 +165,16 @@ class ClusteringSectionForm(Form):
         }
     )
 
-class SummaryTableForm(Form):
+def get_table_form(module: str, table_type: str):
+
+    prefix = f'{module}{table_type}'
 
     delimiter = StringField(
         label=u'Delimiter',
         validators=[val.length(max=1), is_safe_string_value],
         description='generalDelimiter',
+        id=f'{prefix}TableDelim',
+        name=f'{prefix}TableDelim',
         render_kw={
             'size': 1,
             'class': 'short'
@@ -182,6 +186,8 @@ class SummaryTableForm(Form):
         validators=[val.input_required(), is_safe_string_value],
         description='generalDecimals',
         default=2,
+        id=f'{prefix}TableDecimals',
+        name=f'{prefix}TableDecimals',
         render_kw={
             'min': 0,
             'max': 9,
@@ -190,8 +196,26 @@ class SummaryTableForm(Form):
         }
     )
 
+    hide_headers = BooleanField(
+        label=u'Hide headers',
+        validators=[is_safe_string_value], # TODO: add boolean validators
+        description='generalHideHeaders',
+        id=f'{prefix}TableHideHeaders',
+        name=f'{prefix}TableHideHeaders'
+    )
 
-    # delimiter
+    return delimiter, decimals, hide_headers
+
+
+class SummaryTableForm(Form):
+    delimiter, decimals, hide_headers = get_table_form('search', 'Sum')
+
+
+class BinaryTableForm(Form):
+    delimiter, decimals, hide_headers = get_table_form('search', 'Bin')
+
+    # keyFunction =
+
 
 class AdditionalOptionsSectionForm(Form):
     sortClusters = BooleanField(
