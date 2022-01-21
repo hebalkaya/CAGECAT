@@ -52,6 +52,8 @@ def submit_job() -> str:
         print(form.mail_address)
 
         if not form.validate():
+            # url = url_for()
+            return rthelp.show_template('incorrect_submission.html', help_enabled=False)
             print(form.errors)
 
         print(form)

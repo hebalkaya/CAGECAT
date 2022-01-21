@@ -33,7 +33,13 @@ addAccordionListeners();
 <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
-    {{ renderJobDetailsInput() }}
+    <div>
+        <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
+        <fieldset id="jobDetailsInputFieldset">
+            {{ renderForm(all_forms.job_info) }}
+        </fieldset>
+    </div>
+
     {% if prev_run_id is none %}
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
@@ -114,7 +120,7 @@ addAccordionListeners();
 <div id="searchSectionFullFieldset">
     <label class="fieldset-label" for="searchSection">Search</label>
     <fieldset id="searchSection">
-        {{ renderForm(forms.get('search_section')) }}
+        {{ renderForm(all_forms.search) }}
     </fieldset>
 </div>
 
@@ -131,14 +137,14 @@ addAccordionListeners();
     <div id="filteringSectionFullFieldset">
         <label class="fieldset-label" for="filteringSection">Filtering</label>
         <fieldset id="filteringSection">
-            {{ renderForm(forms.get('filtering_section')) }}
+            {{ renderForm(all_forms.filtering) }}
         </fieldset>
     </div>
 
     <div id="clusteringSectionFullFieldset">
         <label class="fieldset-label" for="clusteringSection">Clustering</label>
         <fieldset id="clusteringSection">
-            {{ renderForm(forms.get('clustering_section')) }}
+            {{ renderForm(all_forms.clustering) }}
 
         </fieldset>
     </div>
@@ -146,35 +152,35 @@ addAccordionListeners();
     <div>
         <label class="fieldset-label" for="searchSumTableSection">Summary table</label>
         <fieldset id="searchSumTableSection">
-            {{ renderForm(forms.get('summary_table_section')) }}
+            {{ renderForm(all_forms.summary_table) }}
         </fieldset>
     </div>
 
     <div>
         <label class="fieldset-label" for="searchBinTableSection">Binary table</label>
         <fieldset id="searchBinTableSection">
-            {{ renderForm(forms.get('binary_table')) }}
+            {{ renderForm(all_forms.binary_table) }}
         </fieldset>
     </div>
 
     <div>
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
-            {{ renderForm(forms.get('additional_options_section')) }}
+            {{ renderForm(all_forms.additional_options) }}
         </fieldset>
     </div>
 
     <div>
         <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
         <fieldset id="intermediateGenesSection">
-            {{ renderForm(forms.get('intermediate_genes_section')) }}
+            {{ renderForm(all_forms.intermediate_genes) }}
         </fieldset>
     </div>
 
 </div>
 
 <div class="input-layer centered">
-    {{ forms.get('submit').submit }}
+    {{ all_forms.submit.submit }}
 {#    <input class="button" value="Submit" type="submit" id="submitSearchForm"/>#}
 </div>
     </form>

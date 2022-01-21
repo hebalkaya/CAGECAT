@@ -35,19 +35,27 @@ class SubmitForm(Form):
         }
     )
 
-
 class JobInfoForm(Form):
     job_title = StringField(
         label=u'Job title',
         validators=[val.length(max=60), is_safe_string_value],
-        description='job_title'
+        description='job_title',
+        render_kw={
+            'class': ' ',
+            'placeholder': 'Experiment number'
+        }
     )
 
     mail_address = EmailField(
         label=u'Email address for notification',
         validators=[val.length(max=100)],
-        description='email_notification'
+        description='email_notification',
+        render_kw={
+            'class': ' ',
+            'placeholder': 'username@institution.com'
+        }
     )
+
 
 class SearchSectionForm(Form):
     entrez_query = StringField(
@@ -305,7 +313,16 @@ class IntermediateGenesSectionForm(Form):
     # TODO: multiple selection form: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectMultipleField
 
 
-
+class CblasterSearchForm(Form):
+    job_info = JobInfoForm()
+    search = SearchSectionForm()
+    filtering = FilteringSectionForm()
+    clustering = ClusteringSectionForm()
+    summary_table = SummaryTableForm()
+    binary_table = BinaryTableForm()
+    additional_options = AdditionalOptionsSectionForm()
+    intermediate_genes = IntermediateGenesSectionForm()
+    submit = SubmitForm()
 
 
 class JobTypeForm(Form):
