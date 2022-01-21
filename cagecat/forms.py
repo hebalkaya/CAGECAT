@@ -1,5 +1,5 @@
 import wtforms
-from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField
+from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
@@ -148,6 +148,24 @@ class ClusteringSectionForm(Form):
             'step': 1
         }
     )
+
+    requiredSequencesSelector = SelectMultipleField(
+        label=u'Required sequences',
+        validators=[is_safe_string_value],
+        description='requiredSequencesSelector',
+        render_kw={
+            'style': 'width: 60%;'
+        }
+    )
+
+    requiredSequences = HiddenField(
+        validators=[is_safe_string_value],
+        render_kw={
+            'value': ''
+        }
+    )
+
+
 
     # TODO: multiple selection form: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectMultipleField
 

@@ -213,11 +213,19 @@
 
 {% macro renderForm(form) %}
     {% for field in form %}
-        <div class="input-layer">
-            {{ field.label(class="input-label") }}
-{#            TODO: use renderHelpButton macro here #}
-            <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
-            {{ field(class="bigger") }}
-        </div>
+        {% set is_hidden_field = field.type == 'HiddenField' %}
+
+        {% if not is_hidden_field %}
+            <div class="input-layer">
+                {{ field.label(class="input-label") }}
+    {#            TODO: use renderHelpButton macro here #}
+                <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+        {% endif %}
+                {{ field(class="bigger") }}
+        {% if not is_hidden_field %}
+            </div>
+        {% endif %}
+
+
     {% endfor %}
 {% endmacro %}

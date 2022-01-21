@@ -138,19 +138,7 @@ addAccordionListeners();
         <label class="fieldset-label" for="clusteringSection">Clustering</label>
         <fieldset id="clusteringSection">
             {{ renderForm(forms.get('clustering_section')) }}
-            <div class="input-layer">
-                <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
-                <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
-                {{ renderHelpButton('requiredSequencesSelector') }}
-                <select style="width: 60%;" id="requiredSequencesSelector" multiple="multiple">
-                    {% if headers %}
-                        {% for head in headers %}
-                        <option value="{{ head }}">{{ head }}</option>
-                        {% endfor %}
-                    {% endif %}
 
-                </select>
-            </div>
         </fieldset>
     </div>
         {{ result_table('search', "Sum") }}
