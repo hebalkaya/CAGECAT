@@ -15,8 +15,9 @@ import cagecat.utils as ut
 import cagecat.const as co
 import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
-from cagecat.forms import JobInfoForm, CblasterSearchForm, cblaster_search_databases, cblaster_search_binary_table_key_functions, \
+from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
     cblaster_search_binary_table_hit_attributes
+from cagecat.forms import CblasterSearchForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
