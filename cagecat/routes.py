@@ -17,7 +17,7 @@ import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
 from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
     cblaster_search_binary_table_hit_attributes
-from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm
+from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -123,6 +123,9 @@ def submit_job() -> str:
                                               f"{request.form['prev_job_id']}_session.json")))
 
     elif job_type == "extract_clusters":
+        if not validate_full_form(CblasterExtractClustersForm, request.form):
+            return redirect(url_for('invalid_submission'))
+
         prev_job_id = ut.fetch_job_from_db(
             request.form["prev_job_id"]).main_search_job
 

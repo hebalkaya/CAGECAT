@@ -12,7 +12,8 @@ import cagecat.routes
 from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
 from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, IntermediateGenesSectionForm, \
-    AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm
+    AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
+    CblasterExtractClustersForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -131,7 +132,7 @@ def extract_clusters() -> str:
 
     return show_template("cblaster_extract_clusters.html",
                          # selected_scaffolds=selected_scaffolds,
-                         form=JobInfoForm(),
+                         all_forms=CblasterExtractClustersForm(),
                          cluster_headers=selected_clusters.split('\r\n'),
                          cluster_numbers=cluster_numbers,
                          prev_job_id=prev_job_id, prev_job_type=prev_job.job_type,

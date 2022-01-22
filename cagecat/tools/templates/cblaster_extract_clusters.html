@@ -5,6 +5,7 @@
 {% from "macros.html" import showSelectedClusters %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
+{% from 'macros.html' import renderForm %}
 
 {% block navigationBar %}
     {{ showNavigationBar('analyze') }}
@@ -22,48 +23,32 @@
     <div>
         <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
         <fieldset id="jobDetailsInputFieldset">
-            {% for field in form %}
-                <div class="input-layer">
-                    {{ field.label(class="input-label") }}
-                    {{ field }}
-                    <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
-                </div>
-            {% endfor %}
-
+            {{ renderForm(all_forms.job_info) }}
         </fieldset>
     </div>
-{#    {{ renderJobDetailsInput() }}#}
 
-    {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}
+    <div>
+        <label class="fieldset-label" for="filteringSection">Filtering</label>
+        <fieldset id="filteringSection">
+            {{ renderForm(all_forms.filtering) }}
+        </fieldset>
+    </div>
+
+{#    {{ filtering_section('clusters', selected_scaffolds, cluster_numbers) }}#}
 
     <label class="fieldset-label" for="outputSectionExtractClusters">Output</label>
     <fieldset id="outputSectionExtractClusters">
-        <div class="input-layer">
-            <label class="input-label" for="prefix">Prefix</label>
-            {{ renderHelpButton('prefix') }}
-            <input class="custom-width" type="text" id="prefix" name="prefix" maxlength="15"/>
-        </div>
-        <div class="input-layer">
-            <label class="select-label" for="format">Format*</label>
-            <select class="custom-width" name="format" id="format" required="required">
-                <option value="genbank">GenBank</option>
-                <option value="bigscape">BiG-SCAPE</option>
-            </select>
-            {{ renderHelpButton('format') }}
-        </div>
-        <div class="input-layer">
-            <label class="input-label" for="maxclusters">Maximum clusters*</label>
-            {{ renderHelpButton('maxclusters') }}
-            <input class="short" type="number" name="maxclusters" value="50" step="1" min="1" max="{{ max_clusters_to_extract }}" id="maxclusters" required="required"/>
-        </div>
+        {{ renderForm(all_forms.output) }}
     </fieldset>
+    <div>
+        {{ showSelectedClusters(cluster_headers, True, False) }}
+    </div>
 
-    {{ showSelectedClusters(cluster_headers, True, False) }}
     {% if prev_job_type == 'clinker_query' %}
         <b><p class="indent">Note that when your previous job was a clinker_query one, all cluster hits of the <a href="{{ url_for('result.show_result', job_id=main_search_id) }}">main search job</a> will be extracted.</p></b>
     {% endif %}
     <div class="input-layer centered">
-        <input class="button" value="Submit" type="submit"/>
+        {{ all_forms.submit.submit }}
     </div>
 </form>
         {% endblock %}

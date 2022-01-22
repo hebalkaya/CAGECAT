@@ -1,4 +1,5 @@
-from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField
+from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField, \
+    FloatField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
@@ -29,6 +30,11 @@ cblaster_search_binary_table_hit_attributes = [
 cblaster_gne_sampling_spaces = [
     ('linear', 'linear'),
     ('log', 'log')
+]
+
+cblaster_extract_clusters_formats = [
+    ('genbank', 'GenBank'),
+    ('bigscape', 'BiG-SCAPE')
 ]
 
 # general sections
@@ -342,7 +348,7 @@ class AdditionalOptionsGNEForm(Form):
     )
 
 # cblaster extract sequences sections
-class FilteringForm(Form):
+class ExtractSequencesFilteringForm(Form):
     selectedOrganisms = StringField(
         label=u'Organisms',
         validators=[is_safe_string_value],
@@ -359,7 +365,7 @@ class FilteringForm(Form):
      # TODO: queries
     pass
 
-class OutputForm(Form):
+class ExtractSequencesOutputForm(Form):
     outputDelimiter = StringField(
         label=u'Delimiter',
         validators=[val.length(max=1), val.Optional(), is_safe_string_value],
@@ -379,4 +385,67 @@ class OutputForm(Form):
         label=u'Name only',
         validators=[], # TODO: add boolean validator
         description='nameOnly'
+    )
+
+# cblaster search extract clusters section
+class ExtractClustersFilteringForm(Form):
+    selectedOrganisms = StringField(
+        label=u'Organisms',
+        validators=[is_safe_string_value],
+        description='selectedOrganisms',
+        render_kw={
+            'placeholder': 'Organisms to filter for'
+        }
+    )
+
+    clusterNumbers = StringField(
+        label=u'Clusters',
+        validators=[is_safe_string_value],
+        description='clusterNumbers',
+        default='',
+        render_kw={
+            'readonly': ''
+        }
+    )
+
+    # TODO: fix error: TypeError: must be real number, not str
+    clusterScoreThreshold = DecimalField(
+        label=u'Score threshold',
+        validators=[is_safe_string_value, val.optional()],
+        description='clusterNumbers',
+        render_kw={
+            'step': 0.001
+        }
+    )
+
+
+class ExtractClustersOutputForm(Form):
+    prefix = StringField(
+        label=u'Prefix',
+        validators=[is_safe_string_value, val.length(max=15)],
+        description='prefix',
+        render_kw={
+            'class': 'custom-width'
+        }
+    )
+
+    format = SelectField(
+        label=u'Format',
+        validators=[is_safe_string_value, val.input_required()],
+        description='format',
+        choices=cblaster_extract_clusters_formats,
+        render_kw={
+            'class': 'custom-width'
+        }
+    )
+
+    maxclusters = IntegerField(
+        label=u'Maximum clusters',
+        validators=[is_safe_string_value, val.number_range(min=1, max=150), val.input_required()],
+        description='maxclusters',
+        default=50,
+        render_kw={
+            'class': 'short',
+            'step': 1
+        }
     )
