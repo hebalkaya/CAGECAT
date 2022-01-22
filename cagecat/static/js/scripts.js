@@ -94,7 +94,7 @@ function showInputOptions(selectionOption, resetQueries){
         enableOrDisableOption('searchSection', true);
 
         document.getElementById("accessionsError").classList.add('no-display');
-        document.getElementById("submitSearchForm").removeAttribute("disabled");
+        document.getElementById("submit").removeAttribute("disabled");
 
     }
     else if (selectionOption === 'ncbi_entries'){
@@ -123,7 +123,7 @@ function showInputOptions(selectionOption, resetQueries){
         enableOrDisableOption('searchSection', false);
 
         document.getElementById("accessionsError").classList.add('no-display');
-        document.getElementById("submitSearchForm").removeAttribute("disabled");
+        document.getElementById("submit").removeAttribute("disabled");
 
         if (!resetQueries){
             document.getElementById('radioPrevSession').setAttribute('checked', 'checked');
@@ -184,7 +184,7 @@ function validateNCBIEntries() {
     if (valid) {
         textArea.classList.remove("invalid");
         errorBox.classList.add('no-display');
-        document.getElementById("submitSearchForm").disabled = false;
+        document.getElementById("submit").disabled = false;
 
         let requiredSequences = document.getElementById("requiredSequencesSelector");
         let everything = textArea.value.split("\n");
@@ -204,7 +204,7 @@ function validateNCBIEntries() {
     } else {
         textArea.classList.add("invalid");
         document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
-        document.getElementById("submitSearchForm").disabled = true;
+        document.getElementById("submit").disabled = true;
         document.getElementById("requiredSequencesSelector").options.length = 0;
     }
 
@@ -324,12 +324,12 @@ function readFileContents() {
         if (!valid_ext.includes(ext)){
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
-            $('#submitSearchForm')[0].setAttribute('disabled', 'disabled')
+            $('#submit')[0].setAttribute('disabled', 'disabled')
             return;
         }
         else {
             document.getElementById("fileUploadIncorExt").classList.add('no-display');
-            $('#submitSearchForm')[0].removeAttribute('disabled');
+            $('#submit')[0].removeAttribute('disabled');
         }
         let splitted = reader.result.split("\n");
         let starter;
