@@ -181,6 +181,7 @@ class ClusteringSectionForm(Form):
         label=u'Required sequences',
         validators=[is_safe_string_value],
         description='requiredSequencesSelector',
+        choices=[],
         validate_choice=False,  # as this is generated dynamically
         render_kw={
             'style': 'width: 60%;'
@@ -200,7 +201,7 @@ def get_table_form(module: str, table_type: str):
 
     delimiter = StringField(
         label=u'Delimiter',
-        validators=[val.length(max=1), is_safe_string_value],
+        validators=[val.length(max=1), val.Optional(), is_safe_string_value],
         description='generalDelimiter',
         id=f'{prefix}TableDelim',
         name=f'{prefix}TableDelim',
@@ -237,16 +238,16 @@ def get_table_form(module: str, table_type: str):
 
 
 class SummaryTableForm(Form):
-    delimiter, decimals, hide_headers = get_table_form('search', 'Sum')
+    delimiter, searchSumTableDecimals, hide_headers = get_table_form('search', 'Sum')
 
 
 class BinaryTableForm(Form):
-
-    delimiter, decimals, hide_headers = get_table_form('search', 'Bin')
+    # Form.process()
+    delimiter, searchBinTableDecimals, hide_headers = get_table_form('search', 'Bin')
 
     keyFunction = SelectField(
         label=u'Key function',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.InputRequired(message='Invalid keyFunction'), is_safe_string_value],
         description='keyFunction',
         choices=cblaster_search_binary_table_key_functions,
         render_kw={

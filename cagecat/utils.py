@@ -130,8 +130,6 @@ def create_directories(job_id: str) -> None:
         os.mkdir(base_path)
         for folder in FOLDERS_TO_CREATE:
             os.mkdir(os.path.join(base_path, folder))
-    else:
-        print(f"Directory {base_path} already exists. Skipped")
 
 
 def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
@@ -189,6 +187,7 @@ def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
         elif not return_code:  # return code of 0
             new_status = "finished"
         else:
+            print('Return code is:', return_code)
             new_status = "failed"
 
         Statistic.query.filter_by(name=new_status).first().count += 1

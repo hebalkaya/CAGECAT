@@ -27,6 +27,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
+    print('We managed to here')
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False
@@ -142,7 +143,8 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
 
         return_code = run_command(cmd, LOG_PATH, job_id)
         post_job_formalities(job_id, return_code)
-    except:  # intentionally broad except clause
+    except Exception as e:  # intentionally broad except clause
+        print('Exception occurred:', e)
         post_job_formalities(job_id, 999)
 
 

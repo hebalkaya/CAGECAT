@@ -1,3 +1,5 @@
+import decimal
+
 from wtforms import ValidationError
 
 malicious_characters = ':“%$#>\'<'
@@ -11,9 +13,10 @@ def is_safe_string_value(form, field):
         raise ValidationError(f'Malicious character found: {unsafe_string}')
 
 def is_safe_string(_string):
-    for char in _string:
-        if char in malicious_characters:
-            return char, False
+    if not isinstance(_string, (int, decimal.Decimal)):
+        for char in _string:
+            if char in malicious_characters:
+                return char, False
     return None, True
     # return _string in malicious_characters
 
