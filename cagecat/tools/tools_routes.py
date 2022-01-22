@@ -12,7 +12,7 @@ import cagecat.routes
 from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
 from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, IntermediateGenesSectionForm, \
-    AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm
+    AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -100,6 +100,7 @@ def extract_sequences() -> str:
             sequences in the client's browser
     """
     return show_template("cblaster_extract_sequences.html",
+                         all_forms=CblasterExtractSequencesForm(),
                          selected_queries=request.form["selectedQueries"].split('\r\n'),
                          # selected_scaffolds=selected_scaffolds,
                          prev_job_id=request.form["job_id"])

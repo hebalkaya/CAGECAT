@@ -340,3 +340,43 @@ class AdditionalOptionsGNEForm(Form):
             'class': 'select-options'
         }
     )
+
+# cblaster extract sequences sections
+class FilteringForm(Form):
+    selectedOrganisms = StringField(
+        label=u'Organisms',
+        validators=[is_safe_string_value],
+        description='selectedOrganisms',
+        render_kw={
+            'placeholder': 'Organisms to filter for'
+        }
+    )
+
+    selectedQueries = HiddenField(
+        default=''
+    )
+
+     # TODO: queries
+    pass
+
+class OutputForm(Form):
+    outputDelimiter = StringField(
+        label=u'Delimiter',
+        validators=[val.length(max=1), val.Optional(), is_safe_string_value],
+        description='generalDelimiter',
+        render_kw={
+            'class': 'short'
+        }
+    )
+
+    downloadSeqs = BooleanField(
+        label=u'Download sequences',
+        validators=[], # TODO: add boolean validator
+        description='downloadSeqs'
+    )
+
+    nameOnly = BooleanField(
+        label=u'Name only',
+        validators=[], # TODO: add boolean validator
+        description='nameOnly'
+    )
