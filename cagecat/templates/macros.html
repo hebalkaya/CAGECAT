@@ -242,8 +242,11 @@
 
         {% endif %}
 
+
         {% if not is_hidden_field %}
             </div>
+        {% else %}
+            {{ field }}
         {% endif %}
 
 
