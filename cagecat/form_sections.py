@@ -26,6 +26,11 @@ cblaster_search_binary_table_hit_attributes = [
     ('evalue', 'evalue')
 ]
 
+cblaster_gne_sampling_spaces = [
+    ('linear', 'linear'),
+    ('log', 'log')
+]
+
 # general sections
 class SubmitForm(Form):
     submit = SubmitField(
@@ -94,36 +99,30 @@ class SearchSectionForm(Form):
 class FilteringSectionForm(Form):
     max_evalue = DecimalField(
         label=u'Max. e-value',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0.01, max=100)],
         description='max_evalue',
         default=0.01,
         render_kw={
-            'min': 0.01,
-            'max': 100,
             'step': 0.01
         }
     )
 
     min_identity = IntegerField(
         label=u'Min. identity (%)',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=100)],
         description='min_identity',
         default=30,
         render_kw={
-            'min': 0,
-            'max': 100,
             'step': 1
         }
     )
 
     min_query_coverage = IntegerField(
         label=u'Min. query coverage (%)',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=100)],
         description='min_query_coverage',
         default=50,
         render_kw={
-            'min': 0,
-            'max': 100,
             'step': 1
         }
     )
@@ -131,12 +130,10 @@ class FilteringSectionForm(Form):
 class ClusteringSectionForm(Form):
     max_intergenic_gap = IntegerField(
         label=u'Max. intergenic gap',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=1000000)],
         description='max_intergenic_gap',
         default=20000,
         render_kw={
-            'min': 0,
-            'max': 1000000,
             'step': 1
         }
     )
@@ -213,14 +210,12 @@ def get_table_form(module: str, table_type: str):
 
     decimals = IntegerField(
         label=u'Decimals',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=9)],
         description='generalDecimals',
         default=2,
         id=f'{prefix}TableDecimals',
         name=f'{prefix}TableDecimals',
         render_kw={
-            'min': 0,
-            'max': 9,
             'step': 1,
             'class': 'short'
         }
@@ -247,7 +242,7 @@ class BinaryTableForm(Form):
 
     keyFunction = SelectField(
         label=u'Key function',
-        validators=[val.InputRequired(message='Invalid keyFunction'), is_safe_string_value],
+        validators=[val.InputRequired(), is_safe_string_value],
         description='keyFunction',
         choices=cblaster_search_binary_table_key_functions,
         render_kw={
@@ -287,24 +282,20 @@ class IntermediateGenesSectionForm(Form):
 
     intermediate_max_distance = IntegerField(
         label=u'Max. distance',
-        validators=[is_safe_string_value],
+        validators=[is_safe_string_value, val.number_range(min=0, max=250000)],
         description='intermediate_max_distance',
         default=5000,
         render_kw={
-            'min': 0,
-            'max': 250000,
             'disabled': ''
         }
     )
 
     intermediate_max_clusters = IntegerField(
         label=u'Max. clusters',
-        validators=[is_safe_string_value],
+        validators=[is_safe_string_value, val.number_range(min=1, max=100)],
         description='intermediate_max_clusters',
         default=100,
         render_kw={
-            'min': 1,
-            'max': 100,
             'disabled': ''
         }
     )
@@ -314,3 +305,38 @@ class IntermediateGenesSectionForm(Form):
 
 
     # TODO: multiple selection form: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectMultipleField
+
+# cblaster gne sections
+class SummaryTableGNEForm(Form):
+    delimiter, searchSumTableDecimals, hide_headers = get_table_form('gne', 'Sum')
+
+class AdditionalOptionsGNEForm(Form):
+    max_intergenic_distance = IntegerField(
+        label=u'Max. intergenic distance',
+        validators=[val.input_required(), val.number_range(min=0, max=2500000), is_safe_string_value],
+        description='max_intergenic_distance',
+        default=100000,
+        render_kw={
+            'step': 1
+        }
+    )
+
+    sample_number = IntegerField(
+        label=u'Number of samples',
+        validators=[val.input_required(), val.number_range(min=2, max=300), is_safe_string_value],
+        description='sample_number',
+        default=100,
+        render_kw={
+            'step': 1
+        }
+    )
+
+    sampling_space = SelectField(
+        label=u'Sampling space',
+        validators=[val.input_required(), is_safe_string_value],
+        description='sampling_space',
+        choices=cblaster_gne_sampling_spaces,
+        render_kw={
+            'class': 'select-options'
+        }
+    )

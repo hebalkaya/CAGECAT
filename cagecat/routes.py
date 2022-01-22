@@ -17,7 +17,7 @@ import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
 from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
     cblaster_search_binary_table_hit_attributes
-from cagecat.forms import CblasterSearchForm
+from cagecat.forms import CblasterSearchForm, CblasterGNEForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -102,6 +102,9 @@ def submit_job() -> str:
                                    file_path=file_path))
 
     elif job_type == "gne":
+        if not validate_full_form(CblasterGNEForm, request.form):
+            return redirect(url_for('invalid_submission'))
+
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
                                    file_path=rthelp.get_previous_job_properties(job_id, job_type, "gne")))

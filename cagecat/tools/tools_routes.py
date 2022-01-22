@@ -12,7 +12,7 @@ import cagecat.routes
 from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
 from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, IntermediateGenesSectionForm, \
-    AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm
+    AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -173,6 +173,7 @@ def corason() -> str:
 @tools.route('/gne', methods=['GET', 'POST'])
 def gene_neighbourhood_estimation() -> str:
     return show_template('cblaster_gene_neighbourhood_estimation.html',
+                         all_forms=CblasterGNEForm(),
                          max_samples=config.THRESHOLDS['maximum_gne_samples'],
                          prev_job_id=request.form['job_id'])
 
