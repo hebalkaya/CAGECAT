@@ -18,13 +18,3 @@ def is_safe_string(_string):
             if char in malicious_characters:
                 return char, False
     return None, True
-    # return _string in malicious_characters
-
-def validate_job_title(_input):
-    return len(_input) < 60 and is_safe_string(_input)
-
-def val_email_address(mail):
-    return len(mail) < 100 and is_safe_string(mail) and '@' in mail
-
-def val_search_entrez_query(value):
-    return is_safe_string(value)

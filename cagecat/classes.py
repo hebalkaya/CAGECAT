@@ -3,14 +3,14 @@
 Author: Matthias van den Belt
 """
 
-import cagecat.workers as w
+import cagecat.workers.workers as w
 
 function_dict = {'search': w.cblaster_search,
                  'recompute': w.cblaster_search,
                  'gne': w.cblaster_gne,
                  'extract_sequences': w.cblaster_extract_sequences,
                  'extract_clusters': w.cblaster_extract_clusters,
-                 'corason': w.corason,
+                 # 'corason': w.corason,
                  'clinker': w.clinker,
                  'clinker_query': w.clinker_query}
 

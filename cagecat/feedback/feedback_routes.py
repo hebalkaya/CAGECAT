@@ -4,7 +4,8 @@ Author: Matthias van den Belt
 """
 
 from flask import Blueprint, request, url_for
-from cagecat import routes_helpers as rthelp, utils as ut
+
+from cagecat.general_utils import send_email, show_template
 from config_files.config import EMAIL
 
 feedback = Blueprint('feedback', __name__, template_folder="templates")
@@ -16,7 +17,7 @@ def feedback_page() -> str:
     Output:
         - HTML represented in string format
     """
-    return rthelp.show_template('feedback.html', help_enabled=False)
+    return show_template('feedback.html', help_enabled=False)
 
 
 @feedback.route('/submit', methods=['POST'])
@@ -30,7 +31,7 @@ def submit_feedback() -> str:
         - HTML represented in string format
     """
     for email in (EMAIL['sender_email'], request.form['email']):
-        ut.send_email('CAGECAT feedback report',
+        send_email('CAGECAT feedback report',
                       f'''
 
 Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly.
@@ -46,7 +47,7 @@ Message: {request.form['message']}
 -----------------------------------------''',
                       email)
 
-    return rthelp.show_template('redirect.html', url=url_for('feedback.feedback_submitted'))
+    return show_template('redirect.html', url=url_for('feedback.feedback_submitted'))
 
 
 @feedback.route('/submitted')
@@ -56,4 +57,4 @@ def feedback_submitted() -> str:
     Output:
         - HTML represented in string format
     """
-    return rthelp.show_template('feedback_submitted.html', help_enabled=False)
+    return show_template('feedback_submitted.html', help_enabled=False)

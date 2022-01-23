@@ -1,11 +1,11 @@
 from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField, \
-    FloatField, MultipleFileField, RadioField, FileField, TextAreaField
+    MultipleFileField, RadioField, FileField, TextAreaField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
 # description equals the corresponding help text word
 from cagecat.const import GENBANK_SUFFIXES, FASTA_SUFFIXES
-from cagecat.valid_input_cblaster import is_safe_string_value
+from cagecat.forms.valid_input_cblaster import is_safe_string_value
 
 cblaster_search_search_modes = [
     'remote',

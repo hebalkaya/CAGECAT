@@ -4,21 +4,20 @@ Author: Matthias van den Belt
 """
 
 # package imports
-from flask import request, url_for, redirect
-import os
 import copy
 
+from flask import url_for, redirect, request
+import os
+
 # own project imports
-import cagecat.help_texts
-from cagecat import app
-import cagecat.utils as ut
-import cagecat.const as co
-import cagecat.routes_helpers as rthelp
+from cagecat.docs.help_texts import HELP_TEXTS
+from cagecat.general_utils import show_template, get_server_info, JOBS_DIR, fetch_job_from_db
+from cagecat import app, const as co
 from cagecat.classes import CAGECATJob
-from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
-    cblaster_search_binary_table_hit_attributes
-from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm, CblasterVisualisationForm, \
-    CblasterSearchBaseForm, CblasterRecomputeForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm
+from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
+    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm
+from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
+    save_file, enqueue_jobs
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -30,41 +29,95 @@ def home_page_old_url():
 
 @app.route('/')
 def home_page():
-    return rthelp.show_template('index.html', help_enabled=False)
+    return show_template('index.html', help_enabled=False)
 
 @app.route('/invalid-submission')
 def invalid_submission():
-    return rthelp.show_template('incorrect_submission.html', help_enabled=False)
+    return show_template('incorrect_submission.html', help_enabled=False)
 
-exceptions = {
-    'search': [
-        ('database_type', cblaster_search_databases)
-    ],
-    'binary_table': [
-        ('keyFunction', cblaster_search_binary_table_key_functions),
-        ('hitAttribute', cblaster_search_binary_table_hit_attributes)
-    ]
-}
+# exceptions = {
+#     'search': [
+#         ('database_type', cblaster_search_databases)
+#     ],
+#     'binary_table': [
+#         ('keyFunction', cblaster_search_binary_table_key_functions),
+#         ('hitAttribute', cblaster_search_binary_table_hit_attributes)
+#     ]
+# }
 
-def validate_full_form(form_type, request_form):
-    standard_attributes = ('Meta', 'meta', 'form_errors', 'errors', 'data', 'populate_obj', 'process', 'validate')
-    large_form = form_type(request_form)
-    all_valid = True
+@app.route("/help")
+def help_page() -> str:
+    """Shows the help page to the user
 
-    all_forms = [attr for attr in dir(large_form) if not attr.startswith('_') and attr not in standard_attributes]
+    Output:
+        - HTML represented in string format
+    """
+    return show_template("help.html", version=CAGECAT_VERSION, help_enabled=False)
 
-    for form in all_forms:
-        smaller_form = large_form.__getattribute__(form)
-        smaller_form.process(request_form)
 
-        is_valid = smaller_form.validate()
-        print(smaller_form, smaller_form.errors)
+@app.route("/docs/<input_type>")
+def get_help_text(input_type):
+    """Returns help text corresponding to the requested input parameter
 
-        if not is_valid:
-            all_valid = False
+    Input:
+        - input_type: HTML name of the input parameter
 
-    return all_valid
+    Output:
+        - help texts of input parameter. Keys: "title", "module", "text"
+    """
 
+    if input_type not in HELP_TEXTS:
+        return {'title': 'Missing help text', 'module': '', 'text':
+            'This help text is missing. Please submit feedback and indicate'
+            ' of which parameter the help text is missing.\n\nThanks in advance.'}
+
+    return HELP_TEXTS[input_type]
+
+
+@app.route('/server-status')
+def get_server_status():
+    return get_server_info()
+
+
+@app.route('/update-hmm-databases')
+def update_hmm_databases():
+    global PRESENT_DATABASES
+    # Doesn't have to return anything, only trigger
+    genera = []
+
+    for f in os.listdir(CONF['finished_hmm_db_folder']):
+        genus = f.split('.')[0]
+        if genus not in genera:
+            genera.append(genus)
+
+    PRESENT_DATABASES = genera
+
+    return '1'  # indicating everything went well
+
+
+# Error handlers
+@app.errorhandler(404)
+def page_not_found(error):  # should have 1 parameter, doesn't have to be used
+    """Shows page displaying that the requested page was not found
+
+    """
+    return show_template("page_not_found.html",
+                                               stat_code=404,
+                                               help_enabled=False)
+
+
+@app.errorhandler(405)
+def invalid_method():
+    """Redirects user to home page if method used for request was invalid
+
+    """
+    return redirect(url_for("home_page"))
+
+
+update_hmm_databases()
+# within routes.py to prevent circular import (as it was first in const.py).
+# Additionally, this variable does not have to be updated manually, and
+# is therefore left out of const.py
 @app.route(co.SUBMIT_URL, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
@@ -81,23 +134,22 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    print(request.form)
     new_jobs = []
 
     job_type = request.form["job_type"]
-    job_id = ut.generate_job_id()
+    job_id = generate_job_id()
 
     # Note that the "{module}PreviousType" is submitted via the form, but is
     # only used if a previous job ID or previous session file will be used
 
-    ut.create_directories(job_id)
+    create_directories(job_id)
 
     if job_type == "search":
         # first check if the base form is valid
         if not validate_full_form(CblasterSearchBaseForm, request.form):
             return redirect(url_for('invalid_submission'))
 
-        file_path, job_type = rthelp.prepare_search(job_id, job_type)
+        file_path, job_type = prepare_search(job_id, job_type)
 
         if job_type == 'recompute':
             form_type = CblasterRecomputeForm
@@ -120,7 +172,7 @@ def submit_job() -> str:
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
-                                   file_path=rthelp.get_previous_job_properties(job_id, job_type, "gne")))
+                                   file_path=get_previous_job_properties(job_id, job_type, "gne")))
 
     elif job_type == "extract_sequences":
         # For now, only when coming from a results page (using a previous job
@@ -130,8 +182,8 @@ def submit_job() -> str:
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
-                                   file_path=os.path.join(ut.JOBS_DIR,
-                                              request.form['prev_job_id'],
+                                   file_path=os.path.join(JOBS_DIR,
+                                                          request.form['prev_job_id'],
                                               "results",
                                               f"{request.form['prev_job_id']}_session.json")))
 
@@ -139,7 +191,7 @@ def submit_job() -> str:
         if not validate_full_form(CblasterExtractClustersForm, request.form):
             return redirect(url_for('invalid_submission'))
 
-        prev_job_id = ut.fetch_job_from_db(
+        prev_job_id = fetch_job_from_db(
             request.form["prev_job_id"]).main_search_job
 
         if prev_job_id == "null":
@@ -149,10 +201,21 @@ def submit_job() -> str:
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
-                                   file_path=os.path.join(ut.JOBS_DIR,
-                                              prev_job_id,
+                                   file_path=os.path.join(JOBS_DIR,
+                                                          prev_job_id,
                                               "results",
                                               f"{prev_job_id}_session.json")))
+
+    elif job_type == "clinker_query":
+        if not validate_full_form(CblasterVisualisationForm, request.form):
+            return redirect(url_for('invalid_submission'))
+
+        new_jobs.append(CAGECATJob(job_id=job_id,
+                                   options=request.form,
+                                   file_path=os.path.join(JOBS_DIR,
+                                                          request.form['prev_job_id'],
+                                                          "results",
+                                                          f"{request.form['prev_job_id']}_session.json")))
 
     # elif job_type == "corason":
     #     extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
@@ -188,19 +251,19 @@ def submit_job() -> str:
 
             prev_job_id = request.form["clinkerEnteredJobId"]
 
-            if ut.fetch_job_from_db(prev_job_id).job_type == 'extract_clusters':
-                genome_files_path = os.path.join(ut.JOBS_DIR, prev_job_id, "results")
+            if fetch_job_from_db(prev_job_id).job_type == 'extract_clusters':
+                genome_files_path = os.path.join(JOBS_DIR, prev_job_id, "results")
                 depending_on = None
             else:
                 new_jobs.append(CAGECATJob(job_id=job_id,
                                            options=copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS),
                                            job_type='extract_clusters',
-                                           file_path=os.path.join(ut.JOBS_DIR,
+                                           file_path=os.path.join(JOBS_DIR,
                                                                   prev_job_id,
                                                                   "results",
                                                                   f"{prev_job_id}_session.json")))
 
-                genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "results")
+                genome_files_path = os.path.join(JOBS_DIR, job_id, "results")
                 depending_on = new_jobs[-1].job_id
 
         elif request.files:  # started as individual tool
@@ -209,35 +272,24 @@ def submit_job() -> str:
 
             for f in request.files.getlist('fileUploadClinker'):
                 if f.filename:
-                    ut.save_file(f, job_id)
-                    genome_files_path = os.path.join(ut.JOBS_DIR, job_id, "uploads")
+                    save_file(f, job_id)
+                    genome_files_path = os.path.join(JOBS_DIR, job_id, "uploads")
                 else: # indicates the example was posted
-                    genome_files_path = os.path.join('cagecat', 'example_files')
+                    genome_files_path = os.path.join('cagecat', '../example_files')
             depending_on = None
 
         else:
             raise ValueError('Incorrect submitted options (clinker)')
 
-        new_jobs.append(CAGECATJob(job_id=job_id if depending_on is None else ut.generate_job_id(),
+        new_jobs.append(CAGECATJob(job_id=job_id if depending_on is None else generate_job_id(),
                                    options=request.form,
                                    file_path=genome_files_path,
                                    depends_on_job_id=depending_on))
 
-    elif job_type == "clinker_query":
-        if not validate_full_form(CblasterVisualisationForm, request.form):
-            return redirect(url_for('invalid_submission'))
-
-        new_jobs.append(CAGECATJob(job_id=job_id,
-                                   options=request.form,
-                                   file_path=os.path.join(ut.JOBS_DIR,
-                                          request.form['prev_job_id'],
-                                          "results",
-                                          f"{request.form['prev_job_id']}_session.json")))
-
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
-    last_job = ut.fetch_job_from_db(rthelp.enqueue_jobs(new_jobs))
+    last_job = fetch_job_from_db(enqueue_jobs(new_jobs))
 
     url = url_for("result.show_result",
                   job_id=last_job.id,
@@ -247,79 +299,4 @@ def submit_job() -> str:
                   email=last_job.email,
                   j_type=last_job.job_type)
 
-    return rthelp.show_template('redirect.html', url=url)
-
-
-@app.route("/help")
-def help_page() -> str:
-    """Shows the help page to the user
-
-    Output:
-        - HTML represented in string format
-    """
-    return rthelp.show_template("help.html", version=CAGECAT_VERSION, help_enabled=False)
-
-
-@app.route("/docs/<input_type>")
-def get_help_text(input_type):
-    """Returns help text corresponding to the requested input parameter
-
-    Input:
-        - input_type: HTML name of the input parameter
-
-    Output:
-        - help texts of input parameter. Keys: "title", "module", "text"
-    """
-
-    if input_type not in cagecat.help_texts.HELP_TEXTS:
-        return {'title': 'Missing help text', 'module': '', 'text':
-            'This help text is missing. Please submit feedback and indicate'
-            ' of which parameter the help text is missing.\n\nThanks in advance.'}
-
-    return cagecat.help_texts.HELP_TEXTS[input_type]
-
-
-@app.route('/server-status')
-def get_server_status():
-    return rthelp.get_server_info()
-
-
-@app.route('/update-hmm-databases')
-def update_hmm_databases():
-    global PRESENT_DATABASES
-    # Doesn't have to return anything, only trigger
-    genera = []
-
-    for f in os.listdir(CONF['finished_hmm_db_folder']):
-        genus = f.split('.')[0]
-        if genus not in genera:
-            genera.append(genus)
-
-    PRESENT_DATABASES = genera
-
-    return '1'  # indicating everything went well
-
-
-# Error handlers
-@app.errorhandler(404)
-def page_not_found(error):  # should have 1 parameter, doesn't have to be used
-    """Shows page displaying that the requested page was not found
-
-    """
-    return rthelp.show_template("page_not_found.html",
-                                stat_code=404,
-                                help_enabled=False)
-
-
-@app.errorhandler(405)
-def invalid_method():
-    """Redirects user to home page if method used for request was invalid
-
-    """
-    return redirect(url_for("home_page"))
-
-
-update_hmm_databases()
-# within routes.py to prevent circular import (as it was first in const.py).
-# Additionally, this variable does not have to be updated manually, and
-# is therefore left out of const.py
+    return show_template('redirect.html', url=url)

@@ -7,7 +7,7 @@ Author: Matthias van den Belt
 from sys import argv
 
 # own project imports
-from cagecat.models import Job, Statistic
+from cagecat.db_models import Job, Statistic
 
 ### main code
 if __name__ == "__main__":

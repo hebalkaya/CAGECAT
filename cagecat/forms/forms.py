@@ -1,10 +1,4 @@
-from wtforms import Form
-
-from cagecat.form_sections import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, SummaryTableForm, BinaryTableForm, \
-    AdditionalOptionsSectionForm, IntermediateGenesSectionForm, SubmitForm, SummaryTableGNEForm, AdditionalOptionsGNEForm, \
-    ExtractSequencesFilteringForm, ExtractSequencesOutputForm, ExtractClustersOutputForm, ClustersFilteringForm, \
-    CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm, ClinkerInputForm, \
-    InputRemoteTypeForm, InputSearchModeForm, InputSearchRemoteInputTypeFile, InputSearchRemoteInputTypeNCBIEntries, InputHMMForm
+from cagecat.forms.form_sections import *
 
 
 class GeneralForm(Form):
@@ -16,8 +10,6 @@ class GeneralForm(Form):
 
 class CblasterSearchBaseForm(Form):
     general = GeneralForm()
-    # TODO:
-    #  input = InputSectionForm()
     filtering = FilteringSectionForm()
     clustering = ClusteringSectionForm()
     summary_table = SummaryTableForm()
@@ -28,6 +20,8 @@ class CblasterSearchBaseForm(Form):
 class CblasterSearchForm(Form):
     base = CblasterSearchBaseForm()
     search = SearchSectionForm()
+    # TODO:
+    #  input = InputSectionForm()
     # search_modes = InputSearchModeForm()
     # remote_type = InputRemoteTypeForm()
     remote_input_types_file = InputSearchRemoteInputTypeFile()
@@ -70,4 +64,3 @@ class ClinkerDownstreamForm(Form):
 class ClinkerInitialForm(Form):
     base = ClinkerBaseForm()
     input = ClinkerInputForm()
-    pass
