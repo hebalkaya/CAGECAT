@@ -13,9 +13,8 @@ class GeneralForm(Form):
     job_info = JobInfoForm()
     submit = SubmitForm()
 
-class CblasterSearchForm(Form):
+class CblasterSearchBaseForm(Form):
     general = GeneralForm()
-    search = SearchSectionForm()
     filtering = FilteringSectionForm()
     clustering = ClusteringSectionForm()
     summary_table = SummaryTableForm()
@@ -23,6 +22,9 @@ class CblasterSearchForm(Form):
     additional_options = AdditionalOptionsSectionForm()
     intermediate_genes = IntermediateGenesSectionForm()
 
+class CblasterSearchForm(Form):
+    base = CblasterSearchBaseForm()
+    search = SearchSectionForm()
 
 class CblasterRecomputeForm(Form):
     pass

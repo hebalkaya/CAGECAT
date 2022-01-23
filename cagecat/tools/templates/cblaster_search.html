@@ -36,7 +36,7 @@ addAccordionListeners();
     <div>
         <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
         <fieldset id="jobDetailsInputFieldset">
-            {{ renderForm(all_forms.general.job_info) }}
+            {{ renderForm(all_forms.base.general.job_info) }}
         </fieldset>
     </div>
 
@@ -137,14 +137,14 @@ addAccordionListeners();
     <div id="filteringSectionFullFieldset">
         <label class="fieldset-label" for="filteringSection">Filtering</label>
         <fieldset id="filteringSection">
-            {{ renderForm(all_forms.filtering) }}
+            {{ renderForm(all_forms.base.filtering) }}
         </fieldset>
     </div>
 
     <div id="clusteringSectionFullFieldset">
         <label class="fieldset-label" for="clusteringSection">Clustering</label>
         <fieldset id="clusteringSection">
-            {{ renderForm(all_forms.clustering) }}
+            {{ renderForm(all_forms.base.clustering) }}
 
         </fieldset>
     </div>
@@ -152,35 +152,35 @@ addAccordionListeners();
     <div>
         <label class="fieldset-label" for="searchSumTableSection">Summary table</label>
         <fieldset id="searchSumTableSection">
-            {{ renderForm(all_forms.summary_table) }}
+            {{ renderForm(all_forms.base.summary_table) }}
         </fieldset>
     </div>
 
     <div>
         <label class="fieldset-label" for="searchBinTableSection">Binary table</label>
         <fieldset id="searchBinTableSection">
-            {{ renderForm(all_forms.binary_table) }}
+            {{ renderForm(all_forms.base.binary_table) }}
         </fieldset>
     </div>
 
     <div>
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
-            {{ renderForm(all_forms.additional_options) }}
+            {{ renderForm(all_forms.base.additional_options) }}
         </fieldset>
     </div>
 
     <div>
         <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
         <fieldset id="intermediateGenesSection">
-            {{ renderForm(all_forms.intermediate_genes) }}
+            {{ renderForm(all_forms.base.intermediate_genes) }}
         </fieldset>
     </div>
 
 </div>
 
 <div class="input-layer centered">
-    {{ all_forms.general.submit.submit }}
+    {{ all_forms.base.general.submit.submit }}
 {#    <input class="button" value="Submit" type="submit" id="submitSearchForm"/>#}
 </div>
     </form>
