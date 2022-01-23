@@ -12,10 +12,11 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 
-from config_files import config
+from cagecat.general_utils import fetch_job_from_db, generate_paths, send_email
 from cagecat import db
-from config_files.config import CONF
+from config_files.config import CONF, CAGECAT_VERSION
 from cagecat.db_models import Job, Statistic
+from cagecat.const import GENBANK_SUFFIXES, FASTA_SUFFIXES
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
@@ -231,7 +232,7 @@ def log_cagecat_version(job_id: str) -> None:
 
     """
     with open(os.path.join(generate_paths(job_id)[1], 'CAGECAT_version.txt'), 'w') as outf:
-        outf.write(f'CAGECAT_version={config_files.config.CAGECAT_VERSION}')
+        outf.write(f'CAGECAT_version={CAGECAT_VERSION}')
 
 
 def post_job_formalities(job_id: str, return_code: int) -> None:
@@ -277,11 +278,11 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
         headers = data
     elif input_type == "file":
         ext = '.' + data.split('.')[-1]
-        if ext in co.FASTA_SUFFIXES:
+        if ext in FASTA_SUFFIXES:
             with open(data) as inf:
                 headers = [line.strip()[1:].split()[0] for line in
                            inf.readlines() if line.startswith(">")]
-        elif ext in co.GENBANK_SUFFIXES:
+        elif ext in GENBANK_SUFFIXES:
             with open(data) as inf:
                 headers = [line.strip().split('"')[1] for line in inf.readlines() if '/protein_id=' in line]
         else:
@@ -304,7 +305,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
     # TODO future: handle recompute scenario as now mode is always given as remote, which is not always the case. The search type should be fetched from the initial search job
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
-        base.append(os.path.join(config.CONF['finished_hmm_db_folder'], f'{options["selectedGenus"]}.fasta'))
+        base.append(os.path.join(CONF['finished_hmm_db_folder'], f'{options["selectedGenus"]}.fasta'))
 
     if options['mode'] in ('remote', 'combi_remote'):
         if 'database_type' in options:

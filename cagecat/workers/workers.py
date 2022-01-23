@@ -7,11 +7,12 @@ Author: Matthias van den Belt
 import os.path
 
 # own project imports
-from cagecat.general_utils import generate_paths
 from cagecat.workers.workers_helpers import *
-from config_files import config
 
 ### redis-queue functions
+from config_files.config import THRESHOLDS
+
+
 def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_search (forges + exec. command)
@@ -84,7 +85,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
             cmd.extend(options["hmmProfiles"].split())
 
             # PFAM database
-            cmd.extend(['--database_pfam', config.CONF['PFAM_DB_FOLDER']])
+            cmd.extend(['--database_pfam', CONF['PFAM_DB_FOLDER']])
 
             # database to search in
             # cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
@@ -166,7 +167,7 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
     _, log_path, results_path = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["sample_number"]),
-                              config.THRESHOLDS['maximum_gne_samples'],
+                              THRESHOLDS['maximum_gne_samples'],
                               (log_path, job_id, 'cblaster'),
                           'Too many samples'):
         return
@@ -246,7 +247,7 @@ def cblaster_extract_clusters(job_id: str,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["maxclusters"]),
-                              config.THRESHOLDS['maximum_clusters_to_extract'],
+                              THRESHOLDS['maximum_clusters_to_extract'],
                               (LOG_PATH, job_id, 'cblaster'),
                                   'Too many selected clusters'):
         return
@@ -285,7 +286,7 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(len(os.listdir(file_path)),
-                              config.THRESHOLDS['max_clusters_to_plot'],
+                              THRESHOLDS['max_clusters_to_plot'],
                               (LOG_PATH, job_id, 'clinker'),
                               'Too many selected clusters'):
         return
@@ -338,7 +339,7 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options['maxclusters']),
-                              config.THRESHOLDS['max_clusters_to_plot'],
+                              THRESHOLDS['max_clusters_to_plot'],
                               (LOG_PATH, job_id, 'cblaster'),
                               'Too many selected clusters'):
         return
@@ -369,7 +370,7 @@ def corason(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    __, ___, parent_job_results_path = generate_paths(cagecat.general_utils.fetch_job_from_db(
+    __, ___, parent_job_results_path = generate_paths(fetch_job_from_db(
         job_id).depending_on)
 
     cmd = ["echo", "we should execute corason here"]

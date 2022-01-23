@@ -10,9 +10,11 @@ from flask import url_for, redirect, request
 import os
 
 # own project imports
+from cagecat.const import SUBMIT_URL, EXTRACT_CLUSTERS_OPTIONS
 from cagecat.docs.help_texts import HELP_TEXTS
 from cagecat.general_utils import show_template, get_server_info, JOBS_DIR, fetch_job_from_db
-from cagecat import app, const as co
+
+from cagecat import app
 from cagecat.classes import CAGECATJob
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm
@@ -118,7 +120,7 @@ update_hmm_databases()
 # within routes.py to prevent circular import (as it was first in const.py).
 # Additionally, this variable does not have to be updated manually, and
 # is therefore left out of const.py
-@app.route(co.SUBMIT_URL, methods=["POST"])
+@app.route(SUBMIT_URL, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
 
@@ -256,7 +258,7 @@ def submit_job() -> str:
                 depending_on = None
             else:
                 new_jobs.append(CAGECATJob(job_id=job_id,
-                                           options=copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS),
+                                           options=copy.deepcopy(EXTRACT_CLUSTERS_OPTIONS),
                                            job_type='extract_clusters',
                                            file_path=os.path.join(JOBS_DIR,
                                                                   prev_job_id,

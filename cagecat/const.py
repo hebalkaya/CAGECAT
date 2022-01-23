@@ -3,8 +3,7 @@
 Author: Matthias van den Belt
 
 """
-
-from config_files import config
+from config_files.config import THRESHOLDS
 
 CLINKER_MODULES = ('clinker_query', 'clinker')
 FASTA_SUFFIXES = (".fa", ".fsa", ".fna", ".fasta", ".faa")
@@ -36,7 +35,7 @@ EXTRACT_CLUSTERS_OPTIONS = {'job_type': 'extract_clusters',
                             "clusterScoreThreshold": "",  # filled in in the
                             "prefix": "",  # submission form
                             "format": "genbank",
-                            "maxclusters": str(config.THRESHOLDS['maximum_clusters_to_extract'])}  # indicates no maximum
+                            "maxclusters": str(THRESHOLDS['maximum_clusters_to_extract'])}  # indicates no maximum
 
 # values can also be tuples
 DOWNSTREAM_MODULES_OPTIONS = {"search": ["recompute", "gne",

@@ -8,13 +8,12 @@ from flask import Blueprint, request
 
 # own project imports
 from cagecat.tools.tools_helpers import read_headers, parse_selected_cluster_numbers
-from cagecat import const as co
 from cagecat.forms.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm
 from cagecat.routes.routes import PRESENT_DATABASES
-from config_files import config
 from cagecat.general_utils import show_template, CLUST_NUMBER_PATTERN_W_SCORE, fetch_job_from_db, CLUST_NUMBER_PATTERN_W_CLINKER_SCORE
-from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
+from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES, FASTA_SUFFIXES
+from config_files.config import THRESHOLDS
 
 tools = Blueprint('tools', __name__, template_folder="templates")
 
@@ -66,7 +65,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
                                                module_to_show=module_to_show,
                                                headers=headers,
                                                genera=PRESENT_DATABASES,
-                                               query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
+                                               query_file_extensions=','.join(FASTA_SUFFIXES + GENBANK_SUFFIXES),
                                                show_examples='cblaster_search')
 
 @tools.route("/clinker_query", methods=["POST"])
@@ -85,7 +84,7 @@ def clinker_query() -> str:
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
                          selected_clusters=clusters,
-                         max_clusters_to_plot=config.THRESHOLDS['max_clusters_to_plot'])
+                         max_clusters_to_plot=THRESHOLDS['max_clusters_to_plot'])
 
 
 @tools.route("/extract-sequences", methods=["GET", "POST"])

@@ -1,7 +1,7 @@
 import os
 import typing as t
 
-from cagecat import const as const
+from cagecat.const import FAILURE_REASONS
 from cagecat.db_models import Job as dbJob
 from cagecat.general_utils import JOBS_DIR, fetch_job_from_db
 
@@ -22,9 +22,9 @@ def get_failure_reason(job_id: str, program: str) -> str:
             logs = inf.readlines()
 
         for l in logs:
-            for fail in const.FAILURE_REASONS:
+            for fail in FAILURE_REASONS:
                 if fail in l:
-                    return const.FAILURE_REASONS[fail]
+                    return FAILURE_REASONS[fail]
     except FileNotFoundError:
         return 'Command construction failed (no log file).'
 
