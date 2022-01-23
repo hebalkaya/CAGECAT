@@ -243,7 +243,6 @@ class SummaryTableForm(Form):
 
 
 class BinaryTableForm(Form):
-    # Form.process()
     delimiter, searchBinTableDecimals, hide_headers = get_table_form('search', 'Bin')
 
     keyFunction = SelectField(
@@ -457,4 +456,63 @@ class CblasterVisualisationOutputForm(Form):
             'class': 'short',
             'step': 1
         }
+    )
+
+class ClinkerAlignmentForm(Form):
+    noAlign = BooleanField(
+        label=u'Don\'t align clusters',
+        validators=[], # TODO: add boolean validators,
+        description='noAlign'
+    )
+
+    identity = IntegerField(
+        label=u'Min. alignment sequence identity',
+        validators=[is_safe_string_value, val.input_required(), val.number_range(min=0, max=1)],
+        description='identity',
+        default=0.3,
+        render_kw={
+            'step': 0.01
+        }
+    )
+
+
+class ClinkerOutputForm(Form):
+    clinkerDelim = StringField(
+        label=u'Delimiter',
+        validators=[val.length(max=1), val.Optional(), is_safe_string_value],
+        description='generalDelimiter',
+        render_kw={
+            'size': 1,
+            'class': 'short'
+        }
+    )
+
+    clinkerDecimals = IntegerField(
+        label=u'Decimals',
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=9)],
+        description='generalDecimals',
+        default=2,
+        render_kw={
+            'step': 1,
+            'class': 'short'
+        }
+    )
+
+    hideLinkHeaders = BooleanField(
+        label=u'Hide alignment column headers',
+        validators=[], # TODO: add boolean validators,
+        description='hideLinkHeaders'
+    )
+
+    hideAlignHeaders = BooleanField(
+        label=u'Hide alignment cluster name headers',
+        validators=[], # TODO: add boolean validators,
+        description='hideAlignHeaders'
+    )
+
+class ClinkerAdditionalOptionsForm(Form):
+    useFileOrder = BooleanField(
+        label=u'Maintain order of input files',
+        validators=[], # TODO: add boolean validators,
+        description='hideAlignHeaders'
     )

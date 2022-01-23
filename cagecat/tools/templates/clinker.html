@@ -4,6 +4,7 @@
 {% from "macros.html" import renderHelpButton %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
+{% from 'macros.html' import renderForm %}
 
 {% block navigationBar %}
     {{ showNavigationBar('analyze') }}
@@ -14,97 +15,65 @@
 
 {% block content %}
 
-    <h2 class="indent">Visualization of all results</h2>
-    {{  showRequiredInputsText() }}
+<h2 class="indent">Visualization of all results</h2>
+{{  showRequiredInputsText() }}
 
-    <div id="clinkerContent" class="moduleContent">
-        <form action="{{url_for('submit_job')}}" enctype="multipart/form-data" onsubmit="validateForm()"  method="post">
-            <input type="hidden" name="job_type" value="clinker"/>
+<div id="clinkerContent" class="moduleContent">
+    <form action="{{url_for('submit_job')}}" enctype="multipart/form-data" onsubmit="validateForm()"  method="post">
+        <input type="hidden" name="job_type" value="clinker"/>
 
-            {{ renderJobDetailsInput() }}
-                {% if prev_job_id is not none %}
-                    <input type="hidden" name="clinkerEnteredJobId" value="{{ prev_job_id }}"/>
-                {% else %}
-                    <label class="fieldset-label" for="clinkerInputSection">Input</label>
-                    <fieldset id="clinkerInputSection">
-
-                    <div class="div-margin" id="genomeFileUploadDiv">
-                        <label class="file-upload-lbl" for="fileUploadClinker">
-                            <input type="file" id="fileUploadClinker" name="fileUploadClinker" multiple="multiple"
-                                   required="required" accept="{{ query_file_extensions }}" onchange="getGenBankFileNames()"/>Genome files*</label>
-                        {{ renderHelpButton('fileUploadClinker') }}
-                        <span id="selectedFileName" style="margin-left:1%;"></span>
-
-                        <div class="error-message no-display" id="fileUploadIncorExt">
-                            <span id="fileUploadIncorExtText"></span>
-                        </div>
-                    </div>
-                {% endif %}
+        <div>
+            <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
+            <fieldset id="jobDetailsInputFieldset">
+                {{ renderForm(all_forms.job_info) }}
             </fieldset>
+        </div>
 
+        {% if prev_job_id is not none %}
+            <input type="hidden" name="clinkerEnteredJobId" value="{{ prev_job_id }}"/>
+        {% else %}
+            <label class="fieldset-label" for="clinkerInputSection">Input</label>
+            <fieldset id="clinkerInputSection">
+
+            <div class="div-margin" id="genomeFileUploadDiv">
+                <label class="file-upload-lbl" for="fileUploadClinker">
+                    <input type="file" id="fileUploadClinker" name="fileUploadClinker" multiple="multiple"
+                           required="required" accept="{{ query_file_extensions }}" onchange="getGenBankFileNames()"/>Genome files*</label>
+                {{ renderHelpButton('fileUploadClinker') }}
+                <span id="selectedFileName" style="margin-left:1%;"></span>
+
+                <div class="error-message no-display" id="fileUploadIncorExt">
+                    <span id="fileUploadIncorExtText"></span>
+                </div>
+            </div>
+            {% endif %}
+        </fieldset>
+
+        <div>
             <label class="fieldset-label" for="clinkerAlignmentSection">Alignment</label>
             <fieldset id="clinkerAlignmentSection">
-                <label class="checkbox-label">
-                    <input type="checkbox" name="noAlign"/>Don't align clusters
-                </label>
-                {{ renderHelpButton('noAlign', True) }}
-                <div class="input-layer">
-                    <label class="input-label" for="identity">Min. alignment sequence identity*</label>
-                    {{ renderHelpButton('identity') }}
-                    <input type="number" id="identity" name="identity" required="required" min="0" max="1" value="0.3" step="0.01"/>
-                </div>
-
+                {{ renderForm(all_forms.base.alignment) }}
             </fieldset>
+        </div>
+
+        <div>
             <label class="fieldset-label" for="clinkerOutputSection">Output</label>
             <fieldset id="clinkerOutputSection">
-                <div class="input-layer">
-                    <label class="input-label"
-                           for="clinkerDecimals">Decimal places*</label>
-                    {{ renderHelpButton('generalDecimals') }}
-                    <input class="short" type="number" id="clinkerDecimals" name="clinkerDecimals" value="2" step="1" min="0" max="9"
-                           required="required"/>
-                </div>
+                {{ renderForm(all_forms.base.output) }}
             </fieldset>
+        </div>
 
+        <div>
             <label class="fieldset-label" for="clinkerVisualiationSection">Additional options</label>
             <fieldset id="clinkerVisualiationSection">
-                <label class="checkbox-label">
-                    <input type="checkbox" name="useFileOrder"/>Maintain order of input files
-                </label>
-                {{ renderHelpButton('useFileOrder', True) }}
+                {{ renderForm(all_forms.base.additional_options) }}
             </fieldset>
+        </div>
 
-            <label id="advancedSection" class="fieldset-label accordion">Advanced +</label>
-            <fieldset id="dummy"></fieldset>
-            <div class="panel">
-                <label class="fieldset-label" for="clinkerOutputSection">Output</label>
-                <fieldset id="clinkerOutputSection">
-                    <div class="input-layer">
-                        <label class="input-label"
-                               for="clinkerDelim">Delimiter</label>
-                        {{ renderHelpButton('generalDelimiter') }}
-                        <input class="short" type="text" id="clinkerDelim" name="clinkerDelim" size="1" maxlength="1"/>
-                    </div>
+        <div class="input-layer centered">
+            {{ all_forms.submit.submit }}
+        </div>
 
-                    <div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="hideLinkHeaders"/>Hide alignment column headers
-                        </label>
-                        {{ renderHelpButton('hideLinkHeaders', True) }}
-                    </div>
-
-                    <div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="hideAlignHeaders"/>Hide alignment cluster name headers
-                        </label>
-                        {{ renderHelpButton('hideAlignHeaders', True) }}
-                    </div>
-                </fieldset>
-            </div>
-
-            <div class="input-layer centered">
-                <input class="button" value="Submit" type="submit"/>
-            </div>
-        </form>
-    </div>
+    </form>
+</div>
 {% endblock %}

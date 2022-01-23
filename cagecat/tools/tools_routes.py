@@ -13,7 +13,7 @@ from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
 from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, IntermediateGenesSectionForm, \
     AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
-    CblasterExtractClustersForm, CblasterVisualisationForm
+    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -183,10 +183,18 @@ def gene_neighbourhood_estimation() -> str:
 
 @tools.route('/clinker', methods=['GET', 'POST'])
 def clinker() -> str:
+    prev_job_id = None if 'job_id' not in request.form else request.form['job_id']
+
+    if prev_job_id is None:
+        form = ClinkerInitialForm()
+    else:
+        form = ClinkerDownstreamForm()
+
     return show_template('clinker.html',
+                         all_forms=form,
                          query_file_extensions=','.join(GENBANK_SUFFIXES),
                          show_examples='clinker',
-                         prev_job_id=None if 'job_id' not in request.form else request.form['job_id'])
+                         prev_job_id=prev_job_id)
 
 
 @tools.route('/big-scape')

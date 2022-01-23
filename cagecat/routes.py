@@ -166,6 +166,7 @@ def submit_job() -> str:
     #     # TODO future: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
     elif job_type == "clinker":
+
         if 'clinkerEnteredJobId' in request.form:  # indicates it was downstream
             prev_job_id = request.form["clinkerEnteredJobId"]
 
