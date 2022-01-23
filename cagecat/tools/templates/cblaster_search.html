@@ -44,7 +44,9 @@ addAccordionListeners();
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
 
+
         <div class="radio-options">
+{#            {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
             <label class="radioLabel">
                 <input type="radio"  class="radio-margin" value="remote" name="mode" checked="checked" onclick="changeSearchMode('remote')">Remote
             </label>
@@ -57,37 +59,38 @@ addAccordionListeners();
         </div>
 
         <div class="radio-options" id="remoteOptionsSection">
-                <div>
-                    <label class="radioLabel">
-                    <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
-                           name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
-                    <label class="radioLabel">
-                    <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
-                           name="inputType"
-                           onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
-                    </label>
-                </div>
+            <div>
+{#                    {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
+                <label class="radioLabel">
+                <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
+                       name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
+                <label class="radioLabel">
+                <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
+                       name="inputType"
+                       onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
+                </label>
+            </div>
 
             <div class="div-margin" id="genomeFileUploadDiv">
-                <label class="file-upload-lbl" for="genomeFile">
-                <input type="file" id="genomeFile" name="genomeFiles"
-                       required="required" accept="{{ query_file_extensions }}" onchange="readFileContents()"/>Query file*</label>
-                {{ renderHelpButton('genomeFile') }}
-                <span id="selectedFileName" style="margin-left:1%;"></span>
+                {{ renderForm(all_forms.remote_input_types_file) }}
+
+{#                Missing div?#}
 
                 <div class="error-message no-display" id="fileUploadIncorExt">
                     <span id="fileUploadIncorExtText"></span>
                 </div>
-            </div>
 
             <div id="ncbiEntriesDiv" class="no-display">
-                <textarea rows="6" cols="25" class="ncbi-entries" id="ncbiEntriesTextArea"
-                          name="ncbiEntriesTextArea" placeholder="NCBI accessions*" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
-                {{ renderHelpButton('ncbiEntriesTextArea') }}
+                {{ renderForm(all_forms.remote_input_types_ncbi_entries) }}
+{#                {{ renderForm(all_forms.remote_type.ncbi_entries) }}#}
+{#                <textarea rows="6" cols="25" class="ncbi-entries" id="ncbiEntriesTextArea"#}
+{#                          name="ncbiEntriesTextArea" placeholder="NCBI accessions*" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>#}
+{#                {{ renderHelpButton('ncbiEntriesTextArea') }}#}
+                <div class="error-message no-display" id="accessionsError">
+                    <span id="accessionsErrorText"></span>
+                </div>
             </div>
-            <div class="error-message no-display" id="accessionsError">
-                <span id="accessionsErrorText"></span>
-            </div>
+
         </div>
     </fieldset>
 
@@ -95,6 +98,7 @@ addAccordionListeners();
     <label class="fieldset-label" for="hmmSection">Hidden Markov Models (HMM)</label>
     <fieldset id="hmmSection" disabled="disabled">
             <div id="hmmProfilesDiv">
+{#                {{ renderForm(all_forms.hmm) }}#}
                 <div class="input-layer">
                     <label class="select-label" for="selectedGenus">Genus*</label>
                     <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">
@@ -109,11 +113,10 @@ addAccordionListeners();
                     <label class="textarea-label">HMM profiles*</label>
                     <textarea rows="6" cols="25" required="required" id="hmmProfiles"
                               name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
-                        {#        TODO future: add Pfam identifier validation#}
+{#                                TODO future: add Pfam identifier validation#}
                         {{ renderHelpButton('hmmProfiles') }}
                 </div>
             </div>
-
     </fieldset>
 </div>
 

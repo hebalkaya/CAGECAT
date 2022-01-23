@@ -1,12 +1,17 @@
 from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField, \
-    FloatField, MultipleFileField
+    FloatField, MultipleFileField, RadioField, FileField, TextAreaField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
 # description equals the corresponding help text word
-from cagecat.const import GENBANK_SUFFIXES
+from cagecat.const import GENBANK_SUFFIXES, FASTA_SUFFIXES
 from cagecat.valid_input_cblaster import is_safe_string_value
 
+cblaster_search_search_modes = [
+    'remote',
+    'hmm',
+    'combi_remote'
+]
 
 cblaster_search_databases = [
     ('nr', 'nr'),
@@ -67,6 +72,93 @@ class JobInfoForm(Form):
             'placeholder': 'username@institution.com'
         }
     )
+
+# cblaster input
+class InputSearchModeForm(Form):
+    # raise NotImplementedError()
+    # TODO: implement in future
+    mode = RadioField(
+        label=u'Remote',
+        validators=[], # TODO: check,
+        choices=cblaster_search_search_modes
+    )
+
+
+class InputRemoteTypeForm(Form):
+    # raise NotImplementedError()
+
+    # File / NCBI entries radio buttons
+    pass
+
+class InputSearchRemoteInputTypeFile(Form):
+    _all_suffixes = list(GENBANK_SUFFIXES)
+    _all_suffixes.extend(FASTA_SUFFIXES)
+
+    genomeFile = FileField(
+        label=u'Query file*',
+        validators=[val.optional()],  # TODO: safe filename
+        description='genomeFile',
+        render_kw={
+            'accept': ','.join(_all_suffixes),
+            'onchange': 'readFileContents()',
+            'required': ''
+        }
+    )
+
+class InputSearchRemoteInputTypeNCBIEntries(Form):
+    ncbiEntriesTextArea = TextAreaField(
+        label=u'NCBI accession number(s)*',
+        validators=[is_safe_string_value],
+        render_kw={
+            'rows': 6,
+            'cols': 25,
+            'class': 'ncbi-entries',
+            'placeholder': 'NCBI accessions',
+            'onfocusout': 'validateNCBIEntries()',
+            # 'required': '',
+            'disabled': 'disabled'
+        }
+    )
+
+
+# class InputHMMForm(Form):
+#     selectedGenus = SelectField(
+#         label=u'Genus*',
+#         validators=[is_safe_string_value],
+#         description='selectedGenus',
+#         choices=[(genus, genus) for genus in PRESENT_HMM_DATABASES],
+#         render_kw={
+#             'required': ''
+#         }
+#     )
+#     # {#                <div class="input-layer">#}
+#     #     {#                    <label class="select-label" for="selectedGenus">Genus*</label>#}
+#     #         {#                    <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">#}
+#     #             {##}
+#     #                 {#                        {% for g in genera %}#}
+#     #                     {#                            <option value="{{ g }}">{{ g }}</option>#}
+#     #                         {#                        {% endfor %}#}
+#     #                             {#                    </select>#}
+#     #                                 {#                    {{ renderHelpButton('selectedGenus') }}#}
+#     #                                     {#                </div>#}
+#     #                                         {#                <div class="input-layer">#}
+#     #                                             {#                    <label class="textarea-label">HMM profiles*</label>#}
+#     #                                                 {#                    <textarea rows="6" cols="25" required="required" id="hmmProfiles"#}
+#     #                                                     {#                              name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>#}
+#     #                                                         {#        TODO future: add Pfam identifier validation#}
+#     #                                                             {#                        {{ renderHelpButton('hmmProfiles') }}#}
+#     #                                                                 {#                </div>#}
+#     hmmProfiles = TextAreaField(
+#         label=u'HMM profiles*',
+#         validators=[is_safe_string_value],
+#         description='hmmProfiles',
+#         render_kw={
+#             'required': '',
+#             'rows': 6,
+#             'cols': 25,
+#             'placeholder': 'HMM profile identifiers'
+#         }
+#     )
 
 # cblaster search
 class SearchSectionForm(Form):
@@ -488,8 +580,6 @@ class ClinkerInputForm(Form):
             'required': ''
         }
     )
-
-    pass
 
 class ClinkerOutputForm(Form):
     clinkerDelim = StringField(

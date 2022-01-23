@@ -644,13 +644,16 @@ function setExampleInput(tool_name){
         'QBE85648.1';
 
     if (tool_name === 'cblaster_search'){
-        let radio = $('#radioNCBIEntries')[0];
-        radio.click();
+        let firstRadio = $('#remoteMode')[0];
+        firstRadio.click();
+
+        let secondRadio = $('#radioNCBIEntries')[0];
+        secondRadio.click();
         $('#job_title')[0].value = 'Example input (Burnettramic Acids)';
         $('#max_hits')[0].value = "800";
         $('#percentageQueryGenes')[0].value = "40";
         $('#ncbiEntriesTextArea')[0].value = exampleQueries;
-        radio.click();  // to make required sequences pop up
+        secondRadio.click();  // to make required sequences pop up
     }
     else if (tool_name === 'clinker'){
         $('#identity')[0].value = '0.28';

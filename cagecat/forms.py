@@ -3,7 +3,8 @@ from wtforms import Form
 from cagecat.form_sections import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, SummaryTableForm, BinaryTableForm, \
     AdditionalOptionsSectionForm, IntermediateGenesSectionForm, SubmitForm, SummaryTableGNEForm, AdditionalOptionsGNEForm, \
     ExtractSequencesFilteringForm, ExtractSequencesOutputForm, ExtractClustersOutputForm, ClustersFilteringForm, \
-    CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm, ClinkerInputForm
+    CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm, ClinkerInputForm, \
+    InputRemoteTypeForm, InputSearchModeForm, InputSearchRemoteInputTypeFile, InputSearchRemoteInputTypeNCBIEntries
 
 
 class GeneralForm(Form):
@@ -27,6 +28,12 @@ class CblasterSearchBaseForm(Form):
 class CblasterSearchForm(Form):
     base = CblasterSearchBaseForm()
     search = SearchSectionForm()
+    # search_modes = InputSearchModeForm()
+    # remote_type = InputRemoteTypeForm()
+    remote_input_types_file = InputSearchRemoteInputTypeFile()
+    remote_input_types_ncbi_entries = InputSearchRemoteInputTypeNCBIEntries()
+    # hmm = InputHMMForm()
+
 
 class CblasterRecomputeForm(Form):
     base = CblasterSearchBaseForm()
