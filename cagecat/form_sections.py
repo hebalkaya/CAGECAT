@@ -400,7 +400,7 @@ class ClustersFilteringForm(Form):
         label=u'Clusters',
         validators=[is_safe_string_value],
         description='clusterNumbers',
-        default='',
+        # default='',
         render_kw={
             'readonly': ''
         }

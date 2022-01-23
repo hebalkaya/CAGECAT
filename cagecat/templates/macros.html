@@ -213,7 +213,7 @@
     <input class="button" style="margin-top: 1%; text-align: center" onclick="alert('Press CTRL + D to bookmark this page')" value="Bookmark this page"/>
 {% endmacro %}
 
-{% macro renderForm(form) %}
+{% macro renderForm(form, additional_data=None) %}
     {% for field in form %}
         {% set is_hidden_field = field.type == 'HiddenField' %}
         {% set classes = field.render_kw.class %}
@@ -235,7 +235,12 @@
                     <div class="input-layer">
                     {{ field.label(class="input-label") }}{% if field.flags.required %}*{% endif %}
                     <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+                        {% if additional_data is not none and field.id == 'clusterNumbers' %} {# clusterNumbers can be replaced by a tuple of which id's should have additional data filled in  #}
+                    {{ field(class=classes, value=additional_data) }}
+                        {% else %}
                     {{ field(class=classes) }}
+                        {% endif %}
+
                 {% endif %}
 
     {#            TODO: use renderHelpButton macro here #}
