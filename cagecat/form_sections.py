@@ -94,7 +94,7 @@ class InputSearchRemoteInputTypeFile(Form):
     _all_suffixes = list(GENBANK_SUFFIXES)
     _all_suffixes.extend(FASTA_SUFFIXES)
 
-    genomeFile = FileField(
+    genomeFiles = FileField(
         label=u'Query file*',
         validators=[val.optional()],  # TODO: safe filename
         description='genomeFile',
@@ -121,44 +121,29 @@ class InputSearchRemoteInputTypeNCBIEntries(Form):
     )
 
 
-# class InputHMMForm(Form):
-#     selectedGenus = SelectField(
-#         label=u'Genus*',
-#         validators=[is_safe_string_value],
-#         description='selectedGenus',
-#         choices=[(genus, genus) for genus in PRESENT_HMM_DATABASES],
-#         render_kw={
-#             'required': ''
-#         }
-#     )
-#     # {#                <div class="input-layer">#}
-#     #     {#                    <label class="select-label" for="selectedGenus">Genus*</label>#}
-#     #         {#                    <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">#}
-#     #             {##}
-#     #                 {#                        {% for g in genera %}#}
-#     #                     {#                            <option value="{{ g }}">{{ g }}</option>#}
-#     #                         {#                        {% endfor %}#}
-#     #                             {#                    </select>#}
-#     #                                 {#                    {{ renderHelpButton('selectedGenus') }}#}
-#     #                                     {#                </div>#}
-#     #                                         {#                <div class="input-layer">#}
-#     #                                             {#                    <label class="textarea-label">HMM profiles*</label>#}
-#     #                                                 {#                    <textarea rows="6" cols="25" required="required" id="hmmProfiles"#}
-#     #                                                     {#                              name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>#}
-#     #                                                         {#        TODO future: add Pfam identifier validation#}
-#     #                                                             {#                        {{ renderHelpButton('hmmProfiles') }}#}
-#     #                                                                 {#                </div>#}
-#     hmmProfiles = TextAreaField(
-#         label=u'HMM profiles*',
-#         validators=[is_safe_string_value],
-#         description='hmmProfiles',
-#         render_kw={
-#             'required': '',
-#             'rows': 6,
-#             'cols': 25,
-#             'placeholder': 'HMM profile identifiers'
-#         }
-#     )
+class InputHMMForm(Form):
+    # TODO: add to WTForms in future. Circular import now with PRESENT_HMM_DATABASES
+    # selectedGenus = SelectField(
+    #     label=u'Genus*',
+    #     validators=[is_safe_string_value],
+    #     description='selectedGenus',
+    #     choices=[(genus, genus) for genus in PRESENT_HMM_DATABASES],
+    #     render_kw={
+    #         'required': ''
+    #     }
+    # )
+
+    hmmProfiles = TextAreaField(
+        label=u'HMM profiles*',
+        validators=[is_safe_string_value],
+        description='hmmProfiles',
+        render_kw={
+            'required': '',
+            'rows': 6,
+            'cols': 25,
+            'placeholder': 'HMM profile identifiers'
+        }
+    )
 
 # cblaster search
 class SearchSectionForm(Form):

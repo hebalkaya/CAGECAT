@@ -86,7 +86,7 @@ function showInputOptions(selectionOption, resetQueries){
         ncbiEntriesDiv.classList.add('no-display');
 
         // enable
-        setRequiredAndEnabled('genomeFile');
+        setRequiredAndEnabled('genomeFiles');
 
         // disable elements
         removeRequiredAndEnabled('ncbiEntriesTextArea');
@@ -105,7 +105,7 @@ function showInputOptions(selectionOption, resetQueries){
         setRequiredAndEnabled('ncbiEntriesTextArea')
 
         // disable elements
-        removeRequiredAndEnabled('genomeFile');
+        removeRequiredAndEnabled('genomeFiles');
 
         enableOrDisableOption('searchSection', true);
         validateNCBIEntries();
@@ -116,7 +116,7 @@ function showInputOptions(selectionOption, resetQueries){
         searchPrevJobOptions.classList.remove('no-display');
 
         // disable elements
-        removeRequiredAndEnabled('genomeFile');
+        removeRequiredAndEnabled('genomeFiles');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
         document.getElementById("searchLabelSessionFile").classList.add("disabled");
 
@@ -314,7 +314,7 @@ function readFileContents() {
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
     var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", "gbk", "gb", "genbank", "gbf", "gbff"]
-    var file = document.getElementById("genomeFile").files[0];
+    var file = document.getElementById("genomeFiles").files[0];
     var reader = new FileReader();
     let ext = file.name.split(".").pop().toLowerCase();
 
@@ -468,7 +468,7 @@ function determineHeight() {
 }
 
 function toggleRemoteOptions(enable){
-    let individualElements = ['radioFasta', 'radioNCBIEntries', 'genomeFile', 'ncbiEntriesTextArea',
+    let individualElements = ['radioFasta', 'radioNCBIEntries', 'genomeFiles', 'ncbiEntriesTextArea',
         'searchPrevJobId', 'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile'];
     let fieldsets = ['searchSectionFullFieldset', 'filteringSectionFullFieldset'];
     let sections = ['filteringSection', 'searchSection']
@@ -732,12 +732,12 @@ function checkConsent(){
 
 // Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used (check usages manually)
 function initReadQueryFile(){
-    var file = document.getElementById("genomeFile").files[0];
+    var file = document.getElementById("genomeFiles").files[0];
     if (file) {
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
-            console.log(evt.target.result);
+            // console.log(evt.target.result);
         }
 
         reader.onerror = function (evt) {

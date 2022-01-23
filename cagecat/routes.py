@@ -81,6 +81,7 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    print(request.form)
     new_jobs = []
 
     job_type = request.form["job_type"]

@@ -4,7 +4,7 @@ from cagecat.form_sections import JobInfoForm, SearchSectionForm, FilteringSecti
     AdditionalOptionsSectionForm, IntermediateGenesSectionForm, SubmitForm, SummaryTableGNEForm, AdditionalOptionsGNEForm, \
     ExtractSequencesFilteringForm, ExtractSequencesOutputForm, ExtractClustersOutputForm, ClustersFilteringForm, \
     CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm, ClinkerInputForm, \
-    InputRemoteTypeForm, InputSearchModeForm, InputSearchRemoteInputTypeFile, InputSearchRemoteInputTypeNCBIEntries
+    InputRemoteTypeForm, InputSearchModeForm, InputSearchRemoteInputTypeFile, InputSearchRemoteInputTypeNCBIEntries, InputHMMForm
 
 
 class GeneralForm(Form):
@@ -32,7 +32,7 @@ class CblasterSearchForm(Form):
     # remote_type = InputRemoteTypeForm()
     remote_input_types_file = InputSearchRemoteInputTypeFile()
     remote_input_types_ncbi_entries = InputSearchRemoteInputTypeNCBIEntries()
-    # hmm = InputHMMForm()
+    hmm = InputHMMForm()
 
 
 class CblasterRecomputeForm(Form):
