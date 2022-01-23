@@ -13,7 +13,7 @@ from cagecat import utils as ut, routes_helpers as rthelp, \
     const as co
 from cagecat.forms import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, IntermediateGenesSectionForm, \
     AdditionalOptionsSectionForm, SummaryTableForm, BinaryTableForm, SubmitForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
-    CblasterExtractClustersForm
+    CblasterExtractClustersForm, CblasterVisualisationForm
 from config_files import config
 from cagecat.routes_helpers import show_template
 from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES
@@ -82,6 +82,7 @@ def clinker_query() -> str:
         request.form["selectedClusters"], ut.CLUST_NUMBER_PATTERN_W_SCORE)
 
     return show_template("cblaster_plot_clusters.html",
+                         all_forms=CblasterVisualisationForm(),
                          prev_job_id=request.form["job_id"],
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),

@@ -2,7 +2,8 @@ from wtforms import Form
 
 from cagecat.form_sections import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, SummaryTableForm, BinaryTableForm, \
     AdditionalOptionsSectionForm, IntermediateGenesSectionForm, SubmitForm, SummaryTableGNEForm, AdditionalOptionsGNEForm, \
-    ExtractSequencesFilteringForm, ExtractSequencesOutputForm, ExtractClustersOutputForm, ExtractClustersFilteringForm
+    ExtractSequencesFilteringForm, ExtractSequencesOutputForm, ExtractClustersOutputForm, ClustersFilteringForm, \
+    CblasterVisualisationOutputForm
 
 
 class CblasterSearchForm(Form):
@@ -34,12 +35,15 @@ class CblasterExtractSequencesForm(Form):
 
 class CblasterExtractClustersForm(Form):
     job_info = JobInfoForm()
-    filtering = ExtractClustersFilteringForm()
+    filtering = ClustersFilteringForm()
     output = ExtractClustersOutputForm()
     submit = SubmitForm()
 
-class CblasterVisualisationForm:
-    pass
+class CblasterVisualisationForm(Form):
+    job_info = JobInfoForm()
+    filtering = ClustersFilteringForm()
+    output = CblasterVisualisationOutputForm()
+    submit = SubmitForm()
 
 class ClinkerForm:
     pass

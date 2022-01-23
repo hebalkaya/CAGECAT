@@ -17,7 +17,7 @@ import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
 from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
     cblaster_search_binary_table_hit_attributes
-from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm
+from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm, CblasterVisualisationForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -202,6 +202,9 @@ def submit_job() -> str:
                                    depends_on_job_id=depending_on))
 
     elif job_type == "clinker_query":
+        if not validate_full_form(CblasterVisualisationForm, request.form):
+            return redirect(url_for('invalid_submission'))
+
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
                                    file_path=os.path.join(ut.JOBS_DIR,

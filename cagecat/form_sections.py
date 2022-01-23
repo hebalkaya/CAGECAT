@@ -362,8 +362,6 @@ class ExtractSequencesFilteringForm(Form):
         default=''
     )
 
-     # TODO: queries
-    pass
 
 class ExtractSequencesOutputForm(Form):
     outputDelimiter = StringField(
@@ -388,7 +386,7 @@ class ExtractSequencesOutputForm(Form):
     )
 
 # cblaster search extract clusters section
-class ExtractClustersFilteringForm(Form):
+class ClustersFilteringForm(Form):
     selectedOrganisms = StringField(
         label=u'Organisms',
         validators=[is_safe_string_value],
@@ -408,7 +406,6 @@ class ExtractClustersFilteringForm(Form):
         }
     )
 
-    # TODO: fix error: TypeError: must be real number, not str
     clusterScoreThreshold = DecimalField(
         label=u'Score threshold',
         validators=[is_safe_string_value, val.optional()],
@@ -442,6 +439,18 @@ class ExtractClustersOutputForm(Form):
     maxclusters = IntegerField(
         label=u'Maximum clusters',
         validators=[is_safe_string_value, val.number_range(min=1, max=150), val.input_required()],
+        description='maxclusters',
+        default=50,
+        render_kw={
+            'class': 'short',
+            'step': 1
+        }
+    )
+
+class CblasterVisualisationOutputForm(Form):
+    maxclusters = IntegerField(
+        label=u'Maximum clusters',
+        validators=[is_safe_string_value, val.number_range(min=1, max=75), val.input_required()],
         description='maxclusters',
         default=50,
         render_kw={
