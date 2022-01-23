@@ -17,7 +17,8 @@ import cagecat.routes_helpers as rthelp
 from cagecat.classes import CAGECATJob
 from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
     cblaster_search_binary_table_hit_attributes
-from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm, CblasterVisualisationForm
+from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm, CblasterVisualisationForm, \
+    CblasterSearchBaseForm, CblasterRecomputeForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -91,10 +92,21 @@ def submit_job() -> str:
     ut.create_directories(job_id)
 
     if job_type == "search":
-        if not validate_full_form(CblasterSearchForm, request.form):
+        # first check if the base form is valid
+        if not validate_full_form(CblasterSearchBaseForm, request.form):
             return redirect(url_for('invalid_submission'))
 
         file_path, job_type = rthelp.prepare_search(job_id, job_type)
+
+        if job_type == 'recompute':
+            form_type = CblasterRecomputeForm
+        elif job_type == 'search':
+            form_type = CblasterSearchForm
+        else:
+            raise ValueError('Incorrect job type returned')
+
+        if not validate_full_form(form_type, request.form):
+            return redirect(url_for('invalid_submission'))
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,

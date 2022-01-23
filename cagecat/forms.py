@@ -15,6 +15,8 @@ class GeneralForm(Form):
 
 class CblasterSearchBaseForm(Form):
     general = GeneralForm()
+    # TODO:
+    #  input = InputSectionForm()
     filtering = FilteringSectionForm()
     clustering = ClusteringSectionForm()
     summary_table = SummaryTableForm()
@@ -27,7 +29,7 @@ class CblasterSearchForm(Form):
     search = SearchSectionForm()
 
 class CblasterRecomputeForm(Form):
-    pass
+    base = CblasterSearchBaseForm()
 
 class CblasterGNEForm(Form):
     general = GeneralForm()
@@ -60,3 +62,4 @@ class ClinkerDownstreamForm(Form):
 
 class ClinkerInitialForm(Form):
     general = GeneralForm()
+    pass

@@ -105,10 +105,11 @@ class SearchSectionForm(Form):
 class FilteringSectionForm(Form):
     max_evalue = DecimalField(
         label=u'Max. e-value',
-        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0.01, max=100)],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=100)],  # having min=0.01 resulted in an error (Number must be between 0.01 and 100.) during validation
         description='max_evalue',
         default=0.01,
         render_kw={
+            'min': 0.01,
             'step': 0.01
         }
     )
