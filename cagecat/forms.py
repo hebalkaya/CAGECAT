@@ -3,7 +3,7 @@ from wtforms import Form
 from cagecat.form_sections import JobInfoForm, SearchSectionForm, FilteringSectionForm, ClusteringSectionForm, SummaryTableForm, BinaryTableForm, \
     AdditionalOptionsSectionForm, IntermediateGenesSectionForm, SubmitForm, SummaryTableGNEForm, AdditionalOptionsGNEForm, \
     ExtractSequencesFilteringForm, ExtractSequencesOutputForm, ExtractClustersOutputForm, ClustersFilteringForm, \
-    CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm
+    CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm, ClinkerInputForm
 
 
 class GeneralForm(Form):
@@ -61,5 +61,6 @@ class ClinkerDownstreamForm(Form):
     base = ClinkerBaseForm()
 
 class ClinkerInitialForm(Form):
-    general = GeneralForm()
+    base = ClinkerBaseForm()
+    input = ClinkerInputForm()
     pass

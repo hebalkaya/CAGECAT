@@ -36,15 +36,26 @@
             <fieldset id="clinkerInputSection">
 
             <div class="div-margin" id="genomeFileUploadDiv">
-                <label class="file-upload-lbl" for="fileUploadClinker">
-                    <input type="file" id="fileUploadClinker" name="fileUploadClinker" multiple="multiple"
-                           required="required" accept="{{ query_file_extensions }}" onchange="getGenBankFileNames()"/>Genome files*</label>
-                {{ renderHelpButton('fileUploadClinker') }}
-                <span id="selectedFileName" style="margin-left:1%;"></span>
+                <div>
+                    {{ renderForm(all_forms.input) }}
+                </div>
+
+                <br/>
+
+                <div>
+                    <span id="selectedFileName" style="margin-left:1%;"></span>
+                </div>
 
                 <div class="error-message no-display" id="fileUploadIncorExt">
                     <span id="fileUploadIncorExtText"></span>
                 </div>
+
+{#                <label class="file-upload-lbl" for="fileUploadClinker">#}
+{#                    <input type="file" id="fileUploadClinker" name="fileUploadClinker" multiple="multiple"#}
+{#                           required="required" accept="{{ query_file_extensions }}" onchange="getGenBankFileNames()"/>Genome files*</label>#}
+{#                {{ renderHelpButton('fileUploadClinker') }}#}
+
+
             </div>
             {% endif %}
         </fieldset>

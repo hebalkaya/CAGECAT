@@ -231,6 +231,14 @@
                         </label>
                         <img class="help-button checkbox-help" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
 
+                {% elif field.type in ('MultipleFileField', 'Filefield') %}
+                    <div>
+                        <label class="file-upload-lbl" for="{{ field.id }}">
+                            {{ field }}{{ field.label.text }}{% if field.flags.required %}*{% endif %}
+                        </label>
+                        <img class="help-button checkbox-help" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+                    </div>
+
                 {% else %}
                     <div class="input-layer">
                     {{ field.label(class="input-label") }}{% if field.flags.required %}*{% endif %}

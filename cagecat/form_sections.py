@@ -1,9 +1,10 @@
 from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField, \
-    FloatField
+    FloatField, MultipleFileField
 from wtforms import Form, validators as val
 
 # name and id are set to the variable name
 # description equals the corresponding help text word
+from cagecat.const import GENBANK_SUFFIXES
 from cagecat.valid_input_cblaster import is_safe_string_value
 
 
@@ -466,16 +467,29 @@ class ClinkerAlignmentForm(Form):
         description='noAlign'
     )
 
-    identity = IntegerField(
+    identity = DecimalField(
         label=u'Min. alignment sequence identity',
         validators=[is_safe_string_value, val.input_required(), val.number_range(min=0, max=1)],
         description='identity',
-        default=0.3,
+        default=0.30,  # for some reason, default is not working here
         render_kw={
-            'step': 0.01
+            'step': 0.01,
         }
     )
 
+class ClinkerInputForm(Form):
+    fileUploadClinker = MultipleFileField(
+        label=u'Genome files*',
+        validators=[val.optional()],  # TODO: safe filename
+        description='fileUploadClinker',
+        render_kw={
+            'accept': ','.join(GENBANK_SUFFIXES),
+            'onchange': 'getGenBankFileNames()',
+            'required': ''
+        }
+    )
+
+    pass
 
 class ClinkerOutputForm(Form):
     clinkerDelim = StringField(

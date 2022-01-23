@@ -18,7 +18,7 @@ from cagecat.classes import CAGECATJob
 from cagecat.form_sections import cblaster_search_databases, cblaster_search_binary_table_key_functions, \
     cblaster_search_binary_table_hit_attributes
 from cagecat.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, CblasterExtractClustersForm, CblasterVisualisationForm, \
-    CblasterSearchBaseForm, CblasterRecomputeForm
+    CblasterSearchBaseForm, CblasterRecomputeForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm
 from config_files.config import CAGECAT_VERSION, CONF
 
 global PRESENT_DATABASES
@@ -178,8 +178,13 @@ def submit_job() -> str:
     #     # TODO future: file path corason --> for corason, the file path is the path to where the extracted clusters will be
 
     elif job_type == "clinker":
+        if not validate_full_form(ClinkerBaseForm, request.form):
+            return redirect(url_for('invalid_submission'))
 
         if 'clinkerEnteredJobId' in request.form:  # indicates it was downstream
+            if not validate_full_form(ClinkerDownstreamForm, request.form):
+                return redirect(url_for('invalid_submission'))
+
             prev_job_id = request.form["clinkerEnteredJobId"]
 
             if ut.fetch_job_from_db(prev_job_id).job_type == 'extract_clusters':
@@ -198,6 +203,9 @@ def submit_job() -> str:
                 depending_on = new_jobs[-1].job_id
 
         elif request.files:  # started as individual tool
+            if not validate_full_form(ClinkerInitialForm, request.form):
+                return redirect(url_for('invalid_submission'))
+
             for f in request.files.getlist('fileUploadClinker'):
                 if f.filename:
                     ut.save_file(f, job_id)
