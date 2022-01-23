@@ -23,7 +23,7 @@
     <div>
         <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
         <fieldset id="jobDetailsInputFieldset">
-            {{ renderForm(all_forms.job_info) }}
+            {{ renderForm(all_forms.general.job_info) }}
         </fieldset>
     </div>
 
@@ -49,7 +49,7 @@
         <b><p class="indent">Note that when your previous job was a clinker_query one, all cluster hits of the <a href="{{ url_for('result.show_result', job_id=main_search_id) }}">main search job</a> will be extracted.</p></b>
     {% endif %}
     <div class="input-layer centered">
-        {{ all_forms.submit.submit }}
+        {{ all_forms.general.submit.submit }}
     </div>
 </form>
         {% endblock %}

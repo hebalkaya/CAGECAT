@@ -6,8 +6,15 @@ from cagecat.form_sections import JobInfoForm, SearchSectionForm, FilteringSecti
     CblasterVisualisationOutputForm, ClinkerAlignmentForm, ClinkerOutputForm, ClinkerAdditionalOptionsForm
 
 
-class CblasterSearchForm(Form):
+class GeneralForm(Form):
+    """Has job info and submit input fields
+
+    """
     job_info = JobInfoForm()
+    submit = SubmitForm()
+
+class CblasterSearchForm(Form):
+    general = GeneralForm()
     search = SearchSectionForm()
     filtering = FilteringSectionForm()
     clustering = ClusteringSectionForm()
@@ -15,50 +22,39 @@ class CblasterSearchForm(Form):
     binary_table = BinaryTableForm()
     additional_options = AdditionalOptionsSectionForm()
     intermediate_genes = IntermediateGenesSectionForm()
-    submit = SubmitForm()
+
 
 class CblasterRecomputeForm(Form):
-
     pass
 
 class CblasterGNEForm(Form):
-    job_info = JobInfoForm()
+    general = GeneralForm()
     summary_table = SummaryTableGNEForm()
     additional_options = AdditionalOptionsGNEForm()
-    submit = SubmitForm()
 
 class CblasterExtractSequencesForm(Form):
-    job_info = JobInfoForm()
+    general = GeneralForm()
     filtering = ExtractSequencesFilteringForm()
     output = ExtractSequencesOutputForm()
-    submit = SubmitForm()
 
 class CblasterExtractClustersForm(Form):
-    job_info = JobInfoForm()
+    general = GeneralForm()
     filtering = ClustersFilteringForm()
     output = ExtractClustersOutputForm()
-    submit = SubmitForm()
 
 class CblasterVisualisationForm(Form):
-    job_info = JobInfoForm()
+    general = GeneralForm()
     filtering = ClustersFilteringForm()
     output = CblasterVisualisationOutputForm()
-    submit = SubmitForm()
-
 
 class ClinkerBaseForm(Form):
+    general = GeneralForm()
     alignment = ClinkerAlignmentForm()
     output = ClinkerOutputForm()
     additional_options = ClinkerAdditionalOptionsForm()
 
-
 class ClinkerDownstreamForm(Form):
-    job_info = JobInfoForm()
     base = ClinkerBaseForm()
 
-    submit = SubmitForm()
-
 class ClinkerInitialForm(Form):
-    job_info = JobInfoForm()
-
-    submit = SubmitForm()
+    general = GeneralForm()
