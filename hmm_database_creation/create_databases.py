@@ -36,16 +36,22 @@ def list_files(_genus: str) -> t.List[str]:
 
 
 if __name__ == '__main__':
-    print('Removing databases', flush=True)
+    # if len(sys.argv) != 2:
+    #     print('Enter if existing databases should be removed')
+    #     exit(0)
+    remove_dbs = input('Remove old databases? (y/n) ')
 
-    os.chdir(CONF['finished_hmm_db_folder'])
-    for f in os.listdir():
-        try:
-            os.remove(f)
-        except IsADirectoryError:
-            shutil.rmtree(f)
+    if remove_dbs == 'y':
+        print('Removing databases', flush=True)
 
-        print(f'  Removed: {f}', flush=True)  # remove old db's
+        os.chdir(CONF['finished_hmm_db_folder'])
+        for f in os.listdir():
+            try:
+                os.remove(f)
+            except IsADirectoryError:
+                shutil.rmtree(f)
+
+            print(f'  Removed: {f}', flush=True)  # remove old db's
 
     path = os.path.join(CONF['finished_hmm_db_folder'], 'logs')
     if not os.path.exists(path):
