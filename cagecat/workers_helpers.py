@@ -320,7 +320,11 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
     # TODO future: handle recompute scenario as now mode is always given as remote, which is not always the case. The search type should be fetched from the initial search job
     base = ['--database']
     if options['mode'] in ('hmm', 'combi_remote'):
-        base.append(os.path.join(config.CONF['finished_hmm_db_folder'], f'{options["selectedGenus"]}.fasta'))
+        splitted = options["selectedGenus"].split('_')
+        organism = splitted[0].lower()
+        genus_fasta = f'{splitted[1]}.fasta'
+
+        base.append(os.path.join(config.CONF['finished_hmm_db_folder'], organism, genus_fasta))
 
     if options['mode'] in ('remote', 'combi_remote'):
         if 'database_type' in options:

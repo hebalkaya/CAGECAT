@@ -95,7 +95,7 @@ addAccordionListeners();
                         {% for organism in organism_databases %}
                             <optgroup label="{{ organism }}">
                             {% for genus in organism_databases.get(organism) %}
-                                <option value="{{ genus }}">{{ genus }}</option>
+                                <option value="{{ organism }}_{{ genus }}">{{ genus }}</option>
                             {% endfor %}
                             </optgroup>
                         {% endfor %}
