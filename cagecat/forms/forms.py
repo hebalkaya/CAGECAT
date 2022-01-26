@@ -10,22 +10,26 @@ class GeneralForm(Form):
 
 class CblasterSearchBaseForm(Form):
     general = GeneralForm()
-    filtering = FilteringSectionForm()
     clustering = ClusteringSectionForm()
     summary_table = SummaryTableForm()
     binary_table = BinaryTableForm()
     additional_options = AdditionalOptionsSectionForm()
     intermediate_genes = IntermediateGenesSectionForm()
 
-class CblasterSearchForm(Form):
+class CblasterSearchForm(Form):  # TODO: refactor to CblasterSearchRemoteForm
     base = CblasterSearchBaseForm()
     search = SearchSectionForm()
+    filtering = FilteringSectionForm()
     # TODO:
     #  input = InputSectionForm()
     # search_modes = InputSearchModeForm()
     # remote_type = InputRemoteTypeForm()
     remote_input_types_file = InputSearchRemoteInputTypeFile()
     remote_input_types_ncbi_entries = InputSearchRemoteInputTypeNCBIEntries()
+    hmm = InputHMMForm()
+
+class CblasterSearchHMMForm(Form):
+    base = CblasterSearchBaseForm()
     hmm = InputHMMForm()
 
 

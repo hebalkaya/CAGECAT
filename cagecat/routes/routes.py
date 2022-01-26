@@ -17,7 +17,7 @@ from cagecat.general_utils import show_template, get_server_info, JOBS_DIR, fetc
 from cagecat import app
 from cagecat.classes import CAGECATJob
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
-    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm
+    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
 from config_files.config import CAGECAT_VERSION, CONF
@@ -152,16 +152,29 @@ def submit_job() -> str:
             return redirect(url_for('invalid_submission'))
 
         file_path, job_type = prepare_search(job_id, job_type)
-
+        forms_to_validate = []
         if job_type == 'recompute':
-            form_type = CblasterRecomputeForm
+            forms_to_validate.append(CblasterRecomputeForm)
         elif job_type == 'search':
-            form_type = CblasterSearchForm
+
+            if 'mode' in request.form:
+                if request.form['mode'] == 'hmm':
+                    forms_to_validate.append(CblasterSearchHMMForm)
+                elif request.form['mode'] == 'remote':
+                    forms_to_validate.append(CblasterSearchForm)
+                elif request.form['mode'] == 'combi_remote':
+                    forms_to_validate.extend((CblasterSearchForm, CblasterSearchHMMForm))
+                else:
+                    raise ValueError('Incorrect mode found:', request.form['mode'])
+            else:
+                print('No mode found')
+
         else:
             raise ValueError('Incorrect job type returned')
 
-        if not validate_full_form(form_type, request.form):
-            return redirect(url_for('invalid_submission'))
+        for form_type in forms_to_validate:
+            if not validate_full_form(form_type, request.form):
+                return redirect(url_for('invalid_submission'))
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
