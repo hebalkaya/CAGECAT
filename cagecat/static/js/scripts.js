@@ -1,7 +1,6 @@
 var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
-var ROOT_URL = '/cagecat'
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var checkmarkPath = 'http://127.0.0.1:9999/static/images/checkmark.svg'
 
@@ -384,7 +383,7 @@ function showPreviousJobs(disableBodyOnLoad){
             li.classList.add("jobs");
 
             let a = document.createElement("a");
-            a.href = ROOT_URL + "/results/" + jobId;
+            a.href = "/results/" + jobId;
             a.innerText = jobId;
 
             li.appendChild(a);
@@ -399,7 +398,7 @@ function showPreviousJobs(disableBodyOnLoad){
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.classList.add("no-link-decoration");
-    a.href = ROOT_URL + "/results/";
+    a.href = "/results/";
     a.innerText =  "Previous jobs";
     li.appendChild(a);
 
@@ -409,7 +408,7 @@ function showPreviousJobs(disableBodyOnLoad){
 
 
 function showHelp(textType){
-    $.get(ROOT_URL + '/docs/' + textType, function(data, status){
+    $.get('/docs/' + textType, function(data, status){
         document.getElementById("explanationTitle").innerText = data.title;
         document.getElementById("explanationModule").innerText = "Module: " + data.module;
         document.getElementById("explanationText").innerText = data.text;
@@ -450,6 +449,7 @@ function toggleExplanationColumn() {
 }
 
 function determineHeight() {
+    console.log('We determined');
     var body = document.body,
         html = document.documentElement;
 
@@ -782,7 +782,7 @@ function showDetailedPreviousJobs(){
         let a = document.createElement("a");
         a.style = 'font-size: 17px;';
         a.classList.add('monospaced');
-        a.href = ROOT_URL + "/results/" + msg[0];
+        a.href = "/results/" + msg[0];
         a.innerText = msg[0]
         td.appendChild(a);
         tr.appendChild(td);
@@ -839,6 +839,7 @@ function addAccordionListeners() {
 
     for (let i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function () {
+
             this.classList.toggle("active");
             let panel = this.nextElementSibling;
 
@@ -860,6 +861,8 @@ function addAccordionListeners() {
                     acc[i].innerText = "Advanced +";
                 }
             }
+
+            setTimeout(() => {determineHeight();}, 410);
         });
 
 
@@ -869,7 +872,7 @@ function addAccordionListeners() {
 
 
 setInterval(function(){
-    $.ajax(ROOT_URL + '/server-status', {
+    $.ajax('/server-status', {
         dataType: 'json',
         success: function(data) {
             $('#status_server')[0].innerText = data['server_status'];
