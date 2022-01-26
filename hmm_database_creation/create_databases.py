@@ -28,7 +28,7 @@ def list_files(_genus: str) -> t.List[str]:
     """
     all_files = []
 
-    for root, directory, files in os.walk(os.path.join(REFSEQ_DIR, _genus)):
+    for root, directory, files in os.walk(os.path.join(REFSEQ_DIR, organism, _genus)):
         for f in files:
             all_files.append(os.path.join(root, f))
 
@@ -39,6 +39,13 @@ if __name__ == '__main__':
     # if len(sys.argv) != 2:
     #     print('Enter if existing databases should be removed')
     #     exit(0)
+    if len(sys.argv) == 1:
+        raise IndexError('No organism supplied')
+
+    organism = sys.argv[1]
+    if organism not in ('prokaryota', 'fungi'):
+        raise ValueError('Invalid organism')
+
     remove_dbs = input('Remove old databases? (y/n) ')
 
     if remove_dbs == 'y':
@@ -52,14 +59,29 @@ if __name__ == '__main__':
                 shutil.rmtree(f)
 
             print(f'  Removed: {f}', flush=True)  # remove old db's
+    elif remove_dbs == 'n':
+        pass
+    else:
+        raise ValueError('Invalid option entered')
 
-    path = os.path.join(CONF['finished_hmm_db_folder'], 'logs')
-    if not os.path.exists(path):
-        os.makedirs(path, exist_ok=True)
+    folders_to_create = [
+        os.path.join(CONF['finished_hmm_db_folder'], 'logs', organism),
+        os.path.join(CONF['finished_hmm_db_folder'], organism)
+    ]
+
+    for path in folders_to_create:
+        if not os.path.exists(path):
+            os.makedirs(path, exist_ok=True)
 
     while True:
-        dbs_to_create_path = os.path.join(REFSEQ_DIR, 'databases_to_create')
-        dbs_to_create = os.listdir(dbs_to_create_path)
+        try:
+            dbs_to_create_path = os.path.join(REFSEQ_DIR, organism, 'databases_to_create')
+            dbs_to_create = os.listdir(dbs_to_create_path)
+        except FileNotFoundError:
+            print('No databases_to_create folder present yet')
+            print(f'Sleeping for {CREATE_HMM_DB_SETTINGS["sleeping_time"]} seconds', flush=True)
+            time.sleep(CREATE_HMM_DB_SETTINGS['sleeping_time'])
+            continue
 
         if len(dbs_to_create) == 0:
             print(f'Nothing to create. Sleeping for {CREATE_HMM_DB_SETTINGS["sleeping_time"]} seconds', flush=True)
@@ -84,7 +106,7 @@ if __name__ == '__main__':
                     # actually create the db
                 print(f'Creating {genus} database', flush=True)
                 cmd = ["cblaster", "makedb",
-                       "--name", genus,
+                       "--name", os.path.join(CONF['finished_hmm_db_folder'], organism, genus),
                        "--cpus",  CREATE_HMM_DB_SETTINGS['cpus'],
                        "--batch", CREATE_HMM_DB_SETTINGS['batch_size']]
 
@@ -94,7 +116,7 @@ if __name__ == '__main__':
                     print(f'{genus} has no genome files. Continuing..', flush=True)
                     continue
 
-                with open(os.path.join(CONF['finished_hmm_db_folder'], 'logs', f'{genus}_creation.log'), 'w') as outf:
+                with open(os.path.join(CONF['finished_hmm_db_folder'], 'logs', organism, f'{genus}_creation.log'), 'w') as outf:
                     res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
                 if res.returncode != 0:

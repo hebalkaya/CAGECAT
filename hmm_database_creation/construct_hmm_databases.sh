@@ -36,7 +36,7 @@ echo " Fetching all genera from NCBI"
 esearch -db assembly -query '((('"$1"'[orgn] AND ("representative genome"[refseq category] OR "reference genome"[refseq category])) AND (latest[filter] AND all[filter] NOT anomalous[filter])))' | efetch -format docsum | xtract -pattern DocumentSummary -element Organism > "$fn_non_unique"
 
 echo " Creating list of unique genera"
-total_genera=$(sudo python3 get_unique_genera.py "${fn_non_unique}" "${fn_unique}")
+total_genera=$(python3 get_unique_genera.py "${fn_non_unique}" "${fn_unique}")
 
 i=0
 echo " Downloading genomes"
@@ -56,11 +56,11 @@ do
   esearch -db assembly -query '((('"$1"'[orgn] AND ("representative genome"[refseq category] OR "reference genome"[refseq category])) AND (latest[filter] AND all[filter] NOT anomalous[filter]))) AND '${genus}'[Organism]' | efetch -format docsum | xtract -pattern DocumentSummary -element $ftp_labels SpeciesName > "${genus}_ftp_paths.txt"
 
   echo "   -> Downloading files"
-  sudo python3 download_files.py "${genus}_ftp_paths.txt" "$1"
+  python3 download_files.py "${genus}_ftp_paths.txt" "$1"
 done
 
 echo "Creating file to stop creating databases"
-sudo python3 download_files.py 'everything_has_been_downloaded'
+python3 download_files.py 'everything_has_been_downloaded'
 
 echo "Removing ftp paths files"
 rm *_ftp_paths.txt
