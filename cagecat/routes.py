@@ -216,6 +216,7 @@ def get_server_status():
 
 @app.route('/update-hmm-databases')
 def update_hmm_databases():
+    # TODO: does it even work?
     global PRESENT_DATABASES
     # Doesn't have to return anything, only trigger
     all_databases = {}

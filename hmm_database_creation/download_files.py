@@ -176,7 +176,7 @@ if __name__ == '__main__':
     genus = argv[1].split('_')[0]
     organism = argv[2]
 
-    if organism == 'prokaryotes':
+    if organism == 'prokaryota':
         threshold = THRESHOLDS['prokaryotes_min_number_of_genomes']
     elif organism == 'fungi':
         threshold = THRESHOLDS['fungi_min_number_of_genomes']
