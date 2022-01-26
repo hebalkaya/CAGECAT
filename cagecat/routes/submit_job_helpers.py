@@ -60,7 +60,7 @@ def get_previous_job_properties(job_id: str, job_type: str,
     prev_job_id = request.form[f"{module}EnteredJobId"]
     check_valid_job(prev_job_id)
 
-    file_path = os.path.join(cagecat.general_utils.JOBS_DIR, prev_job_id, "results",
+    file_path = os.path.join(JOBS_DIR, prev_job_id, "results",
                              f"{prev_job_id}_session.json")
 
     return file_path
@@ -138,7 +138,7 @@ def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
             main_search_job_id = 'null'
         elif old_job.job_type == "search":
             main_search_job_id = old_job.id
-            main_search_job = cagecat.general_utils.fetch_job_from_db(main_search_job_id)
+            main_search_job = fetch_job_from_db(main_search_job_id)
 
             sep = "" if not main_search_job.child_jobs else ","
             main_search_job.child_jobs += f"{sep}{new_job.job_id}"
@@ -181,7 +181,7 @@ def get_parent_job(new_job: CAGECATJob,
     else:
         key = "prev_job_id"
 
-    return cagecat.general_utils.fetch_job_from_db(
+    return fetch_job_from_db(
         new_job.options[key] if is_last_job else new_job.file_path.split(os.sep)[2])
 
 

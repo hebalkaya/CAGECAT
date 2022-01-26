@@ -134,7 +134,7 @@ def extract_clusters() -> str:
                          cluster_numbers=cluster_numbers,
                          prev_job_id=prev_job_id, prev_job_type=prev_job.job_type,
                          main_search_id=prev_job.main_search_job,
-                         max_clusters_to_extract=config.THRESHOLDS['maximum_clusters_to_extract'])
+                         max_clusters_to_extract=THRESHOLDS['maximum_clusters_to_extract'])
 
 
 @tools.route("/corason", methods=["POST"])
@@ -173,7 +173,7 @@ def corason() -> str:
 def gene_neighbourhood_estimation() -> str:
     return show_template('cblaster_gene_neighbourhood_estimation.html',
                          all_forms=CblasterGNEForm(),
-                         max_samples=config.THRESHOLDS['maximum_gne_samples'],
+                         max_samples=THRESHOLDS['maximum_gne_samples'],
                          prev_job_id=request.form['job_id'])
 
 
