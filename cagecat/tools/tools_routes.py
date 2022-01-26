@@ -64,7 +64,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
                                 prev_run_id=prev_run_id,
                                 module_to_show=module_to_show,
                                 headers=headers,
-                                genera=cagecat.routes.PRESENT_DATABASES,
+                                organism_databases=cagecat.routes.PRESENT_DATABASES,
                                 query_file_extensions=','.join(co.FASTA_SUFFIXES + co.GENBANK_SUFFIXES),
                                 show_examples='cblaster_search')
 

@@ -210,3 +210,5 @@ EXECUTION_STAGES_LOG_DESCRIPTORS = {
         'INFO - Done!'
     ]
 }
+
+hmm_database_organisms = ('prokaryota', 'fungi')

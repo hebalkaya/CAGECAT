@@ -218,14 +218,25 @@ def get_server_status():
 def update_hmm_databases():
     global PRESENT_DATABASES
     # Doesn't have to return anything, only trigger
-    genera = []
+    all_databases = {}
 
-    for f in os.listdir(CONF['finished_hmm_db_folder']):
-        genus = f.split('.')[0]
-        if genus not in genera:
-            genera.append(genus)
+    for organism_folder in os.listdir(CONF['finished_hmm_db_folder']):
+        genera = set()
+        if organism_folder == 'logs':
+            continue
 
-    PRESENT_DATABASES = genera
+        if organism_folder not in co.hmm_database_organisms:
+            return 'Incorrect organism folder in HMM databases'
+
+        organism_path = os.path.join(CONF['finished_hmm_db_folder'], organism_folder)
+        for file in os.listdir(organism_path):
+            genus = file.split('.')[0]
+
+            genera.add(genus)
+
+        all_databases[organism_folder.capitalize()] = sorted(list(genera))
+
+    PRESENT_DATABASES = all_databases
 
     return '1'  # indicating everything went well
 
