@@ -2,7 +2,7 @@
 
 Initialization module of the CAGECAT web service. This module executes any
 preparational steps before starting CAGECAT. This file is ran from
-/repo/run.py
+<server_prefix>/run.py
 
 Author: Matthias van den Belt
 """
@@ -13,13 +13,13 @@ from flask_sqlalchemy import SQLAlchemy
 
 import redis
 import rq
-from config_files import config
+from config_files.sensitive import init_config
 
 r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
 app = Flask("cagecat")
-app.config.update(config.CONF)
+app.config.update(init_config)
 
 db = SQLAlchemy(app)
 

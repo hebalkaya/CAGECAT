@@ -1,9 +1,9 @@
 import os
 import typing as t
 
-from cagecat.const import FAILURE_REASONS
+from cagecat.const import failure_reasons, jobs_dir
 from cagecat.db_models import Job as dbJob
-from cagecat.general_utils import JOBS_DIR, fetch_job_from_db
+from cagecat.general_utils import fetch_job_from_db
 
 
 def get_failure_reason(job_id: str, program: str) -> str:
@@ -17,14 +17,14 @@ def get_failure_reason(job_id: str, program: str) -> str:
         - user-friendly failure reason
     """
     try:
-        with open(os.path.join(JOBS_DIR, job_id,
+        with open(os.path.join(jobs_dir, job_id,
                                "logs", f"{job_id}_{program}.log")) as inf:
             logs = inf.readlines()
 
         for l in logs:
-            for fail in FAILURE_REASONS:
+            for fail in failure_reasons:
                 if fail in l:
-                    return FAILURE_REASONS[fail]
+                    return failure_reasons[fail]
     except FileNotFoundError:
         return 'Command construction failed (no log file).'
 
@@ -46,7 +46,7 @@ def prepare_finished_result(job_id: str,
         - program: the program that was executed by this job
         - size: size of the returned plot in bytes
     """
-    plot_path = os.path.join(JOBS_DIR, job_id,
+    plot_path = os.path.join(jobs_dir, job_id,
                              "results", f"{job_id}_plot.html")
     size = None
 

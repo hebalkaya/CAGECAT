@@ -5,7 +5,7 @@ Author: Matthias van den Belt
 import re
 import typing as t
 
-from cagecat.general_utils import CLUST_NUMBER_PATTERN_W_SCORE
+from cagecat.const import clust_number_with_score_pattern
 
 
 def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
@@ -72,7 +72,7 @@ def parse_selected_cluster_names(selected_clusters: str) \
         for cluster in selected_clusters.split("\r\n"):
             sep_index = cluster.find(")") + 1
             organism = cluster[:sep_index].split("(")[0].strip()
-            clust_num = int(re.findall(CLUST_NUMBER_PATTERN_W_SCORE, cluster)[0])
+            clust_num = int(re.findall(clust_number_with_score_pattern, cluster)[0])
 
             cluster_names.append(f"{organism} (Cluster {clust_num})")
 

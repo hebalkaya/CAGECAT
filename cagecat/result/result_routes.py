@@ -11,8 +11,8 @@ from flask import Blueprint, request, url_for, send_file
 
 # own project imports
 from cagecat.routes.routes_helpers import format_size
-from cagecat.const import EXECUTION_STAGES_FRONT_END, EXECUTION_STAGES_LOG_DESCRIPTORS, MODULES_WHICH_HAVE_PLOTS, DOWNSTREAM_MODULES_OPTIONS, \
-    MODULE_TO_PROGRAM
+from cagecat.const import execution_stages_front_end, execution_stages_log_descriptors, modules_with_plots, downstream_modules, \
+    module_to_tool
 from cagecat.general_utils import show_template, generate_paths, fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason
 
@@ -65,10 +65,10 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  status=status,
                                  content_size=format_size(size),
                                  module=module,
-                                 modules_with_plots=MODULES_WHICH_HAVE_PLOTS,
+                                 modules_with_plots=modules_with_plots,
                                  job_title=job.title,
                                  # log_contents=log_contents,
-                                 downstream_modules=DOWNSTREAM_MODULES_OPTIONS[module],
+                                 downstream_modules=downstream_modules[module],
                                  connected_jobs=get_connected_jobs(job),
                                  help_enabled=False)
 
@@ -79,7 +79,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  j_id=job_id,
                                  module=job.job_type,
                                  status=status,
-                                 failure_reason=get_failure_reason(job_id, MODULE_TO_PROGRAM[job.job_type]),
+                                 failure_reason=get_failure_reason(job_id, module_to_tool[job.job_type]),
                                  help_enabled=False)
 
 
@@ -234,11 +234,11 @@ def get_execution_stages_front_end(job_type: str, job_id: str):
     with open(cmd_fp) as inf:
         contents = inf.read()
 
-    stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END[job_type])
+    stages_front_end: list = copy.deepcopy(execution_stages_front_end[job_type])
 
     if job_type == 'search':
         if '--recompute' in contents:
-            stages_front_end: list = copy.deepcopy(EXECUTION_STAGES_FRONT_END['recompute'])
+            stages_front_end: list = copy.deepcopy(execution_stages_front_end['recompute'])
             index = 2
         else:
             index = 5
@@ -260,11 +260,11 @@ def get_execution_stages_log_descriptors(job_type: str, job_id: str):
     with open(cmd_fp) as inf:
         contents = inf.read()
 
-    stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS[job_type])
+    stages_log_descriptors: list = copy.deepcopy(execution_stages_log_descriptors[job_type])
 
     if job_type == 'search':
         if '--recompute' in contents:
-            stages_log_descriptors: list = copy.deepcopy(EXECUTION_STAGES_LOG_DESCRIPTORS['recompute'])
+            stages_log_descriptors: list = copy.deepcopy(execution_stages_log_descriptors['recompute'])
             index = 2
         else:
             index = 6

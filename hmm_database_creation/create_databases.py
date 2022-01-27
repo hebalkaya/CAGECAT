@@ -14,8 +14,10 @@ import typing as t
 import shutil
 import requests
 
+from config_files.sensitive import finished_hmm_db_folder, hmm_db_genome_downloads
+
 sys.path.append('..')
-from config_files.config import CONF, REFSEQ_DIR, CREATE_HMM_DB_SETTINGS
+from config_files.config import hmm_db_creation_conf
 
 def list_files(_genus: str) -> t.List[str]:
     """Lists all present GenBank files for the given genus
@@ -28,7 +30,7 @@ def list_files(_genus: str) -> t.List[str]:
     """
     all_files = []
 
-    for root, directory, files in os.walk(os.path.join(REFSEQ_DIR, organism, _genus)):
+    for root, directory, files in os.walk(os.path.join(hmm_db_genome_downloads, organism, _genus)):
         for f in files:
             all_files.append(os.path.join(root, f))
 
@@ -51,7 +53,7 @@ if __name__ == '__main__':
     if remove_dbs == 'y':
         print('Removing databases', flush=True)
 
-        os.chdir(CONF['finished_hmm_db_folder'])
+        os.chdir(finished_hmm_db_folder)
         for f in os.listdir():
             try:
                 os.remove(f)
@@ -65,8 +67,8 @@ if __name__ == '__main__':
         raise ValueError('Invalid option entered')
 
     folders_to_create = [
-        os.path.join(CONF['finished_hmm_db_folder'], 'logs', organism),
-        os.path.join(CONF['finished_hmm_db_folder'], organism)
+        os.path.join(finished_hmm_db_folder, 'logs', organism),
+        os.path.join(finished_hmm_db_folder, organism)
     ]
 
     for path in folders_to_create:
@@ -75,17 +77,17 @@ if __name__ == '__main__':
 
     while True:
         try:
-            dbs_to_create_path = os.path.join(REFSEQ_DIR, organism, 'databases_to_create')
+            dbs_to_create_path = os.path.join(hmm_db_genome_downloads, organism, 'databases_to_create')
             dbs_to_create = os.listdir(dbs_to_create_path)
         except FileNotFoundError:
             print('No databases_to_create folder present yet')
-            print(f'Sleeping for {CREATE_HMM_DB_SETTINGS["sleeping_time"]} seconds', flush=True)
-            time.sleep(CREATE_HMM_DB_SETTINGS['sleeping_time'])
+            print(f'Sleeping for {hmm_db_creation_conf["sleeping_time"]} seconds', flush=True)
+            time.sleep(hmm_db_creation_conf['sleeping_time'])
             continue
 
         if len(dbs_to_create) == 0:
-            print(f'Nothing to create. Sleeping for {CREATE_HMM_DB_SETTINGS["sleeping_time"]} seconds', flush=True)
-            time.sleep(CREATE_HMM_DB_SETTINGS['sleeping_time'])
+            print(f'Nothing to create. Sleeping for {hmm_db_creation_conf["sleeping_time"]} seconds', flush=True)
+            time.sleep(hmm_db_creation_conf['sleeping_time'])
         elif len(dbs_to_create) == 1 and dbs_to_create[0] == 'stop_creating_databases':
             print('Encountered the stop_creating_databases file', flush=True)
             subprocess.run(['rm', os.path.join(dbs_to_create_path, 'stop_creating_databases')])
@@ -106,9 +108,9 @@ if __name__ == '__main__':
                     # actually create the db
                 print(f'Creating {genus} database', flush=True)
                 cmd = ["cblaster", "makedb",
-                       "--name", os.path.join(CONF['finished_hmm_db_folder'], organism, genus),
-                       "--cpus",  CREATE_HMM_DB_SETTINGS['cpus'],
-                       "--batch", CREATE_HMM_DB_SETTINGS['batch_size']]
+                       "--name", os.path.join(finished_hmm_db_folder, organism, genus),
+                       "--cpus", hmm_db_creation_conf['cpus'],
+                       "--batch", hmm_db_creation_conf['batch_size']]
 
                 cmd.extend(list_files(genus))
 
@@ -116,7 +118,7 @@ if __name__ == '__main__':
                     print(f'{genus} has no genome files. Continuing..', flush=True)
                     continue
 
-                with open(os.path.join(CONF['finished_hmm_db_folder'], 'logs', organism, f'{genus}_creation.log'), 'w') as outf:
+                with open(os.path.join(finished_hmm_db_folder, 'logs', organism, f'{genus}_creation.log'), 'w') as outf:
                     res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
 
                 if res.returncode != 0:

@@ -6,7 +6,7 @@ Author: Matthias van den Belt
 from flask import Blueprint, request, url_for
 
 from cagecat.general_utils import send_email, show_template
-from config_files.config import EMAIL
+from config_files.sensitive import sender_email
 
 feedback = Blueprint('feedback', __name__, template_folder="templates")
 
@@ -30,7 +30,7 @@ def submit_feedback() -> str:
     Output:
         - HTML represented in string format
     """
-    for email in (EMAIL['sender_email'], request.form['email']):
+    for email in (sender_email, request.form['email']):
         send_email('CAGECAT feedback report',
                       f'''
 

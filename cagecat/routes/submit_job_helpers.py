@@ -9,7 +9,8 @@ from flask import request
 
 from cagecat import q, db
 from cagecat.classes import CAGECATJob
-from cagecat.general_utils import JOBS_DIR, FOLDERS_TO_CREATE, fetch_job_from_db
+from cagecat.general_utils import fetch_job_from_db
+from cagecat.const import jobs_dir, folders_to_create
 from cagecat.db_models import Job as dbJob
 
 
@@ -60,7 +61,7 @@ def get_previous_job_properties(job_id: str, job_type: str,
     prev_job_id = request.form[f"{module}EnteredJobId"]
     check_valid_job(prev_job_id)
 
-    file_path = os.path.join(JOBS_DIR, prev_job_id, "results",
+    file_path = os.path.join(jobs_dir, prev_job_id, "results",
                              f"{prev_job_id}_session.json")
 
     return file_path
@@ -248,7 +249,7 @@ def save_file(file_obj: werkzeug.datastructures.FileStorage,
     fn = werkzeug.utils.secure_filename(file_obj.filename)
     if fn:
 
-        file_path = os.path.join(f"{JOBS_DIR}", job_id,
+        file_path = os.path.join(f"{jobs_dir}", job_id,
                                  "uploads", fn)
         file_obj.save(file_path)
     else:
@@ -267,12 +268,12 @@ def create_directories(job_id: str) -> None:
         - None
         - Created directories
     """
-    base_path = os.path.join(JOBS_DIR, job_id)
+    base_path = os.path.join(jobs_dir, job_id)
 
     if not os.path.exists(base_path): # directories are attempted to
         # be created again when jobs depending on each other are executed
         os.mkdir(base_path)
-        for folder in FOLDERS_TO_CREATE:
+        for folder in folders_to_create:
             os.mkdir(os.path.join(base_path, folder))
 
 
@@ -291,7 +292,7 @@ def save_settings(options: werkzeug.datastructures.ImmutableMultiDict,
     Function created for logging purposes. Writes to a file, which will be
     used by the [load_settings] function.
     """
-    with open(f"{os.path.join(JOBS_DIR, job_id, 'logs', job_id)}"
+    with open(f"{os.path.join(jobs_dir, job_id, 'logs', job_id)}"
               f"_options.txt", "w") as outf:
 
         for key, value in options.items():
