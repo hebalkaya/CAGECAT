@@ -23,6 +23,9 @@ from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
+from config_files.sensitive import finished_hmm_db_folder
+
+
 def create_filtering_command(options: ImmutableMultiDict,
                              is_cluster_related: bool) -> t.List[str]:
     """Forges command for filtering based on submitted options
