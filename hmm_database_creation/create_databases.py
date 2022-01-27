@@ -14,9 +14,8 @@ import typing as t
 import shutil
 import requests
 
-from config_files.sensitive import finished_hmm_db_folder, hmm_db_genome_downloads
-
 sys.path.append('..')
+from config_files.sensitive import finished_hmm_db_folder, hmm_db_genome_downloads
 from config_files.config import hmm_db_creation_conf
 
 def list_files(_genus: str) -> t.List[str]:
@@ -48,7 +47,10 @@ if __name__ == '__main__':
     if organism not in ('prokaryota', 'fungi'):
         raise ValueError('Invalid organism')
 
-    remove_dbs = input('Remove old databases? (y/n) ')
+    if len(sys.argv) == 3:
+        remove_dbs = sys.argv[2]
+    else:
+        remove_dbs = input('Remove old databases? (y/n) ')
 
     if remove_dbs == 'y':
         print('Removing databases', flush=True)

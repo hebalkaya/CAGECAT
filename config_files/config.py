@@ -28,7 +28,7 @@ thresholds = {
     'maximum_gne_samples': 300,
     'max_clusters_to_plot': 75,
     "prokaryotes_min_number_of_genomes": 50,
-    'fungi_min_number_of_genomes': 4
+    'fungi_min_number_of_genomes': 10
 }
 
 email_footer_msg = f'''Thank you for using our service. 

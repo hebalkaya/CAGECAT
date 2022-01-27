@@ -301,7 +301,7 @@ def submit_job() -> str:
                     save_file(f, job_id)
                     genome_files_path = os.path.join(jobs_dir, job_id, "uploads")
                 else: # indicates the example was posted
-                    genome_files_path = os.path.join('cagecat', '../example_files')
+                    genome_files_path = os.path.join('cagecat', 'example_files')
             depending_on = None
 
         else:

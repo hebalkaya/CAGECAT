@@ -29,7 +29,7 @@ function updateJobExecutionStage(url){
 }
 
 function startJobExecutionStageUpdater(job_id){
-    let url = 'http://127.0.0.1:9999/results/stage/' + job_id
+    let url = 'https://cagecat.bioinformatics.nl/results/stage/' + job_id
     updateJobExecutionStage(url);
     setInterval(updateJobExecutionStage, 5000, url)
 
@@ -449,7 +449,6 @@ function toggleExplanationColumn() {
 }
 
 function determineHeight() {
-    console.log('We determined');
     var body = document.body,
         html = document.documentElement;
 
