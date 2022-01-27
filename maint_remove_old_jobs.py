@@ -3,7 +3,7 @@
 Author: Matthias van den Belt
 """
 from cagecat import db
-from cagecat.utils import fetch_job_from_db, JOBS_DIR
+from cagecat.general_utils import JOBS_DIR, fetch_job_from_db
 from config_files.config import CONF, PERSISTENT_JOBS
 import os
 import datetime

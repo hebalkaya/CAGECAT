@@ -2,7 +2,11 @@
 
 Author: Matthias van den Belt
 """
+import re
 import typing as t
+
+from cagecat.general_utils import CLUST_NUMBER_PATTERN_W_SCORE
+
 
 def parse_selected_scaffolds(selected_clusters: str) -> t.Union[str, None]:
     """Returns scaffolds of the selected clusters
@@ -47,3 +51,33 @@ def check_if_already_has_too_few_species(genus):
 
     except FileNotFoundError:
         print(' -> No too_few_species.txt file found')
+
+
+def parse_selected_cluster_names(selected_clusters: str) \
+        -> t.Union[str, None]:
+    """Extracts and formats selected clusters in a readable manner
+
+    Input:
+        - selected_clusters: user-selected clusters. These clusters are
+            separated by "\r\n"
+
+    Output:
+        - cluster_names: parsed cluster names. Returns None when no clusters
+            were selected. For CORASON, this should never happen, as
+            it always needs clusters to search in
+    """
+    if selected_clusters != "No clusters selected":
+        cluster_names = []
+
+        for cluster in selected_clusters.split("\r\n"):
+            sep_index = cluster.find(")") + 1
+            organism = cluster[:sep_index].split("(")[0].strip()
+            clust_num = int(re.findall(CLUST_NUMBER_PATTERN_W_SCORE, cluster)[0])
+
+            cluster_names.append(f"{organism} (Cluster {clust_num})")
+
+        cluster_names = "\n".join(cluster_names)
+    else:
+        cluster_names = None
+
+    return cluster_names

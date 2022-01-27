@@ -1,7 +1,6 @@
 var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
-var ROOT_URL = '/cagecat'
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var checkmarkPath = 'http://127.0.0.1:9999/static/images/checkmark.svg'
 
@@ -86,7 +85,7 @@ function showInputOptions(selectionOption, resetQueries){
         ncbiEntriesDiv.classList.add('no-display');
 
         // enable
-        setRequiredAndEnabled('genomeFile');
+        setRequiredAndEnabled('genomeFiles');
 
         // disable elements
         removeRequiredAndEnabled('ncbiEntriesTextArea');
@@ -94,7 +93,7 @@ function showInputOptions(selectionOption, resetQueries){
         enableOrDisableOption('searchSection', true);
 
         document.getElementById("accessionsError").classList.add('no-display');
-        document.getElementById("submitSearchForm").removeAttribute("disabled");
+        document.getElementById("submit").removeAttribute("disabled");
 
     }
     else if (selectionOption === 'ncbi_entries'){
@@ -105,7 +104,7 @@ function showInputOptions(selectionOption, resetQueries){
         setRequiredAndEnabled('ncbiEntriesTextArea')
 
         // disable elements
-        removeRequiredAndEnabled('genomeFile');
+        removeRequiredAndEnabled('genomeFiles');
 
         enableOrDisableOption('searchSection', true);
         validateNCBIEntries();
@@ -116,14 +115,14 @@ function showInputOptions(selectionOption, resetQueries){
         searchPrevJobOptions.classList.remove('no-display');
 
         // disable elements
-        removeRequiredAndEnabled('genomeFile');
+        removeRequiredAndEnabled('genomeFiles');
         removeRequiredAndEnabled('ncbiEntriesTextArea');
         document.getElementById("searchLabelSessionFile").classList.add("disabled");
 
         enableOrDisableOption('searchSection', false);
 
         document.getElementById("accessionsError").classList.add('no-display');
-        document.getElementById("submitSearchForm").removeAttribute("disabled");
+        document.getElementById("submit").removeAttribute("disabled");
 
         if (!resetQueries){
             document.getElementById('radioPrevSession').setAttribute('checked', 'checked');
@@ -184,7 +183,7 @@ function validateNCBIEntries() {
     if (valid) {
         textArea.classList.remove("invalid");
         errorBox.classList.add('no-display');
-        document.getElementById("submitSearchForm").disabled = false;
+        document.getElementById("submit").disabled = false;
 
         let requiredSequences = document.getElementById("requiredSequencesSelector");
         let everything = textArea.value.split("\n");
@@ -204,7 +203,7 @@ function validateNCBIEntries() {
     } else {
         textArea.classList.add("invalid");
         document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
-        document.getElementById("submitSearchForm").disabled = true;
+        document.getElementById("submit").disabled = true;
         document.getElementById("requiredSequencesSelector").options.length = 0;
     }
 
@@ -314,7 +313,7 @@ function readFileContents() {
     let requiredSequencesSelect = document.getElementById("requiredSequencesSelector");
     requiredSequencesSelect.options.length = 0;  // Clear all options
     var valid_ext = ["fasta", "fa", "fsa", "fna", "faa", "gbk", "gb", "genbank", "gbf", "gbff"]
-    var file = document.getElementById("genomeFile").files[0];
+    var file = document.getElementById("genomeFiles").files[0];
     var reader = new FileReader();
     let ext = file.name.split(".").pop().toLowerCase();
 
@@ -324,12 +323,12 @@ function readFileContents() {
         if (!valid_ext.includes(ext)){
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
-            $('#submitSearchForm')[0].setAttribute('disabled', 'disabled')
+            $('#submit')[0].setAttribute('disabled', 'disabled')
             return;
         }
         else {
             document.getElementById("fileUploadIncorExt").classList.add('no-display');
-            $('#submitSearchForm')[0].removeAttribute('disabled');
+            $('#submit')[0].removeAttribute('disabled');
         }
         let splitted = reader.result.split("\n");
         let starter;
@@ -384,7 +383,7 @@ function showPreviousJobs(disableBodyOnLoad){
             li.classList.add("jobs");
 
             let a = document.createElement("a");
-            a.href = ROOT_URL + "/results/" + jobId;
+            a.href = "/results/" + jobId;
             a.innerText = jobId;
 
             li.appendChild(a);
@@ -399,7 +398,7 @@ function showPreviousJobs(disableBodyOnLoad){
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.classList.add("no-link-decoration");
-    a.href = ROOT_URL + "/results/";
+    a.href = "/results/";
     a.innerText =  "Previous jobs";
     li.appendChild(a);
 
@@ -409,7 +408,7 @@ function showPreviousJobs(disableBodyOnLoad){
 
 
 function showHelp(textType){
-    $.get(ROOT_URL + '/docs/' + textType, function(data, status){
+    $.get('/docs/' + textType, function(data, status){
         document.getElementById("explanationTitle").innerText = data.title;
         document.getElementById("explanationModule").innerText = "Module: " + data.module;
         document.getElementById("explanationText").innerText = data.text;
@@ -450,6 +449,7 @@ function toggleExplanationColumn() {
 }
 
 function determineHeight() {
+    console.log('We determined');
     var body = document.body,
         html = document.documentElement;
 
@@ -468,7 +468,7 @@ function determineHeight() {
 }
 
 function toggleRemoteOptions(enable){
-    let individualElements = ['radioFasta', 'radioNCBIEntries', 'genomeFile', 'ncbiEntriesTextArea',
+    let individualElements = ['radioFasta', 'radioNCBIEntries', 'genomeFiles', 'ncbiEntriesTextArea',
         'searchPrevJobId', 'radioPrevSession ', 'searchEnteredJobId', 'searchUploadedSessionFile'];
     let fieldsets = ['searchSectionFullFieldset', 'filteringSectionFullFieldset'];
     let sections = ['filteringSection', 'searchSection']
@@ -644,13 +644,16 @@ function setExampleInput(tool_name){
         'QBE85648.1';
 
     if (tool_name === 'cblaster_search'){
-        let radio = $('#radioNCBIEntries')[0];
-        radio.click();
+        let firstRadio = $('#remoteMode')[0];
+        firstRadio.click();
+
+        let secondRadio = $('#radioNCBIEntries')[0];
+        secondRadio.click();
         $('#job_title')[0].value = 'Example input (Burnettramic Acids)';
         $('#max_hits')[0].value = "800";
         $('#percentageQueryGenes')[0].value = "40";
         $('#ncbiEntriesTextArea')[0].value = exampleQueries;
-        radio.click();  // to make required sequences pop up
+        secondRadio.click();  // to make required sequences pop up
     }
     else if (tool_name === 'clinker'){
         $('#identity')[0].value = '0.28';
@@ -729,12 +732,12 @@ function checkConsent(){
 
 // Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used (check usages manually)
 function initReadQueryFile(){
-    var file = document.getElementById("genomeFile").files[0];
+    var file = document.getElementById("genomeFiles").files[0];
     if (file) {
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
-            console.log(evt.target.result);
+            // console.log(evt.target.result);
         }
 
         reader.onerror = function (evt) {
@@ -779,7 +782,7 @@ function showDetailedPreviousJobs(){
         let a = document.createElement("a");
         a.style = 'font-size: 17px;';
         a.classList.add('monospaced');
-        a.href = ROOT_URL + "/results/" + msg[0];
+        a.href = "/results/" + msg[0];
         a.innerText = msg[0]
         td.appendChild(a);
         tr.appendChild(td);
@@ -836,6 +839,7 @@ function addAccordionListeners() {
 
     for (let i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function () {
+
             this.classList.toggle("active");
             let panel = this.nextElementSibling;
 
@@ -857,6 +861,8 @@ function addAccordionListeners() {
                     acc[i].innerText = "Advanced +";
                 }
             }
+
+            setTimeout(() => {determineHeight();}, 410);
         });
 
 
@@ -866,7 +872,7 @@ function addAccordionListeners() {
 
 
 setInterval(function(){
-    $.ajax(ROOT_URL + '/server-status', {
+    $.ajax('/server-status', {
         dataType: 'json',
         success: function(data) {
             $('#status_server')[0].innerText = data['server_status'];

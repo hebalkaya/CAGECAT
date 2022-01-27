@@ -10,12 +10,11 @@ import json
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
-import cagecat.const
-import cagecat.utils as ut
-import cagecat.const as co
-from cagecat.const import EXECUTION_STAGES_FRONT_END, EXECUTION_STAGES_LOG_DESCRIPTORS
-from cagecat.routes_helpers import show_template
-import cagecat.routes_helpers as rthelp
+from cagecat.routes.routes_helpers import format_size
+from cagecat.const import EXECUTION_STAGES_FRONT_END, EXECUTION_STAGES_LOG_DESCRIPTORS, MODULES_WHICH_HAVE_PLOTS, DOWNSTREAM_MODULES_OPTIONS, \
+    MODULE_TO_PROGRAM
+from cagecat.general_utils import show_template, generate_paths, fetch_job_from_db
+from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason
 
 
 # other imports
@@ -24,8 +23,6 @@ import os
 # typing imports
 import flask.wrappers
 import typing as t
-
-from cagecat.workers_helpers import generate_paths
 
 result = Blueprint('result', __name__, template_folder="templates")
 
@@ -49,14 +46,14 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
     Shows the "job_not_found.html" template when the given job ID was not
     found in the SQL database
     """
-    job = ut.fetch_job_from_db(job_id)
+    job = fetch_job_from_db(job_id)
 
     if job is not None:
         status = job.status
 
         if status == "finished":
             module = job.job_type
-            plot_contents, program, size = rthelp.prepare_finished_result(
+            plot_contents, program, size = prepare_finished_result(
                 job_id, module)
             # plot contents is not used currently. left in for future purposes
             #
@@ -66,14 +63,13 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
             return show_template("result_page.html", j_id=job_id,
                                  status=status,
-                                 content_size=ut.format_size(size),
-                                 module=module, modules_with_plots=
-                                 cagecat.const.MODULES_WHICH_HAVE_PLOTS,
+                                 content_size=format_size(size),
+                                 module=module,
+                                 modules_with_plots=MODULES_WHICH_HAVE_PLOTS,
                                  job_title=job.title,
                                  # log_contents=log_contents,
-                                 downstream_modules=
-                                 co.DOWNSTREAM_MODULES_OPTIONS[module],
-                                 connected_jobs=rthelp.get_connected_jobs(job),
+                                 downstream_modules=DOWNSTREAM_MODULES_OPTIONS[module],
+                                 connected_jobs=get_connected_jobs(job),
                                  help_enabled=False)
 
         elif status == "failed":
@@ -83,7 +79,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  j_id=job_id,
                                  module=job.job_type,
                                  status=status,
-                                 failure_reason=ut.get_failure_reason(job_id, co.MODULE_TO_PROGRAM[job.job_type]),
+                                 failure_reason=get_failure_reason(job_id, MODULE_TO_PROGRAM[job.job_type]),
                                  help_enabled=False)
 
 
@@ -113,7 +109,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  help_enabled=False)
 
         elif status == "waiting":
-            pj = ut.fetch_job_from_db(job_id).depending_on\
+            pj = fetch_job_from_db(job_id).depending_on\
                 if "pj" not in request.args else request.args["pj"]
 
             return show_template("status_page.html", j_id=job_id,
@@ -172,7 +168,7 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
         return show_template("result_from_jobid.html", help_enabled=False)
     else:  # can only be POST as GET and POST are the only allowed methods
         job_id = request.form["job_id"]
-        if ut.fetch_job_from_db(job_id) is not None:
+        if fetch_job_from_db(job_id) is not None:
             return show_template('redirect.html', url=url_for('result.show_result', job_id=job_id))
         else:
             return show_template("job_not_found.html", job_id=job_id)
@@ -180,7 +176,7 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
 
 @result.route("/stage/<job_id>")
 def get_execution_stage(job_id: str):
-    job = ut.fetch_job_from_db(job_id)
+    job = fetch_job_from_db(job_id)
     # main_search_job = job.main_search_job
     # print(job)
     #
@@ -227,7 +223,7 @@ def get_plot_contents(job_id) -> str:
         - job_id: job ID for which the plot is requested
 
     """
-    return rthelp.prepare_finished_result(job_id, ut.fetch_job_from_db(
+    return prepare_finished_result(job_id, fetch_job_from_db(
         job_id).job_type)[0]
 
 # Helper functions

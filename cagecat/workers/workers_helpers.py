@@ -8,14 +8,15 @@ import subprocess
 import os
 
 # own project imports
-import cagecat.const as co
-import config_files.config
-from config_files import config
-from cagecat.utils import JOBS_DIR, add_time_to_db, mutate_status, \
-    fetch_job_from_db, send_email, remove_email_from_db
+from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+
+from cagecat.general_utils import fetch_job_from_db, generate_paths, send_email
 from cagecat import db
-from config_files.config import CONF
-from cagecat.models import Job
+from config_files.config import CONF, CAGECAT_VERSION
+from cagecat.db_models import Job, Statistic
+from cagecat.const import GENBANK_SUFFIXES, FASTA_SUFFIXES
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
@@ -134,21 +135,6 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
     return return_code
 
 
-def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
-    """Returns paths for logging and result directories
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - [0]: base path for the job
-        - [1]: path for the logging directory
-        - [2]: path for the results directory
-    """
-    base = os.path.join(JOBS_DIR, job_id)
-    return base, os.path.join(base, "logs"), os.path.join(base, "results")
-
-
 def zip_results(job_id: str) -> None:
     """Zips all files belonging to a job (logs, results, uploads)
 
@@ -246,7 +232,7 @@ def log_cagecat_version(job_id: str) -> None:
 
     """
     with open(os.path.join(generate_paths(job_id)[1], 'CAGECAT_version.txt'), 'w') as outf:
-        outf.write(f'CAGECAT_version={config_files.config.CAGECAT_VERSION}')
+        outf.write(f'CAGECAT_version={CAGECAT_VERSION}')
 
 
 def post_job_formalities(job_id: str, return_code: int) -> None:
@@ -276,7 +262,6 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     db.session.commit()
 
 
-
 def store_query_sequences_headers(log_path: str, input_type: str, data: str):
     """Saves the submitted query headers to a .csv file
 
@@ -293,11 +278,11 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
         headers = data
     elif input_type == "file":
         ext = '.' + data.split('.')[-1]
-        if ext in co.FASTA_SUFFIXES:
+        if ext in FASTA_SUFFIXES:
             with open(data) as inf:
                 headers = [line.strip()[1:].split()[0] for line in
                            inf.readlines() if line.startswith(">")]
-        elif ext in co.GENBANK_SUFFIXES:
+        elif ext in GENBANK_SUFFIXES:
             with open(data) as inf:
                 headers = [line.strip().split('"')[1] for line in inf.readlines() if '/protein_id=' in line]
         else:
@@ -324,7 +309,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
         organism = splitted[0].lower()
         genus_fasta = f'{splitted[1]}.fasta'
 
-        base.append(os.path.join(config.CONF['finished_hmm_db_folder'], organism, genus_fasta))
+        base.append(os.path.join(CONF['finished_hmm_db_folder'], organism, genus_fasta))
 
     if options['mode'] in ('remote', 'combi_remote'):
         if 'database_type' in options:
@@ -370,3 +355,75 @@ def log_threshold_exceeded(parameter: int, threshold: int,
         return True
 
     return False
+
+
+def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
+    """Adds timestamp to job entry with given ID in SQL database
+
+    Input:
+        - job_id: ID corresponding to the job the function is called for
+        - time_type: column in the SQL table to which a timestamp should be
+            added. Available options are: ["start", "finish"]
+        - db: SQL database connection with the Flask application
+
+    Output:
+        - None
+        - Stored time at given column in the SQL database
+    """
+    job = fetch_job_from_db(job_id)
+
+    formatted_time = datetime.utcnow().strftime('%B %d %Y - %H:%M:%S')
+    if time_type == "start":
+        job.start_time = formatted_time
+    elif time_type == "finish":
+        job.finish_time = formatted_time
+    else:
+        raise IOError("Invalid time type")
+
+    db.session.commit()
+
+
+def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
+                  return_code: t.Optional[int] = None) -> None:
+    """Mutates status of job entry with given ID in SQL database
+
+    Input:
+        - job_id: ID corresponding to the job the function is called for
+        - stage: stage the job has entered. Available options are:
+            ["start", "finish"]
+        - db: SQL database connection with the Flask application
+        - return_code: exit code of the command ran. 0 indicates command
+            execution without errors
+
+    Output:
+        - None
+        - Mutated job status in the SQL database
+
+    Raises:
+        - IOError: when the given stage is invalid
+    """
+    job = fetch_job_from_db(job_id)
+
+    if stage == "start":
+        new_status = "running"
+    elif stage == "finish":
+        if return_code is None:
+            raise IOError("Return code should be provided")
+        elif not return_code:  # return code of 0
+            new_status = "finished"
+        else:
+            print('Return code is:', return_code)
+            new_status = "failed"
+
+        Statistic.query.filter_by(name=new_status).first().count += 1
+
+    else:
+        raise IOError("Invalid stage")
+
+    job.status = new_status
+    db.session.commit()
+
+
+def remove_email_from_db(db_job: Job):
+    if db_job.email != '':
+        db_job.email = '-'

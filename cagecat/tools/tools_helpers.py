@@ -1,47 +1,25 @@
-"""Module to hold all parsing and formatting functions
-
-Author: Matthias van den Belt
-"""
-
-# package imports
+import os
 import re
-from more_itertools import consecutive_groups
-
-# own project imports
-import cagecat.utils as ut
-
-# typing imports
 import typing as t
 
-### Function definitions
-def parse_selected_cluster_names(selected_clusters: str) \
-        -> t.Union[str, None]:
-    """Extracts and formats selected clusters in a readable manner
+from more_itertools import consecutive_groups
+
+from cagecat.general_utils import JOBS_DIR
+
+
+def read_headers(job_id: str) -> t.List[str]:
+    """Reads headers belonging to the search of a job ID
 
     Input:
-        - selected_clusters: user-selected clusters. These clusters are
-            separated by "\r\n"
+        - job_id: id of the job for which the query headers are asked for
 
     Output:
-        - cluster_names: parsed cluster names. Returns None when no clusters
-            were selected. For CORASON, this should never happen, as
-            it always needs clusters to search in
+        - headers: the query headers of this job ID
     """
-    if selected_clusters != "No clusters selected":
-        cluster_names = []
+    with open(os.path.join(JOBS_DIR, job_id, "logs", "query_headers.csv")) as outf:
+        headers = outf.read().strip().split(",")
 
-        for cluster in selected_clusters.split("\r\n"):
-            sep_index = cluster.find(")") + 1
-            organism = cluster[:sep_index].split("(")[0].strip()
-            clust_num = int(re.findall(ut.CLUST_NUMBER_PATTERN_W_SCORE, cluster)[0])
-
-            cluster_names.append(f"{organism} (Cluster {clust_num})")
-
-        cluster_names = "\n".join(cluster_names)
-    else:
-        cluster_names = None
-
-    return cluster_names
+    return headers
 
 
 def format_cluster_numbers(cluster_numbers: t.List[int]) -> t.List[str]:

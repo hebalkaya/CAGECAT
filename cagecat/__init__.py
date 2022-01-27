@@ -23,8 +23,8 @@ app.config.update(config.CONF)
 
 db = SQLAlchemy(app)
 
-from cagecat import routes
-import cagecat.models as m
+from cagecat.routes import routes
+import cagecat.db_models as m
 from cagecat.tools.tools_routes import tools
 from cagecat.result.result_routes import result
 from cagecat.feedback.feedback_routes import feedback

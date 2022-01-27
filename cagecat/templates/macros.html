@@ -64,6 +64,8 @@
     </div>
 {% endmacro %}
 
+{#TODO: remove lines above as not used anymore#}
+
 {% macro filtering_section(extraction_type, selected_scaffolds, selected_queries_or_cluster_numbers) %}
     <div>
     <label class="fieldset-label" for="filteringSection">Filtering</label>
@@ -209,4 +211,57 @@
 
 {% macro showBookMarkButton() %}
     <input class="button" style="margin-top: 1%; text-align: center" onclick="alert('Press CTRL + D to bookmark this page')" value="Bookmark this page"/>
+{% endmacro %}
+
+{% macro renderForm(form, additional_data=None) %}
+    {% for field in form %}
+        {% set is_hidden_field = field.type == 'HiddenField' %}
+        {% set classes = field.render_kw.class %}
+
+        {% if not classes %}
+            {% set classes = "bigger" %}
+        {% endif %}
+
+        {% if not is_hidden_field %}
+
+            {% if field.type == 'BooleanField' %}
+                <div>
+                    <label class="checkbox-label">
+                        {{ field }}{{ field.label.text }}
+                    </label>
+                    <img class="help-button checkbox-help" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+
+            {% elif field.type in ('MultipleFileField', 'FileField') %}
+                <div>
+                    <label class="file-upload-lbl" for="{{ field.id }}">
+                        {{ field }}{{ field.label.text }}{% if field.flags.required %}*{% endif %}
+                    </label>
+                    <img class="help-button checkbox-help" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+                </div>
+
+            {% else %}
+                <div class="input-layer">
+                {{ field.label(class="input-label") }}{% if field.flags.required %}*{% endif %}
+                <img class="help-button" onclick="showHelp('{{ field.description }}')" src="/static/images/question-circle.svg">
+                    {% if additional_data is not none and field.id == 'clusterNumbers' %} {# clusterNumbers can be replaced by a tuple of which id's should have additional data filled in  #}
+                {{ field(class=classes, value=additional_data) }}
+                    {% else %}
+                {{ field(class=classes) }}
+                    {% endif %}
+
+            {% endif %}
+
+    {#            TODO: use renderHelpButton macro here #}
+
+        {% endif %}
+
+
+        {% if not is_hidden_field %}
+            </div>
+        {% else %}
+            {{ field }}
+        {% endif %}
+
+
+    {% endfor %}
 {% endmacro %}

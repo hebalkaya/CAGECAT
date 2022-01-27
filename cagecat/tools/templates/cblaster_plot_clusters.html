@@ -5,6 +5,7 @@
 {% from "macros.html" import showSelectedClusters %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
+{% from 'macros.html' import renderForm %}
 
 {% block navigationBar %}
     {{ showNavigationBar('analyze') }}
@@ -18,22 +19,32 @@
         <input type="hidden" name="job_type" value="clinker_query"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 
-        {{ renderJobDetailsInput() }}
+        <div>
+            <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
+            <fieldset id="jobDetailsInputFieldset">
+                {{ renderForm(all_forms.general.job_info) }}
+            </fieldset>
+        </div>
 
-        {{ filtering_section('clusters', selected_scaffolds, selected_clusters) }}
+        <div>
+            <label class="fieldset-label" for="filteringSection">Filtering</label>
+            <fieldset id="filteringSection">
+                {{ renderForm(all_forms.filtering, selected_clusters) }}
+            </fieldset>
+        </div>
+
         <label class="fieldset-label" for="outputSection">Output</label>
         <fieldset>
-            <div class="input-layer">
-                <label class="input-label" for="maxclusters">Maximum clusters*</label>
-                {{ renderHelpButton('maxclusters') }}
-                <input type="number" name="maxclusters" min="1" max="{{ max_clusters_to_plot }}" value="50" step="1" id="maxclusters" required="required"/>
-            </div>
+                {{ renderForm(all_forms.output) }}
         </fieldset>
 
-        {{ showSelectedClusters(cluster_headers, True, False) }}
+        <div>
+            {{ showSelectedClusters(cluster_headers, True, False) }}
+        </div>
 
         <div class="input-layer centered">
-            <input class="button" value="Submit" type="submit"/>
+            {{ all_forms.general.submit.submit }}
         </div>
+
     </form>
 {% endblock %}

@@ -4,6 +4,7 @@
 {% from "macros.html" import renderHelpButton %}
 {% from 'macros.html' import renderJobDetailsInput %}
 {% from 'macros.html' import showRequiredInputsText %}
+{% from 'macros.html' import renderForm %}
 
 {% block scripts %}
     {% if module_to_show == 'recompute' %}
@@ -32,14 +33,22 @@ addAccordionListeners();
 <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
-    {{ renderJobDetailsInput() }}
+    <div>
+        <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
+        <fieldset id="jobDetailsInputFieldset">
+            {{ renderForm(all_forms.base.general.job_info) }}
+        </fieldset>
+    </div>
+
     {% if prev_run_id is none %}
     <label class="fieldset-label" for="inputSection">Input</label>
     <fieldset id="inputSection">
 
+
         <div class="radio-options">
+{#            {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
             <label class="radioLabel">
-                <input type="radio"  class="radio-margin" value="remote" name="mode" checked="checked" onclick="changeSearchMode('remote')">Remote
+                <input type="radio"  class="radio-margin" value="remote" name="mode" id="remoteMode" checked="checked" onclick="changeSearchMode('remote')">Remote
             </label>
             <label class="radioLabel">
                 <input type="radio" value="hmm" name="mode" onclick="changeSearchMode('hmm')">HMM
@@ -50,37 +59,36 @@ addAccordionListeners();
         </div>
 
         <div class="radio-options" id="remoteOptionsSection">
-                <div>
-                    <label class="radioLabel">
-                    <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
-                           name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
-                    <label class="radioLabel">
-                    <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
-                           name="inputType"
-                           onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
-                    </label>
-                </div>
+            <div>
+{#                    {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
+                <label class="radioLabel">
+                <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
+                       name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
+                <label class="radioLabel">
+                <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
+                       name="inputType"
+                       onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
+                </label>
+            </div>
 
             <div class="div-margin" id="genomeFileUploadDiv">
-                <label class="file-upload-lbl" for="genomeFile">
-                <input type="file" id="genomeFile" name="genomeFiles"
-                       required="required" accept="{{ query_file_extensions }}" onchange="readFileContents()"/>Query file*</label>
-                {{ renderHelpButton('genomeFile') }}
-                <span id="selectedFileName" style="margin-left:1%;"></span>
+                {{ renderForm(all_forms.remote_input_types_file) }}
 
+
+{#                Missing div?#}
+                <br/>
+                <span id="selectedFileName" style="margin-left:1%;"></span>
                 <div class="error-message no-display" id="fileUploadIncorExt">
                     <span id="fileUploadIncorExtText"></span>
                 </div>
-            </div>
 
             <div id="ncbiEntriesDiv" class="no-display">
-                <textarea rows="6" cols="25" class="ncbi-entries" id="ncbiEntriesTextArea"
-                          name="ncbiEntriesTextArea" placeholder="NCBI accessions*" disabled="disabled" onfocusout="validateNCBIEntries()"></textarea>
-                {{ renderHelpButton('ncbiEntriesTextArea') }}
+                {{ renderForm(all_forms.remote_input_types_ncbi_entries) }}
+                <div class="error-message no-display" id="accessionsError">
+                    <span id="accessionsErrorText"></span>
+                </div>
             </div>
-            <div class="error-message no-display" id="accessionsError">
-                <span id="accessionsErrorText"></span>
-            </div>
+
         </div>
     </fieldset>
 
@@ -88,6 +96,8 @@ addAccordionListeners();
     <label class="fieldset-label" for="hmmSection">Hidden Markov Models (HMM)</label>
     <fieldset id="hmmSection" disabled="disabled">
             <div id="hmmProfilesDiv">
+
+{#            TODO: remove below if selectedGenus is added to WTForms#}
                 <div class="input-layer">
                     <label class="select-label" for="selectedGenus">Genus*</label>
                     <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">
@@ -102,46 +112,16 @@ addAccordionListeners();
                     </select>
                     {{ renderHelpButton('selectedGenus') }}
                 </div>
-                <div class="input-layer">
-                    <label class="textarea-label">HMM profiles*</label>
-                    <textarea rows="6" cols="25" required="required" id="hmmProfiles"
-                              name="hmmProfiles" placeholder="HMM profile identifiers"></textarea>
-                        {#        TODO future: add Pfam identifier validation#}
-                        {{ renderHelpButton('hmmProfiles') }}
-                </div>
-            </div>
 
+                {{ renderForm(all_forms.hmm) }}
+            </div>
     </fieldset>
 </div>
 
 <div id="searchSectionFullFieldset">
     <label class="fieldset-label" for="searchSection">Search</label>
     <fieldset id="searchSection">
-        <div class="input-layer">
-
-            <label class="input-label" for="entrez_query">Entrez query</label>
-            {{ renderHelpButton('entrez_query') }}
-            <input class="bigger" type="text" name="entrez_query"
-                   id="entrez_query" placeholder="Aspergillus[organism]"/>
-        </div>
-        <div class="input-layer">
-            <label class="select-label" for="database_type">Database*</label>
-            <select class="select-options" id="database_type" name="database_type" required="required">
-                <option value="nr">nr</option>
-                <option value="refseq_protein">RefSeq protein</option>
-                <option value="swissprot">Swissprot</option>
-                <option value="pdbaa">pdbaa</option>
-            </select>
-            {{ renderHelpButton('database_type') }}
-        </div>
-
-        <div class="input-layer">
-            <label class="input-label" for="max_hits">Maximum hits*</label>
-            {{ renderHelpButton('max_hits') }}
-            <input type="number" required="required" name="hitlist_size"
-                   id="max_hits" min="1" max="99999" step="1"
-                   value="500"/>
-        </div>
+        {{ renderForm(all_forms.search) }}
     </fieldset>
 </div>
 
@@ -158,106 +138,52 @@ addAccordionListeners();
     <div id="filteringSectionFullFieldset">
         <label class="fieldset-label" for="filteringSection">Filtering</label>
         <fieldset id="filteringSection">
-            <div class="input-layer">
-                <label class="input-label" for="max_evalue">Max. e-value*</label>
-                {{ renderHelpButton('max_evalue') }}
-                <input type="number" required="required" min="0.01" max="100" value="0.01" step="0.01" id="max_evalue"
-                   name="max_evalue"/>
-            </div>
-            <div class="input-layer">
-                <label class="input-label" for="min_identity">Min. identity (%)*</label>
-                {{ renderHelpButton('min_identity') }}
-                <input type="number" required="required" value="30" min="0" max="100" step="1"
-                       id="min_identity" name="min_identity"/>
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="min_query_coverage">Min. query coverage (%)*</label>
-                {{ renderHelpButton('min_query_coverage') }}
-                <input type="number" required="required" min="0" max="100" step="1" value="50" id="min_query_coverage"
-                       name="min_query_coverage"/>
-            </div>
-    </fieldset>
+            {{ renderForm(all_forms.base.filtering) }}
+        </fieldset>
     </div>
 
+    <div id="clusteringSectionFullFieldset">
         <label class="fieldset-label" for="clusteringSection">Clustering</label>
         <fieldset id="clusteringSection">
-            <div class="input-layer">
-                <label class="input-label" for="max_intergenic_gap">Max. intergenic gap*</label>
-                {{ renderHelpButton('max_intergenic_gap') }}
-                <input type="number" id="max_intergenic_gap"
-                       name="max_intergenic_gap" value="20000" min="0" max="999999" step="1" required="required"/>
+            {{ renderForm(all_forms.base.clustering) }}
 
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="percentageQueryGenes">Percentage*</label>
-                {{ renderHelpButton('percentageQueryGenes') }}
-                <input type="number" name="percentageQueryGenes" id="percentageQueryGenes" value="50" min="0" max="100" step="1" required="required"/>
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="min_unique_query_hits">Min. unique query hits*</label>
-                {{ renderHelpButton('min_unique_query_hits') }}
-                <input class="short" type="number" id="min_unique_query_hits"
-                       name="min_unique_query_hits" value="3" step="1" min="0" max="150"
-                       required="required"/>
-            </div>
-
-            <div class="input-layer">
-                <label class="input-label" for="min_hits_in_clusters">Min. hits in clusters*</label>
-                {{ renderHelpButton('min_hits_in_clusters') }}
-                <input class="short" type="number" id="min_hits_in_clusters"
-                       name="min_hits_in_clusters" value="3" step="1" min="0" max="150" required="required"/>
-            </div>
-
-            <div class="input-layer">
-                <input type="hidden" id="requiredSequences" name="requiredSequences" value=""/>
-                <label class="select-label" for="requiredSequencesSelector">Required sequences</label>
-                {{ renderHelpButton('requiredSequencesSelector') }}
-                <select style="width: 60%;" id="requiredSequencesSelector" multiple="multiple">
-                    {% if headers %}
-                        {% for head in headers %}
-                        <option value="{{ head }}">{{ head }}</option>
-                        {% endfor %}
-                    {% endif %}
-
-                </select>
-            </div>
         </fieldset>
-        {{ result_table('search', "Sum") }}
-        {{ result_table('search', "Bin") }}
+    </div>
 
+    <div>
+        <label class="fieldset-label" for="searchSumTableSection">Summary table</label>
+        <fieldset id="searchSumTableSection">
+            {{ renderForm(all_forms.base.summary_table) }}
+        </fieldset>
+    </div>
+
+    <div>
+        <label class="fieldset-label" for="searchBinTableSection">Binary table</label>
+        <fieldset id="searchBinTableSection">
+            {{ renderForm(all_forms.base.binary_table) }}
+        </fieldset>
+    </div>
+
+    <div>
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
-            <label class="checkbox-label">
-                <input type="checkbox" id="sortClusters" name="sortClusters"/>Sort clusters
-            </label>
-            {{ renderHelpButton('sortClusters', True) }}
+            {{ renderForm(all_forms.base.additional_options) }}
         </fieldset>
+    </div>
 
+    <div>
         <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
         <fieldset id="intermediateGenesSection">
-
-            <label class="checkbox-label">
-                <input type="checkbox" onclick="toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')" name="intermediate_genes">Find intermediate genes
-            </label>
-            {{ renderHelpButton('intermediate_genes', True) }}
-            <div class="input-layer">
-                <label class="input-label" for="intermediate_max_distance">Max. distance</label>
-                {{ renderHelpButton('intermediate_max_distance') }}
-                <input type="number" min="0" max="250000" value="5000" disabled="disabled" id="intermediate_max_distance" name="intermediate_max_distance"/>
-            </div>
-            <div class="input-layer">
-                <label class="input-label" for="intermediate_max_clusters">Max. clusters</label>
-                {{ renderHelpButton('intermediate_max_clusters') }}
-                <input type="number" min="1" max="100" value="100" disabled="disabled" id="intermediate_max_clusters" name="intermediate_max_clusters"/>
-            </div>
+            {{ renderForm(all_forms.base.intermediate_genes) }}
         </fieldset>
-</div>
-    <div class="input-layer centered">
-        <input class="button" value="Submit" type="submit" id="submitSearchForm"/>
     </div>
+
+</div>
+
+<div class="input-layer centered">
+    {{ all_forms.base.general.submit.submit }}
+{#    <input class="button" value="Submit" type="submit" id="submitSearchForm"/>#}
+</div>
     </form>
 </div>
 {% endblock %}
