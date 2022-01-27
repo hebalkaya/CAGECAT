@@ -9,7 +9,7 @@ from flask import url_for, redirect, request
 import os
 
 # own project imports
-from cagecat.const import submit_url, extract_clusters_options, jobs_dir
+from cagecat.const import submit_url, extract_clusters_options, jobs_dir, hmm_database_organisms
 from cagecat.docs.help_texts import help_texts
 from cagecat.general_utils import show_template, get_server_info, fetch_job_from_db
 
@@ -85,14 +85,25 @@ def get_server_status():
 def update_hmm_databases():
     global available_hmm_databases
     # Doesn't have to return anything, only trigger
-    genera = []
+    all_databases = {}
 
-    for f in os.listdir(finished_hmm_db_folder):
-        genus = f.split('.')[0]
-        if genus not in genera:
-            genera.append(genus)
+    for organism_folder in os.listdir(finished_hmm_db_folder):
+        genera = set()
+        if organism_folder == 'logs':
+            continue
 
-    available_hmm_databases = genera
+        if organism_folder not in hmm_database_organisms:
+            return 'Incorrect organism folder in HMM databases'
+
+        organism_path = os.path.join(finished_hmm_db_folder, organism_folder)
+        for file in os.listdir(organism_path):
+            genus = file.split('.')[0]
+
+            genera.add(genus)
+
+        all_databases[organism_folder.capitalize()] = sorted(list(genera))
+
+    available_hmm_databases = all_databases
 
     return '1'  # indicating everything went well
 
