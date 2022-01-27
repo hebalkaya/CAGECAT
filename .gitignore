@@ -1,8 +1,8 @@
 .idea/*
 __pycache__/*
 
-/test_runs/
 cagecat/static/js/deprecated.js
 database.db
 
 /config_files/sensitive.py
+/config_files/config.ini
