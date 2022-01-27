@@ -9,9 +9,9 @@ from flask import url_for, redirect, request
 import os
 
 # own project imports
-from cagecat.const import SUBMIT_URL, EXTRACT_CLUSTERS_OPTIONS
-from cagecat.docs.help_texts import HELP_TEXTS
-from cagecat.general_utils import show_template, get_server_info, JOBS_DIR, fetch_job_from_db
+from cagecat.const import submit_url, extract_clusters_options, jobs_dir, hmm_database_organisms
+from cagecat.docs.help_texts import help_texts
+from cagecat.general_utils import show_template, get_server_info, fetch_job_from_db
 
 from cagecat import app
 from cagecat.classes import CAGECATJob
@@ -19,9 +19,10 @@ from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, C
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
-from config_files.config import CAGECAT_VERSION, CONF
+from config_files.config import cagecat_version
+from config_files.sensitive import finished_hmm_db_folder
 
-global PRESENT_DATABASES
+global available_hmm_databases
 # route definitions
 
 @app.route('/cagecat')
@@ -53,7 +54,7 @@ def help_page() -> str:
     Output:
         - HTML represented in string format
     """
-    return show_template("help.html", version=CAGECAT_VERSION, help_enabled=False)
+    return show_template("help.html", version=cagecat_version, help_enabled=False)
 
 
 @app.route("/docs/<input_type>")
@@ -67,12 +68,12 @@ def get_help_text(input_type):
         - help texts of input parameter. Keys: "title", "module", "text"
     """
 
-    if input_type not in HELP_TEXTS:
+    if input_type not in help_texts:
         return {'title': 'Missing help text', 'module': '', 'text':
             'This help text is missing. Please submit feedback and indicate'
             ' of which parameter the help text is missing.\n\nThanks in advance.'}
 
-    return HELP_TEXTS[input_type]
+    return help_texts[input_type]
 
 
 @app.route('/server-status')
@@ -82,16 +83,27 @@ def get_server_status():
 
 @app.route('/update-hmm-databases')
 def update_hmm_databases():
-    global PRESENT_DATABASES
+    global available_hmm_databases
     # Doesn't have to return anything, only trigger
-    genera = []
+    all_databases = {}
 
-    for f in os.listdir(CONF['finished_hmm_db_folder']):
-        genus = f.split('.')[0]
-        if genus not in genera:
-            genera.append(genus)
+    for organism_folder in os.listdir(finished_hmm_db_folder):
+        genera = set()
+        if organism_folder == 'logs':
+            continue
 
-    PRESENT_DATABASES = genera
+        if organism_folder not in hmm_database_organisms:
+            return 'Incorrect organism folder in HMM databases'
+
+        organism_path = os.path.join(finished_hmm_db_folder, organism_folder)
+        for file in os.listdir(organism_path):
+            genus = file.split('.')[0]
+
+            genera.add(genus)
+
+        all_databases[organism_folder.capitalize()] = sorted(list(genera))
+
+    available_hmm_databases = all_databases
 
     return '1'  # indicating everything went well
 
@@ -119,7 +131,7 @@ update_hmm_databases()
 # within routes.py to prevent circular import (as it was first in const.py).
 # Additionally, this variable does not have to be updated manually, and
 # is therefore left out of const.py
-@app.route(SUBMIT_URL, methods=["POST"])
+@app.route(submit_url, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
 
@@ -196,7 +208,7 @@ def submit_job() -> str:
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
-                                   file_path=os.path.join(JOBS_DIR,
+                                   file_path=os.path.join(jobs_dir,
                                                           request.form['prev_job_id'],
                                               "results",
                                               f"{request.form['prev_job_id']}_session.json")))
@@ -215,7 +227,7 @@ def submit_job() -> str:
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
-                                   file_path=os.path.join(JOBS_DIR,
+                                   file_path=os.path.join(jobs_dir,
                                                           prev_job_id,
                                               "results",
                                               f"{prev_job_id}_session.json")))
@@ -226,7 +238,7 @@ def submit_job() -> str:
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
-                                   file_path=os.path.join(JOBS_DIR,
+                                   file_path=os.path.join(jobs_dir,
                                                           request.form['prev_job_id'],
                                                           "results",
                                                           f"{request.form['prev_job_id']}_session.json")))
@@ -266,18 +278,18 @@ def submit_job() -> str:
             prev_job_id = request.form["clinkerEnteredJobId"]
 
             if fetch_job_from_db(prev_job_id).job_type == 'extract_clusters':
-                genome_files_path = os.path.join(JOBS_DIR, prev_job_id, "results")
+                genome_files_path = os.path.join(jobs_dir, prev_job_id, "results")
                 depending_on = None
             else:
                 new_jobs.append(CAGECATJob(job_id=job_id,
-                                           options=copy.deepcopy(EXTRACT_CLUSTERS_OPTIONS),
+                                           options=copy.deepcopy(extract_clusters_options),
                                            job_type='extract_clusters',
-                                           file_path=os.path.join(JOBS_DIR,
+                                           file_path=os.path.join(jobs_dir,
                                                                   prev_job_id,
                                                                   "results",
                                                                   f"{prev_job_id}_session.json")))
 
-                genome_files_path = os.path.join(JOBS_DIR, job_id, "results")
+                genome_files_path = os.path.join(jobs_dir, job_id, "results")
                 depending_on = new_jobs[-1].job_id
 
         elif request.files:  # started as individual tool
@@ -287,7 +299,7 @@ def submit_job() -> str:
             for f in request.files.getlist('fileUploadClinker'):
                 if f.filename:
                     save_file(f, job_id)
-                    genome_files_path = os.path.join(JOBS_DIR, job_id, "uploads")
+                    genome_files_path = os.path.join(jobs_dir, job_id, "uploads")
                 else: # indicates the example was posted
                     genome_files_path = os.path.join('cagecat', '../example_files')
             depending_on = None

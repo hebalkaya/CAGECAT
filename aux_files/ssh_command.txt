@@ -1,8 +1,0 @@
-ssh -A -t -l belt017 bioinformatics.nl -L 9999:localhost:9999 ssh -A -t -l belt017 thornton.bioinformatics.nl -L 9999:172.17.0.14:5001
-
-# flask sometimes chooses a different ip. The new command becomes:
-# ssh -A -t -l belt017 bioinformatics.nl -L 9999:localhost:9999 ssh -A -t -l belt017 thornton.bioinformatics.nl -L 9999:<flaskip_adress>:5001
-
-# connect using above command
-# browse to 127.0.0.1:9999 in your own browser to view web and use web service
-

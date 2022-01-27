@@ -10,7 +10,8 @@ import os.path
 from cagecat.workers.workers_helpers import *
 
 ### redis-queue functions
-from config_files.config import THRESHOLDS
+from config_files.config import thresholds
+from config_files.sensitive import pfam_db_folder
 
 
 def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
@@ -85,7 +86,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
             cmd.extend(options["hmmProfiles"].split())
 
             # PFAM database
-            cmd.extend(['--database_pfam', CONF['PFAM_DB_FOLDER']])
+            cmd.extend(['--database_pfam', pfam_db_folder])
 
             # database to search in was added in forge_database_args
 
@@ -166,7 +167,7 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
     _, log_path, results_path = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["sample_number"]),
-                              THRESHOLDS['maximum_gne_samples'],
+                              thresholds['maximum_gne_samples'],
                               (log_path, job_id, 'cblaster'),
                           'Too many samples'):
         return
@@ -246,7 +247,7 @@ def cblaster_extract_clusters(job_id: str,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["maxclusters"]),
-                              THRESHOLDS['maximum_clusters_to_extract'],
+                              thresholds['maximum_clusters_to_extract'],
                               (LOG_PATH, job_id, 'cblaster'),
                                   'Too many selected clusters'):
         return
@@ -285,7 +286,7 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(len(os.listdir(file_path)),
-                              THRESHOLDS['max_clusters_to_plot'],
+                              thresholds['max_clusters_to_plot'],
                               (LOG_PATH, job_id, 'clinker'),
                               'Too many selected clusters'):
         return
@@ -338,7 +339,7 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options['maxclusters']),
-                              THRESHOLDS['max_clusters_to_plot'],
+                              thresholds['max_clusters_to_plot'],
                               (LOG_PATH, job_id, 'cblaster'),
                               'Too many selected clusters'):
         return

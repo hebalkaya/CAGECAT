@@ -14,15 +14,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 from cagecat.general_utils import fetch_job_from_db, generate_paths, send_email
 from cagecat import db
-from config_files.config import CONF, CAGECAT_VERSION
+from config_files.config import cagecat_version, domain
 from cagecat.db_models import Job, Statistic
-from cagecat.const import GENBANK_SUFFIXES, FASTA_SUFFIXES
+from cagecat.const import genbank_extensions, fasta_extensions
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
+from config_files.sensitive import finished_hmm_db_folder
+
+
 def create_filtering_command(options: ImmutableMultiDict,
                              is_cluster_related: bool) -> t.List[str]:
     """Forges command for filtering based on submitted options
@@ -211,11 +214,11 @@ The job (type: {job.job_type}) you submitted on {job.post_time} has finished run
 
     contents += f'''
 
-You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{CONF['DOMAIN']}results/{job.id}\n
+You are able to perform additional downstream analysis by navigating to the results page of your job by going to:\n{domain}results/{job.id}\n
 Also, downloading your results is available on this web page.''' \
         if job.status == 'finished' else f'''
 
-To investigate why your job has failed, please visit {CONF['DOMAIN']}results/{job.id}\n .If the failure reason is unknown, please submit feedback to help us improve CAGECAT.\n'''
+To investigate why your job has failed, please visit {domain}results/{job.id}\n .If the failure reason is unknown, please submit feedback to help us improve CAGECAT.\n'''
 
     send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
                contents,job.email)
@@ -232,7 +235,7 @@ def log_cagecat_version(job_id: str) -> None:
 
     """
     with open(os.path.join(generate_paths(job_id)[1], 'CAGECAT_version.txt'), 'w') as outf:
-        outf.write(f'CAGECAT_version={CAGECAT_VERSION}')
+        outf.write(f'CAGECAT_version={cagecat_version}')
 
 
 def post_job_formalities(job_id: str, return_code: int) -> None:
@@ -278,11 +281,11 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
         headers = data
     elif input_type == "file":
         ext = '.' + data.split('.')[-1]
-        if ext in FASTA_SUFFIXES:
+        if ext in fasta_extensions:
             with open(data) as inf:
                 headers = [line.strip()[1:].split()[0] for line in
                            inf.readlines() if line.startswith(">")]
-        elif ext in GENBANK_SUFFIXES:
+        elif ext in genbank_extensions:
             with open(data) as inf:
                 headers = [line.strip().split('"')[1] for line in inf.readlines() if '/protein_id=' in line]
         else:
@@ -309,7 +312,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
         organism = splitted[0].lower()
         genus_fasta = f'{splitted[1]}.fasta'
 
-        base.append(os.path.join(CONF['finished_hmm_db_folder'], organism, genus_fasta))
+        base.append(os.path.join(finished_hmm_db_folder, organism, genus_fasta))
 
     if options['mode'] in ('remote', 'combi_remote'):
         if 'database_type' in options:

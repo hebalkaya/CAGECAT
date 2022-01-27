@@ -14,8 +14,8 @@ from rq.registry import StartedJobRegistry, FinishedJobRegistry, \
 import os
 
 ### main code
-DB_PATH = "cagecat/status.db"
-REGISTRIES = [StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry]
+database_path = "cagecat/status.db"
+registries = [StartedJobRegistry, FinishedJobRegistry, FailedJobRegistry, DeferredJobRegistry, ScheduledJobRegistry]
 
 print("\n" + "========== WARNING ==========")
 print("Continuing will empty the current queue, delete the database, and reset all registries.")
@@ -30,14 +30,14 @@ while result not in ("y", "n", "yes", "no"):
         print("The rq Queue has been emptied")
 
         # remove database
-        if not os.path.exists(DB_PATH):
-            print(f"No database found at: {DB_PATH}")
+        if not os.path.exists(database_path):
+            print(f"No database found at: {database_path}")
         else:
             os.remove("cagecat/status.db")
             print("Database removed succesfully")
 
         # clean registries
-        for registry in REGISTRIES:
+        for registry in registries:
             reg = registry(queue=q)
             for job_id in reg.get_job_ids():
                 print(f"Deleted job {job_id} from the {reg}")

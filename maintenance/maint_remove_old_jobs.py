@@ -2,16 +2,19 @@
 
 Author: Matthias van den Belt
 """
-from cagecat import db
-from cagecat.general_utils import JOBS_DIR, fetch_job_from_db
-from config_files.config import CONF, PERSISTENT_JOBS
+
 import os
 import datetime
 import shutil
-
 import typing as t
 
-# Function definitions
+from config_files.sensitive import maintenance_logs, server_prefix
+from cagecat import db
+from cagecat.general_utils import fetch_job_from_db
+from cagecat.const import jobs_dir
+from config_files.config import persistent_jobs
+
+
 def get_folders_to_delete(period_to_keep: int = 31) -> t.List[t.Tuple[str, str]]:
     """Returns the folders which are too old to keep (and should be deleted)
 
@@ -24,7 +27,7 @@ def get_folders_to_delete(period_to_keep: int = 31) -> t.List[t.Tuple[str, str]]
 
     to_delete = []
     current = datetime.datetime.now()
-    j_dir = os.path.join(CONF['SERVER_PREFIX'], JOBS_DIR)
+    j_dir = os.path.join(server_prefix, jobs_dir)
 
     for fn in os.listdir(j_dir):
         fp = os.path.join(j_dir, fn)
@@ -42,12 +45,12 @@ def delete_old_jobs():
         - None, entries are removed from the database and job folders which
             have expired the storage data are removed
     """
-    with open(os.path.join(f'{CONF["MAINTENANCE_LOGS"]}',
+    with open(os.path.join(f'{maintenance_logs}',
                            f'{datetime.datetime.now().date()}_removal.txt'),
               'w') as outf:
         for directory, job_id in get_folders_to_delete():
 
-            if job_id in PERSISTENT_JOBS:
+            if job_id in persistent_jobs:
                 print(f'Skipped: {job_id} (in persistent jobs)')
                 continue
             try:

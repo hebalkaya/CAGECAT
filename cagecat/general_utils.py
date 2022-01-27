@@ -9,9 +9,10 @@ from flask import render_template
 from rq.registry import StartedJobRegistry
 
 from cagecat import q, r
+from cagecat.const import jobs_dir
 from cagecat.db_models import Statistic, Job
-from config_files.config import EMAIL
-from config_files.sensitive import account, pwd
+from config_files.config import email_footer_msg
+from config_files.sensitive import account, pwd, smtp_server, sender_email, port
 
 
 def send_email(subject: str, message: str, receiving_email: str) -> None:
@@ -25,7 +26,7 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
     Output:
         - None, sent emails
     """
-    with smtplib.SMTP(EMAIL['smtp_server'], port=EMAIL['port']) as server:
+    with smtplib.SMTP(smtp_server, port=port) as server:
         msg = EmailMessage()
         server.starttls()
         server.ehlo()
@@ -33,9 +34,9 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
         server.login(account, pwd)
 
         msg['Subject'] = subject
-        msg['From'] = EMAIL['sender_email']
+        msg['From'] = sender_email
         msg['To'] = receiving_email
-        msg.set_content(f'{message}\n{EMAIL["footer_msg"]}')
+        msg.set_content(f'{message}\n{email_footer_msg}')
         server.send_message(msg)
 
 
@@ -109,7 +110,7 @@ def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
         - [1]: path for the logging directory
         - [2]: path for the results directory
     """
-    base = os.path.join(JOBS_DIR, job_id)
+    base = os.path.join(jobs_dir, job_id)
     return base, os.path.join(base, "logs"), os.path.join(base, "results")
 
 
@@ -124,10 +125,3 @@ def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
         - None if no job with the given ID was found in the database
     """
     return Job.query.filter_by(id=job_id).first()
-
-CLUST_NUMBER_PATTERN_W_SCORE = r"\(Cluster (\d+), score: \d+\.\d+\)"
-CLUST_NUMBER_PATTERN_WITHOUT_SCORE = r"\(Cluster (\d+)"
-CLUST_NUMBER_PATTERN_W_CLINKER_SCORE = r"\(Cluster (\d+), \d+\.\d+ score\)"
-JOBS_DIR = os.path.join("cagecat", "jobs")
-FOLDERS_TO_CREATE = ["uploads", "results", "logs"]
-PATTERN = r"[ {]'([a-zA-Z]+)': '(\w*?)'"

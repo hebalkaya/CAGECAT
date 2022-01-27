@@ -10,10 +10,11 @@ from flask import Blueprint, request
 from cagecat.tools.tools_helpers import read_headers, parse_selected_cluster_numbers
 from cagecat.forms.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm
-from cagecat.routes.routes import PRESENT_DATABASES
-from cagecat.general_utils import show_template, CLUST_NUMBER_PATTERN_W_SCORE, fetch_job_from_db, CLUST_NUMBER_PATTERN_W_CLINKER_SCORE
-from cagecat.const import TOOLS_EXPLANATIONS, CLINKER_MODULES, GENBANK_SUFFIXES, FASTA_SUFFIXES
-from config_files.config import THRESHOLDS
+from cagecat.routes.routes import available_hmm_databases
+from cagecat.general_utils import show_template, fetch_job_from_db
+from cagecat.const import tool_explanations, clinker_modules, genbank_extensions, fasta_extensions, clust_number_with_score_pattern, \
+    clust_number_with_clinker_score_pattern
+from config_files.config import thresholds
 
 tools = Blueprint('tools', __name__, template_folder="templates")
 
@@ -35,7 +36,7 @@ def tools_explanation() -> str:
     Output:
         - HTML represented in string format
     """
-    return show_template("tools_explanation.html", help_enabled=False, helps=TOOLS_EXPLANATIONS)
+    return show_template("tools_explanation.html", help_enabled=False, helps=tool_explanations)
 
 
 @tools.route("/search/rerun/<prev_run_id>")
@@ -60,13 +61,13 @@ def cblaster_search(prev_run_id: str = None) -> str:
         module_to_show = None
 
     return show_template("cblaster_search.html",
-                                               all_forms=CblasterSearchForm(),
-                                               prev_run_id=prev_run_id,
-                                               module_to_show=module_to_show,
-                                               headers=headers,
-                                               organism_databases=PRESENT_DATABASES,
-                                               query_file_extensions=','.join(FASTA_SUFFIXES + GENBANK_SUFFIXES),
-                                               show_examples='cblaster_search')
+                         all_forms=CblasterSearchForm(),
+                         prev_run_id=prev_run_id,
+                         module_to_show=module_to_show,
+                         headers=headers,
+                         organism_databases=available_hmm_databases,
+                         query_file_extensions=','.join(fasta_extensions + genbank_extensions),
+                         show_examples='cblaster_search')
 
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
@@ -76,7 +77,7 @@ def clinker_query() -> str:
         - HTML represented in string format
     """
     clusters = parse_selected_cluster_numbers(
-        request.form["selectedClusters"], CLUST_NUMBER_PATTERN_W_SCORE)
+        request.form["selectedClusters"], clust_number_with_score_pattern)
 
     return show_template("cblaster_plot_clusters.html",
                          all_forms=CblasterVisualisationForm(),
@@ -84,7 +85,7 @@ def clinker_query() -> str:
                          cluster_headers=
                          request.form["selectedClusters"].split('\r\n'),
                          selected_clusters=clusters,
-                         max_clusters_to_plot=THRESHOLDS['max_clusters_to_plot'])
+                         max_clusters_to_plot=thresholds['max_clusters_to_plot'])
 
 
 @tools.route("/extract-sequences", methods=["GET", "POST"])
@@ -120,10 +121,10 @@ def extract_clusters() -> str:
     prev_job_id = request.form["job_id"]
     prev_job = fetch_job_from_db(prev_job_id)
 
-    pattern = CLUST_NUMBER_PATTERN_W_SCORE if \
+    pattern = clust_number_with_score_pattern if \
         fetch_job_from_db(prev_job_id).job_type not in \
-        CLINKER_MODULES else \
-        CLUST_NUMBER_PATTERN_W_CLINKER_SCORE
+        clinker_modules else \
+        clust_number_with_clinker_score_pattern
 
     cluster_numbers = parse_selected_cluster_numbers(selected_clusters, pattern)
 
@@ -134,7 +135,7 @@ def extract_clusters() -> str:
                          cluster_numbers=cluster_numbers,
                          prev_job_id=prev_job_id, prev_job_type=prev_job.job_type,
                          main_search_id=prev_job.main_search_job,
-                         max_clusters_to_extract=THRESHOLDS['maximum_clusters_to_extract'])
+                         max_clusters_to_extract=thresholds['maximum_clusters_to_extract'])
 
 
 @tools.route("/corason", methods=["POST"])
@@ -155,11 +156,11 @@ def corason() -> str:
     if len(selected_clusters) == 1:
         clust_numbers = parse_selected_cluster_numbers(
             request.form["unselectedClusters"],
-            CLUST_NUMBER_PATTERN_W_SCORE, format_nicely=False).split(',')
+            clust_number_with_score_pattern, format_nicely=False).split(',')
     else:
         clust_numbers = parse_selected_cluster_numbers(
             request.form["selectedClusters"],
-            CLUST_NUMBER_PATTERN_W_SCORE, format_nicely=False).split(',')
+            clust_number_with_score_pattern, format_nicely=False).split(',')
 
     return show_template("corason.html",
                          query=query,
@@ -173,7 +174,7 @@ def corason() -> str:
 def gene_neighbourhood_estimation() -> str:
     return show_template('cblaster_gene_neighbourhood_estimation.html',
                          all_forms=CblasterGNEForm(),
-                         max_samples=THRESHOLDS['maximum_gne_samples'],
+                         max_samples=thresholds['maximum_gne_samples'],
                          prev_job_id=request.form['job_id'])
 
 
@@ -188,7 +189,7 @@ def clinker() -> str:
 
     return show_template('clinker.html',
                          all_forms=form,
-                         query_file_extensions=','.join(GENBANK_SUFFIXES),
+                         query_file_extensions=','.join(genbank_extensions),
                          show_examples='clinker',
                          prev_job_id=prev_job_id)
 

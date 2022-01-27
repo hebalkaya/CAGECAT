@@ -4,7 +4,7 @@ import typing as t
 
 from more_itertools import consecutive_groups
 
-from cagecat.general_utils import JOBS_DIR
+from cagecat.const import jobs_dir
 
 
 def read_headers(job_id: str) -> t.List[str]:
@@ -16,7 +16,7 @@ def read_headers(job_id: str) -> t.List[str]:
     Output:
         - headers: the query headers of this job ID
     """
-    with open(os.path.join(JOBS_DIR, job_id, "logs", "query_headers.csv")) as outf:
+    with open(os.path.join(jobs_dir, job_id, "logs", "query_headers.csv")) as outf:
         headers = outf.read().strip().split(",")
 
     return headers

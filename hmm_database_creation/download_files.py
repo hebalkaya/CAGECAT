@@ -6,6 +6,8 @@ import time
 import hashlib
 import sys
 
+from config_files.sensitive import hmm_db_genome_downloads
+
 sys.path.append('..')
 from config_files.config import *
 
@@ -43,7 +45,7 @@ def parse_paths(fp: str, ext='.gbff.gz') -> dict:
         # print(splitted)
         # print('!!')
 
-        ftp_path, genus, species = splitted[0].replace(NCBI_FTP_BASE_URL, ''), splitted[1], ' '.join(splitted[2:])
+        ftp_path, genus, species = splitted[0].replace(NCBI_ftp_base_url, ''), splitted[1], ' '.join(splitted[2:])
         key = ' '.join([genus, species])
 
         assembly_name = ftp_path.split('/')[-1]
@@ -97,7 +99,7 @@ def validate_download(gb_path):
     """
     print('         -> validation.. ', end='\r')
 
-    with open(os.path.join(REFSEQ_DIR, 'md5checksums.txt')) as inf:
+    with open(os.path.join(hmm_db_genome_downloads, 'md5checksums.txt')) as inf:
         for line in inf.readlines():
             splitted = line.strip().split()
             if splitted[-1].endswith('genomic.gbff.gz'):
@@ -148,7 +150,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
         else:
             # print(paths)
             for i, fp in enumerate(paths, start=1):
-                ftp = ftplib.FTP(NCBI_FTP_BASE_URL)
+                ftp = ftplib.FTP(NCBI_ftp_base_url)
 
                 print(f'         -> downloading file {i} of 2')
                 file_name = fp.split('/')[-1]
@@ -156,13 +158,13 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
                 time.sleep(0.34)
                 # print('accessing URL:', fp)
 
-                with open(os.path.join(REFSEQ_DIR, file_name), 'wb') as outf: # now with .gz as we download it as compressed
+                with open(os.path.join(hmm_db_genome_downloads, file_name), 'wb') as outf: # now with .gz as we download it as compressed
                     ftp.retrbinary(f'RETR {fp}', outf.write, blocksize=blocksize)
                 time.sleep(0.34)
 
-            genome_file_path = os.path.join(REFSEQ_DIR, genome_file_name)
+            genome_file_path = os.path.join(hmm_db_genome_downloads, genome_file_name)
             if validate_download(genome_file_path):
-                os.rename(genome_file_path[:-3], os.path.join(REFSEQ_DIR, organism, genus,
+                os.rename(genome_file_path[:-3], os.path.join(hmm_db_genome_downloads, organism, genus,
                                                          genome_file_path.split('/')[-1][:-3]))
                 # [:-3] is to remove .gz
                 print(f'         -> moved to {genus} folder')
@@ -170,16 +172,16 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
 
 if __name__ == '__main__':
     if argv[1] == 'everything_has_been_downloaded':
-        subprocess.run(['touch', os.path.join(REFSEQ_DIR, 'databases_to_create', 'stop_creating_databases')])
+        subprocess.run(['touch', os.path.join(hmm_db_genome_downloads, 'databases_to_create', 'stop_creating_databases')])
         exit(0)
 
     genus = argv[1].split('_')[0]
     organism = argv[2]
 
     if organism == 'prokaryota':
-        threshold = THRESHOLDS['prokaryotes_min_number_of_genomes']
+        threshold = thresholds['prokaryotes_min_number_of_genomes']
     elif organism == 'fungi':
-        threshold = THRESHOLDS['fungi_min_number_of_genomes']
+        threshold = thresholds['fungi_min_number_of_genomes']
     else:
         raise ValueError(f'Invalid organism entered: {organism}')
 
@@ -194,8 +196,8 @@ if __name__ == '__main__':
                 # species,genome file ftp path, md5 checksum ftp path
         exit(0)
 
-    output_dir = create_dir(REFSEQ_DIR, organism, genus)
+    output_dir = create_dir(hmm_db_genome_downloads, organism, genus)
     download_files(genus, paths, output_dir)
 
-    create_dir(REFSEQ_DIR, organism, 'databases_to_create')
-    subprocess.run(['touch', os.path.join(REFSEQ_DIR, organism, 'databases_to_create', genus)])
+    create_dir(hmm_db_genome_downloads, organism, 'databases_to_create')
+    subprocess.run(['touch', os.path.join(hmm_db_genome_downloads, organism, 'databases_to_create', genus)])

@@ -4,7 +4,7 @@ from wtforms import Form, validators as val
 
 # name and id are set to the variable name
 # description equals the corresponding help text word
-from cagecat.const import GENBANK_SUFFIXES, FASTA_SUFFIXES
+from cagecat.const import genbank_extensions, fasta_extensions
 from cagecat.forms.valid_input_cblaster import is_safe_string_value
 
 cblaster_search_search_modes = [
@@ -91,8 +91,8 @@ class InputRemoteTypeForm(Form):
     pass
 
 class InputSearchRemoteInputTypeFile(Form):
-    _all_suffixes = list(GENBANK_SUFFIXES)
-    _all_suffixes.extend(FASTA_SUFFIXES)
+    _all_suffixes = list(genbank_extensions)
+    _all_suffixes.extend(fasta_extensions)
 
     genomeFiles = FileField(
         label=u'Query file*',
@@ -560,7 +560,7 @@ class ClinkerInputForm(Form):
         validators=[val.optional()],  # TODO: safe filename
         description='fileUploadClinker',
         render_kw={
-            'accept': ','.join(GENBANK_SUFFIXES),
+            'accept': ','.join(genbank_extensions),
             'onchange': 'getGenBankFileNames()',
             'required': ''
         }
