@@ -85,8 +85,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
             # PFAM database
             cmd.extend(['--database_pfam', config.CONF['PFAM_DB_FOLDER']])
 
-            # database to search in
-            # cmd.extend(['--database', os.path.join(config.DATABASE_FOLDER, 'Streptomyces.fasta')])
+            # database to search in was added in forge_database_args
 
         cmd.extend(["--session_file", session_path])
 

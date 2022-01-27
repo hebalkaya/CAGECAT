@@ -29,6 +29,20 @@ def parse_paths(fp: str, ext='.gbff.gz') -> dict:
         # line looks like this:
         # ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/495/915/GCF_000495915.1_PseChl   Pseudomonas chloritidismutans
         splitted = line.strip().split()
+        if line.strip().count('ftp') == 4:  # indicates there is a GenkBank and a RefSeq entry. In that case, remove the first FTP URL which is the GenBank one
+            # print('4 ftps')
+            # print(line)
+            # print(splitted)
+            splitted = splitted[1:]
+            # print(splitted)
+            # print('---')
+
+        # print('!')
+        # print(line.strip().count('ftp'), 'ftp\'s encountered')
+        # print(line)
+        # print(splitted)
+        # print('!!')
+
         ftp_path, genus, species = splitted[0].replace(NCBI_FTP_BASE_URL, ''), splitted[1], ' '.join(splitted[2:])
         key = ' '.join([genus, species])
 
@@ -132,6 +146,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
         if genome_file_name[:-3] in present_files:
             print(f'         -> already present: {genome_file_name[:-3]}')
         else:
+            # print(paths)
             for i, fp in enumerate(paths, start=1):
                 ftp = ftplib.FTP(NCBI_FTP_BASE_URL)
 
@@ -139,6 +154,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
                 file_name = fp.split('/')[-1]
                 ftp.login()
                 time.sleep(0.34)
+                # print('accessing URL:', fp)
 
                 with open(os.path.join(REFSEQ_DIR, file_name), 'wb') as outf: # now with .gz as we download it as compressed
                     ftp.retrbinary(f'RETR {fp}', outf.write, blocksize=blocksize)
@@ -146,7 +162,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
 
             genome_file_path = os.path.join(REFSEQ_DIR, genome_file_name)
             if validate_download(genome_file_path):
-                os.rename(genome_file_path[:-3], os.path.join(REFSEQ_DIR, genus,
+                os.rename(genome_file_path[:-3], os.path.join(REFSEQ_DIR, organism, genus,
                                                          genome_file_path.split('/')[-1][:-3]))
                 # [:-3] is to remove .gz
                 print(f'         -> moved to {genus} folder')
@@ -158,10 +174,18 @@ if __name__ == '__main__':
         exit(0)
 
     genus = argv[1].split('_')[0]
+    organism = argv[2]
+
+    if organism == 'prokaryota':
+        threshold = THRESHOLDS['prokaryotes_min_number_of_genomes']
+    elif organism == 'fungi':
+        threshold = THRESHOLDS['fungi_min_number_of_genomes']
+    else:
+        raise ValueError(f'Invalid organism entered: {organism}')
 
     paths = parse_paths(argv[1])
-    if len(paths) < THRESHOLDS['representative_genomes_number']:
-        print(f'  skipping {genus} ({len(paths)} < {THRESHOLDS["representative_genomes_number"]})')
+    if len(paths) < threshold:
+        print(f'  skipping {genus} ({len(paths)} < {threshold})')
 
         mode = 'a' if os.path.exists('too_few_species.txt') else 'w'
         with open('too_few_species.txt', mode) as outf:  # gets overwritten every time
@@ -170,8 +194,8 @@ if __name__ == '__main__':
                 # species,genome file ftp path, md5 checksum ftp path
         exit(0)
 
-    output_dir = create_dir(REFSEQ_DIR, genus)
+    output_dir = create_dir(REFSEQ_DIR, organism, genus)
     download_files(genus, paths, output_dir)
 
-    create_dir(REFSEQ_DIR, 'databases_to_create')
-    subprocess.run(['touch', os.path.join(REFSEQ_DIR, 'databases_to_create', genus)])
+    create_dir(REFSEQ_DIR, organism, 'databases_to_create')
+    subprocess.run(['touch', os.path.join(REFSEQ_DIR, organism, 'databases_to_create', genus)])

@@ -92,8 +92,12 @@ addAccordionListeners();
                     <label class="select-label" for="selectedGenus">Genus*</label>
                     <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">
 
-                        {% for g in genera %}
-                            <option value="{{ g }}">{{ g }}</option>
+                        {% for organism in organism_databases %}
+                            <optgroup label="{{ organism }}">
+                            {% for genus in organism_databases.get(organism) %}
+                                <option value="{{ organism }}_{{ genus }}">{{ genus }}</option>
+                            {% endfor %}
+                            </optgroup>
                         {% endfor %}
                     </select>
                     {{ renderHelpButton('selectedGenus') }}

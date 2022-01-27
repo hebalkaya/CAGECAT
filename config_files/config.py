@@ -31,7 +31,8 @@ THRESHOLDS = {
     'maximum_clusters_to_extract': 150,
     'maximum_gne_samples': 300,
     'max_clusters_to_plot': 75,
-    "representative_genomes_number": 50
+    "prokaryotes_min_number_of_genomes": 50,
+    'fungi_min_number_of_genomes': 4
 }
 
 EMAIL = {'smtp_server': 'smtp.wur.nl',
