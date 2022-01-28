@@ -41,7 +41,7 @@ class CAGECATJob:
             if job_type is None else function_dict[job_type]
 
         self.title = options['job_title'] if 'job_title' in options else ''
-        self.email = options['email'] if 'email' in options else ''
+        self.email = options['mail_address'] if 'mail_address' in options else ''
         self.job_type = job_type
 
         if self.job_type is None:

@@ -15,7 +15,7 @@ persistent_jobs = ('W885A828D304Y06',  # used in report: cblaster search
 
 # changeable
 
-domain = 'https://www.cagecat.bioinformatics.nl/'
+domain = 'https://cagecat.bioinformatics.nl/'
 NCBI_ftp_base_url = 'ftp.ncbi.nlm.nih.gov'
 
 

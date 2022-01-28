@@ -218,7 +218,7 @@ You are able to perform additional downstream analysis by navigating to the resu
 Also, downloading your results is available on this web page.''' \
         if job.status == 'finished' else f'''
 
-To investigate why your job has failed, please visit {domain}results/{job.id}\n .If the failure reason is unknown, please submit feedback to help us improve CAGECAT.\n'''
+To investigate why your job has failed, please visit {domain}results/{job.id}.\nIf the failure reason is unknown, please submit feedback to help us improve CAGECAT.\n'''
 
     send_email(f'Your job: {job.title}' if job.title else f'Your job with ID {job.id} has {job.status}',
                contents,job.email)
@@ -256,11 +256,12 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     zip_results(job_id)
 
     j = fetch_job_from_db(job_id)
-    if j.email:
-        send_notification_email(j)
 
     add_time_to_db(job_id, "finish", db)
     mutate_status(job_id, "finish", db, return_code=return_code)
+    if j.email:
+        send_notification_email(j)
+
     remove_email_from_db(j)
     db.session.commit()
 
