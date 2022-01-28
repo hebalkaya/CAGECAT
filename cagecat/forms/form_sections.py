@@ -1,3 +1,8 @@
+"""Stores sections of larger forms
+
+Author: Matthias van den Belt
+"""
+
 from wtforms import StringField, EmailField, HiddenField, SelectField, IntegerField, DecimalField, SelectMultipleField, BooleanField, SubmitField, \
     MultipleFileField, RadioField, FileField, TextAreaField
 from wtforms import Form, validators as val

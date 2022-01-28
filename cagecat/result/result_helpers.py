@@ -1,3 +1,8 @@
+"""Helper functions involved in results
+
+Author: Matthias van den Belt
+"""
+
 import os
 import typing as t
 

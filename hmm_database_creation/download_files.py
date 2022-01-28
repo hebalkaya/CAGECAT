@@ -1,3 +1,7 @@
+"""Downloads genome files from NCBI server
+
+Author: Matthias van den Belt
+"""
 import subprocess
 from sys import argv
 import os

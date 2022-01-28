@@ -1,3 +1,7 @@
+"""Module to calculate average job times
+
+Author: Matthias van den Belt
+"""
 import datetime
 
 
