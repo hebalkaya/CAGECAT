@@ -76,7 +76,7 @@ def get_help_text(input_type):
     return help_texts[input_type]
 
 
-@app.route('/server-status')
+@app.route('/status')
 def get_server_status():
     return get_server_info()
 

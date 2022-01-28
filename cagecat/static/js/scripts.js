@@ -871,12 +871,16 @@ function addAccordionListeners() {
 
 
 setInterval(function(){
-    $.ajax('/server-status', {
+    $.ajax('/status', {
         dataType: 'json',
         success: function(data) {
             $('#status_server')[0].innerText = data['server_status'];
             $('#status_running')[0].innerText = data['running'];
             $('#status_queued')[0].innerText = data['queued'];
             $('#status_completed')[0].innerText = data['completed'];
-        }})
+        },
+        error: function (data){
+            console.log('Unable to fetch server status')
+        }
+    })
 }, 15000)
