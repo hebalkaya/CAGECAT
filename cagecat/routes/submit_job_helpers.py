@@ -1,3 +1,7 @@
+"""Helper functions for job submission
+
+Author: Matthias van den Belt
+"""
 import os
 import random
 import typing as t

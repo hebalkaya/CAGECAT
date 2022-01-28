@@ -1,7 +1,6 @@
 """Module to store constants such as help texts
 
 Author: Matthias van den Belt
-
 """
 import os
 

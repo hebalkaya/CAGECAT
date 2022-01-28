@@ -1,3 +1,7 @@
+"""Helper functions for tool pages
+
+Author: Matthias van den Belt
+"""
 import os
 import re
 import typing as t

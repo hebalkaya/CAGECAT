@@ -1,3 +1,8 @@
+"""Input validation functionality
+
+Author: Matthias van den Belt
+"""
+
 import decimal
 
 from wtforms import ValidationError

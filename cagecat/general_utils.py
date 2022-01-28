@@ -1,3 +1,7 @@
+"""Module storing general utility functions
+
+Author: Matthias van den Belt
+"""
 import os
 import smtplib
 import typing as t

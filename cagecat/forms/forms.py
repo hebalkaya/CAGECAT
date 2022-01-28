@@ -1,3 +1,8 @@
+"""Stores complete forms, created using form sections
+
+Author: Matthias van den Belt
+"""
+
 from cagecat.forms.form_sections import *
 
 
