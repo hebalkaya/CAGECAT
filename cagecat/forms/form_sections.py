@@ -147,7 +147,7 @@ class InputHMMForm(Form):
             'required': '',
             'rows': 6,
             'cols': 25,
-            'placeholder': 'HMM profile identifiers'
+            'placeholder': 'HMM profile identifiers\nFor example:\n\nPF00452'
         }
     )
 

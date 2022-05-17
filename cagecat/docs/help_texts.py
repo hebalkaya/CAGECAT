@@ -91,7 +91,7 @@ cblaster_extract_clusters = {'prefix': {'title': 'File prefix', 'module': '', 't
 #                  'rescale': {'title': 'Rescale', 'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
 
 cblaster_search_hmm_mode  = {'selectedGenus': {'title': 'Selected genus', 'module': '', 'text': 'Genus-specific database to search in. The database is constructed of all representative or reference genomes of the selected genus.\n\nRequired: yes'},
-              'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'Valid HMM profile identifiers from Pfam (https://pfam.xfam.org/) to use when searching the selected genus database.\n\nRequired: yes'}}
+              'hmmProfiles': {'title': 'HMM profiles', 'module': '', 'text': 'Valid HMM profile identifiers from Pfam (https://pfam.xfam.org/, e.g. "PF00452") to use when searching the selected genus database.\n\nRequired: yes'}}
 
 all_helps = [('multiple', job_details),
              ('multiple', general), ('search', cblaster_search),
