@@ -11,7 +11,7 @@ from cagecat.db_models import Job as dbJob
 from cagecat.general_utils import fetch_job_from_db
 
 
-def get_failure_reason(job_id: str, program: str) -> str:
+def get_failure_reason(job_id: str) -> str:
     """Gets the user-friendly failure reason when a job has failed
 
     Input:
@@ -22,8 +22,7 @@ def get_failure_reason(job_id: str, program: str) -> str:
         - user-friendly failure reason
     """
     try:
-        with open(os.path.join(jobs_dir, job_id,
-                               "logs", f"{job_id}_{program}.log")) as inf:
+        with open(os.path.join(jobs_dir, job_id, "logs", f"{job_id}.log")) as inf:
             logs = inf.readlines()
 
         for l in logs:
@@ -31,7 +30,7 @@ def get_failure_reason(job_id: str, program: str) -> str:
                 if fail in l:
                     return failure_reasons[fail]
     except FileNotFoundError:
-        return 'Command construction failed (no log file).'
+        return 'Your analysis could not be started due to a version problem at CAGECAT. Please submit feedback as this can be easily fixed.'
 
     return 'Unknown failure reason.'
 
