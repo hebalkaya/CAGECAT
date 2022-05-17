@@ -21,15 +21,44 @@ clust_number_with_clinker_score_pattern = r"\(Cluster (\d+), \d+\.\d+ score\)"
 jobs_dir = os.path.join("cagecat", "jobs")
 folders_to_create = ["uploads", "results", "logs"]
 
+connection_error_user_friendly_message = 'A connection error between CAGECAT and NCBI occurred. The NCBI servers are probably experiencing difficulties processing our requests. Please try again at a later moment. If this problem persists, please let us know by providing feedback.'
+
 failure_reasons = {
-    'ERROR - No valid profiles could be selected':  # module search, hmm/hmm+remote mode, incorrect HMM profiles
+    'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Ot
+        '',
+    # TODO: remove below lines
+        # no hit on purpose (DNA sequence in protein FASTA): A154X981M346X52
+        # DNA GBK: O122U396B362E36
+        # DNA FASTA: C580W901G737O82, X593E804T360Z20, L825B563I717X77.
+        # PROTEIN FASTA: I341L679Q524N99
+    'ERROR - No valid profiles could be selected':  # module search, hmm/hmm+remote mode, incorrect HMM profiles;
+    # Results in the following exception: TypeError: object of type 'NoneType' has no len()
         'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
     'ValueError: Search completed, but found no hits':  # module search, no hits found
         'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.',
     'Too many selected clusters':  # clinker, clinker_query, extract_clusters
         'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.',
     'Too many samples':  # gne module
-        'You set the value for the number of samples parameter too high. Change it to the maximum value and try again.'
+        'You set the value for the number of samples parameter too high. Change it to the maximum value and try again.',
+
+    # Connection errors. Intentionally broad exceptions as should handle all exceptions from the requests and urllib packages
+    'requests.exceptions':
+        connection_error_user_friendly_message,
+    'urllib.error':
+        connection_error_user_friendly_message,
+    'Failed to fetch sequences':
+        connection_error_user_friendly_message
+
+
+
+    # 'Network error while retrieving genomic context':
+    # ERROR - Failed to fetch sequences
+    # urllib.error.HTTPError: HTTP Error 400: Bad Request
+    # requests.exceptions.ConnectionError
+    # requests.exceptions.ConnectionError: HTTPSConnectionPool(host='blast.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /Blast.cgi?CMD=PUT&DATABASE=nr&PROGRAM=blastp&FILTER=F&EXPECT=0.01&GAPCOSTS=11+1&MATRIX=BLOSUM62&HITLIST_SIZE=500&ALIGNMENTS=500&DESCRIPTIONS=500&WORD_SIZE=6&COMPOSITION_BASED_STATISTICS=2&THRESHOLD=11 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f724f9c97f0>: Failed to establish a new connection: [Errno 110] Connection timed out
+    # below is different as it could also be that there is an invalid scaffold accession
+    # requests.exceptions.HTTPError
+    #     None # TODO: fix
 }
 
 module_to_tool = {
