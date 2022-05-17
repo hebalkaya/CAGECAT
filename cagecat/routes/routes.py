@@ -83,6 +83,12 @@ def get_server_status():
 
 @app.route('/update-hmm-databases')
 def update_hmm_databases():
+    """Updates the available HMM databases to front-end
+
+    If HMM databases are not shown on front-end after maintenance, it might
+    be that the storage location of HMM databases was not yet fully online.
+    Restarting the container will fix this issue.
+    """
     global available_hmm_databases
     # Doesn't have to return anything, only trigger
     all_databases = {}
