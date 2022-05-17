@@ -33,7 +33,7 @@ failure_reasons = {
         # PROTEIN FASTA: I341L679Q524N99
     'ERROR - No valid profiles could be selected':  # module search, hmm/hmm+remote mode, incorrect HMM profiles;
     # Results in the following exception: TypeError: object of type 'NoneType' has no len()
-        'No valid HMM profiles have been entered. Check your HMM profiles for potential spelling errors.',
+        'No valid HMM profiles have been entered. Check the entered HMM profile for potential spelling errors and make sure all entered HMM profile identifiers are valid Pfam identifiers (https://pfam.xfam.org/). GenPept accessions of NCBI are not valid.',
     'ValueError: Search completed, but found no hits':  # module search, no hits found
         'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.',
     'Too many selected clusters':  # clinker, clinker_query, extract_clusters
@@ -47,7 +47,11 @@ failure_reasons = {
     'urllib.error':
         connection_error_user_friendly_message,
     'Failed to fetch sequences':
-        connection_error_user_friendly_message
+        connection_error_user_friendly_message,
+
+    # Pfam related exceptions
+    'Failed to fetch profiles from Pfam':
+        ''
 
 
 
