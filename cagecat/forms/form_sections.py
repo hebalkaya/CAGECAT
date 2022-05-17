@@ -114,6 +114,7 @@ class InputSearchRemoteInputTypeNCBIEntries(Form):
     ncbiEntriesTextArea = TextAreaField(
         label=u'NCBI accession number(s)*',
         validators=[is_safe_string_value],
+        description='ncbiEntriesTextArea',
         render_kw={
             'rows': 6,
             'cols': 25,
