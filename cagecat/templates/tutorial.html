@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% from "macros.html" import showNavigationBar %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('tutorial') }}
+{% endblock %}
+
+{% block content %}
+    <div class="indent">
+        <h2>Introduction</h2>
+        <p>
+            The CAGECAT web server facilitates sequence similarity searches and visualisations of microbial operons and
+            gene clusters.It acts as a bridge between analyses executed by complex command line interfaces (CLIs) and
+            aims to provide a user-friendly and intuitive interface to prevent difficult analyses execution for the
+            individual
+            researcher. Our service enables fast analyses using multiple interconnected tools, reducing the time
+            required to execute such analyses. Researchers without programming experience encounter a steep learning
+            curve to execute CLI analysis. Therefore, CAGECAT does not require any programming at all, lowering the
+            technical barrier for researchers to execute gene cluster analyses. Additionally, connecting multiple gene
+            cluster analysis tools on CAGECAT creates an online data analysis pipeline without the difficulties of
+            connecting multiple individual tools, allowing users to combine the capabilities of each tool in
+            customizable streamlined workflows.
+        </p>
+
+        <p>
+            Executed jobs are stored on CAGECAT’s servers for 30 days and CAGECAT uses functional cookies only. This
+            tutorial will guide you in submitting your first job at CAGECAT and will show you how you can search for
+            homologous gene clusters for your protein of interest using a cblaster search analysis. In this tutorial,
+            <b>bold sentences indicate steps for you to perform.</b>
+        </p>
+
+        <h2>Example workflow: starting an analysis</h2>
+        <p>
+            Two analyses (<a target="_blank" href="{{ url_for('tools.cblaster_search') }}">cblaster</a> and <a
+                target="_blank" href="{{ url_for('tools.clinker') }}">clinker</a>) are implemented on CAGECAT. One can
+            start an analysis by clicking the
+            corresponding “Start” button on the home page (Fig. 1). Pages with additional explanation and publications
+            of these tools are accessible by clicking the “Explanation” and “Publication” buttons, respectively. The
+            valid input formats are shown per analysis. On CAGECAT, executed analyses are labelled as “jobs”. <b>Click
+            the
+            “Start” button located at the cblaster analysis.</b>
+        </p>
+
+        {#        <img src="{{ url_for('static', filename='images/tutorial/tutorial_1.svg') }}">#}
+
+        <h2>Selecting job parameters</h2>
+        <p>
+            You are now viewing the page for specification of parameters to be used in your analysis. The values for
+            parameters you enter will be used when executing the analysis and will therefore have a direct impact on the
+            results of your analysis. Input fields with a (*) are required. Input fields have restricted input (i.e.
+            only numbers) and leaving a required input field blank will prevent you from submitting your job. At some
+            analysis pages, job parameters (the values of settings to be used in your analysis) are split into basic and
+            advanced parameters. More background information on the different types of analyses and explanations can be
+            found <a target="_blank" href="{{ url_for('tools.tools_explanation') }}">here</a>.
+        </p>
+
+        <h3>Basic parameters</h3>
+        <p>
+            CAGECAT provides functionality to notify you by email when your job has finished executing. <b>You are able to
+            provide a title for your job and enter your email address</b> for receiving a notification email. Your e-mail
+            address is removed from our database after the notification e-mail has been sent. Providing an email address
+            or job title is not required (Fig. 2). Note the button shown for every parameter. <b>Click the button of the
+            job title to show an explanation of the job title parameter.</b> The help texts are shown in the help-sidebar
+            (right side of page) (Fig. 3). By default, the help-sidebar is shown, but can be hidden by clicking the
+            button. If the help side-bar is hidden, it can be shown by clicking the button.
+        </p>
+
+
+    </div>
+
+{% endblock %}

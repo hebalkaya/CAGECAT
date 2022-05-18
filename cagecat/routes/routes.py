@@ -80,6 +80,11 @@ def get_help_text(input_type):
 def get_server_status():
     return get_server_info()
 
+@app.route('/tutorial')
+def tutorial():
+    return show_template("tutorial.html", help_enabled=False)
+
+
 
 @app.route('/update-hmm-databases')
 def update_hmm_databases():
