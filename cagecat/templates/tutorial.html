@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="indent">
-        <h2>Introduction</h2>
+        <h1>Introduction</h1>
         <p>
             The CAGECAT web server facilitates sequence similarity searches and visualisations of microbial operons and
             gene clusters.It acts as a bridge between analyses executed by complex command line interfaces (CLIs) and
@@ -76,7 +76,7 @@
             <img src="{{ url_for('static', filename='images/tutorial/tutorial_3_help_sidebar.svg') }}"/>
         </p>
 
-        <h5>Input section</h5> can be italic?
+        <h5>Input section</h5>
         <p>
             Several input methods are available for a cblaster search: (I) Remote, which will compare your input
             proteins of interest against known protein sequences stored on NCBI servers; (II) HMM (Hidden Markov Model),
@@ -89,8 +89,7 @@
             section</a>) will show input fields corresponding to that search method.
         </p>
 
-        <h7>Remote method</h7>
-        can be not bold?
+        <h6>Remote method</h6>
         <p>
             {#            TODO
 #}
@@ -107,7 +106,7 @@
             <img src="{{ url_for('static', filename='images/tutorial/tutorial_4_search_section.svg') }}"/>
         </p>
 
-        <h7>HMM method</h7>
+        <h5>HMM method</h5>
         <p>
             <b>Click the “HMM” option in the “Input” section.</b> Parameters specific for HMM-based searches appear, and
             parameters for Remote-based searches disappear (the “Search” section) In general, selecting a different
@@ -214,10 +213,68 @@
             <img src="{{ url_for('static', filename='images/tutorial/tutorial_9_results_page_html_output.svg') }}"/>
         </p>
 
-    <h2>Downloading results</h2>
-    <p>
+        <h2>Downloading results</h2>
+        <p>
+            <b>Click on the “Download results” button on the output page, shown in Fig. 8 (number 2).</b> Save the file
+            to your
+            computer and open it. Three folders are present (“logs”, “results”, “uploads”). In the latter, you will find
+            any files you uploaded on the parameter page of your analysis. In the “logs”' folder, several files, named
+            with your job ID, are present for inspection of how your job was executed and possible backtracking of
+            errors. The command executed on the CAGECAT server is logged in the <span
+                class="courier">job_id_command.txt</span> file, to give you an
+            indication how your analysis was executed (<b>exercise: examine how the parameters and the values you
+            entered
+            on the parameters page are used in the command</b>). Your submitted parameter values are logged in the
+            <span class="courier">job_id_options.txt</span> file and the log of execution of your job can be read in the
+            file named <span class="courier">job_id.log</span>. In
+            the “results” folder several other files are present of which a detailed explanation can be found <a
+                href="{{ url_for('output_files_explanation') }}">here</a>.
+        </p>
 
-    </p>
+        <p>
+            <i>Note: dependent on the analysis you executed, other files may be or may not be present.</i>
+        </p>
+
+        <h2>Executing a subsequent analysis</h2>
+        <p>
+            Depending on the analysis you executed, several subsequent analyses are available. An overview of possible
+            workflows can be found <a href="https://cagecat.bioinformatics.nl/tools/#possibleWorkflows">here</a>. <b>Click
+            the “Extract clusters” button and validate that the selected clusters are
+            shown on the parameter page of the “Extract clusters” analysis (Fig. 10).</b> If you did not select any of
+            the
+            cluster hits on the previous page, all clusters are selected by default (example shown in Fig. 11).
+        <div>
+            <img src="{{ url_for('static', filename='images/tutorial/tutorial_10_extract_clusters_selected_clusters.svg') }}"/>
+            <img src="{{ url_for('static', filename='images/tutorial/tutorial_11_all_clusters_selected.svg') }}"/>
+        </div>
+        </p>
+
+        <p>
+            After the “Extract clusters” job has finished executing, you are able to download your results. However,
+            this analysis produced GenBank files that contain the protein sequences per cluster hits. Subsequently, you
+            are able to visualise all cluster hits via clinker (the subsequent analysis), or download all GenBank files
+            and use these in another analysis.
+        </p>
+
+        <h1>Auxiliary functionality</h1>
+        <h2>Submitting feedback</h2>
+        <p>
+            You are able to submit feedback by clicking the “Feedback” pane (Fig. 12) or by clicking <a
+                href="{{ url_for('feedback.feedback_page') }}">here</a>.
+        </p>
+
+        <h2>Viewing results of an executed job</h2>
+        <p>
+            You are able to look up the results of a previous job by clicking on the “Results” pane in the navigation
+            bar at the top of every web page (Fig. 12), by browsing <a
+                href="{{ url_for('result.result_from_job_id') }}">here</a> and entering your job ID, or clicking on the
+            navigational links shown in the bar on the left side of every page (Fig. 13). These navigational links are
+            stored locally after you submit a job.
+        <div>
+
+        </div>
+        </p>
+        <img src="{{ url_for('static', filename='images/tutorial/tutorial_12_navigation_bar.svg') }}"/>
+        <img src="{{ url_for('static', filename='images/tutorial/tutorial_13_server_status.svg') }}"/>
     </div>
-
 {% endblock %}

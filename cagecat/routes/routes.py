@@ -33,6 +33,10 @@ def home_page_old_url():
 def home_page():
     return show_template('index.html', help_enabled=False)
 
+@app.route('/output-files')
+def output_files_explanation():
+    return None # TODO
+
 @app.route('/invalid-submission')
 def invalid_submission():
     return show_template('incorrect_submission.html', help_enabled=False)
