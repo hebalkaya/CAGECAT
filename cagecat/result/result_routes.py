@@ -204,6 +204,7 @@ def get_execution_stage(job_id: str):
 
     data = {
         'finished': -1,
+        'failed': 1 if job.status == 'failed' else 0,
         'total': len(stages)
     }
     print(stages)

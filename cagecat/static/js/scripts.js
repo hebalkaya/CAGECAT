@@ -8,7 +8,7 @@ function updateJobExecutionStage(url){
     $.ajax(url, {
         dataType: 'json',
         success: function(data){
-            if (data['finished'] === data['total'] - 1){
+            if (data['finished'] === data['total'] - 1 || data['failed'] === 1){
                 redirect(window.location.href);
             }
 
