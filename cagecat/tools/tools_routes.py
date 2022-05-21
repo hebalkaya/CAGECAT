@@ -187,10 +187,11 @@ def clinker() -> str:
     else:
         form = ClinkerDownstreamForm()
 
+    show_examples = 'clinker' if request.method == 'GET' else None
     return show_template('clinker.html',
                          all_forms=form,
                          query_file_extensions=','.join(genbank_extensions),
-                         show_examples='clinker',
+                         show_examples=show_examples,
                          prev_job_id=prev_job_id)
 
 
