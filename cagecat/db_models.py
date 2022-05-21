@@ -42,7 +42,7 @@ class Job(db.Model):
                f"Finished: {self.finish_time}; Main job{self.main_search_job}"
 
 class Statistic(db.Model):
-    """Model for creating a entry for job statistics
+    """Model for creating an entry for job statistics
 
     Inherits from db.Model
 
@@ -55,3 +55,12 @@ class Statistic(db.Model):
 
     def __repr__(self) -> str:
         return f"{self.name.capitalize()}: {self.count} jobs"
+
+class Versions(db.Model):
+    """Model for logging of versions of used packages/tools
+
+    """
+
+    cagecat_version = db.Column(db.String(), primary_key=True)
+    pip = db.Column(db.String(), nullable=False)
+    pfam = db.Column(db.String(), nullable=True)
