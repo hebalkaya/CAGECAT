@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% from "macros.html" import showNavigationBar %}
+
+{% block navigationBar %}
+    {{ showNavigationBar('tools') }}
+{% endblock %}
+
+{% block content %}
+    <div class="indent">
+
+    <div>
+        <i>Files that might be present are shown in italic.</i>
+        <h3>Logs folder: general</h3>
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Explanation</th>
+            </tr>
+
+            <tr>
+                <td>
+                    CAGECAT_version.txt
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {job_id}.log
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {job_id}_command.txt
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {job_id}_options.txt
+                </td>
+            </tr>
+        </table>
+    </div>
+<h1>cblaster</h1>
+
+    <h2>Search</h2>
+        <h3>Logs folder</h3>
+        <table>
+            <tr>
+                <td>
+                    <i>query_headers.csv</i>
+                </td>
+            </tr>
+        </table>
+
+        <h3>Results folder</h3>
+        <table>
+            <tr>
+                <td>
+                    {job_id}_binary.txt
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {job_id}_plot.html
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {job_id}_session.json
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {job_id}_summary.txt
+                </td>
+            </tr>
+
+{#            <tr>#}
+{#                <td>#}
+{#                    Intermediate genes?#}
+{#                </td>#}
+{#            </tr>#}
+        </table>
+
+    <h2>Recompute</h2>
+        <p>
+            The cblaster recompute module has the same output files as the cblaster search analysis.
+        </p>
+
+    <h2>Gene neighbourhood estimation</h2>
+    <h2>Extract sequences</h2>
+    <h2>Visualize cluster hits compared to queries</h2>
+
+    <h1>clinker</h1>
+    </div>
+{% endblock %}
