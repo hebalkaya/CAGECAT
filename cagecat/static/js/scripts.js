@@ -761,7 +761,7 @@ function storeJobId(id, j_type, j_title){
             if (seconds.toString().length === 1){
                 seconds = '0' + seconds;
             }
-            let time = [months[date.getMonth()], date.getDate(), date.getFullYear(), '-'].join(' ') + [date.getHours(), date.getMinutes(), seconds].join(':')
+            let time = [months[date.getMonth()], date.getDate(), date.getFullYear(), '-', ' '].join(' ') + [date.getHours(), date.getMinutes(), seconds].join(':')
             let msg = id + ";" + j_type + ";" + time + ';' + j_title;
             console.log(msg);
             localStorage.setItem(str, msg);
