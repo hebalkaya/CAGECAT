@@ -6,16 +6,18 @@ Author: Matthias van den Belt
 # package imports
 import copy
 import json
+from typing import Union, Any, Tuple
 
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
+from werkzeug.utils import secure_filename
+
 from cagecat.routes.routes_helpers import format_size
 from cagecat.const import execution_stages_front_end, execution_stages_log_descriptors, modules_with_plots, downstream_modules, \
     module_to_tool
 from cagecat.general_utils import show_template, generate_paths, fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason
-
 
 # other imports
 import os
@@ -127,7 +129,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
 
 @result.route("/download/<job_id>", methods=["GET", "POST"])
-def return_user_download(job_id: str) -> flask.wrappers.Response:
+def return_user_download(job_id: str) -> Union[Union[str, Tuple[str, int]], Any]:
     """Returns zipped file to client, enabling the user to download the file
 
     Input:
@@ -139,6 +141,8 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
 
     Currently only supports downloading of the .zip file.
     """
+    job_id = secure_filename(job_id)
+    # this will cause internal server error if an invalid job_id is given
 
     # TODO future: send_from_directory is a safer approach and should be used
     # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
@@ -146,7 +150,10 @@ def return_user_download(job_id: str) -> flask.wrappers.Response:
     path = f'{os.sep}'.join(generate_paths(job_id)[2].split(os.sep)[1:])
     # take results path, and remove first cagecat occurrence as this is also
     # pasted by the send_file function
-    return send_file(os.path.join(path, f"{job_id}.zip"))
+    try:
+        return send_file(os.path.join(path, f"{job_id}.zip"))
+    except FileNotFoundError:
+        return show_template("job_not_found.html", job_id=job_id)
 
 
 @result.route("/", methods=["GET", "POST"])
@@ -177,18 +184,9 @@ def result_from_job_id() -> t.Union[str, str]: # actual other Union return type
 @result.route("/stage/<job_id>")
 def get_execution_stage(job_id: str):
     job = fetch_job_from_db(job_id)
-    # main_search_job = job.main_search_job
-    # print(job)
-    #
-    # job_type = job.job_type
-    # if job.job_type == 'search' and main_search_job != 'null':
-    #     job_type = 'recompute'
-    #     print('We changed it!')
-    #
-    # print('The new job_type is', job_type)
-    # print(main_search_job)
-    # print(type(main_search_job))
-    # print(main_search_job == 'null')
+    if job is None:
+        return show_template("job_not_found.html", job_id=job_id)
+
     stages = get_execution_stages_log_descriptors(
         job_type=job.job_type,
         job_id=job.id
@@ -207,7 +205,7 @@ def get_execution_stage(job_id: str):
         'failed': 1 if job.status == 'failed' else 0,
         'total': len(stages)
     }
-    print(stages)
+
     for stage in stages:
         if stage in logs:
             print(stage, 'is in contents')
@@ -224,8 +222,11 @@ def get_plot_contents(job_id) -> str:
         - job_id: job ID for which the plot is requested
 
     """
-    return prepare_finished_result(job_id, fetch_job_from_db(
-        job_id).job_type)[0]
+    job = fetch_job_from_db(job_id)
+    if job is None:
+        return show_template("job_not_found.html", job_id=job_id)
+
+    return prepare_finished_result(job_id, job.job_type)[0]
 
 # Helper functions
 def get_execution_stages_front_end(job_type: str, job_id: str):

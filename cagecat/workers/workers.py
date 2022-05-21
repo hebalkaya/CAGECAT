@@ -29,7 +29,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
-    print('We managed to here')
+
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False

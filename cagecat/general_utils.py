@@ -11,6 +11,7 @@ import redis
 import rq
 from flask import render_template
 from rq.registry import StartedJobRegistry
+from werkzeug.utils import secure_filename
 
 from cagecat import q, r
 from cagecat.const import jobs_dir
@@ -128,4 +129,5 @@ def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
         - Job instance if present in the database OR
         - None if no job with the given ID was found in the database
     """
+    job_id = secure_filename(job_id)
     return Job.query.filter_by(id=job_id).first()
