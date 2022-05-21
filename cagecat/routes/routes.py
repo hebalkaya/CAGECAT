@@ -7,6 +7,7 @@ Author: Matthias van den Belt
 import copy
 from flask import url_for, redirect, request
 import os
+import re
 
 # own project imports
 from cagecat.const import submit_url, extract_clusters_options, jobs_dir, hmm_database_organisms
@@ -19,7 +20,7 @@ from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, C
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
-from config_files.config import cagecat_version
+from config_files.config import cagecat_version, thresholds
 from config_files.sensitive import finished_hmm_db_folder
 
 global available_hmm_databases
@@ -296,6 +297,25 @@ def submit_job() -> str:
                 genome_files_path = os.path.join(jobs_dir, prev_job_id, "results")
                 depending_on = None
             else:
+                # check if detected cluster count does not exceed the plotting limit
+
+                # load html
+                html_path = os.path.join(jobs_dir, prev_job_id, 'results', f'{prev_job_id}_plot.html')
+                with open(html_path) as inf:
+                    contents = inf.read()
+
+                pattern = re.compile(r'"counts": .+ "clusters": (\d+)')
+                cluster_number = int(re.findall(pattern, contents)[0])
+
+                # remove html file from memory
+                del contents
+
+                # check if exceeds
+                if cluster_number > thresholds['max_clusters_to_plot']:
+                    return show_template('tools.clinker_too_many_clusters.html',
+                                         cluster_number=cluster_number,
+                                         cluster_threshold=thresholds['max_clusters_to_plot'])
+
                 new_jobs.append(CAGECATJob(job_id=job_id,
                                            options=copy.deepcopy(extract_clusters_options),
                                            job_type='extract_clusters',

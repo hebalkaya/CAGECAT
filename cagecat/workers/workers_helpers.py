@@ -353,6 +353,7 @@ def log_threshold_exceeded(parameter: int, threshold: int,
     if parameter > threshold:
         log_path, job_id, program = job_data
         with open(os.path.join(log_path, f'{job_id}_{program}.log'), 'w') as outf:
+            # TODO: remove program here
             outf.write(f'{error_message} ({parameter} > {threshold})')
 
         post_job_formalities(job_id, 999)
