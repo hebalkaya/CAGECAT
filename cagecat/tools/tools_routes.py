@@ -194,6 +194,6 @@ def clinker() -> str:
                          prev_job_id=prev_job_id)
 
 
-@tools.route('/big-scape')
-def bigscape() -> str:
-    return show_template('BiG-SCAPE.html')
+# @tools.route('/big-scape')
+# def bigscape() -> str:
+#     return show_template('BiG-SCAPE.html')
