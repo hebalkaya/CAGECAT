@@ -294,8 +294,9 @@ function mergeExponentials(){
 }
 
 function getGenBankFileNames() {
+    var valid_ext = ["gbk", "gb", "genbank", "gbf", "gbff"];
+
     let files = $('#fileUploadClinker')[0].files;
-    console.log(files);
     let selected_files = 'Selected files: ';
     let separator = ', '
     for (let i=0; i < files.length; i++){
@@ -306,6 +307,35 @@ function getGenBankFileNames() {
         selected_files += text;
     }
     $('#selectedFileName')[0].innerText = selected_files
+
+    let invalid_files = 'Invalid genome file(s): '
+    let separator2 = ', '
+    let invalid_counter = 0;
+    for (let i=0; i < files.length; i++){
+        let file = files[i];
+        if (i === files.length-1) {
+            separator2 = ''
+        }
+
+        if (! valid_ext.includes(file.name.split('.').pop())){
+            let text = file.name + separator2;
+            invalid_files += text;
+            invalid_counter += 1;
+        }
+    }
+
+    let incorrectExtensionMessageElement = $('#clinkerFileUploadIncorrectExtension')[0];
+    let incorrectExtensionMessageElementText = $('#clinkerFileUploadIncorrectExtensionText')[0];
+
+    if (invalid_counter > 0){
+        incorrectExtensionMessageElementText.innerText = invalid_files;
+        incorrectExtensionMessageElement.classList.remove('no-display');
+        $('#submit')[0].setAttribute('disabled', 'disabled')
+    }
+    else {
+        incorrectExtensionMessageElement.classList.add('no-display');
+        $('#submit')[0].removeAttribute('disabled');
+    }
 }
 
 
