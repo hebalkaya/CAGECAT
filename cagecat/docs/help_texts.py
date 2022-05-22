@@ -68,7 +68,7 @@ cblaster_search_binary_table = {'keyFunction': {'title': 'Key function', 'module
 
 cblaster_search_filtering = {'selectedOrganisms': {'title': 'Organisms to filter fot', 'module': '', 'text': 'Organism names to filter hits for. When entering multiple organisms, separate by a space.\n\nRequired: no'},
                              # 'selectedScaffolds': {'title': '', 'module': '', 'text': ''},
-                   'clusterNumbers': {'title': 'Cluster numbers', 'module': '', 'text': 'Cluster numbers/ranges provided by the summary file of the \'search\' command or selected online. If no numbers are entered, no filtering takes place.\n\nRequired: no'},
+                   'clusterNumbers': {'title': 'Cluster numbers', 'module': '', 'text': 'Cluster numbers/ranges provided by the summary file of the \'search\' command or selected online. If no numbers are entered, no filtering takes place.\n\nThese numbers are pre-filled (dependent on the clusters you selected in the previous window), and can not be changed on this page. To change these clusters, return to the previous page and select the clusters of interest.\n\nRequired: no'},
                    'clusterScoreThreshold': {'title': 'Cluster score threshold', 'module': '', 'text': 'Minimum score of a cluster in order to be included. If no score is entered, no filtering takes place.\n\nRequired: no'},
                    'selectedQueries': {'title': 'Query filtering', 'module': '', 'text': 'IDs of query sequences to filter for.\n\nRequired: no'}}
 
