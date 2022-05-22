@@ -29,7 +29,7 @@ class Job(db.Model):
     depending_on = db.Column(db.String(10))
 
     # timing
-    post_time = db.Column(db.String(), nullable=False, default=datetime.utcnow().strftime('%B %d %Y - %H:%M:%S'))
+    post_time = db.Column(db.String())
     start_time = db.Column(db.String())
     finish_time = db.Column(db.String)
 

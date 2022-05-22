@@ -19,7 +19,7 @@ from cagecat.classes import CAGECATJob
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
-    save_file, enqueue_jobs, sanitize_file
+    save_file, enqueue_jobs
 from config_files.config import cagecat_version, thresholds
 from config_files.sensitive import finished_hmm_db_folder
 

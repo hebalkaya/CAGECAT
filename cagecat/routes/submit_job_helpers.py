@@ -5,6 +5,7 @@ Author: Matthias van den Belt
 import os
 import random
 import typing as t
+from datetime import datetime
 
 import werkzeug.datastructures
 import werkzeug.utils
@@ -179,6 +180,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
 
         j = dbJob(id=cc_job.job_id,
                   status="queued" if depending_on is None else "waiting",  # for parent job to finish
+                  post_time=datetime.utcnow().strftime('%B %d %Y - %H:%M:%S'),
                   job_type=cc_job.job_type,
                   redis_id=job.id,
                   depending_on='null' if depending_on is None else cc_job.depends_on_job_id,
