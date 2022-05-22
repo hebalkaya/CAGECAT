@@ -19,7 +19,7 @@ from cagecat.classes import CAGECATJob
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
-    save_file, enqueue_jobs
+    save_file, enqueue_jobs, sanitize_file
 from config_files.config import cagecat_version, thresholds
 from config_files.sensitive import finished_hmm_db_folder
 
@@ -297,7 +297,7 @@ def submit_job() -> str:
                 genome_files_path = os.path.join(jobs_dir, prev_job_id, "results")
                 depending_on = None
             else:
-                # check if detected cluster count does not exceed the plotting limit
+                # below is a check if detected cluster count does not exceed the plotting limit
 
                 # load html
                 html_path = os.path.join(jobs_dir, prev_job_id, 'results', f'{prev_job_id}_plot.html')
@@ -315,6 +315,8 @@ def submit_job() -> str:
                     return show_template('tools.clinker_too_many_clusters.html',
                                          cluster_number=cluster_number,
                                          cluster_threshold=thresholds['max_clusters_to_plot'])
+
+                # end of check
 
                 new_jobs.append(CAGECATJob(job_id=job_id,
                                            options=copy.deepcopy(extract_clusters_options),
