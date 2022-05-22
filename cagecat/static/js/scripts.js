@@ -338,18 +338,25 @@ function readFileContents() {
             parsed = parser.parse(reader.result);
 
             for (let i=0; i<parsed.length; i++){
-                let copy = parsed[i].sequence.slice().replace(/[ATCG]/g, '')
+                let copy = parsed[i].sequence.slice().replace(/[ATCGatcg]/g, '')
                 if (copy.length === 0) {
                     document.getElementById("nucleotideFastaWarning").classList.remove('no-display');
                 }
                 else {
                     document.getElementById("nucleotideFastaWarning").classList.add('no-display');
                 }
-            }
 
+                let id = parsed[i].id.slice(1).split(' ')[0];
+                let opt = document.createElement("option");
+                opt.text = id;
+                opt.value = id;
+
+                requiredSequencesSelect.add(opt);
+            }
         }
         else {
-            console.log('no fasta, but a genbank')
+            document.getElementById("nucleotideFastaWarning").classList.add('no-display');
+            console.log('TODO genbank parsing')
         }
     }
     //
