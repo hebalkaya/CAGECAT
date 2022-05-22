@@ -86,6 +86,11 @@ addAccordionListeners();
                     <span>You selected a FASTA with nucleotide sequences. Your input file will be re-formatted into a GenBank file.</span>
                 </div>
 
+{#                <div class="warning-message no-display" style="margin-left:1%;" id="genpeptFileError">#}
+{#                    <span>You selected a GenBank file with protein sequences, which is actually a GenPept file. Please create a protein FASTA file from your GenPept file.</span>#}
+{#                    TODO: we can also create it for the user. Maybe for future#}
+{#                </div>#}
+
             <div id="ncbiEntriesDiv" class="no-display">
                 {{ renderForm(all_forms.remote_input_types_ncbi_entries) }}
                 <div class="error-message no-display" id="accessionsError">

@@ -355,35 +355,37 @@ function readFileContents() {
             }
         }
         else {
-            document.getElementById("nucleotideFastaWarning").classList.add('no-display');
-            console.log('TODO genbank parsing')
+            let splitted = reader.result.split("\n");
+            let starter = '/protein_id='
+            let splitter = '"'
+                for (let i=0; i<splitted.length; i++){
+                    if (splitted[i].includes(starter)){
+                        let txt = splitted[i].trim().split(splitter)[1].split(' ')[0];
+                        let opt = document.createElement("option");
+                        opt.text = txt;
+                        opt.value = txt;
+
+                        requiredSequencesSelect.add(opt);
+                    }
+                }
+            }
+
+            // TODO: maybe in future
+            // parsed = genbankToJson(reader.result);
+            // console.log(parsed);
+            // for (let i=0; i<parsed.length; i++){
+            //
+            //     let copy = parsed[i].sequence.slice().replace(/[ATCGatcg]/g, '');
+            //     if (copy.length === 0) {
+            //         document.getElementById("genpeptFileError").classList.add('no-display');
+            //     }
+            //     else {
+            //         document.getElementById("genpeptFileError").classList.remove('no-display');
+            //     }
+            //
+            // }
+            // document.getElementById("nucleotideFastaWarning").classList.add('no-display');
         }
-    }
-    //
-    //
-    //     let splitted = reader.result.split("\n");
-    //     let starter;
-    //     let splitter;
-    //     for (let i=0; i<splitted.length; i++){
-    //
-    //             starter = '>';
-    //             splitter = '>';
-    //
-    //         }
-    //         else {
-    //             starter = '/protein_id='
-    //             splitter = '"'
-    //         }
-    //         if (splitted[i].includes(starter)){
-    //             let txt = splitted[i].trim().split(splitter)[1].split(' ')[0];
-    //             let opt = document.createElement("option");
-    //             opt.text = txt;
-    //             opt.value = txt;
-    //
-    //             requiredSequencesSelect.add(opt);
-    //         }
-    //     }
-    // }
     reader.readAsText(file, "UTF-8");
 }
 
