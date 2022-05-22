@@ -9,6 +9,7 @@ import typing as t
 import werkzeug.datastructures
 import werkzeug.utils
 from Bio.SeqIO.FastaIO import SimpleFastaParser
+import Bio.SeqIO
 
 from flask import request
 
@@ -45,7 +46,7 @@ def sanitize_file(file_path, job_id):
 
                 if total == len(sequence):
                     file_type = 'nt_fasta'
-                else:  # check if it is a protein fasta
+                else:
                     file_type = 'aa_fasta'
 
         if file_type == 'aa_fasta':
@@ -53,12 +54,19 @@ def sanitize_file(file_path, job_id):
         elif file_type == 'nt_fasta':  # we should sanitize the file
             pass
         else:
-            raise ValueError('Incorrect FASTA file type')
+            raise IOError('Incorrect FASTA file type')
     elif extension in genbank_extensions:
-        print('GenBank file found')
-        # TODO: check if it is not accidentally a GenPept file, as this would cause cblaster to fail
+        # check if input file is not accidentally a GenPept file
+        for record in Bio.SeqIO.parse(file_path, 'gb'):
+            total = 0
+            for nt in 'ATCG':
+                total += record.seq.count(nt)
+
+            if total != len(record.seq):
+                raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
+
     else:
-        raise ValueError('Invalid extension found:', extension)
+        raise IOError('Invalid extension found:', extension)
 
     # actually sanitize
     # situations: nt FASTA, GenBank file
