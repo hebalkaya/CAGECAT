@@ -413,7 +413,27 @@ div.scientificnotation-div {
 }
 
 .error-message {
-    color: #ff4646;
+    border: 3px solid red;
+    border-radius: 5px;
+    background-color: #ffdada;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.warning-message {
+    border: 3px solid #ff6600;
+    border-radius: 5px;
+    background-color: rgb(255, 225, 206);
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.info-message {
+    border: 3px solid #27b500;
+    border-radius: 5px;
+    background-color: rgb(205 246 193);
+    padding-left: 3%;
+    padding-right: 3%;
 }
 
 @keyframes fadeIn {
