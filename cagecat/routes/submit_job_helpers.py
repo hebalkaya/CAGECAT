@@ -63,7 +63,7 @@ def sanitize_file(file_path, job_id):
                 total += record.seq.count(nt)
 
             if total != len(record.seq):
-                # TODO: can rewrite records to a protein FASTA and use this as input
+                # TODO: can rewrite records to a protein FASTA and use this as input. But should only be executed when all records are proteins (i.e. mixed DNA/protein records are invalid)
                 raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
 
     else:

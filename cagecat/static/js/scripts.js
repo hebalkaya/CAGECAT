@@ -330,28 +330,53 @@ function readFileContents() {
             document.getElementById("fileUploadIncorExt").classList.add('no-display');
             $('#submit')[0].removeAttribute('disabled');
         }
-        let splitted = reader.result.split("\n");
-        let starter;
-        let splitter;
-        for (let i=0; i<splitted.length; i++){
-            if (["fasta", "fa", "fsa", "fna", "faa"].includes(ext)){
-                starter = '>';
-                splitter = '>';
-            }
-            else {
-                starter = '/protein_id='
-                splitter = '"'
-            }
-            if (splitted[i].includes(starter)){
-                let txt = splitted[i].trim().split(splitter)[1].split(' ')[0];
-                let opt = document.createElement("option");
-                opt.text = txt;
-                opt.value = txt;
 
-                requiredSequencesSelect.add(opt);
+        let parser;
+        let parsed;
+        if (["fasta", "fa", "fsa", "fna", "faa"].includes(ext)) {
+            parser = new fastaParser();
+            parsed = parser.parse(reader.result);
+
+            for (let i=0; i<parsed.length; i++){
+                let copy = parsed[i].sequence.slice().replace(/[ATCG]/g, '')
+                if (copy.length === 0) {
+                    document.getElementById("nucleotideFastaWarning").classList.remove('no-display');
+                }
+                else {
+                    document.getElementById("nucleotideFastaWarning").classList.add('no-display');
+                }
             }
+
+        }
+        else {
+            console.log('no fasta, but a genbank')
         }
     }
+    //
+    //
+    //     let splitted = reader.result.split("\n");
+    //     let starter;
+    //     let splitter;
+    //     for (let i=0; i<splitted.length; i++){
+    //
+    //             starter = '>';
+    //             splitter = '>';
+    //
+    //         }
+    //         else {
+    //             starter = '/protein_id='
+    //             splitter = '"'
+    //         }
+    //         if (splitted[i].includes(starter)){
+    //             let txt = splitted[i].trim().split(splitter)[1].split(' ')[0];
+    //             let opt = document.createElement("option");
+    //             opt.text = txt;
+    //             opt.value = txt;
+    //
+    //             requiredSequencesSelect.add(opt);
+    //         }
+    //     }
+    // }
     reader.readAsText(file, "UTF-8");
 }
 

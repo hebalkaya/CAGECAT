@@ -82,6 +82,10 @@ addAccordionListeners();
                     <span id="fileUploadIncorExtText"></span>
                 </div>
 
+                <div class="warning-message no-display" style="margin-left:1%;" id="nucleotideFastaWarning">
+                    <span>You selected a FASTA with nucleotide sequences. Your input file will be re-formatted into a GenBank file.</span>
+                </div>
+
             <div id="ncbiEntriesDiv" class="no-display">
                 {{ renderForm(all_forms.remote_input_types_ncbi_entries) }}
                 <div class="error-message no-display" id="accessionsError">
