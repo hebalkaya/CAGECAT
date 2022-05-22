@@ -41,7 +41,7 @@ def sanitize_file(file_path, job_id):
                 total = 0
 
                 # check for nucleotide fasta
-                for nt in 'ATCG':
+                for nt in 'ATCGatcg':
                     total += sequence.count(nt)
 
                 if total == len(sequence):
@@ -59,7 +59,7 @@ def sanitize_file(file_path, job_id):
         # check if input file is not accidentally a GenPept file
         for record in Bio.SeqIO.parse(file_path, 'gb'):
             total = 0
-            for nt in 'ATCG':
+            for nt in 'ATCGatcg':
                 total += record.seq.count(nt)
 
             if total != len(record.seq):
