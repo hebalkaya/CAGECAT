@@ -334,6 +334,7 @@ function readFileContents() {
         let parser;
         let parsed;
         if (["fasta", "fa", "fsa", "fna", "faa"].includes(ext)) {
+            document.getElementById("sanitizationMessage").classList.add('no-display');
             parser = new fastaParser();
             parsed = parser.parse(reader.result);
 
@@ -355,6 +356,8 @@ function readFileContents() {
             }
         }
         else {
+            document.getElementById("nucleotideFastaWarning").classList.add('no-display');
+            document.getElementById("sanitizationMessage").classList.remove('no-display');
             let splitted = reader.result.split("\n");
             let starter = '/protein_id='
             let splitter = '"'
@@ -384,7 +387,7 @@ function readFileContents() {
             //     }
             //
             // }
-            // document.getElementById("nucleotideFastaWarning").classList.add('no-display');
+
         }
     reader.readAsText(file, "UTF-8");
 }
