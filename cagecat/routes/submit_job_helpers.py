@@ -14,47 +14,72 @@ from flask import request
 
 from cagecat import q, db
 from cagecat.classes import CAGECATJob
-from cagecat.general_utils import fetch_job_from_db
-from cagecat.const import jobs_dir, folders_to_create
+from cagecat.general_utils import fetch_job_from_db, generate_paths
+from cagecat.const import jobs_dir, folders_to_create, fasta_extensions, genbank_extensions
 from cagecat.db_models import Job as dbJob
+from cagecat.workers.workers_helpers import run_command
 from config_files.sensitive import sanitized_folder
 
 
-def sanitize_file(file_path):
+def sanitize_file(file_path, job_id):
     """Sanitizes input file by piping it through antiSmash
 
     Called when preparing a cblaster search
 
     Returns file path of sanitized file to be used in the cblaster search analysis
     """
-    sanitization_cmd = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal --debug {}'
+    sanitization_cmd_base = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal --debug {}'
+
     # detect input type (NT FASTA / protein FASTA / GBK)
+    extension = file_path.split('.')[-1]
 
-    # if extension in FASTA_EXT:
-    # get extension
+    if extension in fasta_extensions:
+        # determine what type of FASTA it is.
+        with open(file_path) as handle:
+            for header, sequence in SimpleFastaParser(handle):
+                total = 0
 
-    # if file is a FASTA, determine what type of FASTA it is.
-    with open(file_path) as handle:
-        for header, sequence in SimpleFastaParser(handle):
-            total = 0
+                # check for nucleotide fasta
+                for nt in 'ATCG':
+                    total += sequence.count(nt)
 
-            # check for nucleotide fasta
-            for nt in 'ATCG':
-                total += sequence.count(nt)
+                if total == len(sequence):
+                    file_type = 'nt_fasta'
+                else:  # check if it is a protein fasta
+                    file_type = 'aa_fasta'
 
-            if total == len(sequence):
-                file_type = 'nt_fasta'
-            else: # check if it is a protein fasta
-                file_type = 'aa_fasta'
-
-    if file_type == 'aa_fasta':
-        return file_path
-    elif file_type == 'nt_fasta': # we should sanitize the file
-        # TODO
-        pass
+        if file_type == 'aa_fasta':
+            return file_path
+        elif file_type == 'nt_fasta':  # we should sanitize the file
+            pass
+        else:
+            raise ValueError('Incorrect FASTA file type')
+    elif extension in genbank_extensions:
+        print('GenBank file found')
+        # TODO: check if it is not accidentally a GenPept file, as this would cause cblaster to fail
     else:
-        raise ValueError('Incorrect FASTA file type')
+        raise ValueError('Invalid extension found:', extension)
 
+    # actually sanitize
+    # situations: nt FASTA, GenBank file
+    uploads_folder, log_folder, _ = generate_paths(job_id)
+
+    cmd = sanitization_cmd_base.format(sanitized_folder, job_id, file_path)
+    return_code = run_command(
+        cmd=cmd.split(),
+        log_base=log_folder,
+        job_id=job_id,
+        log_output=True
+    )
+
+    if return_code != 0:
+        raise IOError('Error during sanitization by antiSmash')
+
+    sanitized_fn = os.path.join(sanitized_folder, f'{job_id}.gbk')
+    destination = os.path.join(uploads_folder, f'{job_id}.gbk')
+    os.rename(sanitized_fn, destination)
+
+    return destination
 
 
 def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
@@ -75,7 +100,7 @@ def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
 
         if input_type == 'file':
             file_path = save_file(request.files["genomeFiles"], job_id)
-            file_path = sanitize_file(file_path)
+            # file_path = sanitize_file(file_path, job_id) # should not be here, as this would stall the job submission
         elif input_type == "ncbi_entries":
             file_path = None
         elif input_type == "prev_session":

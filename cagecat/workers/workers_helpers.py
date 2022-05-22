@@ -121,8 +121,10 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
     """
     if log_output:
         log_command(cmd, log_base, job_id)
+        log_fp = os.path.join(log_base, f"{job_id}.log")
 
-        with open(os.path.join(log_base, f"{job_id}.log"), "w") as outf:
+        write_mode = 'a' if os.path.exists(log_fp) else 'w' # indicate a sanitization step has occurred
+        with open(log_fp, write_mode) as outf:
             try:
                 res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
                 return_code = res.returncode

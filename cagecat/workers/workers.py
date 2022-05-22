@@ -7,6 +7,7 @@ Author: Matthias van den Belt
 import os.path
 
 # own project imports
+from cagecat.routes.submit_job_helpers import sanitize_file
 from cagecat.workers.workers_helpers import *
 
 ### redis-queue functions
@@ -33,6 +34,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False
+        file_path = sanitize_file(file_path, job_id)
 
         # create the base command, with all required fields
         cmd = ["cblaster", "search",
