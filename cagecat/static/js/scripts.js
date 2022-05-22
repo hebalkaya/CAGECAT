@@ -3,6 +3,7 @@ var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var checkmarkPath = 'https://cagecat.bioinformatics.nl/static/images/checkmark.svg'
+var currentlyExecutingPath = 'https://cagecat.bioinformatics.nl/static/images/dna_loader.gif'
 
 function updateJobExecutionStage(url){
     $.ajax(url, {
@@ -12,13 +13,16 @@ function updateJobExecutionStage(url){
                 redirect(window.location.href);
             }
 
-            for (let i = 1; i < (data['finished']+1); i++){
+            let currentStageIndex = data['finished'] + 1;
+            for (let i = 1; i < currentStageIndex; i++){
                 let elem = document.getElementById('stage' + i.toString());
                 elem.src = checkmarkPath;
                 elem.style.width = '25px';
             }
 
-            let percentage = Math.round(data['finished'] / data['total'] * 100)
+            let currentStage = document.getElementById('stage' + currentStageIndex.toString());
+            currentStage.src = currentlyExecutingPath;
+            // let percentage = Math.round(data['finished'] / data['total'] * 100)
             // document.getElementById('progress').innerText = percentage.toString() + '%';
             // console.log(percentage);
         },
