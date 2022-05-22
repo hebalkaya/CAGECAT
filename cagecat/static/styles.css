@@ -645,3 +645,10 @@ input[type="submit"]{
 input[readonly] {
     cursor: not-allowed
 }
+
+.notification-message {
+    width:100%;
+    background-color:#EEEEEE;
+    text-align:center;
+    border-bottom: 1px solid black;
+}

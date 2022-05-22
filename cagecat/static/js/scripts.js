@@ -795,6 +795,12 @@ function checkConsent(){
     }
 }
 
+function hideNotifications(notification_id){
+    if (Cookies.get(notification_id) === '1'){
+        $('#' + notification_id).remove();
+    }
+}
+
 
 // Note: functions below are labeled as unused by PyCharm (or your interpreter) but they are used (check usages manually)
 function initReadQueryFile(){

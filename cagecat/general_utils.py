@@ -17,6 +17,7 @@ from cagecat import q, r
 from cagecat.const import jobs_dir
 from cagecat.db_models import Statistic, Job
 from config_files.config import email_footer_msg
+from config_files.notifications import notifications
 from config_files.sensitive import account, pwd, smtp_server, sender_email, port
 
 
@@ -65,11 +66,14 @@ def show_template(template_name: str, help_enabled:bool = True,
     if stat_code is None:
         return render_template(template_name, help_enabled=help_enabled,
                                serv_info=get_server_info(q, r),
-                               show_examples=show_examples, **kwargs)
+                               show_examples=show_examples,
+                               notifications=notifications,
+                               **kwargs)
     else:
         return render_template(template_name, help_enabled=help_enabled,
                                serv_info=get_server_info(q, r),
                                show_examples=show_examples,
+                               notifications=notifications,
                                **kwargs), stat_code
 
 

@@ -38,13 +38,23 @@
 
     </div>
     <div class="column middleColumn enlarge-it no-padding" id="middleColumn">
-        <div id='consent' style='width:100%;background-color:#EEEEEE;text-align:center;'>
+        <div id='consent' class="notification-message">
             This website is free and open to all users and there is no login requirement. This site uses functional cookies only -
             <a href='#' onclick="Cookies.set('consent',1);$('#consent').remove();return false;">I understand</a>
         </div>
         <script type="application/javascript">checkConsent();</script>
+
+        {% for notification_id, notification_text in notifications %}
+            <div id='{{ notification_id }}' class="notification-message" style='font-size: 18px;'>
+                {{ notification_text }} -
+                <a href='#' onclick="Cookies.set({{ notification_id }},1);$('#{{ notification_id }}').remove();return false;">Hide message</a>
+            </div>
+            <script type="application/javascript">hideNotifications({{ notification_id }});</script>
+        {% endfor %}
         {% block content %}{% endblock %}
     </div>
+
+
 </div>
 
 {% if help_enabled %}
