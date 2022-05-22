@@ -641,3 +641,7 @@ input[type="submit"]{
     font-weight: bold;
 
 }
+
+input[readonly] {
+    cursor: not-allowed
+}
