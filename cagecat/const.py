@@ -49,9 +49,12 @@ failure_reasons = {
     'Failed to fetch sequences':
         connection_error_user_friendly_message,
 
+    'sqlite3.OperationalError: unable to open database file':
+        'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.'
+
     # Pfam related exceptions
-    'Failed to fetch profiles from Pfam':
-        ''
+    # 'Failed to fetch profiles from Pfam':  # is this actually an error?
+    #     ''
 
 
 
