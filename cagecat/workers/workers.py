@@ -7,7 +7,6 @@ Author: Matthias van den Belt
 import os.path
 
 # own project imports
-from cagecat.routes.submit_job_helpers import sanitize_file
 from cagecat.workers.workers_helpers import *
 
 ### redis-queue functions

@@ -9,87 +9,14 @@ from datetime import datetime
 
 import werkzeug.datastructures
 import werkzeug.utils
-from Bio.SeqIO.FastaIO import SimpleFastaParser
-import Bio.SeqIO
 
 from flask import request
 
 from cagecat import q, db
 from cagecat.classes import CAGECATJob
-from cagecat.general_utils import fetch_job_from_db, generate_paths
-from cagecat.const import jobs_dir, folders_to_create, fasta_extensions, genbank_extensions
+from cagecat.general_utils import fetch_job_from_db
+from cagecat.const import jobs_dir, folders_to_create
 from cagecat.db_models import Job as dbJob
-from cagecat.workers.workers_helpers import run_command
-from config_files.sensitive import sanitized_folder
-
-
-def sanitize_file(file_path, job_id):
-    """Sanitizes input file by piping it through antiSmash
-
-    Called when preparing a cblaster search
-
-    Returns file path of sanitized file to be used in the cblaster search analysis
-    """
-    sanitization_cmd_base = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal --debug {}'
-
-    # detect input type (NT FASTA / protein FASTA / GBK)
-    extension = file_path.split('.')[-1]
-
-    if extension in fasta_extensions:
-        # determine what type of FASTA it is.
-        with open(file_path) as handle:
-            for header, sequence in SimpleFastaParser(handle):
-                total = 0
-
-                # check for nucleotide fasta
-                for nt in 'ATCGatcg':
-                    total += sequence.count(nt)
-
-                if total == len(sequence):
-                    file_type = 'nt_fasta'
-                else:
-                    file_type = 'aa_fasta'
-
-        if file_type == 'aa_fasta':
-            return file_path
-        elif file_type == 'nt_fasta':  # we should sanitize the file
-            pass
-        else:
-            raise IOError('Incorrect FASTA file type')
-    elif extension in genbank_extensions:
-        # check if input file is not accidentally a GenPept file
-        for record in Bio.SeqIO.parse(file_path, 'gb'):
-            total = 0
-            for nt in 'ATCGatcg':
-                total += record.seq.count(nt)
-
-            if total != len(record.seq):
-                # TODO: can rewrite records to a protein FASTA and use this as input. But should only be executed when all records are proteins (i.e. mixed DNA/protein records are invalid)
-                raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
-
-    else:
-        raise IOError('Invalid extension found:', extension)
-
-    # actually sanitize
-    # situations: nt FASTA, GenBank file
-    uploads_folder, log_folder, _ = generate_paths(job_id)
-
-    cmd = sanitization_cmd_base.format(sanitized_folder, job_id, file_path)
-    return_code = run_command(
-        cmd=cmd.split(),
-        log_base=log_folder,
-        job_id=job_id,
-        log_output=True
-    )
-
-    if return_code != 0:
-        raise IOError('Error during sanitization by antiSmash')
-
-    sanitized_fn = os.path.join(sanitized_folder, f'{job_id}.gbk')
-    destination = os.path.join(uploads_folder, f'{job_id}.gbk')
-    os.rename(sanitized_fn, destination)
-
-    return destination
 
 
 def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
