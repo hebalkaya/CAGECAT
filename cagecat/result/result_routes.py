@@ -23,7 +23,6 @@ from cagecat.result.result_helpers import prepare_finished_result, get_connected
 import os
 
 # typing imports
-import flask.wrappers
 import typing as t
 
 result = Blueprint('result', __name__, template_folder="templates")
@@ -125,7 +124,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             raise IOError(f"Incorrect status of job {job_id} in database")
 
     else:  # indicates no such job exists in the database
-        return show_template("job_not_found.html", job_id=job_id)
+        return show_template("job_not_found.html", job_id=secure_filename(job_id))
 
 
 @result.route("/download/<job_id>", methods=["GET", "POST"])
