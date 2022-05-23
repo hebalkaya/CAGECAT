@@ -14,14 +14,14 @@
             <ul>
                 <li><a href="{{ url_for('tutorial') }}">Tutorial to execute your first analysis via CAGECAT</a></li>
                 <li><a href="{{ url_for('output_files_explanation') }}">Detailed descriptions of output files per analysis</a></li>
+                <li><a href="{{ url_for('tools.tools_explanation') }}">Detailed descriptions and explanations of the different analyses on CAGECAT</a></li>
             </ul>
         </div>
 
         <div>
             <h2>Contact</h2>
-
             <p>If you encountered a bug/error, please notify the developers by filling in the form below. Please specify the concerning job ID as well as many details as possible and what happened moments prior to the bug/error.
-                Suggestions and feedback are more than welcome, for which we kindly ask you to send them to us using the form below. After you submitfeedback, a copy of your report will be sent to your e-mail address. Note that this e-mail address will be used for future correspondence about your report.</p>
+                Suggestions and feedback are more than welcome, for which we kindly ask you to send them to us using the form below. After you submit feedback, a copy of your report will be sent to your e-mail address. Note that this e-mail address will be used for future correspondence about your report.</p>
 
             <div>
                 <form method="post" action="{{ url_for('submit_feedback') }}">
