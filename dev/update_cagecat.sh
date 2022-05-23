@@ -3,6 +3,8 @@
 
 container_name=$1 # intentionally left out for safety reasons
 
+echo "Has the JavaScript version been updated in base.html? (Cache busting: to load latest version of JavaScript)"
+
 echo "--> Copying jobs folder and database.db to host"
 docker cp "$container_name":/repo/cagecat/database.db database.db
 #docker cp "$container_name":/repo/cagecat/jobs jobs
