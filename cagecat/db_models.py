@@ -62,5 +62,10 @@ class Versions(db.Model):
     """
 
     cagecat_version = db.Column(db.String(), primary_key=True)
+    pfam = db.Column(db.String(), nullable=False)
     pip = db.Column(db.String(), nullable=False)
-    pfam = db.Column(db.String(), nullable=True)
+
+    def __repr__(self) -> str:
+        return f'\nCAGECAT version: {self.cagecat_version}\n\n' \
+               f'Pfam version\n: {self.pfam}\n' \
+               f'Python packages (pip)\n: {self.pip}\n'

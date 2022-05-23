@@ -5,9 +5,11 @@ Author: Matthias van den Belt
 
 # package imports
 from sys import argv
+import sys
 
+sys.path.append('..')
 # own project imports
-from cagecat.db_models import Job, Statistic
+from cagecat.db_models import Job, Statistic, Versions
 
 ### main code
 if __name__ == "__main__":
@@ -24,3 +26,5 @@ if __name__ == "__main__":
             print(j)
 
         print(Statistic.query.all())
+
+        print(Versions.query.all())
