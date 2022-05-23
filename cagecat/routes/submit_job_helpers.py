@@ -5,7 +5,8 @@ Author: Matthias van den Belt
 import os
 import random
 import typing as t
-from datetime import datetime
+import datetime
+import pytz
 
 import werkzeug.datastructures
 import werkzeug.utils
@@ -18,6 +19,7 @@ from cagecat.general_utils import fetch_job_from_db
 from cagecat.const import jobs_dir, folders_to_create
 from cagecat.db_models import Job as dbJob
 
+timezone = pytz.timezone('Europe/Amsterdam')
 
 def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
     """Parses input type for search module
@@ -107,7 +109,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
 
         j = dbJob(id=cc_job.job_id,
                   status="queued" if depending_on is None else "waiting",  # for parent job to finish
-                  post_time=datetime.utcnow().strftime('%B %d %Y - %H:%M:%S'),
+                  post_time=datetime.datetime.now(timezone).strftime('%B %d %Y - %H:%M:%S'),
                   job_type=cc_job.job_type,
                   redis_id=job.id,
                   depending_on='null' if depending_on is None else cc_job.depends_on_job_id,

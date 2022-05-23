@@ -8,7 +8,8 @@ import subprocess
 import os
 
 # own project imports
-from datetime import datetime
+import datetime
+import pytz
 
 import Bio.SeqIO
 from Bio.SeqIO.FastaIO import SimpleFastaParser
@@ -27,6 +28,7 @@ import typing as t
 # Function definitions
 from config_files.sensitive import finished_hmm_db_folder, sanitized_folder
 
+timezone = pytz.timezone('Europe/Amsterdam')
 
 def create_filtering_command(options: ImmutableMultiDict,
                              is_cluster_related: bool) -> t.List[str]:
@@ -381,7 +383,8 @@ def add_time_to_db(job_id: str, time_type: str, db: SQLAlchemy) -> None:
     """
     job = fetch_job_from_db(job_id)
 
-    formatted_time = datetime.utcnow().strftime('%B %d %Y - %H:%M:%S')
+    formatted_time = datetime.datetime.now(timezone).strftime('%B %d %Y - %H:%M:%S')
+
     if time_type == "start":
         job.start_time = formatted_time
     elif time_type == "finish":
