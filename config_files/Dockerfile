@@ -1,3 +1,10 @@
+# Manually clone the correct repository and add
+
+#/repo/config_files/config.ini
+#/repo/config_files/sensitive.py
+
+# to the folder
+
 FROM ubuntu:latest
 FROM python:3
 
@@ -34,8 +41,7 @@ RUN download-antismash-databases
 RUN /miniconda3/condabin/conda init
 RUN antismash --check-prereqs
 
-# Manually clone the CAGECAT repository
-# RUN git clone https://github.com/gamcil/cblaster.git && cd cblaster/ && pip install .
+RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && pip install .
 
 COPY repo/ /repo/
 
@@ -43,6 +49,7 @@ RUN mkdir /backups
 RUN mkdir -p /process_logs/maintenance
 RUN mkdir /pfam_db
 RUN mkdir -p /root/.config/cblaster
+RUN mkdir /hmm_databases
 
 RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
 RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
