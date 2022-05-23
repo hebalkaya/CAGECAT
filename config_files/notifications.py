@@ -5,7 +5,8 @@ by running
 
 uwsgi --reload /tmp/uwsgi-master.pid
 
-After a notification is no longer required, comment it out.
+After a notification is no longer required, comment it out. Do not include dots
+end the end of your sentence.
 
 Author: Matthias van den Belt
 """
@@ -16,5 +17,6 @@ Author: Matthias van den Belt
 # will differentiate between different notifications for correct cookie use.
 
 notifications = [
-    ('notification_1', 'This is a tester notification')
+    # ('notification_0', 'This is an example notification')
+
 ]
