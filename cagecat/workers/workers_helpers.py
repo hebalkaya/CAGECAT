@@ -360,7 +360,7 @@ def log_threshold_exceeded(parameter: int, threshold: int,
             # TODO: remove program here
             outf.write(f'{error_message} ({parameter} > {threshold})')
 
-        post_job_formalities(job_id, 999)
+        post_job_formalities(job_id, 997)
         return True
 
     return False

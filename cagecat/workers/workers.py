@@ -33,7 +33,8 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False
-        file_path = sanitize_file(file_path, job_id)
+        if file_path is not None:
+            file_path = sanitize_file(file_path, job_id)
 
         # create the base command, with all required fields
         cmd = ["cblaster", "search",
