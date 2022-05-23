@@ -1,26 +1,10 @@
-"""Stores routes for Flask web application for feedback pages
+from flask import request, url_for
 
-Author: Matthias van den Belt
-"""
-
-from flask import Blueprint, request, url_for
-
-from cagecat.general_utils import send_email, show_template
+from cagecat import app
+from cagecat.general_utils import show_template, send_email
 from config_files.sensitive import sender_email
 
-feedback = Blueprint('feedback', __name__, template_folder="templates")
-
-@feedback.route('/')
-def feedback_page() -> str:
-    """Shows the feedback page to the user
-
-    Output:
-        - HTML represented in string format
-    """
-    return show_template('feedback.html', help_enabled=False)
-
-
-@feedback.route('/submit', methods=['POST'])
+@app.route('/submit-feedback', methods=['POST'])
 def submit_feedback() -> str:
     """Page which handles submitted feedback
 
@@ -50,7 +34,7 @@ Message: {request.form['message']}
     return show_template('redirect.html', url=url_for('feedback.feedback_submitted'))
 
 
-@feedback.route('/submitted')
+@app.route('/feedback-submit')
 def feedback_submitted() -> str:
     """Shows a page to the user indicating their feedback has been submitted
 
