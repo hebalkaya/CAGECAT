@@ -80,12 +80,14 @@ function showInputOptions(selectionOption, resetQueries){
     let genomeFileUploadDiv = $('#genomeFileUploadDiv')[0];
     let ncbiEntriesDiv = $('#ncbiEntriesDiv')[0];
     let searchPrevJobOptions = $('#searchPrevJobOptions')[0];
+    let inputFileMessages = $('#inputFileMessages')[0];
 
     if (resetQueries){
         $('#requiredSequencesSelector')[0].options.length = 0;
     }
     if (selectionOption === 'file'){
         genomeFileUploadDiv.classList.remove('no-display');
+        inputFileMessages.classList.remove('no-display'); // is actually part of genomeFileUploadDiv, but divs are not rendering correct. should be fixed in future.
         ncbiEntriesDiv.classList.add('no-display');
 
         // enable
@@ -102,7 +104,10 @@ function showInputOptions(selectionOption, resetQueries){
     }
     else if (selectionOption === 'ncbi_entries'){
         genomeFileUploadDiv.classList.add('no-display');
+        inputFileMessages.classList.add('no-display'); // is actually part of genomeFileUploadDiv, but divs are not rendering correct. should be fixed in future.
         ncbiEntriesDiv.classList.remove('no-display');
+
+
 
         // enable
         setRequiredAndEnabled('ncbiEntriesTextArea')
@@ -113,7 +118,8 @@ function showInputOptions(selectionOption, resetQueries){
         enableOrDisableOption('searchSection', true);
         validateNCBIEntries();
 
-    } else if (selectionOption === 'prev_session'){
+    } else if (selectionOption === 'prev_session'){ //deprecated or still used?
+        console.log('selectionOption prev_session is still in use')
         genomeFileUploadDiv.classList.add('no-display');
         ncbiEntriesDiv.classList.add('no-display');
         searchPrevJobOptions.classList.remove('no-display');
@@ -355,12 +361,14 @@ function readFileContents() {
 
     reader.onload = function(evt){
         if (!valid_ext.includes(ext)){
+            document.getElementById('selectedFileName').classList.add('no-display');
             document.getElementById("fileUploadIncorExt").classList.remove('no-display');
             document.getElementById("fileUploadIncorExtText").innerText = "Invalid query file extension: ." + ext;
             $('#submit')[0].setAttribute('disabled', 'disabled')
             return;
         }
         else {
+            document.getElementById('selectedFileName').classList.remove('no-display');
             document.getElementById("fileUploadIncorExt").classList.add('no-display');
             $('#submit')[0].removeAttribute('disabled');
         }
@@ -577,6 +585,9 @@ function changeSearchMode(mode){
     let fieldset = document.getElementById('hmmSection');
     let remoteOptions = document.getElementById('remoteOptionsSection');
     let radioFasta = document.getElementById('radioFasta');
+
+    let ncbiDiv = document.getElementById('ncbiEntriesDiv');
+
     document.getElementById("requiredSequencesSelector").options.length = 0;
 
     if (mode === 'remote'){
@@ -595,6 +606,8 @@ function changeSearchMode(mode){
         fieldset.removeAttribute('disabled');
         remoteOptions.classList.add('no-display');
         remoteOptions.setAttribute('disabled', 'disabled');
+
+        ncbiDiv.classList.add('no-display');
 
         toggleRemoteOptions(false);
         document.getElementById('entrez_query').setAttribute('disabled', 'disabled');
