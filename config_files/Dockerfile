@@ -15,7 +15,7 @@ RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron n
 RUN apt install -y default-jdk
 
 # Install Python packages
-RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms
+RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms pytz
 
 ### Using Bioconda for antiSmash dependencies installation
 # intall Bioconda
