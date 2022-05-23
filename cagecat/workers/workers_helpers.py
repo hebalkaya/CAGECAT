@@ -212,7 +212,7 @@ def send_notification_email(job: Job) -> None:
     Output:
         - None, an e-mail being sent to the user-defined e-mail address
     """
-    contents = f'''Dear researcher,
+    contents = f'''Dear CAGECAT user,
     
 The job (type: {job.job_type}) you submit on {job.post_time} has finished running on {job.finish_time}.'''
 
