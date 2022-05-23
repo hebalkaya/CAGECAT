@@ -33,7 +33,8 @@ function updateJobExecutionStage(url){
 }
 
 function startJobExecutionStageUpdater(job_id){
-    let url = 'https://cagecat.bioinformatics.nl/results/stage/' + job_id
+    let url = '/results/stage/' + job_id;
+    // let url = 'https://cagecat.bioinformatics.nl/results/stage/' + job_id;
     updateJobExecutionStage(url);
     setInterval(updateJobExecutionStage, 5000, url)
 
