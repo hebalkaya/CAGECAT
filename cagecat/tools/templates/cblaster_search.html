@@ -75,20 +75,22 @@ addAccordionListeners();
                 {{ renderForm(all_forms.remote_input_types_file) }}
 
 
-{#                Missing div?#}
-                <br/>
-                <span class="info-message" id="selectedFileName" style="margin-left:1%;"></span>
-                <div class="no-display" style="margin-left:1%;" id="fileUploadIncorExt">
-                    <span class="error-message" id="fileUploadIncorExtText"></span>
-                </div>
+                <div id="inputFileMessages"> {# messages div #}
+                    <br/>
+                    <span class="no-display info-message" id="selectedFileName" style="margin-left:1%;"></span>
+                    <div class="no-display" style="margin-left:1%;" id="fileUploadIncorExt">
+                        <span class="error-message" id="fileUploadIncorExtText"></span>
+                    </div>
 
-                <div class="no-display" style="margin-left:1%;" id="sanitizationMessage">
-                    <span class="info-message">Your input GenBank file will be sanitized (rewritten) to prevent formatting errors during job execution. Your sequences remain unaffected.</span>
-                </div>
+                    <div class="no-display" style="margin-left:1%;" id="sanitizationMessage">
+                        <span class="info-message">Your input GenBank file will be sanitized (rewritten) to prevent formatting errors during job execution. Your sequences remain unaffected.</span>
+                    </div>
 
-                <div class="no-display" style="margin-left:1%;" id="nucleotideFastaWarning">
-                    <span class="warning-message" style="margin-left: 3%;">You selected a FASTA file with nucleotide sequences. Your input file will be sanitized (re-formatted) into a GenBank file.</span>
+                    <div class="no-display" style="margin-left:1%;" id="nucleotideFastaWarning">
+                        <span class="warning-message" style="margin-left: 3%;">You selected a FASTA file with nucleotide sequences. Your input file will be sanitized (re-formatted) into a GenBank file.</span>
+                    </div>
                 </div>
+            </div>
 
 {#                <div class="warning-message no-display" style="margin-left:1%;" id="genpeptFileError">#}
 {#                    <span>You selected a GenBank file with protein sequences, which is actually a GenPept file. Please create a protein FASTA file from your GenPept file.</span>#}
