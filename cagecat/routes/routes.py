@@ -36,7 +36,7 @@ def home_page():
 
 @app.route('/output-files')
 def output_files_explanation():
-    return None # TODO
+    return show_template('output_descriptions.html', help_enabled=False)
 
 @app.route('/invalid-submission')
 def invalid_submission():
