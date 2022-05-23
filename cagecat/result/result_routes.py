@@ -80,7 +80,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  j_id=job_id,
                                  module=job.job_type,
                                  status=status,
-                                 failure_reason=get_failure_reason(job_id, module_to_tool[job.job_type]),
+                                 failure_reason=get_failure_reason(job_id),
                                  help_enabled=False)
 
 
