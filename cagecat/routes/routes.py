@@ -12,7 +12,7 @@ import re
 # own project imports
 from cagecat.const import submit_url, extract_clusters_options, jobs_dir, hmm_database_organisms
 from cagecat.docs.help_texts import help_texts
-from cagecat.general_utils import show_template, get_server_info, fetch_job_from_db
+from cagecat.general_utils import show_template, get_server_info, fetch_job_from_db, send_email
 
 from cagecat import app
 from cagecat.classes import CAGECATJob
@@ -21,7 +21,7 @@ from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, C
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
 from config_files.config import cagecat_version, thresholds
-from config_files.sensitive import finished_hmm_db_folder
+from config_files.sensitive import finished_hmm_db_folder, sender_email
 
 global available_hmm_databases
 # route definitions
@@ -363,3 +363,43 @@ def submit_job() -> str:
                   j_type=last_job.job_type)
 
     return show_template('redirect.html', url=url)
+
+
+@app.route('/submit-feedback', methods=['POST'])
+def submit_feedback() -> str:
+    """Page which handles submitted feedback
+
+    Input:
+        - No input
+
+    Output:
+        - HTML represented in string format
+    """
+    for email in (sender_email, request.form['email']):
+        send_email('CAGECAT feedback report',
+                      f'''
+
+Thank you for your feedback report. The development team will reply as soon as possible. The team might ask you for additional information, so be sure to keep your inbox regularly.
+
+-----------------------------------------
+Submitted info:
+
+Feedback type: {request.form['feedback_type']}
+E-mail address: {request.form['email']}
+Job ID: {request.form['job_id']}
+Message: {request.form['message']}
+
+-----------------------------------------''',
+                      email)
+
+    return show_template('redirect.html', url=url_for('feedback.feedback_submitted'))
+
+
+@app.route('/feedback-submit')
+def feedback_submitted() -> str:
+    """Shows a page to the user indicating their feedback has been submitted
+
+    Output:
+        - HTML represented in string format
+    """
+    return show_template('feedback_submitted.html', help_enabled=False)
