@@ -56,9 +56,11 @@ def cblaster_search(prev_run_id: str = None) -> str:
     if "type" in request.args:
         headers = None if prev_run_id is None and request.args["type"] == "recompute" else read_headers(prev_run_id)
         module_to_show = request.args["type"]
+        show_examples = False if request.args['type'] == 'recompute' else 'cblaster_search'
     else:
         headers = None
         module_to_show = None
+        show_examples = 'cblaster_search'
 
     return show_template("cblaster_search.html",
                          all_forms=CblasterSearchForm(),
@@ -67,7 +69,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
                          headers=headers,
                          organism_databases=available_hmm_databases,
                          query_file_extensions=','.join(fasta_extensions + genbank_extensions),
-                         show_examples='cblaster_search')
+                         show_examples=show_examples)
 
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
