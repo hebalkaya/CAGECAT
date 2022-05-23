@@ -307,6 +307,8 @@ function mergeExponentials(){
 function getGenBankFileNames() {
     var valid_ext = ["gbk", "gb", "genbank", "gbf", "gbff"];
 
+    $('#selectedFileName')[0].classList.remove('no-display');
+
     let files = $('#fileUploadClinker')[0].files;
     let selected_files = 'Selected files: ';
     let separator = ', '

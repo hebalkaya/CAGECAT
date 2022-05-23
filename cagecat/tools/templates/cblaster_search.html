@@ -78,17 +78,23 @@ addAccordionListeners();
                 <div id="inputFileMessages"> {# messages div #}
                     <br/>
                     <span class="no-display info-message" id="selectedFileName" style="margin-left:1%;"></span>
-                    <div class="no-display" style="margin-left:1%;" id="fileUploadIncorExt">
+                    <br/>
+
+                    <div class="no-display" style="margin-left:1%;margin-top: 1%;" id="fileUploadIncorExt">
                         <span class="error-message" id="fileUploadIncorExtText"></span>
+                        <br/>
                     </div>
 
-                    <div class="no-display" style="margin-left:1%;" id="sanitizationMessage">
+                    <div class="no-display" style="margin-left:1%;margin-top: 1%;" id="sanitizationMessage">
                         <span class="info-message">Your input GenBank file will be sanitized (rewritten) to prevent formatting errors during job execution. Your sequences remain unaffected.</span>
+                        <br/>
                     </div>
 
-                    <div class="no-display" style="margin-left:1%;" id="nucleotideFastaWarning">
-                        <span class="warning-message" style="margin-left: 3%;">You selected a FASTA file with nucleotide sequences. Your input file will be sanitized (re-formatted) into a GenBank file.</span>
+                    <div class="no-display" style="margin-left:1%;margin-top: 1%;" id="nucleotideFastaWarning">
+                        <span class="warning-message">You selected a FASTA file with nucleotide sequences. Your input file will be sanitized (re-formatted) into a GenBank file.</span>
+                        <br/>
                     </div>
+
                 </div>
             </div>
 
