@@ -47,9 +47,9 @@
         {% for notification_id, notification_text in notifications %}
             <div id='{{ notification_id }}' class="notification-message" style='font-size: 18px;'>
                 {{ notification_text }} -
-                <a href='#' onclick="Cookies.set({{ notification_id }},1);$('#{{ notification_id }}').remove();return false;">Hide message</a>
+                <a href='#' onclick="Cookies.set('{{ notification_id }}',1);$('#{{ notification_id }}').remove();return false;">Hide message</a>
             </div>
-            <script type="application/javascript">hideNotifications({{ notification_id }});</script>
+            <script type="application/javascript">hideNotifications("{{ notification_id }}");</script>
         {% endfor %}
         {% block content %}{% endblock %}
     </div>
