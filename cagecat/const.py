@@ -64,7 +64,10 @@ failure_reasons = {
         'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.',
 
     'ERROR - No files found':
-        'No files were given when trying to execute clinker. Please retry to submit your analysis.'
+        'No files were given when trying to execute clinker. Please retry to submit your analysis.',
+
+    "'utf-8' codec can't decode byte":
+        'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
 
 
     
