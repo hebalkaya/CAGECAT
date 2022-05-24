@@ -23,6 +23,7 @@ jobs_dir = os.path.join("cagecat", "jobs")
 folders_to_create = ["uploads", "results", "logs"]
 
 connection_error_user_friendly_message = 'A connection error between CAGECAT and NCBI occurred. The NCBI servers are probably experiencing difficulties processing our requests. Please try again at a later moment. If this problem persists, please let us know by providing feedback.'
+no_hits_message = 'Your search with the specified parameters did not return any {} hits. Check your input, and try to loosen your search parameters to get results.'
 
 failure_reasons = {
     'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Ot
@@ -36,7 +37,10 @@ failure_reasons = {
     # Results in the following exception: TypeError: object of type 'NoneType' has no len()
         'No valid HMM profiles have been entered. Check the entered HMM profile for potential spelling errors and make sure all entered HMM profile identifiers are valid Pfam identifiers (https://pfam.xfam.org/). GenPept accessions of NCBI are not valid.',
     'ValueError: Search completed, but found no hits':  # module search, no hits found
-        'Your search with the specified parameters did not return any hits. Check your input, and try to loosen your search parameters to get results.',
+        no_hits_message.format('blast'),
+    'ValueError: No results found':
+        no_hits_message.format('cluster'),
+
     'Too many selected clusters':  # clinker, clinker_query, extract_clusters
         'You have selected too many clusters to use in your downstream analysis. Check the maximum number of clusters for the analysis you were trying to execute, and try again.',
     'Too many samples':  # gne module
