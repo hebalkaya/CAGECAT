@@ -61,7 +61,12 @@ failure_reasons = {
         'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.',
 
     'No protocol for mode':
-        'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.'
+        'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.',
+
+    'ERROR - No files found':
+        'No files were given when trying to execute clinker. Please retry to submit your analysis.'
+
+
     
 
 
