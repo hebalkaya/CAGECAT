@@ -37,7 +37,7 @@ def get_failure_reason(job_id: str) -> str:
                     return message
 
     except FileNotFoundError:
-        return 'Your analysis could not be started due to a version problem at CAGECAT. Please submit feedback as this can be easily fixed.'
+        return 'No log file was found for your analysis. Please submit feedback as this should be investigated by the developers.'
 
     return 'Unknown failure reason.'
 

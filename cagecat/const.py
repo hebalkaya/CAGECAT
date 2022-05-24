@@ -67,7 +67,10 @@ failure_reasons = {
         'No files were given when trying to execute clinker. Please retry to submit your analysis.',
 
     "'utf-8' codec can't decode byte":
-        'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
+        'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.',
+
+    'Error when parsing FASTA file':
+        'Your FASTA file could not be parsed successfully. Please make sure that your input file adheres to the standardized FASTA format.'
 
 
     

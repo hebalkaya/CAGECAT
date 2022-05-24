@@ -457,6 +457,13 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     # detect input type (NT FASTA / protein FASTA / GBK)
     extension = f".{file_path.split('.')[-1]}"
 
+    base, log_folder, _ = generate_paths(job_id)
+    log_fn = os.path.join(log_folder, f'{job_id}.log')
+    write_mode = 'w' if not os.path.exists(log_fn) else 'a'
+
+    with open(log_fn, write_mode) as outf:
+        outf.write('-- Executing input file sanitization\n')
+
     if extension in fasta_extensions:
         # determine what type of FASTA it is.
         with open(file_path) as handle:
@@ -471,6 +478,13 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
                     file_type = 'nt_fasta'
                 else:
                     file_type = 'aa_fasta'
+
+        if 'file_type' not in locals(): # check if the variable exists
+            write_mode = 'w' if not os.path.exists(log_fn) else 'a'
+            with open(log_fn, write_mode) as outf: # manually write to file as there is no log file yet (as we've not executed any command yet)
+                outf.write('-- Error when parsing FASTA file\n')
+
+            raise IOError('Error when parsing FASTA file')
 
         if file_type == 'aa_fasta':
             return file_path
@@ -496,7 +510,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
 
     # actually sanitize
     # situations: nt FASTA, GenBank file
-    base, log_folder, _ = generate_paths(job_id)
+
 
     # # print('before actual sanitization')
     # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
@@ -512,6 +526,10 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     if return_code != 0:
         post_job_formalities(job_id, return_code)
         raise IOError('Error during sanitization by antiSmash')
+
+    write_mode = 'w' if not os.path.exists(log_fn) else 'a'
+    with open(log_fn, write_mode) as outf: # manually write to file as there is no log file yet (as we've not executed any command yet)
+        outf.write('-- Finished sanitization of input files\n')
 
     if remove_old_files:
         os.remove(file_path)
