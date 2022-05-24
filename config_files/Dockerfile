@@ -14,6 +14,8 @@ RUN apt update
 RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct diamond-aligner
 RUN apt install -y default-jdk
 
+RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi
+
 ### Using Bioconda for antiSmash dependencies installation
 # intall Bioconda
 RUN curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -29,9 +31,11 @@ RUN /miniconda3/condabin/conda install hmmer2 hmmer diamond fasttree prodigal bl
 #RUN /miniconda3/condabin/conda install muscle=3.8.31 meme=4.11.2
 ##
 
-RUN /miniconda3/condabin/conda init
 # Install Python packages
-RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms pytz
+RUN /miniconda3/bin/pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz
+RUN /miniconda3/condabin/conda init
+
+RUN pip3 install jinja2==3.0.1
 
 ### Installing antiSmash itself
 RUN wget https://dl.secondarymetabolites.org/releases/6.0.0/antismash-6.0.0.tar.gz
