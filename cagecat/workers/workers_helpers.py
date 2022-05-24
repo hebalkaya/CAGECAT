@@ -534,5 +534,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     base_folder = os.path.join(sanitized_folder, job_id)
     shutil.rmtree(base_folder)
     print('Removed folder', base_folder)
+    # in case of multiple files, the above folder is recreated and deleted multiple times.
+    # This is required, otherwise antiSmash will fail because it detects files in the output folder and will abort for safety reasons..
 
     return destination
