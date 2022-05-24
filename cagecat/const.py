@@ -99,6 +99,10 @@ regex_failure_reasons = [
         re.compile('Entrez Query: .+ is not supported'),
         'An invalid Entrez query was submitted. Did you forget to add "[organism]" at the end?'
     ),
+    (
+        re.compile('ERROR\s+\d+\/\d+\s\d+:\d+:\d+\s+no valid records found in file'),
+        'Your input file did not contain any valid records. Does your file have the correct extension/content combination? (e.g. a file with FASTA contents with a GenBank extension could cause this error)'
+    )
 
 
 ]
