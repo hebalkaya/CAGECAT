@@ -70,7 +70,10 @@ failure_reasons = {
         'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.',
 
     'Error when parsing FASTA file':
-        'Your FASTA file could not be parsed successfully. Please make sure that your input file adheres to the standardized FASTA format.'
+        'Your FASTA file could not be parsed successfully. Please make sure that your input file adheres to the standardized FASTA format.',
+
+    'Your total query length is greater than allowed on the BLAST webserver.':
+        'The length of your input sequence(s) exceeds the limit of the BLAST webserver. Did you upload a whole genome file? If yes, reduce your input file to the regions of interest.'
 
 
     
