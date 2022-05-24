@@ -14,9 +14,6 @@ RUN apt update
 RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct diamond-aligner
 RUN apt install -y default-jdk
 
-# Install Python packages
-RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms pytz
-
 ### Using Bioconda for antiSmash dependencies installation
 # intall Bioconda
 RUN curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -40,6 +37,9 @@ RUN download-antismash-databases
 
 RUN /miniconda3/condabin/conda init
 RUN antismash --check-prereqs
+
+# Install Python packages
+RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms pytz
 
 RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && pip install .
 
