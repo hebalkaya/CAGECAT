@@ -58,7 +58,10 @@ failure_reasons = {
         'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.',
 
     'OSError: Unable to parse NCBI response':
-        'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.'
+        'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.',
+
+    'No protocol for mode':
+        'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.'
     
 
 
