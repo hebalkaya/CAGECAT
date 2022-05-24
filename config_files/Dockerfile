@@ -29,17 +29,16 @@ RUN /miniconda3/condabin/conda install hmmer2 hmmer diamond fasttree prodigal bl
 #RUN /miniconda3/condabin/conda install muscle=3.8.31 meme=4.11.2
 ##
 
+RUN /miniconda3/condabin/conda init
+# Install Python packages
+RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms pytz
+
 ### Installing antiSmash itself
 RUN wget https://dl.secondarymetabolites.org/releases/6.0.0/antismash-6.0.0.tar.gz
 RUN tar -zxf antismash-6.0.0.tar.gz
 RUN pip install ./antismash-6.0.0
 RUN download-antismash-databases
-
-RUN /miniconda3/condabin/conda init
 RUN antismash --check-prereqs
-
-# Install Python packages
-RUN pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker uWSGI wtforms pytz
 
 RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && pip install .
 
