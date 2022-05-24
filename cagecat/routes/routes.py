@@ -392,7 +392,7 @@ Message: {request.form['message']}
 -----------------------------------------''',
                       email)
 
-    return show_template('redirect.html', url=url_for('submit_feedback'))
+    return show_template('redirect.html', url=url_for('feedback_submitted'))
 
 
 @app.route('/feedback-submit')
