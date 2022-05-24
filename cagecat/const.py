@@ -3,6 +3,7 @@
 Author: Matthias van den Belt
 """
 import os
+import re
 
 from config_files.config import thresholds
 
@@ -50,7 +51,12 @@ failure_reasons = {
         connection_error_user_friendly_message,
 
     'sqlite3.OperationalError: unable to open database file':
-        'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.'
+        'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.',
+
+    'OSError: Unable to parse NCBI response':
+        'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.'
+    
+
 
     # Pfam related exceptions
     # 'Failed to fetch profiles from Pfam':  # is this actually an error?
@@ -67,6 +73,17 @@ failure_reasons = {
     # requests.exceptions.HTTPError
     #     None # TODO: fix
 }
+
+regex_failure_reasons = [
+    # contains patterns
+
+    (
+        re.compile('Entrez Query: .+ is not supported'),
+        'An invalid Entrez query was submitted. Did you forget to add "[organism]" at the end?'
+    ),
+
+
+]
 
 module_to_tool = {
     'search': 'cblaster',

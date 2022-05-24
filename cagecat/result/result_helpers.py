@@ -4,11 +4,13 @@ Author: Matthias van den Belt
 """
 
 import os
+import re
 import typing as t
 
-from cagecat.const import failure_reasons, jobs_dir
+from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons
 from cagecat.db_models import Job as dbJob
 from cagecat.general_utils import fetch_job_from_db
+
 
 
 def get_failure_reason(job_id: str) -> str:
@@ -29,6 +31,11 @@ def get_failure_reason(job_id: str) -> str:
             for fail in failure_reasons:
                 if fail in l:
                     return failure_reasons[fail]
+
+            for fail_pattern, message in regex_failure_reasons:
+                if re.findall(pattern=fail_pattern, string=l):
+                    return message
+
     except FileNotFoundError:
         return 'Your analysis could not be started due to a version problem at CAGECAT. Please submit feedback as this can be easily fixed.'
 
