@@ -287,7 +287,9 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    file_path = sanitize_file(file_path, job_id)
+    for f in os.listdir(file_path):
+        path = os.path.join(file_path, f)
+        sanitize_file(path, job_id, remove_old_files=True)
 
     if log_threshold_exceeded(len(os.listdir(file_path)),
                               thresholds['max_clusters_to_plot'],

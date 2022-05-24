@@ -443,13 +443,14 @@ def remove_email_from_db(db_job: Job):
         db_job.email = '-'
 
 
-def sanitize_file(file_path, job_id):
+def sanitize_file(file_path, job_id, remove_old_files=False):
     """Sanitizes input file by piping it through antiSmash
 
     Called when preparing a cblaster search
 
     Returns file path of sanitized file to be used in the cblaster search analysis
     """
+    print('Sanitizing ', file_path)
     sanitization_cmd_base = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal {}'
 
     # detect input type (NT FASTA / protein FASTA / GBK)
@@ -477,15 +478,17 @@ def sanitize_file(file_path, job_id):
         else:
             raise IOError('Incorrect FASTA file type')
     elif extension in genbank_extensions:
+        pass
         # check if input file is not accidentally a GenPept file
-        for record in Bio.SeqIO.parse(file_path, 'gb'):
-            total = 0
-            for nt in 'ATCGatcg':
-                total += record.seq.count(nt)
-
-            if total != len(record.seq):
-                # TODO: can rewrite records to a protein FASTA and use this as input. But should only be executed when all records are proteins (i.e. mixed DNA/protein records are invalid)
-                raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
+        # this will fail if it is an incorrectly formatted file, so skip it for now
+        # for record in Bio.SeqIO.parse(file_path, 'gb'):
+        #     total = 0
+        #     for nt in 'ATCGatcg':
+        #         total += record.seq.count(nt)
+        #
+        #     if total != len(record.seq):
+        #         # TODO: can rewrite records to a protein FASTA and use this as input. But should only be executed when all records are proteins (i.e. mixed DNA/protein records are invalid)
+        #         raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
 
     else:
         raise IOError('Invalid extension found:', extension)
@@ -506,10 +509,17 @@ def sanitize_file(file_path, job_id):
     )
 
     if return_code != 0:
+        post_job_formalities(job_id, return_code)
         raise IOError('Error during sanitization by antiSmash')
+
+    if remove_old_files:
+        os.remove(file_path)
+        print('Removed', file_path)
 
     sanitized_fn = os.path.join(sanitized_folder, job_id, f'{job_id}.gbk')
     destination = os.path.join(base, 'uploads', f'{job_id}.gbk')
     os.rename(sanitized_fn, destination)
+
+    print('Moved sanitized file from', sanitized_fn, 'to', destination)
 
     return destination
