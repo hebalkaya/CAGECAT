@@ -107,7 +107,7 @@ def create_summary_table_commands(
 
 
 def run_command(cmd: t.List[str], log_base: str, job_id: str,
-                log_output: bool = True) -> int:
+                log_output: bool = True, **kwargs) -> int:
     """Executes a command on the command line
 
     Input:
@@ -130,15 +130,17 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
         write_mode = 'a' if os.path.exists(log_fp) else 'w' # indicate a sanitization step has occurred
         with open(log_fp, write_mode) as outf:
             try:
-                res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True)
+                res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True, **kwargs)
                 return_code = res.returncode
-            except:  # purposely broad except clause to catch all exceptions
+            except Exception as e:  # purposely broad except clause to catch all exceptions
+                print(e)
                 return_code = 1
     else:
         try:
-            res = subprocess.run(cmd)
+            res = subprocess.run(cmd, **kwargs)
             return_code = res.returncode
-        except:  # purposely broad except clause to catch all exceptions
+        except Exception as e:  # purposely broad except clause to catch all exceptions
+            print(e)
             return_code = 1
 
     return return_code
@@ -448,10 +450,10 @@ def sanitize_file(file_path, job_id):
 
     Returns file path of sanitized file to be used in the cblaster search analysis
     """
-    sanitization_cmd_base = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal --debug {}'
+    sanitization_cmd_base = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal {}'
 
     # detect input type (NT FASTA / protein FASTA / GBK)
-    extension = file_path.split('.')[-1]
+    extension = f".{file_path.split('.')[-1]}"
 
     if extension in fasta_extensions:
         # determine what type of FASTA it is.
@@ -490,21 +492,24 @@ def sanitize_file(file_path, job_id):
 
     # actually sanitize
     # situations: nt FASTA, GenBank file
-    uploads_folder, log_folder, _ = generate_paths(job_id)
+    base, log_folder, _ = generate_paths(job_id)
 
-    cmd = sanitization_cmd_base.format(sanitized_folder, job_id, file_path)
+    # # print('before actual sanitization')
+    # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
+    cmd = sanitization_cmd_base.format(os.path.join(sanitized_folder, job_id), job_id, file_path)
+
     return_code = run_command(
         cmd=cmd.split(),
         log_base=log_folder,
         job_id=job_id,
-        log_output=True
+        log_output=True,
     )
 
     if return_code != 0:
         raise IOError('Error during sanitization by antiSmash')
 
-    sanitized_fn = os.path.join(sanitized_folder, f'{job_id}.gbk')
-    destination = os.path.join(uploads_folder, f'{job_id}.gbk')
+    sanitized_fn = os.path.join(sanitized_folder, job_id, f'{job_id}.gbk')
+    destination = os.path.join(base, 'uploads', f'{job_id}.gbk')
     os.rename(sanitized_fn, destination)
 
     return destination
