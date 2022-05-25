@@ -26,6 +26,23 @@ connection_error_user_friendly_message = 'A connection error between CAGECAT and
 no_hits_message = 'Your search with the specified parameters did not return any {} hits. Check your input, and try to loosen your search parameters to get results.'
 sanitization_message = 'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
 
+failure_reasons_from_cblaster_code = {
+    # LOG.error("File parsing failed, exiting...", exc_info=True)
+    # LOG.error("Could not find matching SQlite3 database, exiting")
+    # LOG.error("No hits have been found")
+    # LOG.error("No valid profiles could be selected")
+    # LOG.error(results.stderr.decode("utf-8"))
+    #
+    # LOG.exception("Network error while retrieving genomic context")
+    # LOG.exception("Failed to insert %i records", len(tuples))
+    # LOG.exception("Expected range in format start-end")
+    # LOG.exception("Failed to fetch sequences")
+    # LOG.exception("hmmsearch failed!"+add_msg)
+    # LOG.exception('Unable to parse NCBI response')
+    #
+
+}
+
 failure_reasons = {
     'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Ot
         '',
@@ -53,7 +70,7 @@ failure_reasons = {
     'urllib.error':
         connection_error_user_friendly_message,
     'Failed to fetch sequences':
-        connection_error_user_friendly_message,
+        'An error occurred when fetching sequences from NCBI. Did you enter your NCBI identifiers correctly?',
 
     'sqlite3.OperationalError: unable to open database file':
         'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.',
