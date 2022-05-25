@@ -24,6 +24,7 @@ folders_to_create = ["uploads", "results", "logs"]
 
 connection_error_user_friendly_message = 'A connection error between CAGECAT and NCBI occurred. The NCBI servers are probably experiencing difficulties processing our requests. Please try again at a later moment. If this problem persists, please let us know by providing feedback.'
 no_hits_message = 'Your search with the specified parameters did not return any {} hits. Check your input, and try to loosen your search parameters to get results.'
+sanitization_message = 'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
 
 failure_reasons = {
     'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Ot
@@ -67,7 +68,7 @@ failure_reasons = {
         'No files were given when trying to execute clinker. Please retry to submit your analysis.',
 
     "'utf-8' codec can't decode byte":
-        'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.',
+        sanitization_message,
 
     'Error when parsing FASTA file':
         'Your FASTA file could not be parsed successfully. Please make sure that your input file adheres to the standardized FASTA format.',
@@ -82,11 +83,13 @@ failure_reasons = {
         'You submitted a file with an invalid extension. Please refer to the documentation to check the allowed file types.',
 
     'Incorrect FASTA file type':
-        'An incorrect FASTA file was provided. Your FASTA file should either contain nucleotides or amino acids, not both.'
+        'An incorrect FASTA file was provided. Your FASTA file should either contain nucleotides or amino acids, not both.',
 
+    'Error during sanitization by antiSmash':
+        sanitization_message
 
-    
-
+    # error below is in sanitize_file() function but is currently not in used
+    # raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
 
     # Pfam related exceptions
     # 'Failed to fetch profiles from Pfam':  # is this actually an error?
