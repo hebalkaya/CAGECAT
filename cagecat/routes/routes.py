@@ -312,7 +312,8 @@ def submit_job() -> str:
 
                 # check if exceeds
                 if cluster_number > thresholds['max_clusters_to_plot']:
-                    return show_template('tools.clinker_too_many_clusters.html',
+                    # can be a redirect. now the url remains /submit_job
+                    return show_template('clinker_too_many_clusters.html',
                                          cluster_number=cluster_number,
                                          cluster_threshold=thresholds['max_clusters_to_plot'])
 
