@@ -117,6 +117,11 @@ regex_failure_reasons = [
     (
         re.compile('ERROR\s+\d+\/\d+\s\d+:\d+:\d+\s+no valid records found in file'),
         'Your input file did not contain any valid records. Does your file have the correct extension/content combination? (e.g. a file with FASTA contents with a GenBank extension could cause this error)'
+    ),
+
+    (
+        re.compile('ERROR\s+\d+\/\d+\s\d+:\d+:\d+\s+protein records are not supported'),
+        'Your input file is a GenPept file. The supported file formats for a cblaster search are: nucleotide FASTA, protein FASTA, GenBank. For a clinker job, the supported file format is the GenBank format.'  # check if this also occurs for a clinker job
     )
 
 
