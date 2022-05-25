@@ -286,45 +286,49 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
     """
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+    try:
+        for f in os.listdir(file_path):
+            path = os.path.join(file_path, f)
+            sanitize_file(path, job_id, remove_old_files=True)
 
-    for f in os.listdir(file_path):
-        path = os.path.join(file_path, f)
-        sanitize_file(path, job_id, remove_old_files=True)
 
-    if log_threshold_exceeded(len(os.listdir(file_path)),
-                              thresholds['max_clusters_to_plot'],
-                              (LOG_PATH, job_id, 'clinker'),
-                              'Too many selected clusters'):
-        return
+        if log_threshold_exceeded(len(os.listdir(file_path)),
+                                  thresholds['max_clusters_to_plot'],
+                                  (LOG_PATH, job_id, 'clinker'),
+                                  'Too many selected clusters'):
+            return
 
-    cmd = ["clinker", file_path,
-           "--jobs", "2",
-           "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
-           "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
-           "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
+        cmd = ["clinker", file_path,
+               "--jobs", "2",
+               "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
+               "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
+               "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
 
-    if "noAlign" in options:
-        cmd.append("--no_align")
+        if "noAlign" in options:
+            cmd.append("--no_align")
 
-    cmd.extend(["--identity", options["identity"]])
+        cmd.extend(["--identity", options["identity"]])
 
-    if options["clinkerDelim"]:  # empty string evaluates to false
-        cmd.extend(["--delimiter", options["clinkerDelim"]])
+        if options["clinkerDelim"]:  # empty string evaluates to false
+            cmd.extend(["--delimiter", options["clinkerDelim"]])
 
-    cmd.extend(["--decimals", options["clinkerDecimals"]])
+        cmd.extend(["--decimals", options["clinkerDecimals"]])
 
-    if "hideLinkHeaders" in options:
-        cmd.append("--hide_link_headers")
+        if "hideLinkHeaders" in options:
+            cmd.append("--hide_link_headers")
 
-    if "hideAlignHeaders" in options:
-        cmd.append("--hide_aln_headers")
+        if "hideAlignHeaders" in options:
+            cmd.append("--hide_aln_headers")
 
-    if "useFileOrder" in options:
-        cmd.append("--use_file_order")
+        if "useFileOrder" in options:
+            cmd.append("--use_file_order")
 
-    return_code = run_command(cmd, LOG_PATH, job_id)
+        return_code = run_command(cmd, LOG_PATH, job_id)
 
-    post_job_formalities(job_id, return_code)
+        post_job_formalities(job_id, return_code)
+    except Exception as e:
+        print(e)
+        post_job_formalities(job_id, 1)
 
 
 def clinker_query(job_id: str, options: ImmutableMultiDict=None,
