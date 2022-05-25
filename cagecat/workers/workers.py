@@ -327,7 +327,12 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
 
         post_job_formalities(job_id, return_code)
     except Exception as e:
-        print(e)
+        log_fn = os.path.join(LOG_PATH, f'{job_id}.log')
+        write_mode = 'w' if not os.path.exists(log_fn) else 'a'
+
+        with open(log_fn, write_mode) as outf:
+            outf.write(f'{e}\n')
+
         post_job_formalities(job_id, 1)
 
 

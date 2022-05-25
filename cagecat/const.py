@@ -76,7 +76,13 @@ failure_reasons = {
         'The length of your input sequence(s) exceeds the limit of the BLAST webserver. Did you upload a whole genome file? If yes, reduce your input file to the regions of interest.',
 
     'RecursionError: maximum recursion depth exceeded while encoding a JSON object':
-        'An error occurred when writing your results (maximum recursion depth). Please notify the developers.'
+        'An error occurred when writing your results (maximum recursion depth). Please notify the developers.',
+
+    'Invalid extension found':
+        'You submitted a file with an invalid extension. Please refer to the documentation to check the allowed file types.',
+
+    'Incorrect FASTA file type':
+        'An incorrect FASTA file was provided. Your FASTA file should either contain nucleotides or amino acids, not both.'
 
 
     
