@@ -289,8 +289,10 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
     try:
         for f in os.listdir(file_path):
             path = os.path.join(file_path, f)
-            sanitize_file(path, job_id, remove_old_files=True)
 
+            # if path.endswith('.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
+            #     continue
+            sanitize_file(path, job_id, remove_old_files=True)
 
         if log_threshold_exceeded(len(os.listdir(file_path)),
                                   thresholds['max_clusters_to_plot'],
