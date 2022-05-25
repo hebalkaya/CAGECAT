@@ -745,7 +745,9 @@ function setExampleInput(tool_name){
         $('#identity')[0].value = '0.28';
         $('#clinkerDecimals')[0].value = '3';
         $('#job_title')[0].value = 'Example visualization input (BA)';
-        $('#selectedFileName')[0].innerText = 'Selected files: A_alliaceus.gbk, A_mulundensis.gbk, A_puulaauensis.gbk, Asp_versicolor.gbk'
+        let fileSelector = $('#selectedFileName')[0];
+        fileSelector.innerText = 'Selected files: A_alliaceus.gbk, A_mulundensis.gbk, A_puulaauensis.gbk, Asp_versicolor.gbk';
+        fileSelector.classList.remove('no-display');
         $('#fileUploadClinker')[0].removeAttribute('required');
     }
     else {

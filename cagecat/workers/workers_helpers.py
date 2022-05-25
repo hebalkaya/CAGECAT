@@ -506,7 +506,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
         #         raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
 
     else:
-        raise IOError('Invalid extension found:', extension)
+        raise IOError('Invalid extension found:', extension, f'(from file) {file_path}')
 
     # actually sanitize
     # situations: nt FASTA, GenBank file
