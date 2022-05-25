@@ -149,7 +149,11 @@
     <ul>
     {% if headers|length == 1 %}
         {% if is_for_filtering %}
+            {% if not headers[0] %}
             <li>No filtering on queries</li>
+            {% else %}
+            <li>{{ headers[0] }}</li>
+            {% endif %}
         {% elif not headers[0] %}
             <li>All clusters are selected</li>
         {% else %}

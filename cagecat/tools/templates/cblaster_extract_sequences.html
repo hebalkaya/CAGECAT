@@ -29,9 +29,11 @@
             <fieldset id="filteringSection">
                 {{ renderForm(all_forms.filtering) }}
 
-                <label class="textarea-label" for="selectedQueries">Queries</label>
-                {{ renderHelpButton('selectedQueries') }}
-                {{ showSelectedClusters(selected_queries, False, True) }}
+                <div class="input-layer wider-input">
+                    <label class="textarea-label" for="selectedQueries">Queries</label>
+                    {{ renderHelpButton('selectedQueries') }}
+                    {{ showSelectedClusters(selected_queries, False, true) }} {# should False be false ? #}
+                </div>
 {#                <img class="help-button" onclick="showHelp('selectedQueries')" src="/static/images/question-circle.svg">#}
             </fieldset>
         </div>
