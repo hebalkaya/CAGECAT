@@ -7,10 +7,12 @@ import os
 import re
 import typing as t
 
+from flask import url_for
+
 from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons
 from cagecat.db_models import Job as dbJob
-from cagecat.general_utils import fetch_job_from_db
-
+from cagecat.general_utils import fetch_job_from_db, send_email
+from config_files.sensitive import sender_email
 
 
 def get_failure_reason(job_id: str) -> str:
@@ -23,6 +25,7 @@ def get_failure_reason(job_id: str) -> str:
     Output:
         - user-friendly failure reason
     """
+    msg = None
     try:
         with open(os.path.join(jobs_dir, job_id, "logs", f"{job_id}.log")) as inf:
             logs = inf.readlines()
@@ -37,9 +40,18 @@ def get_failure_reason(job_id: str) -> str:
                     return message
 
     except FileNotFoundError:
-        return 'No log file was found for your analysis. Please submit feedback as this should be investigated by the developers.'
+        msg = 'No log file was found for your analysis. The developers have been notified to investigate your scenario.'
 
-    return 'Unknown failure reason.'
+    send_email(
+        subject=f'{job_id} failed with an unknown reason.',
+        message=f'The job {job_id} failed with an unknown reason. Link: {url_for("show_result", job_id=job_id)}',
+        receiving_email=sender_email
+    )
+
+    if msg is None:
+        return 'Unknown failure reason. The developers have been notified to investigate your scenario.'
+    else:
+        return msg
 
 
 def prepare_finished_result(job_id: str,
