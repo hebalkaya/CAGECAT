@@ -59,7 +59,7 @@ cblaster_search = {
     'ncbiEntriesTextArea': {
         'title': 'Search from NCBI entries',
         'module': '',
-        'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering the same identifier twice will prevent you from continuing.'
+        'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering invalid identifiers will not halt the analysis, but the invalid identifiers are not used in the analysis. Likewise, if duplicate identifiers are entered, the identifier is used once in your analysis.'
     },
     'entrez_query': {
         'title': 'Filter using Entrez query',
