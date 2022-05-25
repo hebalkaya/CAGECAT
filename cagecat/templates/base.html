@@ -69,7 +69,14 @@
 
     {% if show_examples %}
         <div class="centered">
+        {% if show_examples == 'clinker' %}
+            <a href="{{url_for('static', filename='clinker_example_files.zip')}}">
+                <button class="button example-button" onclick="setExampleInput('{{ show_examples }}')">Example input</button>
+            </a>
+        {% else %}
             <button class="button example-button" onclick="setExampleInput('{{ show_examples }}')">Example input</button>
+        {% endif %}
+
             {% if show_examples == 'cblaster_search' %}
                 <a href="{{url_for('result.show_result', job_id='Y736N982T834D20') }}"><button class="button example-button">Example search output</button></a>
             {% elif show_examples == 'clinker' %}

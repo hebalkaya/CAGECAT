@@ -741,18 +741,14 @@ function setExampleInput(tool_name){
         $('#ncbiEntriesTextArea')[0].value = exampleQueries;
         secondRadio.click();  // to make required sequences pop up
     }
-    else if (tool_name === 'clinker'){
+    else if (tool_name === 'clinker') {
         $('#identity')[0].value = '0.28';
         $('#clinkerDecimals')[0].value = '3';
         $('#job_title')[0].value = 'Example visualization input (BA)';
-        let fileSelector = $('#selectedFileName')[0];
-        fileSelector.innerText = 'Selected files: A_alliaceus.gbk, A_mulundensis.gbk, A_puulaauensis.gbk, Asp_versicolor.gbk';
-        fileSelector.classList.remove('no-display');
-        $('#fileUploadClinker')[0].removeAttribute('required');
     }
     else {
-        console.log('Incorrect tool name:' + tool_name)
-    }
+            console.log('Incorrect tool name:' + tool_name)
+        }
 }
 
 function getOutputFromPlot(plotting_type){
