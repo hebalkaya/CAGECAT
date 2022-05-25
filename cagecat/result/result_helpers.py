@@ -43,8 +43,8 @@ def get_failure_reason(job_id: str) -> str:
         msg = 'No log file was found for your analysis. The developers have been notified to investigate your scenario.'
 
     send_email(
-        subject=f'{job_id} failed with an unknown reason.',
-        message=f'The job {job_id} failed with an unknown reason. Link: {url_for("show_result", job_id=job_id)}',
+        subject=f'{job_id} failed with an unknown reason',
+        message=f'The job {job_id} failed with an unknown reason and should be investigated.\n',
         receiving_email=sender_email
     )
 
