@@ -33,7 +33,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False
-        if file_path is not None:
+        if file_path is not None and not file_path.endswith('.json'): #.json indicates this is a recompute job
             file_path = sanitize_file(file_path, job_id)
 
         # create the base command, with all required fields
