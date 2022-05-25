@@ -1,4 +1,4 @@
-var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
+// var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -99,7 +99,6 @@ function showInputOptions(selectionOption, resetQueries){
 
         enableOrDisableOption('searchSection', true);
 
-        document.getElementById("accessionsError").classList.add('no-display');
         document.getElementById("submit").removeAttribute("disabled");
 
     }
@@ -132,7 +131,6 @@ function showInputOptions(selectionOption, resetQueries){
 
         enableOrDisableOption('searchSection', false);
 
-        document.getElementById("accessionsError").classList.add('no-display');
         document.getElementById("submit").removeAttribute("disabled");
 
         if (!resetQueries){
@@ -166,59 +164,23 @@ function changeHitAttribute(){
 }
 
 function validateNCBIEntries() {
-    let incorrectAcc = []
-    let correctAcc = []
     let textArea = document.getElementById("ncbiEntriesTextArea");
-    let errorBox = document.getElementById("accessionsError")
     let lines = textArea.value.split("\n");
-    let valid = true;
     document.getElementById("requiredSequencesSelector").options.length = 0;
 
-    for (let i = 0; i < lines.length; i++) {
-        if (!lines[i].match(ncbiPattern)) {
-            if (lines[i] !== "") {
-                incorrectAcc.push(lines[i]);
-                errorBox.classList.remove('no-display');
-                valid = false;
-            }
-        }
+    let requiredSequences = document.getElementById("requiredSequencesSelector");
+    for (let i=0; i<lines.length; i++){
+        if (!(lines[i] === "")){
 
-        if (correctAcc.includes(lines[i])){
-            incorrectAcc.push(lines[i]);
-            errorBox.classList.remove('no-display');
-            valid = false;
-        }
-        correctAcc.push(lines[i]);
+            // console.log(everything[i]);
+            let opt = document.createElement("option");
+            opt.text = lines[i];
+            opt.value = lines[i];
+            requiredSequences.add(opt);
+
+    }
     }
 
-    if (valid) {
-        textArea.classList.remove("invalid");
-        errorBox.classList.add('no-display');
-        document.getElementById("submit").disabled = false;
-
-        let requiredSequences = document.getElementById("requiredSequencesSelector");
-        let everything = textArea.value.split("\n");
-        if (!(everything.length === 1 && everything[0] === "")){
-
-            for (let i=0; i<everything.length; i++){
-                if (!(everything[i] === "")){
-
-                    // console.log(everything[i]);
-                    let opt = document.createElement("option");
-                    opt.text = everything[i];
-                    opt.value = everything[i];
-                    requiredSequences.add(opt);
-                }
-            }
-        }
-    } else {
-        textArea.classList.add("invalid");
-        document.getElementById("accessionsErrorText").innerText = "Invalid accessions: " + incorrectAcc.join(", ");
-        document.getElementById("submit").disabled = true;
-        document.getElementById("requiredSequencesSelector").options.length = 0;
-    }
-
-    return valid;
     // example: https://stackoverflow.com/questions/16465325/regular-expression-on-textarea
 }
 
