@@ -529,7 +529,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
 
     write_mode = 'w' if not os.path.exists(log_fn) else 'a'
     with open(log_fn, write_mode) as outf: # manually write to file as there is no log file yet (as we've not executed any command yet)
-        outf.write('-- Finished sanitization of input files\n')
+        outf.write(f'-- Finished sanitization of input file: {file_path}\n')
 
     if remove_old_files:
         os.remove(file_path)

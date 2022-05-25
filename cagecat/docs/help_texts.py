@@ -49,11 +49,6 @@ general = {
     }
 }
 
-all_extensions = []
-
-for ext in fasta_extensions + genbank_extensions:
-    all_extensions.append(f'<li>{ext[1:]}</li>')
-
 cblaster_search = {
     'genomeFile': {
         'title': 'File with query proteins',
@@ -62,7 +57,7 @@ cblaster_search = {
         'frame': ''.join([
           '<span>Allowed extensions:</span>'
           '<ul>',
-            ''.join(all_extensions),
+            ''.join([f'<li>{ext[1:]}</li>' for ext in fasta_extensions + genbank_extensions]),
           '</ul>'
         ])
     },
@@ -204,17 +199,22 @@ clinker = {
     'identity': {
         'title': 'Minimum alignment sequence identity',
         'module': '',
-        'text': 'Minimum alignment sequence identity.\n\nRequired: yes'
+        'text': 'Minimum alignment sequence identity to colour a link between two genes.Can be changed afterwards\n\nRequired: yes'
     },
+
+    # TODO: do these even matter? no difference observed
     'hideLinkHeaders': {
         'title': 'Hide alignment column headers',
-        'module': '', 'text': 'Hide alignment column headers.\n\nRequired: no'
+        'module': '',
+        'text': 'Hide alignment column headers.\n\nRequired: no'
     },
     'hideAlignHeaders': {
         'title': 'Hide alignment cluster name headers',
         'module': '',
         'text': 'Hide alignment cluster name headers.\n\nRequired: no'
     },
+    # --- do these even matter? no difference observed
+
     'useFileOrder': {
         'title': 'Maintain order of input files',
         'module': '',
@@ -223,8 +223,13 @@ clinker = {
     'fileUploadClinker': {
         'title': 'Genome file(s)',
         'module': '',
-        'text': 'One or more genome (GenBank) files to be searched.\n\nAllowed extensions:\n  - ' + '\n  - '.join(
-            genbank_extensions)
+        'text': 'One or more GenBank file(s) which should be visualized. Whole genome files are not supported, so restrict your input to the proteins of interest\n\nRequired: yes',
+        'frame': ''.join([
+            '<span>Allowed extensions:</span>'
+            '<ul>',
+            ''.join([f'<li>{ext[1:]}</li>' for ext in genbank_extensions]),
+            '</ul>'
+        ])
     }
 }
 
