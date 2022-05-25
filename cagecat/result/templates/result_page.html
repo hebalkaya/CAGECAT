@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div class="indent">
+    <div st>
+        <div class="indent" style="">
         {% if job_title %}
             <h2>{{ job_title }}</h2>
         {% endif %}
@@ -26,6 +26,10 @@
 
                 {{ showBookMarkButton() }}
             </form>
+{##}
+{#            <div >#}
+{#                <h2>What can I do next?</h2>#}
+{#            </div>#}
         </div>
 
     {% if connected_jobs %}
@@ -34,6 +38,7 @@
                 <input type="checkbox" id="connectedJobsToggle" onclick="toggleElementVisibility('connectedJobs')"/>Show linked jobs
             </label>
         </div>
+        <br/>
 
     <div id="connectedJobs" class="no-display indent">
         <table>
@@ -56,6 +61,7 @@
         {% endfor %}
         </table>
     </div>
+        <br/>
     {% endif %}
 
 {% if downstream_modules %}
@@ -63,6 +69,10 @@
     <div style="border-top: 2px solid #5284a7;">
             <div class="column leftColumn downstream-div downstream-div-height" id="downStreamModulesDiv">
 
+                <div style="text-align: center">
+            <h3 style="margin-bottom: 2%;margin-top: 2%;">Available subsequent analyses</h3>
+                    <a href="{{ url_for('tools.tools_explanation') }}"><span>What to do?</span></a>
+                </div>
         {% if 'recompute' in downstream_modules %}
             <a href="{{url_for('tools.cblaster_search', prev_run_id=j_id)}}?type=recompute&resetQueries=0"><button class="button button-small">Recompute</button></a>
         {% endif %}
@@ -92,8 +102,6 @@
         {% endif %}
 
         {% if 'clinker_query' in downstream_modules %}
-            <i>Please note that percentage identity and coverage are currently not supported if the "HMM" search mode was used in your cblaster search analysis. They are shown as 0%.</i>
-
             <form action="{{url_for('tools.clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
                 <input type="hidden" name="job_id" value="{{j_id}}"/>
                 <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>

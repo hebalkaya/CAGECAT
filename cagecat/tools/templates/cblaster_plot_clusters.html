@@ -15,7 +15,10 @@
     <h2 class="indent">Visualize cluster hits compared to queries</h2>
     {{  showRequiredInputsText() }}
 
-    <i>Please note that percentage identity and coverage are currently not supported if the "HMM" search mode was used in your cblaster search analysis. They are shown as 0%.</i>
+    <div class="indent">
+        <i>Please note that percentage identity and coverage are currently not supported if the "HMM" search mode was used in your cblaster search analysis. They are shown as 0%.</i>
+    </div>
+    <br/>
 
     <form action="{{url_for('submit_job')}}" method="post">
         <input type="hidden" name="job_type" value="clinker_query"/>
