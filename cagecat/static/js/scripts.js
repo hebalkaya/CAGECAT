@@ -452,10 +452,19 @@ function showPreviousJobs(disableBodyOnLoad){
 
 
 function showHelp(textType){
+    let frameDiv = document.getElementById('htmlFrame');
+
     $.get('/docs/' + textType, function(data, status){
         document.getElementById("explanationTitle").innerText = data.title;
         document.getElementById("explanationModule").innerText = "Module: " + data.module;
         document.getElementById("explanationText").innerText = data.text;
+
+        if (data.hasOwnProperty('frame')){
+            frameDiv.innerHTML = data.frame;
+        }
+        else{
+            frameDiv.innerHTML = '';
+        }
     });
 
     if (document.getElementById("explanationColumn").classList.contains('invisible')){

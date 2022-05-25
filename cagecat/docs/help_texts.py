@@ -69,7 +69,35 @@ cblaster_search = {
     'database_type': {
         'title': 'Database to search in',
         'module': '',
-        'text': 'Database to be searched: NCBI database name.\n\nRequired: yes'},
+        'text': 'The type of NCBI database to be searched. Click the links below for a detailed explanation of the contents of each database.\n\nRequired: yes',
+        'frame': '<ul>'
+                 
+                 '<li>'
+                 '<a target="_blank" href="https://blast.ncbi.nlm.nih.gov/getDBInfo.cgi?CMD=getDbInfo&DB_PATH=nr&IS_PROT=on&IS_COMPLETE=on">'
+                 'nr'
+                 '</a>'
+                 '</li>'
+
+                 '<li>'
+                 '<a target="_blank" href="https://blast.ncbi.nlm.nih.gov/getDBInfo.cgi?CMD=getDbInfo&DB_PATH=refseq_protein&IS_PROT=on&IS_COMPLETE=on">'
+                 'RefSeq protein'
+                 '</a>'
+                 '</li>'
+
+                 '<li>'
+                 '<a target="_blank" href="https://blast.ncbi.nlm.nih.gov/getDBInfo.cgi?CMD=getDbInfo&DB_PATH=swissprot&IS_PROT=on&IS_COMPLETE=on">'
+                 'Swissprot'
+                 '</a>'
+                 '</li>'
+
+                 '<li>'
+                 '<a target="_blank" href="https://blast.ncbi.nlm.nih.gov/getDBInfo.cgi?CMD=getDbInfo&DB_PATH=pdb&IS_PROT=on&IS_COMPLETE=on">'
+                 'pdbaa'
+                 '</a>'
+                 '</li>'
+                 
+                 '</ul>'
+    },
     'max_hits': {
         'title': 'Maximum hits to show',
         'module': '',
