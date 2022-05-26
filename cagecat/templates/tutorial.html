@@ -34,7 +34,8 @@
             Two analyses (<a target="_blank" href="{{ url_for('tools.cblaster_search') }}">cblaster</a> and <a
                 target="_blank" href="{{ url_for('tools.clinker') }}">clinker</a>) are implemented on CAGECAT. One can
             start an analysis by clicking the
-            corresponding “Start” button on the home page (<a href="{{ url_for('tutorial') }}#fig1">Fig. 1</a>). Pages with additional explanation and publications
+            corresponding “Start” button on the home page (<a href="{{ url_for('tutorial') }}#fig1">Fig. 1</a>). Pages
+            with additional explanation and publications
             of these tools are accessible by clicking the “Explanation” and “Publication” buttons, respectively. The
             valid input formats are shown per analysis. On CAGECAT, executed analyses are labelled as “jobs”. <b>Click
             the
@@ -43,7 +44,7 @@
 
         <div style="margin-left: 10%;">
             {#        <img id="fig1" src="{{ url_for('static', filename='images/tutorial/tutorial_1.PNG') }}">#}
-{#            <figcaption style="margin-top: 1%;">Figure 1</figcaption>#}
+            {#            <figcaption style="margin-top: 1%;">Figure 1</figcaption>#}
         </div>
 
 
@@ -62,15 +63,18 @@
         <p>
             CAGECAT provides functionality to notify you by email when your job has finished executing. <b>You are able
             to provide a title for your job and enter your email address</b> for receiving a notification email. Your
-            e-mail address is removed from our database after the notification e-mail has been sent. Providing an email address
-            or job title is not required (<a href="{{ url_for('tutorial') }}#fig2">Fig. 2</a>). Note the <img class="help-button"
-                                                                 src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
+            e-mail address is removed from our database after the notification e-mail has been sent. Providing an email
+            address
+            or job title is not required (<a href="{{ url_for('tutorial') }}#fig2">Fig. 2</a>). Note the <img
+                class="help-button"
+                src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
             button shown for every parameter. <b>Click the <img class="help-button"
                                                                 src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
             button of the
             job title to show an explanation of the job title parameter.</b> The help texts are shown in the
             help-sidebar
-            (right side of page) (<a href="{{ url_for('tutorial') }}#fig3">Fig. 3</a>). By default, the help-sidebar is shown, but can be hidden by clicking the <img
+            (right side of page) (<a href="{{ url_for('tutorial') }}#fig3">Fig. 3</a>). By default, the help-sidebar is
+            shown, but can be hidden by clicking the <img
                 src="{{ url_for('static', filename='images/tutorial/auxiliary/hide_help_sidebar.svg') }}"/>
             button. If the help side-bar is hidden, it can be shown by clicking the <img
                 src="{{ url_for('static', filename='images/tutorial/auxiliary/show_help_sidebar.svg') }}"/> button.
@@ -84,7 +88,7 @@
             <figcaption style="margin-top: 1%;">Figure 3</figcaption>
         </div>
 
-        <h5>Input section</h5>
+        <h4>Input section</h4>
         <p>
             Several input methods are available for a cblaster search: (I) Remote, which will compare your input
             proteins of interest against known protein sequences stored on NCBI servers; (II) HMM (Hidden Markov Model),
@@ -97,13 +101,27 @@
             section</a>) will show input fields corresponding to that search method.
         </p>
 
-        <h6>Remote method</h6>
+        <h4>Remote method</h4>
         <p>
-            {#            TODO
-#}
+            The Remote method can be used with two types of input: (I) a FASTA/GenBank file. The FASTA file can contain
+            nucleotide or protein sequences and should contain at least two sequences. The GenBank (nucleotide
+            sequences) should only contain nucleotide sequences of query genes. Full-genome GenBank files will cause an
+            error. GenPept files are not supported. You can upload your input file by clicking the <img
+                src="{{ url_for('static', filename='images/tutorial/auxiliary/query_file_button.PNG') }}"/>
+            button. The uploaded
+            file will be used as input for your analysis and remain on CAGECAT’s servers for 30 days; (II) NCBI
+            accession numbers representing a protein sequence. The protein sequence of the NCBI accession number will be
+            used (i.e. accession numbers <a href="https://www.ncbi.nlm.nih.gov/protein/QBE85648.1/">QBE85648.1</a> and <a href="https://www.ncbi.nlm.nih.gov/protein/QBE85649.1/">QBE85649.1</a>). If you wish to use the associated nucleotide
+            sequences of your proteins of interest, you are kindly requested to download the associated nucleotide
+            sequence files (on web page of NCBI, add all accessions of interest to your clipboard, navigate to the
+            clipboard, select option “Send to” → “File” → “FASTA CDS”) via NCBI and use this as input file for your
+            analysis on CAGECAT. <b>Click the “NCBI entries” (<img
+                src="{{ url_for('static', filename='images/tutorial/auxiliary/ncbi_entries_checkbox.PNG') }}"/>) option to change the input type</b>. All NCBI identifiers
+            should be separated by a new line (one accession number per line). Remote searches are dependent on the load
+            at NCBI services, and as such, could vary in completion time.
         </p>
 
-        <h5>Search section (<a href="{{ url_for('tutorial') }}#fig4">Fig. 4</a>)</h5>
+        <h4>Search section (<a href="{{ url_for('tutorial') }}#fig4">Fig. 4</a>)</h4>
         <p>
             The Entrez query allows for a quick filtering of organisms (e.g. only include hits from Aspergillus genus,
             achieved by entering “Aspergillus[organism]” in this input field.) Note that any typographical errors can
@@ -117,7 +135,7 @@
             <figcaption style="margin-top: 1%;">Figure 4</figcaption>
         </div>
 
-        <h5>HMM method</h5>
+        <h4>HMM method</h4>
         <p>
             <b>Click the “HMM” option in the “Input” section.</b> Parameters specific for HMM-based searches appear, and
             parameters for Remote-based searches disappear (the “Search” section) In general, selecting a different
@@ -161,21 +179,24 @@
 
         <p>
             By default, in the “Binary table” section, the “Hit attribute” is disabled. By selecting a different value
-            for the “Key function” parameter, this parameter becomes available and can be changed (<a href="{{ url_for('tutorial') }}#fig6">Fig. 6</a>). In general,
+            for the “Key function” parameter, this parameter becomes available and can be changed (<a
+                href="{{ url_for('tutorial') }}#fig6">Fig. 6</a>). In general,
             parameters that are not changeable are disabled and will not be used in the analysis. As another example,
             checking the “Find intermediate genes” checkbox in the “Intermediate genes” section will enable the other
             parameters in this section to be used in the analysis.
         </p>
 
         <div style="margin-left: 10%;">
-            <img id="fig6" src="{{ url_for('static', filename='images/tutorial/tutorial_6_additional_sections.PNG') }}"/>
+            <img id="fig6"
+                 src="{{ url_for('static', filename='images/tutorial/tutorial_6_additional_sections.PNG') }}"/>
             <figcaption style="margin-top: 1%;">Figure 6</figcaption>
         </div>
 
         <h3>Example input</h3>
         <p>
             On the help-sidebar located on the right side of the page, the “Example input” button will enter predefined
-            values in the input fields. <b>Click the “Example input” button (<a href="{{ url_for('tutorial') }}#fig3">Fig. 3</a>).</b> Notice how the “NCBI entries”
+            values in the input fields. <b>Click the “Example input” button (<a href="{{ url_for('tutorial') }}#fig3">Fig.
+            3</a>).</b> Notice how the “NCBI entries”
             option
             is selected in the “Input” section and NCBI identifiers have been entered.
         </p>
@@ -183,16 +204,19 @@
         <h2>Submitting your job</h2>
         <p>
             If you have finished changing the values for the parameters, you are ready to submit your job by clicking
-            the “Submit” button at the bottom of the analysis page (<a href="{{ url_for('tutorial') }}#fig6">Fig. 6</a>). <b>Enter your email address to get notified
-            when your job has finished, and click the “Submit” button to submit your job.</b> Your job will be placed in
+            the “Submit” button at the bottom of the analysis page (<a href="{{ url_for('tutorial') }}#fig6">Fig. 6</a>).
+            <b>Enter your email address to get notified
+                when your job has finished, and click the “Submit” button to submit your job.</b> Your job will be
+            placed in
             the
             queue to be executed. If there is no queue, your job will start immediately. Your input protein sequences
             and entered parameter values will be sent to CAGECAT’s servers and your analysis will be executed.
-            Meanwhile, the status of your job is shown and will be updated every few seconds (<a href="{{ url_for('tutorial') }}#fig7">Fig. 7</a>). This status page
+            Meanwhile, the status of your job is shown and will be updated every few seconds (<a
+                href="{{ url_for('tutorial') }}#fig7">Fig. 7</a>). This status page
             differs per job type, as every job has different steps that are executed.
 
             {#            <img id="fig7" src="{{ url_for('static', filename='images/tutorial/tutorial_7_??.PNG') }}"/>#}
-{#        <figcaption style="margin-top: 1%;">Figure 7</figcaption>#}
+            {#        <figcaption style="margin-top: 1%;">Figure 7</figcaption>#}
         </p>
 
         <h2>Viewing the analysis results</h2>
@@ -202,41 +226,49 @@
         </p>
 
         <p>
-            The results page differs per executed analysis. <a href="{{ url_for('tutorial') }}#fig8">Fig. 8</a> shows the output page of a cblaster search analysis.
+            The results page differs per executed analysis. <a href="{{ url_for('tutorial') }}#fig8">Fig. 8</a> shows
+            the output page of a cblaster search analysis.
             However, the title (if given), available subsequent analyses and download/bookmark buttons are shown on
             every analysis results page.
         </p>
 
         <div style="margin-left: 10%;">
-                <img id="fig8" src="{{ url_for('static', filename='images/tutorial/tutorial_8_results_page.PNG') }}"/>
-                <figcaption>
-                    Figure 8: overview of results page of a cblaster search analysis. 1: job title (if given); 2:
-                    buttons to download results to your computer and bookmark this page in your browser; 3: buttons to execute subsequent
-                    analyses. The available subsequent analyses per job type vary, and possible workflows can be inspected <a
-                            href="https://cagecat.bioinformatics.nl/tools/#possibleWorkflows">here</a>.
-                    The (selected) output from the current job will be used as input for the subsequent job you select; 4:
-                    returned cluster hits from your search which are currently unselected to be used in subsequent analysis; 5:
-                    selected cluster hits that will be used in subsequent analysis; 6: buttons to move cluster hits from the
-                    “unselected” pane to the “selected” pane. The selected cluster hits will be used in subsequent analysis; 7:
-                    total number of selected clusters and queries. Input queries can be shown by clicking on the “Select
-                    queries” button.
-                </figcaption>
+            <img id="fig8" src="{{ url_for('static', filename='images/tutorial/tutorial_8_results_page.PNG') }}"/>
+            <figcaption>
+                Figure 8: overview of results page of a cblaster search analysis. 1: job title (if given); 2:
+                buttons to download results to your computer and bookmark this page in your browser; 3: buttons to
+                execute subsequent
+                analyses. The available subsequent analyses per job type vary, and possible workflows can be inspected
+                <a
+                        href="https://cagecat.bioinformatics.nl/tools/#possibleWorkflows">here</a>.
+                The (selected) output from the current job will be used as input for the subsequent job you select; 4:
+                returned cluster hits from your search which are currently unselected to be used in subsequent analysis;
+                5:
+                selected cluster hits that will be used in subsequent analysis; 6: buttons to move cluster hits from the
+                “unselected” pane to the “selected” pane. The selected cluster hits will be used in subsequent analysis;
+                7:
+                total number of selected clusters and queries. Input queries can be shown by clicking on the “Select
+                queries” button.
+            </figcaption>
         </div>
 
         <p>
             If an analysis produces a plot (HTML format), this is shown directly in your web browser. For a cblaster
-            search analysis, the identified cluster hits are visualised (<a href="{{ url_for('tutorial') }}#fig9">Fig. 9</a>). <b>Move the top 4 cluster hits to the
+            search analysis, the identified cluster hits are visualised (<a href="{{ url_for('tutorial') }}#fig9">Fig.
+            9</a>). <b>Move the top 4 cluster hits to the
             “selected” pane (right pane).</b>
         </p>
 
         <div style="margin-left: 10%;">
-            <img id="fig9" src="{{ url_for('static', filename='images/tutorial/tutorial_9_results_page_html_output.PNG') }}"/>
+            <img id="fig9"
+                 src="{{ url_for('static', filename='images/tutorial/tutorial_9_results_page_html_output.PNG') }}"/>
             <figcaption style="margin-top: 1%;">Figure 9</figcaption>
         </div>
 
         <h2>Downloading results</h2>
         <p>
-            <b>Click on the “Download results” button on the output page, shown in <a href="{{ url_for('tutorial') }}#fig8">Fig. 8</a> (number 2).</b> Save the file
+            <b>Click on the “Download results” button on the output page, shown in <a
+                    href="{{ url_for('tutorial') }}#fig8">Fig. 8</a> (number 2).</b> Save the file
             to your
             computer and open it. Three folders are present (“logs”, “results”, “uploads”). In the latter, you will find
             any files you uploaded on the parameter page of your analysis. In the “logs”' folder, several files, named
@@ -261,16 +293,20 @@
             Depending on the analysis you executed, several subsequent analyses are available. An overview of possible
             workflows can be found <a href="https://cagecat.bioinformatics.nl/tools/#possibleWorkflows">here</a>. <b>Click
             the “Extract clusters” button and validate that the selected clusters are
-            shown on the parameter page of the “Extract clusters” analysis (<a href="{{ url_for('tutorial') }}#fig10">Fig. 10</a>).</b> If you did not select any of
+            shown on the parameter page of the “Extract clusters” analysis (<a href="{{ url_for('tutorial') }}#fig10">Fig.
+                10</a>).</b> If you did not select any of
             the
-            cluster hits on the previous page, all clusters are selected by default (example shown in <a href="{{ url_for('tutorial') }}#fig11">Fig. 11</a>).
+            cluster hits on the previous page, all clusters are selected by default (example shown in <a
+                href="{{ url_for('tutorial') }}#fig11">Fig. 11</a>).
         </p>
 
         <div style="margin-left: 10%;">
-            <img id="fig10" src="{{ url_for('static', filename='images/tutorial/tutorial_10_extract_clusters_selected_clusters.PNG') }}"/>
+            <img id="fig10"
+                 src="{{ url_for('static', filename='images/tutorial/tutorial_10_extract_clusters_selected_clusters.PNG') }}"/>
             <figcaption style="margin-top: 1%;">Figure 10</figcaption>
 
-            <img id="fig11" src="{{ url_for('static', filename='images/tutorial/tutorial_11_all_clusters_selected.PNG') }}"/>
+            <img id="fig11"
+                 src="{{ url_for('static', filename='images/tutorial/tutorial_11_all_clusters_selected.PNG') }}"/>
             <figcaption style="margin-top: 1%;">Figure 11</figcaption>
         </div>
 
@@ -292,14 +328,16 @@
             You are able to look up the results of a previous job by clicking on the “Results” pane in the navigation
             bar at the top of every web page (<a href="{{ url_for('tutorial') }}#fig12">Fig. 12</a>), by browsing <a
                 href="{{ url_for('result.result_from_job_id') }}">here</a> and entering your job ID, or clicking on the
-            navigational links shown in the bar on the left side of every page (<a href="{{ url_for('tutorial') }}#fig13">Fig. 13</a>). These navigational links are
+            navigational links shown in the bar on the left side of every page (<a
+                href="{{ url_for('tutorial') }}#fig13">Fig. 13</a>). These navigational links are
             stored locally after you submit a job.
 
         </p>
 
         <div style="margin-left: 10%;">
             <div>
-                <img id="fig12" src="{{ url_for('static', filename='images/tutorial/tutorial_12_navigation_bar.PNG') }}"/>
+                <img id="fig12"
+                     src="{{ url_for('static', filename='images/tutorial/tutorial_12_navigation_bar.PNG') }}"/>
                 <figcaption style="margin-top: 1%;">Figure 12</figcaption>
             </div>
             <br/>
