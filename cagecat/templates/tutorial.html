@@ -108,7 +108,8 @@
             sequences) should only contain nucleotide sequences of query genes. Full-genome GenBank files will cause an
             error. GenPept files are not supported. You can upload your input file by clicking the <img
                 src="{{ url_for('static', filename='images/tutorial/auxiliary/query_file_button.PNG') }}"/>
-            button. The uploaded
+            button. Your uploaded file will be rewritten to a new file in order to ensure a clean input for your analysis (the sanitization process). In order for this sanitization to be successful, be sure that your input file does not contain any special characters (if applicable, use an encoding of “UTF-8”). Currently, GenBank files created by SnapGene are known to raise errors during sanitization.
+            The uploaded
             file will be used as input for your analysis and remain on CAGECAT’s servers for 30 days; (II) NCBI
             accession numbers representing a protein sequence. The protein sequence of the NCBI accession number will be
             used (i.e. accession numbers <a href="https://www.ncbi.nlm.nih.gov/protein/QBE85648.1/">QBE85648.1</a> and <a href="https://www.ncbi.nlm.nih.gov/protein/QBE85649.1/">QBE85649.1</a>). If you wish to use the associated nucleotide
