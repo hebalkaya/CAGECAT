@@ -286,13 +286,20 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
     """
     pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+
+    if 'clinkerEnteredJobId' in options: # indicates we are a downstream job
+        remove_old_files = False
+    else:
+        remove_old_files = True
+
     try:
         for f in os.listdir(file_path):
             path = os.path.join(file_path, f)
 
-            # if path.endswith('.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
-            #     continue
-            sanitize_file(path, job_id, remove_old_files=True)
+            if path.endswith('.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
+                print('Skipped', path)
+                continue
+            sanitize_file(path, job_id, remove_old_files=remove_old_files)
 
         if log_threshold_exceeded(len(os.listdir(file_path)),
                                   thresholds['max_clusters_to_plot'],
