@@ -50,6 +50,28 @@ general = {
 }
 
 cblaster_search = {
+    'searchMethod': {
+        'title': 'Search method',
+        'module': '',
+        'text': 'The method to be used to search for homologous gene clusters.',
+        'frame':
+            'Options:'
+            '<ul>'
+
+            '<li>'
+            'Remote: search NCBI databases (select which database at the "Database" option)'
+            '</li>'
+
+            '<li>'
+            'HMM: use HMM profiles to search pre-defined sequence databases (select in which genus-database to search  at the "Genus" option)'
+            '</li>'
+
+            '<li>'
+            'Remote + HMM: combine cluster hits of searching NCBI databases and pre-defined sequence databases of the selected genus'
+            '</li>'
+            
+            '</ul>'
+    },
     'genomeFile': {
         'title': 'File with query proteins',
         'module': '',

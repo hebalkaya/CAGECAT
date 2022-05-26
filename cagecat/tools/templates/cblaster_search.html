@@ -56,6 +56,9 @@ addAccordionListeners();
             <label class="radioLabel">
                 <input type="radio" value="combi_remote" name="mode" onclick="changeSearchMode('combi_remote')">Remote + HMM
             </label>
+
+            {{ renderHelpButton('searchMethod', false) }}
+
         </div>
 
         <div class="radio-options" id="remoteOptionsSection">
