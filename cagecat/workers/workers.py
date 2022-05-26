@@ -5,6 +5,7 @@ Author: Matthias van den Belt
 
 # import statements
 import os.path
+import sys
 
 # own project imports
 from cagecat.workers.workers_helpers import *
@@ -29,6 +30,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     This function forges and executes a cblaster command.
     """
     pre_job_formalities(job_id)
+    sys.setrecursionlimit(3000)  # in case of many many hits
 
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
