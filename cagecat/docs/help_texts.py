@@ -351,7 +351,7 @@ cblaster_search_hmm_mode = {
     'hmmProfiles': {
         'title': 'HMM profiles',
         'module': '',
-        'text': 'Valid HMM profile identifiers from Pfam (e.g. "PF00452") to use when searching the selected genus database.\n\nRequired: yes',
+        'text': 'Valid HMM profile identifiers from Pfam (e.g. "PF01262") to use when searching the selected genus database.\n\nRequired: yes',
         'frame':
             '<a target="_blank" href="https://pfam.xfam.org/">Link to Pfam</a>'
     }
