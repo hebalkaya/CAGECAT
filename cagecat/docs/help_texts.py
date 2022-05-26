@@ -112,7 +112,7 @@ cblaster_search = {
     'max_evalue': {
         'title': 'Maximum e-value',
         'module': '',
-        'text': 'Maximum e-value for a BLAST hit to be saved.\n\nRequired: yes'
+        'text': 'Maximum e-value for a BLAST hit to be saved to the results.\n\nRequired: yes'
     },
     'min_identity': {
         'title': 'Minimum percent identity',
@@ -237,37 +237,50 @@ cblaster_search_binary_table = {
     'keyFunction': {
         'title': 'Key function',
         'module': '',
-        'text': 'Key function used when generating binary table cell values.\n\nRequired: yes'
+        'text': 'Used function to calculate statistics per query per cluster hit. To select the attribute to be used, select at the "Hit attribute" input.\n\nRequired: yes',
+        'frame':
+            'Additional explanation:'
+            '<ul>'
+            
+            '<li>'
+            'Length: write the query count presence in cluster hits'
+            '</li>'
+            
+            '<li>'
+            'Sum: write the sum per query of the selected attribute'
+            '</li>'
+            
+            '<li>'
+            'Max: write the maximum value per query of the selected attribute'
+            '</li>'
+            
+            '</ul>'
     },
     'hitAttribute': {
         'title': 'Hit attribute',
         'module': '',
-        'text': 'Hit attribute used when generating binary table cell values.\n\nRequired: yes'
+        'text': 'The hit attribute used when generating the binary binary table cell values of hits per querycblast. Is available when the Binary "Key function" is not "length"\n\nRequired: yes',
+
     }
 }
 
 cblaster_search_filtering = {
-    'selectedOrganisms': {
-        'title': 'Organisms to filter fot',
-        'module': '',
-        'text': 'Organism names to filter hits for. When entering multiple organisms, separate by a space.\n\nRequired: no'
-    },
     # 'selectedScaffolds': {'title': '',
     # 'module': '', 'text': ''},
     'clusterNumbers': {
         'title': 'Cluster numbers',
         'module': '',
-        'text': 'Cluster numbers/ranges provided by the summary file of the \'search\' command or selected online. If no numbers are entered, no filtering takes place.\n\nThese numbers are pre-filled (dependent on the clusters you selected in the previous window), and can not be changed on this page. To change these clusters, return to the previous page and select the clusters of interest.\n\nRequired: no'
+        'text': 'Cluster numbers/ranges as noted in the summary file, which should be selected on the previous page. If no numbers are entered, no filtering takes place.\n\nThese numbers are pre-filled (dependent on the clusters you selected in the previous window), and can not be changed on this page. To change these clusters, return to the previous page and select the clusters of interest.\n\nRequired: no'
     },
     'clusterScoreThreshold': {
         'title': 'Cluster score threshold',
         'module': '',
-        'text': 'Minimum score of a cluster in order to be included. If no score is entered, no filtering takes place.\n\nRequired: no'
+        'text': 'Minimum score of a cluster in order to be included in your results. If no score is entered, no filtering takes place. Scores of clusters can be inspected in the plot or summary table.\n\nRequired: no'
     },
     'selectedQueries': {
-        'title': 'Query filtering',
+        'title': 'Result filtering by queries',
         'module': '',
-        'text': 'IDs of query sequences to filter for.\n\nRequired: no'
+        'text': 'IDs of query sequences to filter for. Only cluster hits that contain these queries are present in your output. Can be selected on the previous page.\n\nRequired: no'
     }
 }
 
@@ -275,7 +288,7 @@ cblaster_plot_clusters = {
     'maxclusters': {
         'title': 'Maximum number of clusters to plot',
         'module': '',
-        'text': 'The maximum amount of clusters that will be plotted. Ordered on score.\n\nRequired: yes'
+        'text': 'The maximum amount of clusters that will be plotted. The clusters with the highest score will plotted.\n\nRequired: yes'
     }
 }
 
@@ -289,7 +302,12 @@ cblaster_extract_sequences = {
         'title': 'Name only',
         'module': '',
         'text': 'Do not save sequence descriptions (i.e. no genomic coordinates).\n\nRequired: no'
-    }
+    },
+    'selectedOrganisms': {
+        'title': 'Organisms to filter fot',
+        'module': '',
+        'text': 'Organism names to filter hits for (inclusive). When entering multiple organisms, separate by a space.\n\nRequired: no'
+    },
 }
 
 cblaster_extract_clusters = {
@@ -333,7 +351,9 @@ cblaster_search_hmm_mode = {
     'hmmProfiles': {
         'title': 'HMM profiles',
         'module': '',
-        'text': 'Valid HMM profile identifiers from Pfam (https://pfam.xfam.org/, e.g. "PF00452") to use when searching the selected genus database.\n\nRequired: yes'
+        'text': 'Valid HMM profile identifiers from Pfam (e.g. "PF00452") to use when searching the selected genus database.\n\nRequired: yes',
+        'frame':
+            '<a target="_blank" href="https://pfam.xfam.org/">Link to Pfam</a>'
     }
 }
 

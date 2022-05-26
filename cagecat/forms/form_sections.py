@@ -493,7 +493,7 @@ class ClustersFilteringForm(Form):
     clusterScoreThreshold = DecimalField(
         label=u'Score threshold',
         validators=[is_safe_string_value, val.optional()],
-        description='clusterNumbers',
+        description='clusterScoreThreshold',
         render_kw={
             'step': 0.001
         }
