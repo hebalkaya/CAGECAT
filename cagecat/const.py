@@ -27,22 +27,22 @@ no_hits_message = 'Your search with the specified parameters did not return any 
 sanitization_message = 'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
 invalid_ncbi_response = 'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.'
 
-failure_reasons_from_cblaster_code = {
-    # LOG.error("File parsing failed, exiting...", exc_info=True)
-    # LOG.error("Could not find matching SQlite3 database, exiting")
-    # LOG.error("No hits have been found")
-    # LOG.error("No valid profiles could be selected")
-    # LOG.error(results.stderr.decode("utf-8"))
-    #
-    # LOG.exception("Network error while retrieving genomic context")
-    # LOG.exception("Failed to insert %i records", len(tuples))
-    # LOG.exception("Expected range in format start-end")
-    # LOG.exception("Failed to fetch sequences")
-    # LOG.exception("hmmsearch failed!"+add_msg)
-    # LOG.exception('Unable to parse NCBI response')
-    #
-
-}
+# failure_reasons_from_cblaster_code = {
+#     # LOG.error("File parsing failed, exiting...", exc_info=True)
+#     # LOG.error("Could not find matching SQlite3 database, exiting")
+#     # LOG.error("No hits have been found")
+#     # LOG.error("No valid profiles could be selected")
+#     # LOG.error(results.stderr.decode("utf-8"))
+#     #
+#     # LOG.exception("Network error while retrieving genomic context")
+#     # LOG.exception("Failed to insert %i records", len(tuples))
+#     # LOG.exception("Expected range in format start-end")
+#     # LOG.exception("Failed to fetch sequences")
+#     # LOG.exception("hmmsearch failed!"+add_msg)
+#     # LOG.exception('Unable to parse NCBI response')
+#     #
+#
+# }
 
 failure_reasons = {
     'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Was because of invalid NCBI response
