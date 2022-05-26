@@ -99,7 +99,10 @@ failure_reasons = {
         'An incorrect FASTA file was provided. Your FASTA file should either contain nucleotides or amino acids, not both.',
 
     'Error during sanitization by antiSmash':
-        sanitization_message
+        sanitization_message,
+
+    'argument session: Invalid path:':  # occurs when workflow is:  cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.
+        'Referencing to a file during a process of CAGECAT failed. This happens in the workflow: cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.\n It is a known bug, and will be fixed in a future release. Please submit feedback to notify the developers that you encountered this bug. For now, you can directly extract clusters from your recompute job. Apologies for the inconvenience.'
 
     # error below is in sanitize_file() function but is currently not in used
     # raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
