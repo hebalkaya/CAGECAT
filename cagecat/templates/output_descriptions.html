@@ -133,6 +133,19 @@
                 <th>Filename</th>
                 <th>Explanation</th>
             </tr>
+
+            <tr>
+                <td>Results</td>
+                <td><i>{job_id}_sequences.txt</i></td>
+                <td><i>Overview of where query genes hit on which scaffolds and positions. Is created when the "Download sequences" option was not checked.</i></td>
+            </tr>
+
+            <tr>
+                <td>Results</td>
+                <td><i>{job_id}_sequences.fasta</i></td>
+                <td><i>Nucleotide FASTA of scaffold sequences where the query genes hit. Is created when the "Download sequences" option was checked.</i></td>
+            </tr>
+
         </table>
 
     <h2>Extract clusters</h2>
@@ -141,6 +154,12 @@
                 <th>Folder</th>
                 <th>Filename</th>
                 <th>Explanation</th>
+            </tr>
+
+            <tr>
+                <td>Results</td>
+                <td>{prefix}{job_id}_cluster{number}.gbk</td>
+                <td>GenBank files of selected cluster hits. {prefix} is only used when a value was entered for the "Prefix" option. {number} is inherent to the number of extracted clusters.</td>
             </tr>
         </table>
 
@@ -151,6 +170,12 @@
                 <th>Filename</th>
                 <th>Explanation</th>
             </tr>
+
+            <tr>
+                <td>Results</td>
+                <td>{job_id}_plot.html</td>
+                <td>Similar to a clinker plot, but comparisons are only available for your query cluster vs. individual hit cluster.</td>
+            </tr>
         </table>
 
     <h1>clinker</h1>
@@ -159,6 +184,25 @@
                 <th>Folder</th>
                 <th>Filename</th>
                 <th>Explanation</th>
+            </tr>
+
+
+            <tr>
+                <td>Results</td>
+                <td>alignments.txt</td>
+                <td>Overview of identity and similarity percentages between genes in clusters.</td>
+            </tr>
+
+            <tr>
+                <td>Results</td>
+                <td>{job_id}_plot.html</td>
+                <td>The clinker visualisation enabling visual comparison of the submitted clusters and creation of such figures.</td>
+            </tr>
+
+            <tr>
+                <td>Results</td>
+                <td>{job_id}_session.json</td>
+                <td>Stores all information about the cluster alignments.</td>
             </tr>
         </table>
 
