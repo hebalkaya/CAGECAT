@@ -64,6 +64,13 @@
         <br/>
     {% endif %}
 
+
+    <div class="indent">
+        <p>
+            An overview of output files and their descriptions can be found <a href="{{ url_for('output_files_explanation') }}">here</a>.
+        </p>
+    </div>
+
 {% if downstream_modules %}
             <div class="partly-height">
     <div style="border-top: 2px solid #5284a7;">
@@ -131,6 +138,7 @@
 {#        {% endif %}#}
 
             </div>
+
     {% if module != 'extract_clusters' %}
         <div class="column middleColumn downstream-div-height" id="middleColumnDiv" style="border-bottom: 2px solid #5284a7;width: 80%;">
     {% endif %}
@@ -185,6 +193,7 @@
     <p style="display: inline-block;padding-left: 10px;"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
     <img id="loadingImage" style="vertical-align: middle; width: 80px; height: auto;" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
 </div>
+
     {% if module in ['search', 'recompute'] %}
         {% set onload = 'getOutputFromPlot("search");' %}
     {% elif module == 'clinker_query' %}
