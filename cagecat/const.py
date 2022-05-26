@@ -25,6 +25,7 @@ folders_to_create = ["uploads", "results", "logs"]
 connection_error_user_friendly_message = 'A connection error between CAGECAT and NCBI occurred. The NCBI servers are probably experiencing difficulties processing our requests. Please try again at a later moment. If this problem persists, please let us know by providing feedback.'
 no_hits_message = 'Your search with the specified parameters did not return any {} hits. Check your input, and try to loosen your search parameters to get results.'
 sanitization_message = 'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
+invalid_ncbi_response = 'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.'
 
 failure_reasons_from_cblaster_code = {
     # LOG.error("File parsing failed, exiting...", exc_info=True)
@@ -44,13 +45,8 @@ failure_reasons_from_cblaster_code = {
 }
 
 failure_reasons = {
-    'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Ot
-        '',
-    # TODO: remove below lines
-        # no hit on purpose (DNA sequence in protein FASTA): A154X981M346X52
-        # DNA GBK: O122U396B362E36
-        # DNA FASTA: C580W901G737O82, X593E804T360Z20, L825B563I717X77.
-        # PROTEIN FASTA: I341L679Q524N99
+    'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Was because of invalid NCBI response
+        invalid_ncbi_response,
     'ERROR - No valid profiles could be selected':  # module search, hmm/hmm+remote mode, incorrect HMM profiles;
     # Results in the following exception: TypeError: object of type 'NoneType' has no len()
         'No valid HMM profiles have been entered. Check the entered HMM profile for potential spelling errors and make sure all entered HMM profile identifiers are valid Pfam identifiers (https://pfam.xfam.org/). GenPept accessions of NCBI are not valid.',
@@ -76,7 +72,7 @@ failure_reasons = {
         'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.',
 
     'OSError: Unable to parse NCBI response':
-        'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.',
+        invalid_ncbi_response,
 
     'No protocol for mode':
         'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.',
