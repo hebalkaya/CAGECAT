@@ -546,7 +546,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
             start += 1
             destination = os.path.join(base, 'uploads', f'{job_id}_{start}.gbk')
 
-    os.rename(sanitized_fn, destination)
+    shutil.move(sanitized_fn, destination)
     print('Moved sanitized file from', sanitized_fn, 'to', destination)
 
     base_folder = os.path.join(sanitized_folder, job_id)
