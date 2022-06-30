@@ -55,7 +55,8 @@ def get_failure_reason(job_id: str) -> str:
 
 
 def prepare_finished_result(job_id: str,
-                            module: str) -> \
+                            module: str,
+                            size_limit=15000000) -> \
         t.Tuple[t.Union[str, None], str, t.Union[int, None]]:
     """Returns HTML code of plots if applicable and appropriate program
 
@@ -101,6 +102,9 @@ def prepare_finished_result(job_id: str,
     else:
         raise NotImplementedError(
             f"Module {module} has not been implemented yet in results")
+
+    if size > size_limit:
+        return "Your file is too large to be shown here. You can download your results manually via the \"Download\" button.", program, 0
 
     return plot_contents, program, size
 
