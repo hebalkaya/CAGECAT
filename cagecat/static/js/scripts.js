@@ -9,6 +9,11 @@ function updateJobExecutionStage(url){
     $.ajax(url, {
         dataType: 'json',
         success: function(data){
+            if (data['jobStatus'] === 'queued' || data['jobStatus'] === 'waiting'){
+                console.log('Job is queued or waiting')
+                return;
+            }
+
             if (data['finished'] === data['total'] - 1 || data['failed'] === 1 || data['jobStatus'] === 'finished'){
                 redirect(window.location.href);
             }

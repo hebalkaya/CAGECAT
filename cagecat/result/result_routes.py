@@ -191,11 +191,19 @@ def get_execution_stage(job_id: str):
         job_id=job.id
     )
 
+    # queued situation
+    if job.status in ('queued', 'waiting'):
+        return {
+            'finished': -1,
+            'failed': 0,
+            'total': len(stages),
+            'jobStatus': job.status
+        }
+
+    # running situation
     log_base = generate_paths(job_id)[1]
     log_fn = os.path.join(log_base, f'{job_id}.log')
 
-    # queued situation
-    # running situation
     with open(log_fn) as inf:
         logs = inf.read()
 
