@@ -286,9 +286,10 @@ execution_stages_front_end = {
         # 'Fetching intermediate genes from NCBI' will be inserted if applicable
         'Writing results'
     ],
-    'gne': [
+    'gne': [  # finished, no variations of this job type
         'Load previous results',
         'Computing gene neighbourhood statistics',
+        'Writing GNE plot to HTML file'
         'Writing results'
     ],
     'extract_clusters': [
@@ -336,10 +337,11 @@ execution_stages_log_descriptors = {
         'Writing recomputed session to',
         'INFO - Done.'
     ],
-    'gne': [
+    'gne': [  # finished, no variations of this job type
         'Loading session from',
         'Computing gene neighbourhood statistics',
         'Writing GNE table to',
+        'Saving gne plot HTML'
         'INFO - Done.'
     ],
     'extract_clusters': [
