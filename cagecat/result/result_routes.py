@@ -6,6 +6,7 @@ Author: Matthias van den Belt
 # package imports
 import copy
 import json
+import re
 from typing import Union, Any, Tuple
 
 from flask import Blueprint, request, url_for, send_file
@@ -244,6 +245,7 @@ stack_to_text_index = {
     'front-end': 0,
     'back-end': 1
 }
+mode_pattern = re.compile('mode=(.*)&')
 
 def create_execution_stages(job_type: str, job_id: str, options: str, stack: str):
     """
@@ -274,6 +276,18 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
         if 'intermediate_genes' in options:
             texts = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
             stages.insert(insert_stage_index, texts)
+
+        mode = re.findall(pattern=mode_pattern, string=options)
+        if len(mode) != 1:
+            raise ValueError('Error when extracting mode')
+
+        used_mode = mode[0]
+
+        # if used_mode in ('hmm', 'combi_remote'):
+        #     texts = ('Start HMMer search', 'Starting hmmer search')
+        #     stages.insert()
+
+
 
     # TODO:
 # cblaster search
