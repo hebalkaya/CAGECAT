@@ -18,6 +18,7 @@ class Job(db.Model):
     job_type = db.Column(db.String(10), nullable=False)
     redis_id = db.Column(db.String(80))
     status = db.Column(db.Text, nullable=False)
+    options = db.Column(db.String(100))
 
     # user-specified items
     title = db.Column(db.String(60))

@@ -262,105 +262,159 @@ tool_explanations = {'cblaster_search':
                      'recompute': [('', 'You can recompute a previous job using new filter thresholds to filter previous results.')]
                      }
 
-# TODO: merge below dictionaries
-execution_stages_front_end = {
+execution_stages = {
+    # (front-end, log-descriptor)
     'clinker': [
-        'Parse genome files',
-        'Align clusters',
-        'Generate results',
-        'Save session file',
-        'Write results'
+        ('Parse genome files', 'Parsing files:'),
+        ('Align clusters', 'Starting cluster alignments'),
+        ('Generate results', 'Generating results'),
+        ('Save session file', 'Saving session to'),
+        ('Write results', 'Writing to'),
+        ('INFO - Done!', )
     ],
     'search': [
-        'Send search job to NCBI',
-        'Polling NCBI',
-        'Retrieving results from NCBI',
-        'Parsing results',
-        'Fetching genomic context of hits',
-        # 'Fetching intermediate genes from NCBI' will be inserted if applicable
-        'Writing results'
-    ],
-    'recompute': [
-        'Load previous results',
-        'Filtering results with new thresholds',
-        # 'Fetching intermediate genes from NCBI' will be inserted if applicable
-        'Writing results'
-    ],
-    'gne': [  # finished, no variations of this job type
-        'Load previous results',
-        'Computing gene neighbourhood statistics',
-        'Writing GNE plot to HTML file'
-        'Writing results'
-    ],
-    'extract_clusters': [
-        'Load previous results',
-        'Extract clusters that match threshold',
-        'Write GenBank files',
-        'Query NCBI for cluster sequences',
-        'Write results',
-    ],
-    'clinker_query': [
-        'Generate cluster plot'
-    ],
-    'extract_sequences': [
-        'Load previous results',
-        'Extract sequences matching filters',
-        # 'Fetch sequences from NCBI' will be inserted if applicable
-        'Write results'
-    ]
-
-}
-
-execution_stages_log_descriptors = {
-    'clinker': [
-        'Parsing files:',
-        'Starting cluster alignments',
-        'Generating results',
-        'Saving session to',
-        'Writing to',
-        'INFO - Done!'
-    ],
-    'search': [
-        'Launching new search',
-        'Polling NCBI for completion status',
-        'Retrieving results for search',
-        'Parsing results',
-        'Fetching genomic context of hits',
+        ('Send search job to NCBI', 'Launching new search'),
+        ('Polling NCBI', 'Polling NCBI for completion status'),
+        ('Retrieving results from NCBI', 'Retrieving results for search'),
+        ('Parsing results', 'Parsing results'),
+        ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
         # 'Searching for intermediate genes' will be inserted if applicable
-        'Writing current search session',
-        'INFO - Done.'
+        ('Writing results', 'Writing current search session'),
+        ('INFO - Done.', )
     ],
     'recompute': [
-        'Loading session(s)',
-        'Filtering session with new thresholds',
-        # 'Searching for intermediate genes' will be inserted if applicable,
-        'Writing recomputed session to',
-        'INFO - Done.'
+        ('Load previous results', 'Loading session(s)'),
+        ('Filtering results with new thresholds', 'Filtering session with new thresholds'),
+        # 'Fetching intermediate genes from NCBI' will be inserted if applicable
+        ('Writing results', 'Writing recomputed session to'),
+        ('INFO - Done.', )
     ],
     'gne': [  # finished, no variations of this job type
-        'Loading session from',
-        'Computing gene neighbourhood statistics',
-        'Writing GNE table to',
-        'Saving gne plot HTML'
-        'INFO - Done.'
+        ('Load previous results', 'Loading session from'),
+        ('Computing gene neighbourhood statistics', 'Computing gene neighbourhood statistics'),
+        ('Writing GNE plot to HTML file', 'Writing GNE table to'),
+        ('Writing results', 'Saving gne plot HTML'),
+        ('INFO - Done.', )
     ],
     'extract_clusters': [
-        'Loading session from',
-        'Extracting clusters that match the filters',
-        'Writing genbank files',
-        'Querying NCBI',
-        'Clusters have been written to',
-        'INFO - Done!'
+        ('Load previous results', 'Loading session from'),
+        ('Extract clusters that match threshold', 'Extracting clusters that match the filters'),
+        ('Write GenBank files', 'Writing genbank files'),
+        ('Query NCBI for cluster sequences', 'Querying NCBI'),
+        ('Write results', 'Clusters have been written to'),
+        ('INFO - Done.', )
     ],
     'clinker_query': [
-        'Starting generation of cluster plot with clinker',
-        'INFO - Done!'
+        ('Generate cluster plot', 'Starting generation of cluster plot with clinker'),
+        ('INFO - Done.', )
     ],
     'extract_sequences': [
-        'Loading session from',
-        'Extracting subject sequences matching filters',
-        # 'Querying NCBI' will be inserted if applicable
-        'Writing output',
-        'INFO - Done!'
+        ('Load previous results', 'Loading session from'),
+        ('Extract sequences matching filters', 'Extracting subject sequences matching filters'),
+        # 'Fetch sequences from NCBI' will be inserted if applicable
+        ('Write results', 'Writing output'),
+        ('INFO - Done.', )
     ]
 }
+
+# execution_stages_front_end = {
+    # 'clinker': [
+    #     'Parse genome files',
+    #     'Align clusters',
+    #     'Generate results',
+    #     'Save session file',
+    #     'Write results'
+    # ],
+    # 'search': [
+    #     'Send search job to NCBI',
+    #     'Polling NCBI',
+    #     'Retrieving results from NCBI',
+    #     'Parsing results',
+    #     'Fetching genomic context of hits',
+    #     # 'Fetching intermediate genes from NCBI' will be inserted if applicable
+    #     'Writing results'
+    # ],
+    # 'recompute': [
+    #     'Load previous results',
+    #     'Filtering results with new thresholds',
+    #     # 'Fetching intermediate genes from NCBI' will be inserted if applicable
+    #     'Writing results'
+    # ],
+    # 'gne': [  # finished, no variations of this job type
+    #     'Load previous results',
+    #     'Computing gene neighbourhood statistics',
+    #     'Writing GNE plot to HTML file'
+    #     'Writing results'
+    # ],
+    # 'extract_clusters': [
+    #     'Load previous results',
+    #     'Extract clusters that match threshold',
+    #     'Write GenBank files',
+    #     'Query NCBI for cluster sequences',
+    #     'Write results',
+    # ],
+    # 'clinker_query': [
+    #     'Generate cluster plot'
+    # # ],
+    # 'extract_sequences': [
+    #     'Load previous results',
+    #     'Extract sequences matching filters',
+    #     # 'Fetch sequences from NCBI' will be inserted if applicable
+    #     'Write results'
+    # ]
+
+# }
+
+# execution_stages_log_descriptors = {
+    # 'clinker': [
+    #     'Parsing files:',
+    #     'Starting cluster alignments',
+    #     'Generating results',
+    #     'Saving session to',
+    #     'Writing to',
+    #     'INFO - Done!'
+    # ],
+    # 'search': [
+    #     'Launching new search',
+    #     'Polling NCBI for completion status',
+    #     'Retrieving results for search',
+    #     'Parsing results',
+    #     'Fetching genomic context of hits',
+    #     # 'Searching for intermediate genes' will be inserted if applicable
+    #     'Writing current search session',
+    #     'INFO - Done.'
+    # ],
+    # 'recompute': [
+    #     'Loading session(s)',
+    #     'Filtering session with new thresholds',
+    #     # 'Searching for intermediate genes' will be inserted if applicable,
+    #     'Writing recomputed session to',
+    #     'INFO - Done.'
+    # ],
+    # 'gne': [  # finished, no variations of this job type
+    #     'Loading session from',
+    #     'Computing gene neighbourhood statistics',
+    #     'Writing GNE table to',
+    #     'Saving gne plot HTML'
+    #     'INFO - Done.'
+    # ],
+    # 'extract_clusters': [
+    #     'Loading session from',
+    #     'Extracting clusters that match the filters',
+    #     'Writing genbank files',
+    #     'Querying NCBI',
+    #     'Clusters have been written to',
+    #     'INFO - Done!'
+    # ],
+    # 'clinker_query': [
+#     #     'Starting generation of cluster plot with clinker',
+#     #     'INFO - Done!'
+#     # ],
+#     'extract_sequences': [
+#         'Loading session from',
+#         'Extracting subject sequences matching filters',
+#         # 'Querying NCBI' will be inserted if applicable
+#         'Writing output',
+#         'INFO - Done!'
+#     ]
+# }

@@ -50,3 +50,20 @@ class CAGECATJob:
     def get_job_type(self):
         # TODO: check if this can be removed
         return self.options['job_type']
+
+    def get_relevant_stage_options(self):
+        stage_options = []
+
+        if self.job_type == 'search':
+            if 'mode' not in self.options:
+                return 'ERROR - No mode given'
+
+            mode = self.options['mode']
+            stage_options.append(f'mode={mode}')
+
+            # TODO: add sort clusters here?
+
+            if 'intermediate_genes' in self.options:
+                stage_options.append(f'intermediate_genes')
+
+        return '&'.join(stage_options)

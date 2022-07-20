@@ -108,7 +108,8 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
         main_search_job_id = add_parent_search_and_child_jobs_to_db(cc_job, i == len(new_jobs)-1)
 
         j = dbJob(id=cc_job.job_id,
-                  status="queued" if depending_on is None else "waiting",  # for parent job to finish
+                  status="queued" if depending_on is None else "waiting",  # for parent job to finish,
+                  options=cc_job.get_relevant_stage_options(),
                   post_time=datetime.datetime.now(timezone).strftime('%B %d %Y - %H:%M:%S'),
                   job_type=cc_job.job_type,
                   redis_id=job.id,

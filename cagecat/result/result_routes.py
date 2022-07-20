@@ -81,23 +81,24 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  module=job.job_type,
                                  status=status,
                                  failure_reason=get_failure_reason(job_id),
-                                 help_enabled=False)
-
+                                 help_enabled=False
+                                 )
 
         elif status == "queued" or status == "running":
-
             if "pj" not in request.args:
                 pj = "null"
             else:
                 pj = request.args["pj"]
 
-
             if status == 'queued':
                 stages = []
             else:
-                stages = get_execution_stages_front_end(
+                stages = create_execution_stages(
                     job_type=job.job_type,
-                    job_id=job_id)
+                    job_id=job_id,
+                    options=job.options,
+                    stack='front-end'
+                )
 
             return show_template("status_page.html", j_id=job_id,
                                  parent_job=pj,
@@ -186,9 +187,11 @@ def get_execution_stage(job_id: str):
     if job is None:
         return show_template("job_not_found.html", job_id=job_id)
 
-    stages = get_execution_stages_log_descriptors(
+    stages = create_execution_stages(
         job_type=job.job_type,
-        job_id=job.id
+        job_id=job.id,
+        options=job.options,
+        stack='back-end'
     )
 
     # queued situation
@@ -237,53 +240,52 @@ def get_plot_contents(job_id) -> str:
     return prepare_finished_result(job_id, job.job_type)[0]
 
 # Helper functions
-def get_execution_stages_front_end(job_type: str, job_id: str):
-    # TODO merge with get_execution_stages_log_descriptors
+stack_to_text_index = {
+    'front-end': 0,
+    'back-end': 1
+}
+
+def create_execution_stages(job_type: str, job_id: str, options: str, stack: str):
+    """
+
+    options: can be empty. Indicates which options of the given job type have
+    been selected by the user (e.g. searching for intermediate genes at a
+    cblaster search job)
+    stack: used to select either front-end texts ore back-end log-descriptors
+    """
+
+    if stack not in ('front-end', 'back-end'):
+        raise ValueError('Invalid stack')
+
     log_base = generate_paths(job_id)[1]
     cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
     with open(cmd_fp) as inf:
         contents = inf.read()
 
-    stages_front_end: list = copy.deepcopy(execution_stages_front_end[job_type])
+    stages: list = copy.deepcopy(execution_stages_front_end[job_type])
 
     if job_type == 'search':
+        insert_stage_index = 5
+
         if '--recompute' in contents:
-            stages_front_end: list = copy.deepcopy(execution_stages_front_end['recompute'])
-            index = 2
-        else:
-            index = 5
+            stages = copy.deepcopy(execution_stages_front_end['recompute'])
+            insert_stage_index = 2
 
         if '--intermediate_genes' in contents:
-            stages_front_end.insert(index, 'Fetching intermediate genes from NCBI')
+            texts = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
+            stages.insert(insert_stage_index, texts)
 
-    elif job_type == 'extract_sequences':
-        if '--extract_sequences' in contents:
-            stages_front_end.insert(2, 'Fetch sequences from NCBI')
+        # front-end
+        # elif job_type == 'extract_sequences':
+        #     if '--extract_sequences' in contents:
+        #         stages_front_end.insert(2, 'Fetch sequences from NCBI')
 
-    return stages_front_end
+        # back-end
+        # elif job_type == 'extract_sequences':
+        #     if '--extract_sequences' in contents:
+        #         stages_log_descriptors.insert(2, 'Querying NCBI')
 
+    text_index = stack_to_text_index[stack]
+    stack_stages = [stage[text_index] for stage in stages]
 
-def get_execution_stages_log_descriptors(job_type: str, job_id: str):
-    # TODO merge with get_execution_stages_front_end
-    log_base = generate_paths(job_id)[1]
-    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
-    with open(cmd_fp) as inf:
-        contents = inf.read()
-
-    stages_log_descriptors: list = copy.deepcopy(execution_stages_log_descriptors[job_type])
-
-    if job_type == 'search':
-        if '--recompute' in contents:
-            stages_log_descriptors: list = copy.deepcopy(execution_stages_log_descriptors['recompute'])
-            index = 2
-        else:
-            index = 6
-
-        if '--intermediate_genes' in contents:
-            stages_log_descriptors.insert(index, 'Searching for intermediate genes')
-
-    elif job_type == 'extract_sequences':
-        if '--extract_sequences' in contents:
-            stages_log_descriptors.insert(2, 'Querying NCBI')
-
-    return stages_log_descriptors
+    return stack_stages
