@@ -61,8 +61,6 @@ class CAGECATJob:
             mode = self.options['mode']
             stage_options.append(f'mode={mode}')
 
-            # TODO: add sort clusters here?
-
             if 'intermediate_genes' in self.options:
                 stage_options.append(f'intermediate_genes')
 

@@ -250,7 +250,7 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
 
     options: can be empty. Indicates which options of the given job type have
     been selected by the user (e.g. searching for intermediate genes at a
-    cblaster search job)
+    cblaster search job). Is stored in the database in enqueue_jobs function
     stack: used to select either front-end texts ore back-end log-descriptors
     """
 
@@ -271,11 +271,54 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
             stages = copy.deepcopy(execution_stages_front_end['recompute'])
             insert_stage_index = 2
 
-        if '--intermediate_genes' in contents:
+        if 'intermediate_genes' in options:
             texts = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
             stages.insert(insert_stage_index, texts)
 
-        # front-end
+    # TODO:
+# cblaster search
+# query file: no additional
+# query_ids: https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/helpers.py#L74
+# query_profiles (hmm): no additional
+#
+# # HMM SEARCH (mode=hmm OR combi_remote)
+# hmm/combi_remote: https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L247
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/hmm_search.py#L229
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/hmm_search.py#L256
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/hmm_search.py#L151
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L261
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L262
+#
+# ## REMOTE
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L314
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L337
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L355
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L358
+# mischien? https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L362
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L368
+#
+# # case query_file:
+# no additional
+# # case query_ids
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/helpers.py#L74
+#
+# ## REMOTE general
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L330
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L333
+#
+# # IF intermediate_genes
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/intermediate_genes.py#L255
+#
+# # REMOTE GENERAL
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L355
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L362
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L374
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/plot.py#L299
+# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L394
+
+
+
+# front-end
         # elif job_type == 'extract_sequences':
         #     if '--extract_sequences' in contents:
         #         stages_front_end.insert(2, 'Fetch sequences from NCBI')
@@ -284,6 +327,8 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
         # elif job_type == 'extract_sequences':
         #     if '--extract_sequences' in contents:
         #         stages_log_descriptors.insert(2, 'Querying NCBI')
+
+    # for subsequent jobs, get the parent job and use the db options
 
     text_index = stack_to_text_index[stack]
     stack_stages = [stage[text_index] for stage in stages]
