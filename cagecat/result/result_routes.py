@@ -15,8 +15,8 @@ from flask import Blueprint, request, url_for, send_file
 from werkzeug.utils import secure_filename
 
 from cagecat.routes.routes_helpers import format_size
-from cagecat.const import execution_stages_front_end, execution_stages_log_descriptors, modules_with_plots, downstream_modules, \
-    module_to_tool
+from cagecat.const import modules_with_plots, downstream_modules, \
+    module_to_tool, execution_stages
 from cagecat.general_utils import show_template, generate_paths, fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason
 
@@ -264,13 +264,13 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
     with open(cmd_fp) as inf:
         contents = inf.read()
 
-    stages: list = copy.deepcopy(execution_stages_front_end[job_type])
+    stages: list = copy.deepcopy(execution_stages[job_type])
 
     if job_type == 'search':
         insert_stage_index = 5
 
         if '--recompute' in contents:
-            stages = copy.deepcopy(execution_stages_front_end['recompute'])
+            stages = copy.deepcopy(execution_stages['recompute'])
             insert_stage_index = 2
 
         if 'intermediate_genes' in options:
