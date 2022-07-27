@@ -100,8 +100,9 @@ def prepare_finished_result(job_id: str,
         raise NotImplementedError(
             f"Module {module} has not been implemented yet in results")
 
-    if size > size_limit:
-        return "Your file is too large to be shown here. You can download your results manually via the \"Download\" button.", program, 0
+    if size is not None:
+        if size > size_limit:
+            return "Your file is too large to be shown here. You can download your results manually via the \"Download\" button.", program, 0
 
     return plot_contents, program, size
 
