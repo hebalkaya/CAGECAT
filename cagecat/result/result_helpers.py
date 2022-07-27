@@ -12,6 +12,7 @@ from flask import url_for
 from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons
 from cagecat.db_models import Job as dbJob
 from cagecat.general_utils import fetch_job_from_db, send_email
+from config_files.config import persistent_jobs
 from config_files.sensitive import sender_email
 
 
@@ -125,6 +126,9 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
     Depending: jobs on which the current job depends to start
     """
     connected_jobs = []
+
+    if job.id in persistent_jobs:
+        return connected_jobs
 
     if job.main_search_job == "null": # current job is an initial job (search of clinker)
         # go and look for child jobs
