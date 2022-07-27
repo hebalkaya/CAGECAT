@@ -277,11 +277,13 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
             texts = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
             stages.insert(insert_stage_index, texts)
 
-        mode = re.findall(pattern=mode_pattern, string=options)
-        if len(mode) != 1:
-            raise ValueError('Error when extracting mode')
+        if options.count('&') == 0:
+            mode = options.split('=')[-1]
+        else:
+            mode = re.findall(pattern=mode_pattern, string=options)[0]
 
-        used_mode = mode[0]
+        if mode not in ('hmm', 'remote', 'combi_remote'):
+            raise ValueError('Error when extracting mode')
 
         # if used_mode in ('hmm', 'combi_remote'):
         #     texts = ('Start HMMer search', 'Starting hmmer search')
