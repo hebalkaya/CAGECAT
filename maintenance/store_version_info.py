@@ -2,7 +2,7 @@
 
 Should be run when a new version of CAGECAT is released.
 
-Should be run from within the /repo/dev folder. If a virtualenviroment is
+Should be run from within the /repo/maintenance folder. If a virtualenviroment is
 activated, deactivate it by running
 
 conda deactivate
