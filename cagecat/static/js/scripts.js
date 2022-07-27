@@ -226,11 +226,6 @@ function addSelectedToForm(downstream_prog) {
     else if (downstream_prog === "clusters"){
         $('#selectedClusters1')[0].value = getSelectedClusters('');
     }
-    else if (downstream_prog === "corason"){
-        $('#selectedQuery')[0].value = getSelectedQueries();
-        $('#selectedClusters2')[0].value = getSelectedClusters('');
-        $('#unselectedClusters2')[0].value = getSelectedClusters('un');
-    }
     else if (downstream_prog === "clinker_query"){
         $('#selectedClusters3')[0].value = getSelectedClusters('');
     }
@@ -630,16 +625,6 @@ function moveSelectedElements(target, selectionType){
     $('#selectClusterButton')[0].innerText = 'Select clusters (' + $('#selectedClustersSelector')[0].length.toString() + ')'
     $('#selectQueryButton')[0].innerText = 'Select queries (' + selectedQueriesSelector.length.toString() + ')'
 
-    if (selectionType === 'Queries') {
-        let elem = $('#corasonSubmit')[0];
-        if (elem !== null) {
-            if (selectedQueriesSelector.length === 1) {
-                elem.removeAttribute('disabled');
-            } else {
-                elem.setAttribute('disabled', 'disabled');
-            }
-        }
-    }
     return result;
 }
 
@@ -657,19 +642,6 @@ function showSelection(toShow){
     }
     show.classList.remove('no-display');
     hide.classList.add('no-display');
-}
-
-function checkClanCutoffValues(){
-    // currently not used. Still to be implemented with big-scape
-    let elem = $('#clan_cutoff')[0];
-    let splitted = elem.value.split(' ');
-
-    if (parseFloat(splitted[0]) >= 0.0 && parseFloat(splitted[0]) <= 1 && parseFloat(splitted[1]) >= 0.0 && parseFloat(splitted[1]) <=1 ){
-        elem.classList.remove('invalid');
-    }
-    else {
-        elem.classList.add('invalid');
-    }
 }
 
 function addClustersToUse(){

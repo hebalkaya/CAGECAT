@@ -345,25 +345,6 @@ cblaster_extract_clusters = {
     }
 }
 
-# CORASON_HELPS = {'selectedQuery': {'title': 'Selected query',
-# 'module': '', 'text': 'Query to be analyzed\n\nRequired: yes'},
-#                  'selectedReferenceCluster': {'title': 'Selected reference cluster',
-#                  'module': '', 'text': 'The cluster number of which cluster should act as the reference cluster. The cluster numbers correspond with the cluster numbers of the preceding job. Note that the reference cluster must include the query gene, or Corason will fail to execute.\n\nRequired: yes'},
-#                  'selectedClustersToSearch': {'title': 'Selected clusters to search in',
-#                  'module': '', 'text': 'TODO'}, # is this list parameter?
-#                  'evalue': {'title': 'Minimal e-value',
-#                  'module': '', 'text': 'Minimal e-value for a gene to be considered a hit.\n\nRequired: yes'},
-#                  'bitscore': {'title': 'Bitscore',
-#                  'module': '', 'text': 'TODO'},
-#                  'clusterRadio': {'title': 'Number of genes to analyze',
-#                  'module': '', 'text': 'Number of genes in the neighbourhood to analyze\n\nRequired: yes'},
-#                  'ecluster': {'title': 'e-value of genes from reference cluster',
-#                  'module': '', 'text': 'e-value for sequences from reference cluster\n\nRequired: yes'},
-#                  'ecore': {'title': 'TODO',
-#                   'module': '', 'text': 'e-value for Best Bidirectional Hits used to construct genomic core from clusters.\n\nRequired: yes'},
-#                  'rescale': {'title': 'Rescale',
-#                  'module': '', 'text': 'Increasing this number will show a bigger cluster region with smaller genes.\n\nRequired: no?'}}
-
 cblaster_search_hmm_mode = {
     'selectedGenus': {
         'title': 'Selected genus',
@@ -382,7 +363,7 @@ cblaster_search_hmm_mode = {
 all_helps = [('multiple', job_details), ('multiple', general), ('search', cblaster_search), ('neighbourhood', cblaster_gne),
              ('clinker visualisation', clinker), ('search', cblaster_search_binary_table), ('multiple', cblaster_search_filtering),
              ('clinker visualisation with query', cblaster_plot_clusters), ('extract sequences', cblaster_extract_sequences),
-             ('extract clusters', cblaster_extract_clusters), ('HMM', cblaster_search_hmm_mode),  # ('corason', CORASON_HELPS)
+             ('extract clusters', cblaster_extract_clusters), ('HMM', cblaster_search_hmm_mode),
              ]
 help_texts = {}
 

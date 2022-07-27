@@ -170,17 +170,14 @@ downstream_modules = {
         "gne",
         "extract_sequences",
         "extract_clusters",
-        "corason",
         "clinker",
         "clinker_query"],
     "recompute": [
         "gne",
         "extract_sequences",
         "extract_clusters",
-        "corason",
         "clinker",
         "clinker_query"],
-    "corason": [],
     "gne": [],
     "extract_sequences": [],
     "extract_clusters": ["clinker"],  # also possible: corason and clinker_query. Get query headers from .csv file

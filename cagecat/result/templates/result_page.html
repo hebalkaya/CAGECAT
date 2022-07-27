@@ -125,18 +125,6 @@
 {#            <a href="{{url_for('home_page', prev_run_id=j_id)}}?type=visualization"><button class="button button-small">Visualize everything</button></a>#}
         {% endif %}
 
-
-{#        {% if 'corason' in downstream_modules %}#}
-{#    <form action="{{ url_for('tools.corason')}}" method="post" onsubmit="addSelectedToForm('corason')">#}
-{#        <input type="hidden" name="job_id" value="{{j_id}}"/>#}
-{#        <input type="hidden" name="selectedQuery" id="selectedQuery" value=""/>#}
-{#        <input type="hidden" name="selectedClusters" id="selectedClusters2" value=""/>#}
-{#        <input type="hidden" name="unselectedClusters" id="unselectedClusters2" value=""/>#}
-{#        <input type="hidden" name="selectedReferenceCluster" id="referenceCluster" value=""/>#}
-{#        <button class="button button-small" type="submit" id="corasonSubmit" disabled="disabled">CORASON</button>#}
-{#    </form>#}
-{#        {% endif %}#}
-
             </div>
 
     {% if module != 'extract_clusters' %}

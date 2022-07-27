@@ -85,10 +85,6 @@ def prepare_finished_result(job_id: str,
             plot_contents = inf.read()
         size = os.path.getsize(plot_path)
 
-    elif module == "corason":
-        program = "echo"  # TODO future: will be someting else later
-        plot_contents = None  # TODO future: for now
-
     elif module == "clinker":
         program = "clinker"
         with open(plot_path) as inf:

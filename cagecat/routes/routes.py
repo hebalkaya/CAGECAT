@@ -259,30 +259,6 @@ def submit_job() -> str:
                                                           "results",
                                                           f"{request.form['prev_job_id']}_session.json")))
 
-    # elif job_type == "corason":
-    #     extr_clust_options = copy.deepcopy(co.EXTRACT_CLUSTERS_OPTIONS)
-    #     clust_numbers = dict(request.form)
-    #
-    #     extr_clust_options['clusterNumbers'] = \
-    #         clust_numbers['selectedClustersToUse'] + f' {request.form["selectedReferenceCluster"]}' # as we also need the cluster file for the reference bgc
-    #
-    #     # TODO future: extract query sequence
-    #
-    #     new_jobs.append(CAGECATJob(job_id=job_id,
-    #                                options=extr_clust_options,
-    #                                job_type='extract_clusters',
-    #                                file_path=os.path.join(ut.JOBS_DIR,
-    #                                       request.form['prev_job_id'],
-    #                                       "results",
-    #                                       f"{request.form['prev_job_id']}_session.json")))
-    #
-    #     new_jobs.append(CAGECATJob(job_id=ut.generate_job_id(),
-    #                                options=request.form,
-    #                                file_path='TODOCORASONPATH',
-    #                                depends_on_job_id=new_jobs[-1].job_id))  # get the last CAGECATJob object
-    #
-    #     # TODO future: file path corason --> for corason, the file path is the path to where the extracted clusters will be
-
     elif job_type == "clinker":
         if not validate_full_form(ClinkerBaseForm, request.form):
             return redirect(url_for('invalid_submission'))

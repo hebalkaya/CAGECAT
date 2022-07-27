@@ -140,38 +140,6 @@ def extract_clusters() -> str:
                          max_clusters_to_extract=thresholds['maximum_clusters_to_extract'])
 
 
-# @tools.route("/corason", methods=["POST"])
-# def corason() -> str:
-#     """Shows page for selecting settings for running Corason
-#
-#     Input:
-#         No inputs
-#
-#     Output:
-#         - HTML represented in string format showing options for running
-#             Corason in the client's browser
-#     """
-#     query = request.form["selectedQuery"]
-#
-#     selected_clusters = request.form["selectedClusters"].split('\r\n')
-#
-#     if len(selected_clusters) == 1:
-#         clust_numbers = parse_selected_cluster_numbers(
-#             request.form["unselectedClusters"],
-#             clust_number_with_score_pattern, format_nicely=False).split(',')
-#     else:
-#         clust_numbers = parse_selected_cluster_numbers(
-#             request.form["selectedClusters"],
-#             clust_number_with_score_pattern, format_nicely=False).split(',')
-#
-#     return show_template("corason.html",
-#                          query=query,
-#                          cluster_headers=selected_clusters,
-#                          clust_numbers=clust_numbers,
-#                          # cluster_to_search_in=cluster_to_search_in,
-#                          prev_job_id=request.form["job_id"])
-
-
 @tools.route('/gne', methods=['GET', 'POST'])
 def gene_neighbourhood_estimation() -> str:
     return show_template('cblaster_gene_neighbourhood_estimation.html',
@@ -195,8 +163,3 @@ def clinker() -> str:
                          query_file_extensions=','.join(genbank_extensions),
                          show_examples=show_examples,
                          prev_job_id=prev_job_id)
-
-
-# @tools.route('/big-scape')
-# def bigscape() -> str:
-#     return show_template('BiG-SCAPE.html')
