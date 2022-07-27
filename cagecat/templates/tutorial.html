@@ -43,8 +43,8 @@
         </p>
 
         <div style="margin-left: 10%;">
-            {#        <img id="fig1" src="{{ url_for('static', filename='images/tutorial/tutorial_1.PNG') }}">#}
-            {#            <figcaption style="margin-top: 1%;">Figure 1</figcaption>#}
+            <img id="fig1" src="{{ url_for('static', filename='images/tutorial/tutorial_1_entry_points.PNG') }}">
+            <figcaption style="margin-top: 1%;">Figure 1</figcaption>
         </div>
 
 
@@ -215,10 +215,12 @@
             Meanwhile, the status of your job is shown and will be updated every few seconds (<a
                 href="{{ url_for('tutorial') }}#fig7">Fig. 7</a>). This status page
             differs per job type, as every job has different steps that are executed.
-
-            {#            <img id="fig7" src="{{ url_for('static', filename='images/tutorial/tutorial_7_??.PNG') }}"/>#}
-            {#        <figcaption style="margin-top: 1%;">Figure 7</figcaption>#}
         </p>
+
+        <div style="margin-left: 10%;">
+            <img id="fig7" src="{{ url_for('static', filename='images/tutorial/tutorial_7_job_status_update.PNG') }}"/>
+            <figcaption style="margin-top: 1%;">Figure 7</figcaption>
+        </div>
 
         <h2>Viewing the analysis results</h2>
         <p>
