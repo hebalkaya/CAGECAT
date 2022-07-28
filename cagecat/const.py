@@ -269,16 +269,41 @@ execution_stages = {
         ('Write results', 'Writing to'),
         ('INFO - Done!', )
     ],
-    'search': [
-        ('Send search job to NCBI', 'Launching new search'),
-        ('Polling NCBI', 'Polling NCBI for completion status'),
-        ('Retrieving results from NCBI', 'Retrieving results for search'),
-        ('Parsing results', 'Parsing results'),
-        ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
-        # 'Searching for intermediate genes' will be inserted if applicable
-        ('Writing results', 'Writing current search session'),
-        ('INFO - Done.', )
-    ],
+    'search': {
+        'remote': [
+            ('Send search job to NCBI', 'Launching new search'),
+            ('Polling NCBI', 'Polling NCBI for completion status'),
+            ('Retrieving results from NCBI', 'Retrieving results for search'),
+            ('Parsing results', 'Parsing results'),
+            ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
+            # 'Searching for intermediate genes' will be inserted if applicable
+            ('Writing results', 'Writing current search session'),
+            ('INFO - Done.', )
+        ],
+        'hmm': [
+            ('Fetching HMM profiles from Pfam database', 'Fetching accessions from Pfam'),
+            ('Searching using HMM profiles', 'Performing hmmsearch'),
+            ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
+            ('Querying genus-specific database', 'Querying local SQLite3 database'),
+            ('Writing results', 'Writing current search session'),
+            ('INFO - Done.', )
+        ],
+        'combi_remote': [
+            # hmm specific
+            ('Fetching HMM profiles from Pfam database', 'Fetching accessions from Pfam'),
+            ('Searching using HMM profiles', 'Performing hmmsearch'),
+            ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
+            ('Querying genus-specific database', 'Querying local SQLite3 database'),
+            # remote specific
+            ('Send search job to NCBI', 'Launching new search'),
+            ('Polling NCBI', 'Polling NCBI for completion status'),
+            ('Retrieving results from NCBI', 'Retrieving results for search'),
+            ('Parsing results', 'Parsing results'),
+            ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
+            ('Writing results', 'Writing current search session'),
+            ('INFO - Done.', )
+        ]
+    },
     'recompute': [
         ('Load previous results', 'Loading session(s)'),
         ('Filtering results with new thresholds', 'Filtering session with new thresholds'),
