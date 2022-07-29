@@ -262,11 +262,12 @@ tool_explanations = {'cblaster_search':
 execution_stages = {
     # (front-end, log-descriptor)
     'clinker': [
+        ('Sanitizing input files', 'Executing input file sanitization'),
         ('Parse genome files', 'Parsing files:'),
         ('Align clusters', 'Starting cluster alignments'),
-        ('Generate results', 'Generating results'),
+        ('Summarizing results', 'Generating results'),
         ('Save session file', 'Saving session to'),
-        ('Write results', 'Writing to'),
+        ('Writing results', 'Writing to'),
         ('INFO - Done!', )
     ],
     'search': {
