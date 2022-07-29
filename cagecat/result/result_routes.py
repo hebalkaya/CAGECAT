@@ -249,30 +249,32 @@ mode_pattern = re.compile('mode=(.*)&')
 
 
 def get_stages(job_type, contents, options):
-    stages = copy.deepcopy(execution_stages[job_type])
+    if job_type != 'search':
+        stages = copy.deepcopy(execution_stages[job_type])
+    else:
+        stages = None
 
     if job_type == 'search':
-        insert_stage_index = 5
 
         if '--recompute' in contents:
             stages = copy.deepcopy(execution_stages['recompute'])
             insert_stage_index = 2
+        else:
+            insert_stage_index = 5
+
+            if options.count('&') == 0:
+                mode = options.split('=')[-1]
+            else:
+                mode = re.findall(pattern=mode_pattern, string=options)[0]
+                if mode not in ('hmm', 'remote', 'combi_remote'):
+                    raise ValueError('Error when extracting mode')
+
+            stages = copy.deepcopy(execution_stages[job_type][mode])
 
         if 'intermediate_genes' in options:
             texts = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
             stages.insert(insert_stage_index, texts)
 
-        if options.count('&') == 0:
-            mode = options.split('=')[-1]
-        else:
-            mode = re.findall(pattern=mode_pattern, string=options)[0]
-
-        if mode not in ('hmm', 'remote', 'combi_remote'):
-            raise ValueError('Error when extracting mode')
-
-        # if used_mode in ('hmm', 'combi_remote'):
-        #     texts = ('Start HMMer search', 'Starting hmmer search')
-        #     stages.insert()
     return stages
 
 
