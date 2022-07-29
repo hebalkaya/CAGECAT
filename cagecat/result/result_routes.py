@@ -247,24 +247,9 @@ stack_to_text_index = {
 }
 mode_pattern = re.compile('mode=(.*)&')
 
-def create_execution_stages(job_type: str, job_id: str, options: str, stack: str):
-    """
 
-    options: can be empty. Indicates which options of the given job type have
-    been selected by the user (e.g. searching for intermediate genes at a
-    cblaster search job). Is stored in the database in enqueue_jobs function
-    stack: used to select either front-end texts ore back-end log-descriptors
-    """
-
-    if stack not in ('front-end', 'back-end'):
-        raise ValueError('Invalid stack')
-
-    log_base = generate_paths(job_id)[1]
-    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
-    with open(cmd_fp) as inf:
-        contents = inf.read()
-
-    stages: list = copy.deepcopy(execution_stages[job_type])
+def get_stages(job_type, contents, options):
+    stages = copy.deepcopy(execution_stages[job_type])
 
     if job_type == 'search':
         insert_stage_index = 5
@@ -288,51 +273,27 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
         # if used_mode in ('hmm', 'combi_remote'):
         #     texts = ('Start HMMer search', 'Starting hmmer search')
         #     stages.insert()
+    return stages
 
 
+def create_execution_stages(job_type: str, job_id: str, options: str, stack: str):
+    """
 
-    # TODO:
-# cblaster search
-# query file: no additional
-# query_ids: https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/helpers.py#L74
-# query_profiles (hmm): no additional
-#
-# # HMM SEARCH (mode=hmm OR combi_remote)
-# hmm/combi_remote: https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L247
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/hmm_search.py#L229
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/hmm_search.py#L256
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/hmm_search.py#L151
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L261
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L262
-#
-# ## REMOTE
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L314
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L337
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L355
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L358
-# mischien? https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L362
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/remote.py#L368
-#
-# # case query_file:
-# no additional
-# # case query_ids
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/helpers.py#L74
-#
-# ## REMOTE general
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L330
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L333
-#
-# # IF intermediate_genes
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/intermediate_genes.py#L255
-#
-# # REMOTE GENERAL
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L355
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L362
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L374
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/plot.py#L299
-# https://github.com/gamcil/cblaster/blob/eedf3c11321d5ea19912b880f07e69bd4e6cd5f9/cblaster/main.py#L394
+    options: can be empty. Indicates which options of the given job type have
+    been selected by the user (e.g. searching for intermediate genes at a
+    cblaster search job). Is stored in the database in enqueue_jobs function
+    stack: used to select either front-end texts ore back-end log-descriptors
+    """
 
+    if stack not in ('front-end', 'back-end'):
+        raise ValueError('Invalid stack')
 
+    log_base = generate_paths(job_id)[1]
+    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    with open(cmd_fp) as inf:
+        contents = inf.read()
+
+    stages = get_stages(job_type, contents, options)
 
 # front-end
         # elif job_type == 'extract_sequences':
@@ -347,6 +308,12 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
     # for subsequent jobs, get the parent job and use the db options
 
     text_index = stack_to_text_index[stack]
-    stack_stages = [stage[text_index] for stage in stages]
+
+    stack_stages = []
+    for stage in stages:
+        if len(stage) > 1:
+            stack_stages.append(stage[text_index])
+        else:
+            stack_stages.append(stage[0])
 
     return stack_stages
