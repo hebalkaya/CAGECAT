@@ -246,7 +246,8 @@ stack_to_text_index = {
     'back-end': 1
 }
 mode_pattern = re.compile('mode=(.*)&')
-
+intermediate_gene_text = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
+download_sequences_text = ('Fetching sequences from NCBI', 'Querying NCBI')
 
 def get_stages(job_type, contents, options):
     if job_type != 'search':
@@ -255,7 +256,6 @@ def get_stages(job_type, contents, options):
         stages = None
 
     if job_type == 'search':
-
         if '--recompute' in contents:
             stages = copy.deepcopy(execution_stages['recompute'])
             insert_stage_index = 2
@@ -272,8 +272,11 @@ def get_stages(job_type, contents, options):
             stages = copy.deepcopy(execution_stages[job_type][mode])
 
         if 'intermediate_genes' in options:
-            texts = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
-            stages.insert(insert_stage_index, texts)
+            stages.insert(insert_stage_index, intermediate_gene_text)
+
+    elif job_type == 'extract_sequences':
+        if '--extract_sequences' in contents:
+            stages.insert(2, download_sequences_text)
 
     return stages
 
