@@ -7,9 +7,9 @@ Author: Matthias van den Belt
 from flask import Blueprint, request
 
 # own project imports
-from cagecat.tools.tools_helpers import read_headers, parse_selected_cluster_numbers
+from cagecat.tools.tools_helpers import read_headers, parse_selected_cluster_numbers, get_search_mode_from_job_id
 from cagecat.forms.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
-    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm
+    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterExtractSequencesFormHMM
 from cagecat.routes.routes import available_hmm_databases
 from cagecat.general_utils import show_template, fetch_job_from_db
 from cagecat.const import tool_explanations, clinker_modules, genbank_extensions, fasta_extensions, clust_number_with_score_pattern, \
@@ -17,6 +17,7 @@ from cagecat.const import tool_explanations, clinker_modules, genbank_extensions
 from config_files.config import thresholds
 
 tools = Blueprint('tools', __name__, template_folder="templates")
+
 
 ### Route function definitions
 @tools.route('/')
@@ -71,6 +72,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
                          query_file_extensions=','.join(fasta_extensions + genbank_extensions),
                          show_examples=show_examples)
 
+
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
     """Shows page for selecting options to run clinker with query genes
@@ -101,11 +103,27 @@ def extract_sequences() -> str:
         - HTML represented in string format showing options for extracting
             sequences in the client's browser
     """
-    return show_template("cblaster_extract_sequences.html",
-                         all_forms=CblasterExtractSequencesForm(),
-                         selected_queries=request.form["selectedQueries"].split('\r\n'),
-                         # selected_scaffolds=selected_scaffolds,
-                         prev_job_id=request.form["job_id"])
+    parent_job_id = request.form["job_id"]
+    prev_job_search_mode = get_search_mode_from_job_id(
+        job_id=parent_job_id
+    )
+
+    if prev_job_search_mode in ('hmm', 'combi_remote'):
+        form = CblasterExtractSequencesFormHMM()
+        show_download = False
+    else:
+        form = CblasterExtractSequencesForm()
+        show_download = True
+
+    return show_template(
+        template_name="cblaster_extract_sequences.html",
+        all_forms=form,
+        selected_queries=request.form["selectedQueries"].split('\r\n'),
+        # selected_scaffolds=selected_scaffolds,
+        prev_job_id=parent_job_id,
+        show_download=show_download
+    )
+
 
 @tools.route("/extract-clusters", methods=["GET", "POST"])
 def extract_clusters() -> str:

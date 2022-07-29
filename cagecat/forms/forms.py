@@ -50,6 +50,12 @@ class CblasterExtractSequencesForm(Form):
     general = GeneralForm()
     filtering = ExtractSequencesFilteringForm()
     output = ExtractSequencesOutputForm()
+    download = ExtractSequencesDownloadSequencesForm()
+
+class CblasterExtractSequencesFormHMM(Form):
+    general = GeneralForm()
+    filtering = ExtractSequencesFilteringForm()
+    output = ExtractSequencesOutputForm()
 
 class CblasterExtractClustersForm(Form):
     general = GeneralForm()

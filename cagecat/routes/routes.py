@@ -17,9 +17,11 @@ from cagecat.general_utils import show_template, get_server_info, fetch_job_from
 from cagecat import app
 from cagecat.classes import CAGECATJob
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
-    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm
+    CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm, \
+    CblasterExtractSequencesFormHMM
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
+from cagecat.tools.tools_helpers import get_search_mode_from_job_id
 from config_files.config import cagecat_version, thresholds
 from config_files.sensitive import finished_hmm_db_folder, sender_email
 
@@ -219,13 +221,23 @@ def submit_job() -> str:
     elif job_type == "extract_sequences":
         # For now, only when coming from a results page (using a previous job
         # id) is supported
-        if not validate_full_form(CblasterExtractSequencesForm, request.form):
+        parent_job_id = request.form['prev_job_id']
+        prev_job_search_mode = get_search_mode_from_job_id(
+            job_id=parent_job_id
+        )
+
+        if prev_job_search_mode in ('hmm', 'combi_remote'):
+            form = CblasterExtractSequencesFormHMM()
+        else:
+            form = CblasterExtractSequencesForm()
+
+        if not validate_full_form(form, request.form):
             return redirect(url_for('invalid_submission'))
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
                                    file_path=os.path.join(jobs_dir,
-                                                          request.form['prev_job_id'],
+                                                          parent_job_id,
                                               "results",
                                               f"{request.form['prev_job_id']}_session.json")))
 

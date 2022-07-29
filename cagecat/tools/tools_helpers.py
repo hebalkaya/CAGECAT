@@ -9,6 +9,8 @@ import typing as t
 from more_itertools import consecutive_groups
 
 from cagecat.const import jobs_dir
+from cagecat.db_models import Job
+from cagecat.result.result_helpers import parse_search_mode
 
 
 def read_headers(job_id: str) -> t.List[str]:
@@ -80,3 +82,13 @@ def parse_selected_cluster_numbers(selected_clusters: str,
         cluster_numbers = ""
 
     return cluster_numbers
+
+
+def get_search_mode_from_job_id(job_id):
+    """Gets the used search mode of a given job id
+
+    :param job_id:
+    :return:
+    """
+    options = Job.query.filter_by(job_id=job_id).options
+    return parse_search_mode(options)

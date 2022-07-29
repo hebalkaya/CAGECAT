@@ -457,6 +457,7 @@ class ExtractSequencesOutputForm(Form):
         }
     )
 
+class ExtractSequencesDownloadSequencesForm(Form):
     downloadSeqs = BooleanField(
         label=u'Download sequences',
         validators=[], # TODO: add boolean validator
