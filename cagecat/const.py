@@ -268,7 +268,6 @@ execution_stages = {
         ('Summarizing results', 'Generating results'),
         ('Save session file', 'Saving session to'),
         ('Writing results', 'Writing to'),
-        ('INFO - Done!', )
     ],
     'search': {
         'remote': [
@@ -279,7 +278,6 @@ execution_stages = {
             ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
             # 'Searching for intermediate genes' will be inserted if applicable
             ('Writing results', 'Writing current search session'),
-            ('INFO - Done.', )
         ],
         'hmm': [
             ('Fetching HMM profiles from Pfam database', 'Fetching accessions from Pfam'),
@@ -287,7 +285,6 @@ execution_stages = {
             ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
             ('Querying genus-specific database', 'Querying local SQLite3 database'),
             ('Writing results', 'Writing current search session'),
-            ('INFO - Done.', )
         ],
         'combi_remote': [
             # hmm specific
@@ -302,7 +299,6 @@ execution_stages = {
             ('Parsing results', 'Parsing results'),
             ('Fetching genomic context of hits', 'Fetching genomic context of hits'),
             ('Writing results', 'Writing current search session'),
-            ('INFO - Done.', )
         ]
     },
     'recompute': [
@@ -310,14 +306,12 @@ execution_stages = {
         ('Filtering results with new thresholds', 'Filtering session with new thresholds'),
         # 'Fetching intermediate genes from NCBI' will be inserted if applicable
         ('Writing results', 'Writing recomputed session to'),
-        ('INFO - Done.', )
     ],
     'gne': [  # finished, no variations of this job type
         ('Load previous results', 'Loading session from'),
         ('Computing gene neighbourhood statistics', 'Computing gene neighbourhood statistics'),
         ('Writing GNE plot to HTML file', 'Writing GNE table to'),
         ('Writing results', 'Saving gne plot HTML'),
-        ('INFO - Done.', )
     ],
     'extract_clusters': [
         ('Load previous results', 'Loading session from'),
@@ -325,18 +319,15 @@ execution_stages = {
         ('Write GenBank files', 'Writing genbank files'),
         ('Query NCBI for cluster sequences', 'Querying NCBI'),
         ('Write results', 'Clusters have been written to'),
-        ('INFO - Done.', )
     ],
     'clinker_query': [
         ('Generate cluster plot', 'Starting generation of cluster plot with clinker'),
-        ('INFO - Done.', )
     ],
     'extract_sequences': [
         ('Load previous results', 'Loading session from'),
         ('Extract sequences matching filters', 'Extracting subject sequences matching filters'),
         # 'Fetch sequences from NCBI' will be inserted if applicable
         ('Write results', 'Writing output'),
-        ('INFO - Done.', )
     ]
 }
 

@@ -309,11 +309,4 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
 
     text_index = stack_to_text_index[stack]
 
-    stack_stages = []
-    for stage in stages:
-        if len(stage) > 1:
-            stack_stages.append(stage[text_index])
-        else:
-            stack_stages.append(stage[0])
-
-    return stack_stages
+    return [stage[text_index] for stage in stages]
