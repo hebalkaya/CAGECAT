@@ -142,12 +142,10 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
 
         return_code = run_command(cmd, LOG_PATH, job_id)
-        # post_job_formalities(job_id, return_code)
         return return_code
     except Exception as e:  # intentionally broad except clause
         print('Exception occurred:', e)
         return 999
-        # post_job_formalities(job_id, 999)
 
 
 def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
@@ -164,7 +162,6 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
 
     This function forges and executes a cblaster command.
     """
-    pre_job_formalities(job_id)
     _, log_path, results_path = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["sample_number"]),
@@ -185,8 +182,8 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
     cmd.extend(create_summary_table_commands('gne', options))
 
     return_code = run_command(cmd, log_path, job_id)
+    return return_code
 
-    post_job_formalities(job_id, return_code)
 
 
 def cblaster_extract_sequences(job_id: str,
@@ -204,7 +201,6 @@ def cblaster_extract_sequences(job_id: str,
 
     This function forges and executes a cblaster command.
     """
-    pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     extension = "txt"
@@ -226,7 +222,7 @@ def cblaster_extract_sequences(job_id: str,
         cmd.append("--extract_sequences")
 
     return_code = run_command(cmd, LOG_PATH, job_id)
-    post_job_formalities(job_id, return_code)
+    return return_code
 
 
 def cblaster_extract_clusters(job_id: str,
@@ -244,7 +240,6 @@ def cblaster_extract_clusters(job_id: str,
 
     This function forges and executes a cblaster command.
     """
-    pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options["maxclusters"]),
@@ -264,7 +259,7 @@ def cblaster_extract_clusters(job_id: str,
     cmd.extend(["--format", options["format"]])
 
     return_code = run_command(cmd, LOG_PATH, job_id)
-    post_job_formalities(job_id, return_code)
+    return return_code
 
 
 def clinker(job_id: str, options: ImmutableMultiDict=None,
@@ -283,7 +278,6 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
 
     This function forges and executes a clinker command.
     """
-    pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if 'clinkerEnteredJobId' in options: # indicates we are a downstream job
@@ -332,8 +326,7 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
             cmd.append("--use_file_order")
 
         return_code = run_command(cmd, LOG_PATH, job_id)
-
-        post_job_formalities(job_id, return_code)
+        return return_code
     except Exception as e:
         log_fn = os.path.join(LOG_PATH, f'{job_id}.log')
         write_mode = 'w' if not os.path.exists(log_fn) else 'a'
@@ -341,7 +334,7 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
         with open(log_fn, write_mode) as outf:
             outf.write(f'{e}\n')
 
-        post_job_formalities(job_id, 1)
+        return 1
 
 
 def clinker_query(job_id: str, options: ImmutableMultiDict=None,
@@ -358,7 +351,6 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
 
     This function forges and executes a cblaster command.
     """
-    pre_job_formalities(job_id)
     _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
     if log_threshold_exceeded(int(options['maxclusters']),
@@ -373,4 +365,4 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
     cmd.extend(create_filtering_command(options, True))
 
     return_code = run_command(cmd, LOG_PATH, job_id)
-    post_job_formalities(job_id, return_code)
+    return return_code
