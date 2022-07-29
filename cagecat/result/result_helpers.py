@@ -2,16 +2,16 @@
 
 Author: Matthias van den Belt
 """
-
+import copy
 import os
 import re
 import typing as t
 
 from flask import url_for
 
-from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons
-from cagecat.db_models import Job as dbJob
-from cagecat.general_utils import fetch_job_from_db, send_email
+from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons, execution_stages
+from cagecat.db_models import Job as dbJob, Job
+from cagecat.general_utils import fetch_job_from_db, send_email, generate_paths
 from config_files.config import persistent_jobs
 from config_files.sensitive import sender_email
 
@@ -145,3 +145,96 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
             connected_jobs.append((parent_job.id, parent_job.title, parent_job.job_type, parent_job.status, "depending"))
 
     return connected_jobs
+
+
+stack_to_text_index = {
+    'front-end': 0,
+    'back-end': 1
+}
+mode_pattern = re.compile('mode=(.*)&')
+intermediate_gene_text = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
+download_sequences_text = ('Fetching sequences from NCBI', 'Querying NCBI')
+
+
+def get_stages(job_type, contents, options, job_id):
+    if job_type != 'search':
+        stages: list = copy.deepcopy(execution_stages[job_type])
+    else:
+        stages = None
+
+    if job_type == 'search':
+        if '--recompute' in contents:
+            stages = copy.deepcopy(execution_stages['recompute'])
+            insert_stage_index = 2
+        else:
+            insert_stage_index = 5
+
+            mode = parse_search_mode(options)
+            stages = copy.deepcopy(execution_stages[job_type][mode])
+
+        if 'intermediate_genes' in options:
+            stages.insert(insert_stage_index, intermediate_gene_text)
+
+    elif job_type == 'extract_sequences':
+        if '--extract_sequences' in contents:
+            stages.insert(2, download_sequences_text)
+
+    elif job_type == 'extract_clusters':
+        # .Statistic.query.filter_by(name="finished").first()
+        parent_job_id = Job.query.filter_by(job_id=job_id).main_search_job
+
+        if parent_job_id == 'null':
+            raise ValueError('An extract cluster job should have a main search job')
+        parent_job_options = Job.query.filter_by(job_id=parent_job_id).options
+
+        mode = parse_search_mode(parent_job_options)
+        if mode == 'hmm':
+            stages.pop(3)  # removes ('Query NCBI for cluster sequences', 'Querying NCBI')
+
+    return stages
+
+
+def parse_search_mode(options):
+    if options.count('&') == 0:
+        mode = options.split('=')[-1]
+    else:
+        mode = re.findall(pattern=mode_pattern, string=options)[0]
+        if mode not in ('hmm', 'remote', 'combi_remote'):
+            raise ValueError('Error when extracting mode')
+    return mode
+
+
+def create_execution_stages(job_type: str, job_id: str, options: str, stack: str):
+    """
+
+    options: can be empty. Indicates which options of the given job type have
+    been selected by the user (e.g. searching for intermediate genes at a
+    cblaster search job). Is stored in the database in enqueue_jobs function
+    stack: used to select either front-end texts ore back-end log-descriptors
+    """
+
+    if stack not in ('front-end', 'back-end'):
+        raise ValueError('Invalid stack')
+
+    log_base = generate_paths(job_id)[1]
+    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    with open(cmd_fp) as inf:
+        contents = inf.read()
+
+    stages = get_stages(job_type, contents, options, job_id)
+
+# front-end
+        # elif job_type == 'extract_sequences':
+        #     if '--extract_sequences' in contents:
+        #         stages_front_end.insert(2, 'Fetch sequences from NCBI')
+
+        # back-end
+        # elif job_type == 'extract_sequences':
+        #     if '--extract_sequences' in contents:
+        #         stages_log_descriptors.insert(2, 'Querying NCBI')
+
+    # for subsequent jobs, get the parent job and use the db options
+
+    text_index = stack_to_text_index[stack]
+
+    return [stage[text_index] for stage in stages]
