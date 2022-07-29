@@ -6,7 +6,16 @@ Author: Matthias van den Belt
 import cagecat.workers.workers as w
 from cagecat.workers.workers_helpers import post_job_formalities, pre_job_formalities
 
-function_dict = {}
+function_dict = {
+    'search': w.cblaster_search,
+    'recompute': w.cblaster_search,
+    'gne': w.cblaster_gne,
+    'extract_sequences': w.cblaster_extract_sequences,
+    'extract_clusters': w.cblaster_extract_clusters,
+    'clinker': w.clinker,
+    'clinker_query': w.clinker_query
+}
+
 
 class CAGECATJob:
     """Class to temporarily store settings required to create a CAGECAT job
@@ -62,7 +71,7 @@ class CAGECATJob:
         pre_job_formalities(self.job_id)
 
         job_type = self.options['job_type'] if self.job_type is None else self.job_type
-        func = function_dict.get(job_type)
+        func = function_dict[job_type]
 
         exit_code = func(*args, **kwargs)
         post_job_formalities(self.job_id, exit_code)
