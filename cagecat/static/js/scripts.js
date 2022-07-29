@@ -14,7 +14,7 @@ function updateJobExecutionStage(url){
                 return;
             }
 
-            if (data['finished'] === data['total'] - 1 || data['failed'] === 1 || data['jobStatus'] === 'finished'){
+            if (data['finished'] === data['total'] - 1 || data['jobStatus'] === 'finished' || data['jobStatus'] === 'failed'){
                 redirect(window.location.href);
             }
 

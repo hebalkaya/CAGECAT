@@ -194,10 +194,9 @@ def get_execution_stage(job_id: str):
     )
 
     # queued situation
-    if job.status in ('queued', 'waiting'):
+    if job.status != 'running':
         return {
             'finished': -1,
-            'failed': 0,
             'total': len(stages),
             'jobStatus': job.status
         }
@@ -209,16 +208,17 @@ def get_execution_stage(job_id: str):
     with open(log_fn) as inf:
         logs = inf.read()
 
+    if job.status != 'running':  # double check to prevent odd situations
+        raise ValueError('Function should not reach this code')
+
     data = {
         'finished': -1,
-        'failed': 1 if job.status == 'failed' else 0,
         'total': len(stages),
         'jobStatus': job.status
     }
 
     for stage in stages:
         if stage in logs:
-            print(stage, 'is in contents')
             data['finished'] += 1
 
     return json.dumps(data)
