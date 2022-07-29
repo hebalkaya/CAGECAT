@@ -222,19 +222,6 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
         contents = inf.read()
 
     stages = get_stages(job_type, contents, options, job_id)
-
-# front-end
-        # elif job_type == 'extract_sequences':
-        #     if '--extract_sequences' in contents:
-        #         stages_front_end.insert(2, 'Fetch sequences from NCBI')
-
-        # back-end
-        # elif job_type == 'extract_sequences':
-        #     if '--extract_sequences' in contents:
-        #         stages_log_descriptors.insert(2, 'Querying NCBI')
-
-    # for subsequent jobs, get the parent job and use the db options
-
     text_index = stack_to_text_index[stack]
 
     return [stage[text_index] for stage in stages]
