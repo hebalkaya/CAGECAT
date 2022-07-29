@@ -13,7 +13,6 @@ from cagecat.workers.workers_helpers import *
 from config_files.config import thresholds
 from config_files.sensitive import pfam_db_folder
 
-
 def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     file_path: t.Union[str, None] = None) -> None:
     """Executed when requested job is cblaster_search (forges + exec. command)
@@ -28,8 +27,6 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
 
     This function forges and executes a cblaster command.
     """
-    pre_job_formalities(job_id)
-
     try:
         _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False
@@ -145,10 +142,12 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
 
         return_code = run_command(cmd, LOG_PATH, job_id)
-        post_job_formalities(job_id, return_code)
+        # post_job_formalities(job_id, return_code)
+        return return_code
     except Exception as e:  # intentionally broad except clause
         print('Exception occurred:', e)
-        post_job_formalities(job_id, 999)
+        return 999
+        # post_job_formalities(job_id, 999)
 
 
 def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,

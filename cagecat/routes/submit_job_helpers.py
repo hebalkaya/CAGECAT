@@ -98,7 +98,7 @@ def enqueue_jobs(new_jobs: t.List[CAGECATJob]) -> str:
         depending_on = None if cc_job.depends_on_job_id is None else \
             created_redis_jobs_ids[i-1][1]
 
-        job = q.enqueue(cc_job.function,
+        job = q.enqueue(cc_job.execute,
                         args=(cc_job.job_id, ),
                         kwargs={'options': cc_job.options,
                                 'file_path': cc_job.file_path},
