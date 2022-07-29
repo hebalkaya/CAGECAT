@@ -25,7 +25,6 @@ from cagecat.tools.tools_helpers import get_search_mode_from_job_id
 from config_files.config import cagecat_version, thresholds
 from config_files.sensitive import finished_hmm_db_folder, sender_email
 
-global available_hmm_databases
 # route definitions
 
 @app.route('/cagecat')

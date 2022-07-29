@@ -14,12 +14,13 @@ from rq.registry import StartedJobRegistry
 from werkzeug.utils import secure_filename
 
 from cagecat import q, r
-from cagecat.const import jobs_dir
+from cagecat.const import jobs_dir, hmm_database_organisms
 from cagecat.db_models import Statistic, Job
 from config_files.config import email_footer_msg
 from config_files.notifications import notifications
-from config_files.sensitive import account, pwd, smtp_server, sender_email, port
+from config_files.sensitive import account, pwd, smtp_server, sender_email, port, finished_hmm_db_folder
 
+available_hmm_databases = None
 
 def send_email(subject: str, message: str, receiving_email: str) -> None:
     """Send an email
@@ -135,3 +136,28 @@ def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
     """
     job_id = secure_filename(job_id)
     return Job.query.filter_by(id=job_id).first()
+
+
+def list_available_hmm_databases():
+    all_databases = {}
+
+    for organism_folder in os.listdir(finished_hmm_db_folder):
+        genera = set()
+        if organism_folder == 'logs':
+            continue
+
+        if organism_folder not in hmm_database_organisms:
+            return 'Incorrect organism folder in HMM databases'
+
+        organism_path = os.path.join(finished_hmm_db_folder, organism_folder)
+        for file in os.listdir(organism_path):
+            genus = file.split('.')[0]
+
+            genera.add(genus)
+
+        all_databases[organism_folder.capitalize()] = sorted(list(genera))
+
+    return all_databases
+
+
+available_hmm_databases = list_available_hmm_databases()
