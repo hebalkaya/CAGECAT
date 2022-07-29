@@ -17,10 +17,9 @@ from Bio.SeqIO.FastaIO import SimpleFastaParser
 from flask_sqlalchemy import SQLAlchemy
 
 from cagecat.general_utils import generate_paths, send_email
-from cagecat.db_utils import fetch_job_from_db
+from cagecat.db_utils import fetch_job_from_db, Job, Statistic
 from cagecat import db, fetch_statistic_from_db
 from config_files.config import cagecat_version, domain
-from cagecat.db_models import Job, Statistic
 from cagecat.const import genbank_extensions, fasta_extensions
 
 # typing imports

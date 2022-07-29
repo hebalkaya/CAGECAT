@@ -10,9 +10,8 @@ import typing as t
 from flask import url_for
 
 from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons, execution_stages
-from cagecat.db_models import Job as dbJob, Job
 from cagecat.general_utils import send_email, generate_paths
-from cagecat.db_utils import fetch_job_from_db
+from cagecat.db_utils import fetch_job_from_db, Job as dbJob
 from config_files.config import persistent_jobs
 from config_files.sensitive import sender_email
 

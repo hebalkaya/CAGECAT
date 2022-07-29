@@ -15,9 +15,8 @@ from flask import request
 
 from cagecat import q, db
 from cagecat.classes import CAGECATJob
-from cagecat.db_utils import fetch_job_from_db
+from cagecat.db_utils import fetch_job_from_db, Job as dbJob
 from cagecat.const import jobs_dir, folders_to_create
-from cagecat.db_models import Job as dbJob
 
 timezone = pytz.timezone('Europe/Amsterdam')
 
