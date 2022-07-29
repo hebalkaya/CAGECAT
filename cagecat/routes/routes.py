@@ -91,41 +91,6 @@ def get_server_status():
 def tutorial():
     return show_template("tutorial.html", help_enabled=False)
 
-
-
-@app.route('/update-hmm-databases')
-def update_hmm_databases():
-    """Updates the available HMM databases to front-end
-
-    If HMM databases are not shown on front-end after maintenance, it might
-    be that the storage location of HMM databases was not yet fully online.
-    Restarting the container will fix this issue.
-    """
-    global available_hmm_databases
-    # Doesn't have to return anything, only trigger
-    all_databases = {}
-
-    for organism_folder in os.listdir(finished_hmm_db_folder):
-        genera = set()
-        if organism_folder == 'logs':
-            continue
-
-        if organism_folder not in hmm_database_organisms:
-            return 'Incorrect organism folder in HMM databases'
-
-        organism_path = os.path.join(finished_hmm_db_folder, organism_folder)
-        for file in os.listdir(organism_path):
-            genus = file.split('.')[0]
-
-            genera.add(genus)
-
-        all_databases[organism_folder.capitalize()] = sorted(list(genera))
-
-    available_hmm_databases = all_databases
-
-    return '1'  # indicating everything went well
-
-
 # Error handlers
 @app.errorhandler(404)
 def page_not_found(error):  # should have 1 parameter, doesn't have to be used
@@ -144,8 +109,6 @@ def invalid_method():
     """
     return redirect(url_for("home_page"))
 
-
-update_hmm_databases()
 # within routes.py to prevent circular import (as it was first in const.py).
 # Additionally, this variable does not have to be updated manually, and
 # is therefore left out of const.py
