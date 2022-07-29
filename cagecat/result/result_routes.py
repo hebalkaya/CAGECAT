@@ -186,20 +186,20 @@ def get_execution_stage(job_id: str):
     if job is None:
         return show_template("job_not_found.html", job_id=job_id)
 
+    # queued situation
+    if job.status != 'running':
+        return {
+            'finished': -1,
+            'total': None,
+            'jobStatus': job.status
+        }
+
     stages = create_execution_stages(
         job_type=job.job_type,
         job_id=job.id,
         options=job.options,
         stack='back-end'
     )
-
-    # queued situation
-    if job.status != 'running':
-        return {
-            'finished': -1,
-            'total': len(stages),
-            'jobStatus': job.status
-        }
 
     # running situation
     log_base = generate_paths(job_id)[1]
