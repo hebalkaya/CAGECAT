@@ -14,6 +14,7 @@ from flask import Blueprint, request, url_for, send_file
 # own project imports
 from werkzeug.utils import secure_filename
 
+from cagecat.db_models import Job
 from cagecat.routes.routes_helpers import format_size
 from cagecat.const import modules_with_plots, downstream_modules, \
     module_to_tool, execution_stages
@@ -249,9 +250,9 @@ mode_pattern = re.compile('mode=(.*)&')
 intermediate_gene_text = ('Fetching intermediate genes from NCBI', 'Searching for intermediate genes')
 download_sequences_text = ('Fetching sequences from NCBI', 'Querying NCBI')
 
-def get_stages(job_type, contents, options):
+def get_stages(job_type, contents, options, job_id):
     if job_type != 'search':
-        stages = copy.deepcopy(execution_stages[job_type])
+        stages: list = copy.deepcopy(execution_stages[job_type])
     else:
         stages = None
 
@@ -262,13 +263,7 @@ def get_stages(job_type, contents, options):
         else:
             insert_stage_index = 5
 
-            if options.count('&') == 0:
-                mode = options.split('=')[-1]
-            else:
-                mode = re.findall(pattern=mode_pattern, string=options)[0]
-                if mode not in ('hmm', 'remote', 'combi_remote'):
-                    raise ValueError('Error when extracting mode')
-
+            mode = parse_search_mode(options)
             stages = copy.deepcopy(execution_stages[job_type][mode])
 
         if 'intermediate_genes' in options:
@@ -278,7 +273,29 @@ def get_stages(job_type, contents, options):
         if '--extract_sequences' in contents:
             stages.insert(2, download_sequences_text)
 
+    elif job_type == 'extract_clusters':
+        # .Statistic.query.filter_by(name="finished").first()
+        parent_job_id = Job.query.filter_by(job_id=job_id).main_search_job
+
+        if parent_job_id == 'null':
+            raise ValueError('An extract cluster job should have a main search job')
+        parent_job_options = Job.query.filter_by(job_id=parent_job_id).options
+
+        mode = parse_search_mode(parent_job_options)
+        if mode == 'hmm':
+            stages.pop(3)  # removes ('Query NCBI for cluster sequences', 'Querying NCBI')
+
     return stages
+
+
+def parse_search_mode(options):
+    if options.count('&') == 0:
+        mode = options.split('=')[-1]
+    else:
+        mode = re.findall(pattern=mode_pattern, string=options)[0]
+        if mode not in ('hmm', 'remote', 'combi_remote'):
+            raise ValueError('Error when extracting mode')
+    return mode
 
 
 def create_execution_stages(job_type: str, job_id: str, options: str, stack: str):
@@ -298,7 +315,7 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
     with open(cmd_fp) as inf:
         contents = inf.read()
 
-    stages = get_stages(job_type, contents, options)
+    stages = get_stages(job_type, contents, options, job_id)
 
 # front-end
         # elif job_type == 'extract_sequences':
