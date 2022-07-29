@@ -554,6 +554,14 @@ function toggleRemoteOptions(enable){
     }
 }
 
+function hideElement(elementId) {
+    document.getElementById(elementId).style.display = 'none';
+}
+
+function showElement(elementId){
+    document.getElementById(elementId).style.display = 'block';
+}
+
 function changeSearchMode(mode){
     let fieldsetDiv = document.getElementById('hmmFullFieldset');
     let fieldset = document.getElementById('hmmSection');
@@ -574,6 +582,7 @@ function changeSearchMode(mode){
         radioFasta.click()
         document.getElementById('entrez_query').removeAttribute('disabled');
         document.getElementById('database_type').removeAttribute('disabled');
+        showElement('intermediateGenesDiv');
     }
     else if (mode === 'hmm'){
         fieldsetDiv.classList.remove('no-display');
@@ -586,6 +595,8 @@ function changeSearchMode(mode){
         toggleRemoteOptions(false);
         document.getElementById('entrez_query').setAttribute('disabled', 'disabled');
         document.getElementById('database_type').setAttribute('disabled', 'disabled');
+
+        hideElement('intermediateGenesDiv');
     }
     else if (mode === 'combi_remote'){
         fieldsetDiv.classList.remove('no-display');
@@ -597,6 +608,7 @@ function changeSearchMode(mode){
         radioFasta.click()
         document.getElementById('entrez_query').removeAttribute('disabled');
         document.getElementById('database_type').removeAttribute('disabled');
+        hideElement('intermediateGenesDiv');
     }
     else {
         console.log('Invalid mode');
