@@ -227,9 +227,9 @@ def submit_job() -> str:
         )
 
         if prev_job_search_mode in ('hmm', 'combi_remote'):
-            form = CblasterExtractSequencesFormHMM()
+            form = CblasterExtractSequencesFormHMM
         else:
-            form = CblasterExtractSequencesForm()
+            form = CblasterExtractSequencesForm
 
         if not validate_full_form(form, request.form):
             return redirect(url_for('invalid_submission'))

@@ -90,5 +90,5 @@ def get_search_mode_from_job_id(job_id):
     :param job_id:
     :return:
     """
-    options = Job.query.filter_by(job_id=job_id).options
+    options = Job.query.filter_by(id=job_id).first().options
     return parse_search_mode(options)

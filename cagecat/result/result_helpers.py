@@ -181,11 +181,11 @@ def get_stages(job_type, contents, options, job_id):
 
     elif job_type == 'extract_clusters':
         # .Statistic.query.filter_by(name="finished").first()
-        parent_job_id = Job.query.filter_by(job_id=job_id).main_search_job
+        parent_job_id = Job.query.filter_by(job_id=job_id).first().main_search_job
 
         if parent_job_id == 'null':
             raise ValueError('An extract cluster job should have a main search job')
-        parent_job_options = Job.query.filter_by(job_id=parent_job_id).options
+        parent_job_options = Job.query.filter_by(job_id=parent_job_id).first().options
 
         mode = parse_search_mode(parent_job_options)
         if mode == 'hmm':
