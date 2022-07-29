@@ -14,8 +14,6 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 import rq
 
-import cagecat.db_utils
-from cagecat.db_utils import fetch_statistic_from_db
 from config_files.sensitive import init_config
 
 r = redis.Redis()
@@ -27,7 +25,6 @@ app.config.update(init_config)
 db = SQLAlchemy(app)
 
 from cagecat.routes import routes
-from cagecat.db_utils import Statistic
 from cagecat.tools.tools_routes import tools
 from cagecat.result.result_routes import result
 
@@ -37,12 +34,12 @@ app.register_blueprint(result, url_prefix="/results")
 db.create_all()
 
 # line below indicates the Statistic table is empty
-if fetch_statistic_from_db("finished") is None:
-    stats = [Statistic(name="finished"),
-             Statistic(name="failed")]
-    # Maybe some additional statistics
-
-    for s in stats:
-        db.session.add(s)
-
-    db.session.commit()
+# if fetch_statistic_from_db("finished") is None:
+#     stats = [Statistic(name="finished"),
+#              Statistic(name="failed")]
+#     # Maybe some additional statistics
+#
+#     for s in stats:
+#         db.session.add(s)
+#
+#     db.session.commit()
