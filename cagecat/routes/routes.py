@@ -12,7 +12,8 @@ import re
 # own project imports
 from cagecat.const import submit_url, extract_clusters_options, jobs_dir, hmm_database_organisms
 from cagecat.docs.help_texts import help_texts
-from cagecat.general_utils import show_template, get_server_info, fetch_job_from_db, send_email
+from cagecat.general_utils import show_template, get_server_info, send_email
+from cagecat.db_utils import fetch_job_from_db
 
 from cagecat import app
 from cagecat.classes import CAGECATJob

@@ -16,8 +16,9 @@ import Bio.SeqIO
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from flask_sqlalchemy import SQLAlchemy
 
-from cagecat.general_utils import fetch_job_from_db, generate_paths, send_email
-from cagecat import db
+from cagecat.general_utils import generate_paths, send_email
+from cagecat.db_utils import fetch_job_from_db
+from cagecat import db, fetch_statistic_from_db
 from config_files.config import cagecat_version, domain
 from cagecat.db_models import Job, Statistic
 from cagecat.const import genbank_extensions, fasta_extensions
@@ -430,7 +431,7 @@ def mutate_status(job_id: str, stage: str, db: SQLAlchemy,
             print('Return code is:', return_code)
             new_status = "failed"
 
-        Statistic.query.filter_by(name=new_status).first().count += 1
+        fetch_statistic_from_db(new_status).count += 1
 
     else:
         raise IOError("Invalid stage")

@@ -10,7 +10,8 @@ from flask import Blueprint, request
 from cagecat.tools.tools_helpers import read_headers, parse_selected_cluster_numbers, get_search_mode_from_job_id
 from cagecat.forms.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterExtractSequencesFormHMM
-from cagecat.general_utils import show_template, fetch_job_from_db, available_hmm_databases
+from cagecat.general_utils import show_template, available_hmm_databases
+from cagecat.db_utils import fetch_job_from_db
 from cagecat.const import tool_explanations, clinker_modules, genbank_extensions, fasta_extensions, clust_number_with_score_pattern, \
     clust_number_with_clinker_score_pattern
 from config_files.config import thresholds

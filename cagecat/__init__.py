@@ -13,6 +13,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 import redis
 import rq
+
+from cagecat.db_utils import fetch_statistic_from_db
 from config_files.sensitive import init_config
 
 r = redis.Redis()
@@ -34,7 +36,7 @@ app.register_blueprint(result, url_prefix="/results")
 db.create_all()
 
 # line below indicates the Statistic table is empty
-if m.Statistic.query.filter_by(name="finished").first() is None:
+if fetch_statistic_from_db("finished") is None:
     stats = [m.Statistic(name="finished"),
              m.Statistic(name="failed")]
     # Maybe some additional statistics

@@ -14,7 +14,8 @@ from werkzeug.utils import secure_filename
 
 from cagecat.routes.routes_helpers import format_size
 from cagecat.const import modules_with_plots, downstream_modules
-from cagecat.general_utils import show_template, generate_paths, fetch_job_from_db
+from cagecat.general_utils import show_template, generate_paths
+from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason, create_execution_stages
 
 # other imports

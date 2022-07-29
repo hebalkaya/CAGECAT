@@ -10,6 +10,7 @@ from more_itertools import consecutive_groups
 
 from cagecat.const import jobs_dir
 from cagecat.db_models import Job
+from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import parse_search_mode
 
 
@@ -90,5 +91,5 @@ def get_search_mode_from_job_id(job_id):
     :param job_id:
     :return:
     """
-    options = Job.query.filter_by(id=job_id).first().options
+    options = fetch_job_from_db(job_id).options
     return parse_search_mode(options)

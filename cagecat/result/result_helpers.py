@@ -11,7 +11,8 @@ from flask import url_for
 
 from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons, execution_stages
 from cagecat.db_models import Job as dbJob, Job
-from cagecat.general_utils import fetch_job_from_db, send_email, generate_paths
+from cagecat.general_utils import send_email, generate_paths
+from cagecat.db_utils import fetch_job_from_db
 from config_files.config import persistent_jobs
 from config_files.sensitive import sender_email
 
@@ -180,12 +181,11 @@ def get_stages(job_type, contents, options, job_id):
             stages.insert(2, download_sequences_text)
 
     elif job_type == 'extract_clusters':
-        # .Statistic.query.filter_by(name="finished").first()
-        parent_job_id = Job.query.filter_by(job_id=job_id).first().main_search_job
+        parent_job_id = fetch_job_from_db(job_id).main_search_job
 
         if parent_job_id == 'null':
             raise ValueError('An extract cluster job should have a main search job')
-        parent_job_options = Job.query.filter_by(job_id=parent_job_id).first().options
+        parent_job_options = fetch_job_from_db(job_id).options
 
         mode = parse_search_mode(parent_job_options)
         if mode == 'hmm':

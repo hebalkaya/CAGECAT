@@ -11,11 +11,9 @@ import redis
 import rq
 from flask import render_template
 from rq.registry import StartedJobRegistry
-from werkzeug.utils import secure_filename
 
-from cagecat import q, r
+from cagecat import q, r, fetch_statistic_from_db
 from cagecat.const import jobs_dir, hmm_database_organisms
-from cagecat.db_models import Statistic, Job
 from config_files.config import email_footer_msg
 from config_files.notifications import notifications
 from config_files.sensitive import account, pwd, smtp_server, sender_email, port, finished_hmm_db_folder
@@ -102,11 +100,12 @@ def get_server_info(queue: rq.Queue = None, redis_conn: redis.Redis = None) \
     # finished yet: running jobs.
     running = len(start_registry)
 
-    return {"server_status": 'idle' if running == 0 else 'running',
-            "queued": len(queue),
-            "running": running,
-            "completed": Statistic.query.filter_by(
-                name="finished").first().count}
+    return {
+        "server_status": 'idle' if running == 0 else 'running',
+        "queued": len(queue),
+        "running": running,
+        "completed": fetch_statistic_from_db("finished").count
+        }
 
 
 def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
@@ -122,20 +121,6 @@ def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
     """
     base = os.path.join(jobs_dir, job_id)
     return base, os.path.join(base, "logs"), os.path.join(base, "results")
-
-
-def fetch_job_from_db(job_id: str) -> t.Optional[Job]:
-    """Checks if a job with a specific job ID exists in the database
-
-    Input:
-        - job_id: ID of a job to search for
-
-    Output:
-        - Job instance if present in the database OR
-        - None if no job with the given ID was found in the database
-    """
-    job_id = secure_filename(job_id)
-    return Job.query.filter_by(id=job_id).first()
 
 
 def list_available_hmm_databases():
