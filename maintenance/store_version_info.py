@@ -30,12 +30,7 @@ def get_pfam_db_info():
     if not os.path.exists(fp):
         cmd = ['gunzip', os.path.join(pfam_db_folder, 'Pfam.version.gz')]
 
-        return_code = run_command(
-            cmd=cmd,
-            log_base=None,
-            job_id=None,
-            log_output=False
-        )
+        return_code = run_command(cmd=cmd, job_id=None, log_output=False)
         if return_code != 0:
             raise ValueError(f'Non-zero return code encountered: {return_code}')
 

@@ -10,24 +10,26 @@ import os
 
 # own project imports
 import datetime
+from pathlib import Path
 
 import pytz
 
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from flask_sqlalchemy import SQLAlchemy
 
-from cagecat.general_utils import generate_paths, send_email, write_to_log_file
+from cagecat.general_utils import generate_paths, send_email
+from cagecat.file_utils import write_to_log_file, generate_filepath, get_log_file_path, generate_sanitization_filepath
 from cagecat.db_utils import fetch_job_from_db, Job, fetch_statistic_from_db
 from cagecat import db
 from config_files.config import cagecat_version, domain
-from cagecat.const import genbank_extensions, fasta_extensions
+from cagecat.const import genbank_extensions, fasta_extensions, jobs_dir
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
-from config_files.sensitive import finished_hmm_db_folder, sanitized_folder
+from config_files.sensitive import finished_hmm_db_folder, sanitized_folder, server_prefix
 
 timezone = pytz.timezone('Europe/Amsterdam')
 
@@ -107,16 +109,14 @@ def create_summary_table_commands(
     return summary_cmds
 
 
-def run_command(cmd: t.List[str], log_base: str, job_id: str,
-                log_output: bool = True, **kwargs) -> int:
+def run_command(cmd: t.List[str], job_id: str, log_output: bool = True, **kwargs) -> int:
     """Executes a command on the command line
 
     Input:
         - cmd: split command to be executed. All elements in the
             list are joined together with a space to form a full command
-        - log_base: base directory for logging. Has the following structure:
-            "cagecat/jobs/{job_id}/logs/"
         - job_id: ID corresponding to the job the function is called for
+        - log_output: log the output of the command to a file
 
     Output:
         - return_code: exit code of the executed command. A non-zero exit
@@ -125,11 +125,10 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
 
     """
     if log_output:
-        log_command(cmd, log_base, job_id)
-        log_fp = os.path.join(log_base, f"{job_id}.log")
+        log_command(cmd, job_id)
+        fp = get_log_file_path(job_id)
 
-
-        with open(log_fp, 'a') as outf:  # if the log file exists, a sanitization step already has occurred
+        with open(fp, 'a') as outf: # if the log file exists, a sanitization step already has occurred
             try:
                 res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True, **kwargs)
                 return_code = res.returncode
@@ -161,34 +160,41 @@ def zip_results(job_id: str) -> None:
     1. logs; 2. results; 3. uploads; Therefore, the paths used in this
     function are relative to the {job_id} folder.
     """
-    base, log_dir, results_dir = generate_paths(job_id)
-    os.chdir(base)  # go 1 level up
+    os.chdir(Path(server_prefix, jobs_dir, job_id))  # go 1 level up
 
-    cmd = ["zip", "-r", os.path.join("results", f"{job_id}.zip"), "."]
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='results',
+        suffix=None,
+        extension='zip'
+    )
+
+    cmd = ["zip", "-r", fp, "."]
     # all files and folders in the current directory
     # (cagecat/jobs/{job_id}/ under the base folder
 
-    run_command(cmd, "logs", job_id, log_output=False)
-    # invalid path: 'logs/U812J131P392S71_zip.txt/U812J131P392S71_cmd.txt'
-    # something is going wrong
+    run_command(cmd, job_id, log_output=False)
 
 
-def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
+def log_command(cmd: t.List[str], job_id: str) -> None:
     """Logs the executed command to a file
 
     Input:
         - cmd: split command to be executed. All elements in the
             list are joined together with a space to form a full command
-        - log_base: base directory for logging. Has the following structure:
-            "cagecat/jobs/{job_id}/logs/"
         - job_id: ID corresponding to the job the function is called for
 
     Output:
         - None
         - .txt file with the executed command
     """
-    with open(os.path.join(log_base,
-                           f"{job_id}_command.txt"), "w") as outf:
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='logs',
+        suffix='command',
+        extension='txt'
+    )
+    with open(fp) as outf:
         outf.write(" ".join(cmd))
 
 
@@ -243,7 +249,15 @@ def log_cagecat_version(job_id: str) -> None:
         - written file with CAGECAT's version
 
     """
-    with open(os.path.join(generate_paths(job_id)[1], 'CAGECAT_version.txt'), 'w') as outf:
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='logs',
+        suffix=None,
+        extension='txt',
+        override_filename='CAGECAT_version'
+    )
+
+    with open(fp, 'w') as outf:
         outf.write(f'CAGECAT_version={cagecat_version}')
 
 
@@ -275,7 +289,7 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     db.session.commit()
 
 
-def store_query_sequences_headers(log_path: str, input_type: str, data: str):
+def store_query_sequences_headers(log_path: Path, input_type: str, data: str):
     """Saves the submitted query headers to a .csv file
 
     Input:
@@ -301,7 +315,8 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
         else:
             raise ValueError(f'Invalid extension: {ext}. Did the user upload a file with dots in it?')
 
-    with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
+    fp = log_path / "query_headers.csv"
+    with open(fp, "w") as outf:
         outf.write(",".join(headers))
 
 
@@ -336,18 +351,15 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
     return base
 
 
-def log_threshold_exceeded(parameter: int, threshold: int,
-                           job_data: t.Tuple[str, str, str],
-                           error_message: str) -> bool:
+def log_threshold_exceeded(parameter: int, threshold: int, job_id: str, error_message: str) -> bool:
     """Logs an error message if the given threshold was exceeded
 
     Input:
         - parameter: the given value by the user for a parameter
         - threshold: the corresponding threshold for that parameter
         - job_data: tuple of
-            [0]: log_path: path to where log files should be written
-            [1]: job_id: id of the job
-            [2]: program: name of the used program
+            [0]: job_id: id of the job
+            [1]: program: name of the used program
         - error_message: message technically describing what is incorrect.
             Is formatted in a user-friendly error description later.
 
@@ -360,9 +372,14 @@ def log_threshold_exceeded(parameter: int, threshold: int,
     """
 
     if parameter > threshold:
-        log_path, job_id, program = job_data
-        with open(os.path.join(log_path, f'{job_id}_{program}.log'), 'w') as outf:
-            # TODO: remove program here
+        fp = generate_filepath(
+            job_id=job_id,
+            jobs_folder='logs',
+            suffix='threshold',
+            extension='log'
+        )
+
+        with open(fp, 'w') as outf:
             outf.write(f'{error_message} ({parameter} > {threshold})')
 
         post_job_formalities(job_id, 997)
@@ -455,9 +472,8 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     sanitization_cmd_base = 'antismash --minimal --output-dir {} --minlength -1 --output-basename {} --genefinding-tool prodigal {}'
 
     # detect input type (NT FASTA / protein FASTA / GBK)
-    extension = f".{file_path.split('.')[-1]}"
-
-    base, log_folder, _ = generate_paths(job_id)
+    # extension = f".{file_path.split('.')[-1]}"
+    extension = Path(file_path).suffix
 
     write_to_log_file(job_id, text='-- Executing input file sanitization')
 
@@ -507,14 +523,19 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     # situations: nt FASTA, GenBank file
 
     # # print('before actual sanitization')
+    sanitization_folder = generate_sanitization_filepath(job_id=job_id)
+
     # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
-    cmd = sanitization_cmd_base.format(os.path.join(sanitized_folder, job_id), job_id, file_path)
+    cmd = sanitization_cmd_base.format(
+        sanitization_folder,
+        job_id,
+        file_path
+    )
 
     return_code = run_command(
         cmd=cmd.split(),
-        log_base=log_folder,
         job_id=job_id,
-        log_output=True,
+        log_output=True
     )
 
     if return_code != 0:
@@ -523,30 +544,49 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
         write_to_log_file(job_id, text=msg)
         raise IOError(msg)
 
-    write_to_log_file(job_id, text=f'-- Finished sanitization of input file: {file_path}') # manually write to file as there is no log file yet (as we've not executed any command yet)
+    write_to_log_file(
+        job_id,
+        text=f'-- Finished sanitization of input file: {file_path}'
+        # manually write to file as there is no log file yet (as we've not executed any command yet)
+    )
 
     if remove_old_files:
         os.remove(file_path)
         print('Removed', file_path)
 
-    sanitized_fn = os.path.join(sanitized_folder, job_id, f'{job_id}.gbk')
-    destination = os.path.join(base, 'uploads', f'{job_id}.gbk')
+    sanitized_fn = sanitization_folder / f'{job_id}.gbk'
+    destination = generate_filepath(
+        job_id=job_id,
+        jobs_folder='uploads',
+        suffix=None,
+        extension='gbk'
+    )
 
     # for case when multiple files are uploaded (clinker)
-    start = 1
+    num = 1
     if os.path.exists(destination):
-        destination = os.path.join(base, 'uploads', f'{job_id}_{start}.gbk')
+        destination = generate_clinker_upload_fp(job_id, num)
+
         while os.path.exists(destination):
-            start += 1
-            destination = os.path.join(base, 'uploads', f'{job_id}_{start}.gbk')
+            num += 1
+            destination = generate_clinker_upload_fp(job_id, num)
 
     shutil.move(sanitized_fn, destination)
     print('Moved sanitized file from', sanitized_fn, 'to', destination)
 
-    base_folder = os.path.join(sanitized_folder, job_id)
-    shutil.rmtree(base_folder)
-    print('Removed folder', base_folder)
+    shutil.rmtree(sanitization_folder)
+    print('Removed folder', sanitization_folder)
     # in case of multiple files, the above folder is recreated and deleted multiple times.
     # This is required, otherwise antiSmash will fail because it detects files in the output folder and will abort for safety reasons..
 
     return destination
+
+
+def generate_clinker_upload_fp(job_id, num):
+    dest = generate_filepath(
+        job_id=job_id,
+        jobs_folder='uploads',
+        suffix=num,
+        extension='gbk'
+    )
+    return dest
