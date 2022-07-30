@@ -3,6 +3,7 @@
 Author: Matthias van den Belt
 """
 import subprocess
+from pathlib import Path
 from sys import argv
 import os
 import ftplib
@@ -153,7 +154,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
                     ftp.retrbinary(f'RETR {fp}', outf.write, blocksize=blocksize)
                 time.sleep(0.34)
 
-            genome_file_path = os.path.join(hmm_db_genome_downloads, genome_file_name)
+            genome_file_path = str(Path(hmm_db_genome_downloads, genome_file_name))
             if validate_download(genome_file_path):
                 os.rename(genome_file_path[:-3], os.path.join(hmm_db_genome_downloads, organism, genus,
                                                          genome_file_path.split('/')[-1][:-3]))
@@ -163,7 +164,7 @@ def download_files(genus, paths, output_dir, blocksize=33554432):
 
 if __name__ == '__main__':
     if argv[1] == 'everything_has_been_downloaded':
-        subprocess.run(['touch', os.path.join(hmm_db_genome_downloads, 'databases_to_create', 'stop_creating_databases')])
+        subprocess.run(['touch', str(Path(hmm_db_genome_downloads, 'databases_to_create', 'stop_creating_databases'))])
         exit(0)
 
     genus = argv[1].split('_')[0]
@@ -180,8 +181,7 @@ if __name__ == '__main__':
     if len(paths) < threshold:
         print(f'  skipping {genus} ({len(paths)} < {threshold})')
 
-        mode = 'a' if os.path.exists('too_few_species.txt') else 'w'
-        with open('too_few_species.txt', mode) as outf:  # gets overwritten every time
+        with open('too_few_species.txt', 'a') as outf:  # gets overwritten every time
             for species, file_paths in paths.items():
                 outf.write(f'{species},{file_paths[0]},{file_paths[1]}\n')
                 # species,genome file ftp path, md5 checksum ftp path
@@ -191,4 +191,4 @@ if __name__ == '__main__':
     download_files(genus, paths, output_dir)
 
     create_dir(hmm_db_genome_downloads, organism, 'databases_to_create')
-    subprocess.run(['touch', os.path.join(hmm_db_genome_downloads, organism, 'databases_to_create', genus)])
+    subprocess.run(['touch', str(Path(hmm_db_genome_downloads, organism, 'databases_to_create', genus))])
