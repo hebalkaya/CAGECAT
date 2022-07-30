@@ -4,6 +4,7 @@ Author: Matthias van den Belt
 """
 
 # package imports
+import copy
 import json
 from typing import Union, Any, Tuple
 
@@ -23,6 +24,8 @@ import os
 
 # typing imports
 import typing as t
+
+from cagecat.tools.tools_helpers import get_search_mode_from_job_id
 
 result = Blueprint('result', __name__, template_folder="templates")
 
@@ -61,6 +64,10 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             #                        f"{job_id}_{program}.log")) as inf:
             #     log_contents = "<br/>".join(inf.readlines())
 
+            modules: list = copy.deepcopy(downstream_modules[module])
+            if module =='search' and get_search_mode_from_job_id(job.id) == 'combi_remote':
+                modules.remove('extract_clusters')  # this can be removed when it is implemented in cblaster
+
             return show_template("result_page.html", j_id=job_id,
                                  status=status,
                                  content_size=format_size(size),
@@ -68,7 +75,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  modules_with_plots=modules_with_plots,
                                  job_title=job.title,
                                  # log_contents=log_contents,
-                                 downstream_modules=downstream_modules[module],
+                                 downstream_modules=modules,
                                  connected_jobs=get_connected_jobs(job),
                                  help_enabled=False)
 
