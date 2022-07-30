@@ -6,6 +6,7 @@ Author: Matthias van den Belt
 # package imports
 import copy
 import json
+from pathlib import Path
 from typing import Union, Any, Tuple
 
 from flask import Blueprint, request, url_for, send_file
@@ -15,7 +16,8 @@ from werkzeug.utils import secure_filename
 
 from cagecat.routes.routes_helpers import format_size
 from cagecat.const import modules_with_plots, downstream_modules
-from cagecat.general_utils import show_template, generate_paths, get_log_file_contents
+from cagecat.general_utils import show_template, generate_paths
+from cagecat.file_utils import get_log_file_contents
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason, create_execution_stages
 
@@ -148,11 +150,9 @@ def return_user_download(job_id: str) -> Union[Union[str, Tuple[str, int]], Any]
     # TODO future: send_from_directory is a safer approach and should be used
     # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
     # result_path =
-    path = f'{os.sep}'.join(generate_paths(job_id)[2].split(os.sep)[1:])
-    # take results path, and remove first cagecat occurrence as this is also
-    # pasted by the send_file function
+
     try:
-        return send_file(os.path.join(path, f"{job_id}.zip"))
+        return send_file(Path('results', f"{job_id}.zip"))
     except FileNotFoundError:
         return show_template("job_not_found.html", job_id=job_id)
 
