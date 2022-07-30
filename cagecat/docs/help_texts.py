@@ -86,7 +86,7 @@ cblaster_search = {
     'ncbiEntriesTextArea': {
         'title': 'Search from NCBI identifiers',
         'module': '',
-        'text': 'A collection of valid NCBI sequence identifiers to be searched.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering invalid identifiers will not halt the analysis, but the invalid identifiers are not used in the analysis. Likewise, duplicate identifiers will be used once in your analysis.'
+        'text': 'A collection of valid GenPept NCBI sequence identifiers to be searched. Currently, NCBI identifiers referring to nucleotide sequences are not supported. If you wish to use these nucleotide sequences, you are able to manually download these nucleotide sequences, and upload these files in a cblaster-search job.\n\nNCBI identifiers should be separated by a newline (enter).\n\nEntering invalid identifiers will not halt the analysis, but the invalid identifiers are not used in the analysis. Likewise, duplicate identifiers will be used once in your analysis.'
     },
     'entrez_query': {
         'title': 'Filter results using Entrez query',
