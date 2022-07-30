@@ -162,7 +162,8 @@ def zip_results(job_id: str) -> None:
         job_id=job_id,
         jobs_folder='results',
         suffix=None,
-        extension='zip'
+        extension='zip',
+        return_absolute_path=True
     )
 
     cmd = ["zip", "-r", fp, "."]
@@ -188,10 +189,19 @@ def log_command(cmd: t.List[str], job_id: str) -> None:
         job_id=job_id,
         jobs_folder='logs',
         suffix='command',
-        extension='txt'
+        extension='txt',
+        return_absolute_path=True
     )
-    with open(fp) as outf:
+    print('we reached this before writing')
+    print('fp is:', fp.as_uri())
+    print(fp.absolute())
+    print(str(fp))
+    with open(fp, 'a') as outf:
+        print('in hereee')
+        print(cmd)
+        print(" ".join(cmd))
         outf.write(" ".join(cmd))
+    print('we reached this code!')
 
 
 def pre_job_formalities(job_id: str) -> None:
@@ -250,6 +260,7 @@ def log_cagecat_version(job_id: str) -> None:
         jobs_folder='logs',
         suffix=None,
         extension='txt',
+        return_absolute_path=True,
         override_filename='CAGECAT_version'
     )
 
@@ -312,7 +323,7 @@ def store_query_sequences_headers(log_path: Path, input_type: str, data: str):
             raise ValueError(f'Invalid extension: {ext}. Did the user upload a file with dots in it?')
 
     fp = log_path / "query_headers.csv"
-    with open(fp, "w") as outf:
+    with open(fp.as_posix(), "w") as outf:
         outf.write(",".join(headers))
 
 
@@ -370,7 +381,8 @@ def log_threshold_exceeded(parameter: int, threshold: int, job_id: str, error_me
             job_id=job_id,
             jobs_folder='logs',
             suffix='threshold',
-            extension='log'
+            extension='log',
+            return_absolute_path=True
         )
 
         with open(fp, 'w') as outf:
@@ -520,7 +532,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
 
     # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
     cmd = sanitization_cmd_base.format(
-        sanitization_folder,
+        sanitization_folder.as_posix(),
         job_id,
         file_path
     )
@@ -552,7 +564,8 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
         job_id=job_id,
         jobs_folder='uploads',
         suffix=None,
-        extension='gbk'
+        extension='gbk',
+        return_absolute_path=True
     )
 
     # for case when multiple files are uploaded (clinker)
@@ -580,6 +593,7 @@ def generate_clinker_upload_fp(job_id, num):
         job_id=job_id,
         jobs_folder='uploads',
         suffix=num,
-        extension='gbk'
+        extension='gbk',
+        return_absolute_path=True
     )
     return dest

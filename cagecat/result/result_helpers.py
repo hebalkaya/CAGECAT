@@ -225,7 +225,8 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
         job_id=job_id,
         jobs_folder='logs',
         suffix='command',
-        extension='txt'
+        extension='txt',
+        return_absolute_path=True
     )
 
     with open(cmd_fp) as inf:
