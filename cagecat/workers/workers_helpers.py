@@ -17,7 +17,7 @@ import pytz
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from flask_sqlalchemy import SQLAlchemy
 
-from cagecat.general_utils import generate_paths, send_email
+from cagecat.general_utils import send_email
 from cagecat.file_utils import write_to_log_file, generate_filepath, get_log_file_path, generate_sanitization_filepath
 from cagecat.db_utils import fetch_job_from_db, Job, fetch_statistic_from_db
 from cagecat import db
