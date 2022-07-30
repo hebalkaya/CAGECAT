@@ -97,8 +97,6 @@ def get_server_info(queue: rq.Queue = None, redis_conn: redis.Redis = None) \
         redis_conn = r
 
     start_registry = StartedJobRegistry('default', connection=redis_conn)
-    # above registry has the jobs in it which have been started, but are not
-    # finished yet: running jobs.
     running = len(start_registry)
 
     return {

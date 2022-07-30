@@ -56,13 +56,8 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
 
         if status == "finished":
             module = job.job_type
-            plot_contents, program, size = prepare_finished_result(
+            _, program, size = prepare_finished_result(
                 job_id, module)
-            # plot contents is not used currently. left in for future purposes
-            #
-            # with open(os.path.join(ut.JOBS_DIR, job_id, "logs",
-            #                        f"{job_id}_{program}.log")) as inf:
-            #     log_contents = "<br/>".join(inf.readlines())
 
             modules: list = copy.deepcopy(downstream_modules[module])
             if module =='search' and get_search_mode_from_job_id(job.id) == 'combi_remote':

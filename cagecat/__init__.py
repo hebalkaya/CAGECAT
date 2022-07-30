@@ -32,14 +32,3 @@ app.register_blueprint(tools, url_prefix="/tools")
 app.register_blueprint(result, url_prefix="/results")
 
 db.create_all()
-
-# line below indicates the Statistic table is empty
-# if fetch_statistic_from_db("finished") is None:
-#     stats = [Statistic(name="finished"),
-#              Statistic(name="failed")]
-#     # Maybe some additional statistics
-#
-#     for s in stats:
-#         db.session.add(s)
-#
-#     db.session.commit()

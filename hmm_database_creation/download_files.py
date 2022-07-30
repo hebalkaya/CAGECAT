@@ -32,22 +32,9 @@ def parse_paths(fp: str, ext='.gbff.gz') -> dict:
         all_lines = inf.readlines()
 
     for line in all_lines:
-        # line looks like this:
-        # ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/495/915/GCF_000495915.1_PseChl   Pseudomonas chloritidismutans
         splitted = line.strip().split()
         if line.strip().count('ftp') == 4:  # indicates there is a GenkBank and a RefSeq entry. In that case, remove the first FTP URL which is the GenBank one
-            # print('4 ftps')
-            # print(line)
-            # print(splitted)
             splitted = splitted[1:]
-            # print(splitted)
-            # print('---')
-
-        # print('!')
-        # print(line.strip().count('ftp'), 'ftp\'s encountered')
-        # print(line)
-        # print(splitted)
-        # print('!!')
 
         ftp_path, genus, species = splitted[0].replace(NCBI_ftp_base_url, ''), splitted[1], ' '.join(splitted[2:])
         key = ' '.join([genus, species])

@@ -119,7 +119,6 @@ def extract_sequences() -> str:
         template_name="cblaster_extract_sequences.html",
         all_forms=form,
         selected_queries=request.form["selectedQueries"].split('\r\n'),
-        # selected_scaffolds=selected_scaffolds,
         prev_job_id=parent_job_id,
         show_download=show_download
     )
@@ -137,7 +136,6 @@ def extract_clusters() -> str:
             clusters in the client's browser
     """
     selected_clusters = request.form["selectedClusters"]
-    # selected_scaffolds = pa.parse_selected_scaffolds(selected_clusters)
     prev_job_id = request.form["job_id"]
     prev_job = fetch_job_from_db(prev_job_id)
 

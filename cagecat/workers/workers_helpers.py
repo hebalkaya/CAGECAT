@@ -53,10 +53,6 @@ def create_filtering_command(options: ImmutableMultiDict,
         partly_cmd.extend(["--organisms", options['selectedOrganisms']])
         # TODO future: could also that user gives multiple patterns. separated by ;?
 
-    # if options["selectedScaffolds"]:
-    #     partly_cmd.append("--scaffolds")
-    #     partly_cmd.extend(options["selectedScaffolds"].split())
-
     if is_cluster_related:
         if options["clusterNumbers"]:
             partly_cmd.append("--clusters")
@@ -171,8 +167,6 @@ def zip_results(job_id: str) -> None:
     # (cagecat/jobs/{job_id}/ under the base folder
 
     run_command(cmd, "logs", job_id, log_output=False)
-    # invalid path: 'logs/U812J131P392S71_zip.txt/U812J131P392S71_cmd.txt'
-    # something is going wrong
 
 
 def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
@@ -517,12 +511,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     else:
         raise IOError('Invalid extension found:', extension, f'(from file) {file_path}')
 
-    # actually sanitize
     # situations: nt FASTA, GenBank file
-
-
-    # # print('before actual sanitization')
-    # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
     cmd = sanitization_cmd_base.format(os.path.join(sanitized_folder, job_id), job_id, file_path)
 
     return_code = run_command(

@@ -27,23 +27,6 @@ no_hits_message = 'Your search with the specified parameters did not return any 
 sanitization_message = 'An error occurred during sanitization of your input file. Please make sure your input file adheres to the standardized format and does not contain any special characters.'
 invalid_ncbi_response = 'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.'
 
-# failure_reasons_from_cblaster_code = {
-#     # LOG.error("File parsing failed, exiting...", exc_info=True)
-#     # LOG.error("Could not find matching SQlite3 database, exiting")
-#     # LOG.error("No hits have been found")
-#     # LOG.error("No valid profiles could be selected")
-#     # LOG.error(results.stderr.decode("utf-8"))
-#     #
-#     # LOG.exception("Network error while retrieving genomic context")
-#     # LOG.exception("Failed to insert %i records", len(tuples))
-#     # LOG.exception("Expected range in format start-end")
-#     # LOG.exception("Failed to fetch sequences")
-#     # LOG.exception("hmmsearch failed!"+add_msg)
-#     # LOG.exception('Unable to parse NCBI response')
-#     #
-#
-# }
-
 failure_reasons = {
     'ValueError: not enough values to unpack':  # cblaster remote search, when people DNA sequences, in FASTA or GBK file. Was because of invalid NCBI response
         invalid_ncbi_response,
@@ -105,31 +88,10 @@ failure_reasons = {
 
     'argument session: Invalid path:':  # occurs when workflow is:  cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.
         'Referencing to a file during a process of CAGECAT failed. This happens in the workflow: cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.\n It is a known bug, and will be fixed in a future release. Please submit feedback to notify the developers that you encountered this bug. For now, you can directly extract clusters from your recompute job. Apologies for the inconvenience.',
-
-
-
-    # error below is in sanitize_file() function but is currently not in used
-    # raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')
-
-    # Pfam related exceptions
-    # 'Failed to fetch profiles from Pfam':  # is this actually an error?
-    #     ''
-
-
-
-    # 'Network error while retrieving genomic context':
-    # ERROR - Failed to fetch sequences
-    # urllib.error.HTTPError: HTTP Error 400: Bad Request
-    # requests.exceptions.ConnectionError
-    # requests.exceptions.ConnectionError: HTTPSConnectionPool(host='blast.ncbi.nlm.nih.gov', port=443): Max retries exceeded with url: /Blast.cgi?CMD=PUT&DATABASE=nr&PROGRAM=blastp&FILTER=F&EXPECT=0.01&GAPCOSTS=11+1&MATRIX=BLOSUM62&HITLIST_SIZE=500&ALIGNMENTS=500&DESCRIPTIONS=500&WORD_SIZE=6&COMPOSITION_BASED_STATISTICS=2&THRESHOLD=11 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f724f9c97f0>: Failed to establish a new connection: [Errno 110] Connection timed out
-    # below is different as it could also be that there is an invalid scaffold accession
-    # requests.exceptions.HTTPError
-    #     None # TODO: fix
 }
 
 regex_failure_reasons = [
     # contains patterns
-
     (
         re.compile('Entrez Query: .+ is not supported'),
         'An invalid Entrez query was submitted. Did you forget to add "[organism]" at the end?'

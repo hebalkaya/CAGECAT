@@ -27,9 +27,6 @@ function updateJobExecutionStage(url){
 
             let currentStage = document.getElementById('stage' + currentStageIndex.toString());
             currentStage.src = currentlyExecutingPath;
-            // let percentage = Math.round(data['finished'] / data['total'] * 100)
-            // document.getElementById('progress').innerText = percentage.toString() + '%';
-            // console.log(percentage);
         },
         error: function(data){
             console.log('Error fetching stage. Returned:' + data);
@@ -39,7 +36,6 @@ function updateJobExecutionStage(url){
 
 function startJobExecutionStageUpdater(job_id){
     let url = '/results/stage/' + job_id;
-    // let url = 'https://cagecat.bioinformatics.nl/results/stage/' + job_id;
     updateJobExecutionStage(url);
     setInterval(updateJobExecutionStage, 7500, url)
 
@@ -112,8 +108,6 @@ function showInputOptions(selectionOption, resetQueries){
         inputFileMessages.classList.add('no-display'); // is actually part of genomeFileUploadDiv, but divs are not rendering correct. should be fixed in future.
         ncbiEntriesDiv.classList.remove('no-display');
 
-
-
         // enable
         setRequiredAndEnabled('ncbiEntriesTextArea')
 
@@ -177,7 +171,6 @@ function validateNCBIEntries() {
     for (let i=0; i<lines.length; i++){
         if (!(lines[i] === "")){
 
-            // console.log(everything[i]);
             let opt = document.createElement("option");
             opt.text = lines[i];
             opt.value = lines[i];
@@ -185,8 +178,6 @@ function validateNCBIEntries() {
 
     }
     }
-
-    // example: https://stackoverflow.com/questions/16465325/regular-expression-on-textarea
 }
 
 function validateJobID(target){
@@ -256,14 +247,6 @@ function getSelectedQueries(){
 function changePower(value, elemToChange){
     let elem = document.getElementById(elemToChange);
     elem.innerText = parseInt(elem.innerText) + value;
-}
-
-function mergeExponentials(){
-    let allEs = ["Evalue", "Ecluster", "Ecore"]
-
-    for (let i=0; i < allEs.length; i++){
-        document.getElementById(allEs[i].toLowerCase()).value = document.getElementById("base" + allEs[i]).value + "E" + document.getElementById("power" + allEs[i]).innerText;;
-    }
 }
 
 function getGenBankFileNames() {
@@ -401,7 +384,6 @@ function readFileContents() {
 
 function addRequiredSeqs(){
     let selector = document.getElementById("requiredSequencesSelector");
-    // console.log(selector.val())
     let selected = [];
     for (let i=0; i < selector.options.length; i++){
         if (selector.options[i].selected){
@@ -509,7 +491,6 @@ function determineHeight() {
         html.clientHeight, html.scrollHeight, html.offsetHeight).toString();
 
     let height = height_tmp - document.getElementById('navigationBar').offsetHeight - 8;
-    // -8px has been found by trying
 
     document.getElementById('statusColumn').style.height = height + 'px';
 

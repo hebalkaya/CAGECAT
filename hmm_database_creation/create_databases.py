@@ -37,9 +37,6 @@ def list_files(_genus: str) -> t.List[str]:
 
 
 if __name__ == '__main__':
-    # if len(sys.argv) != 2:
-    #     print('Enter if existing databases should be removed')
-    #     exit(0)
     if len(sys.argv) == 1:
         raise IndexError('No organism supplied')
 

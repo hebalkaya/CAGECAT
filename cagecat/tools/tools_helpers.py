@@ -22,8 +22,6 @@ def read_headers(job_id: str) -> t.List[str]:
     Output:
         - headers: the query headers of this job ID
     """
-    headers = None
-
     try:
         with open(os.path.join(jobs_dir, job_id, "logs", "query_headers.csv")) as outf:
             headers = outf.read().strip().split(",")

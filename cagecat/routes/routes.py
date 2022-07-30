@@ -5,26 +5,27 @@ Author: Matthias van den Belt
 
 # package imports
 import copy
-from flask import url_for, redirect, request
 import os
 import re
 
-# own project imports
-from cagecat.const import submit_url, extract_clusters_options, jobs_dir, hmm_database_organisms
-from cagecat.docs.help_texts import help_texts
-from cagecat.general_utils import show_template, get_server_info, send_email
-from cagecat.db_utils import fetch_job_from_db
+from flask import url_for, redirect, request
 
 from cagecat import app
 from cagecat.classes import CAGECATJob
+# own project imports
+from cagecat.const import submit_url, extract_clusters_options, jobs_dir
+from cagecat.db_utils import fetch_job_from_db
+from cagecat.docs.help_texts import help_texts
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm, \
     CblasterExtractSequencesFormHMM
+from cagecat.general_utils import show_template, get_server_info, send_email
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
 from cagecat.tools.tools_helpers import get_search_mode_from_job_id
 from config_files.config import cagecat_version, thresholds
-from config_files.sensitive import finished_hmm_db_folder, sender_email
+from config_files.sensitive import sender_email
+
 
 # route definitions
 
@@ -43,16 +44,6 @@ def output_files_explanation():
 @app.route('/invalid-submission')
 def invalid_submission():
     return show_template('incorrect_submission.html', help_enabled=False)
-
-# exceptions = {
-#     'search': [
-#         ('database_type', cblaster_search_databases)
-#     ],
-#     'binary_table': [
-#         ('keyFunction', cblaster_search_binary_table_key_functions),
-#         ('hitAttribute', cblaster_search_binary_table_hit_attributes)
-#     ]
-# }
 
 @app.route("/help")
 def help_page() -> str:
@@ -76,8 +67,10 @@ def get_help_text(input_type):
     """
 
     if input_type not in help_texts:
-        return {'title': 'Missing help text', 'module': '', 'text':
-            'This help text is missing. Please submit feedback and indicate'
+        return {
+            'title': 'Missing help text',
+            'module': '',
+            'text': 'This help text is missing. Please submit feedback and indicate'
             ' of which parameter the help text is missing.\n\nThanks in advance.'}
 
     return help_texts[input_type]
@@ -304,7 +297,8 @@ def submit_job() -> str:
     else:  # future input types
         raise NotImplementedError(f"Module {job_type} is not implemented yet in submit_job")
 
-    last_job = fetch_job_from_db(enqueue_jobs(new_jobs))
+    last_job_id = enqueue_jobs(new_jobs)
+    last_job = fetch_job_from_db(last_job_id)
 
     url = url_for("result.show_result",
                   job_id=last_job.id,

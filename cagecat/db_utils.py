@@ -37,9 +37,6 @@ class Job(db.Model):
     finish_time = db.Column(db.String(50))
 
     def __repr__(self):
-        # print("Main search", self.main_search_job)
-        # print("Children", self.child_jobs)
-        # print("Depending", self.depending_on)
         return f"ID: {self.id}; Type: {self.job_type}; " \
                f"Status: {self.status}; " \
                f"Finished: {self.finish_time}; Main job{self.main_search_job}"
@@ -51,9 +48,6 @@ class Statistic(db.Model):
     Inherits from db.Model
 
     """
-    # Implemented as counters instead of querying the full db, which could
-    # take a long time when the db becomes large
-
     name = db.Column(db.String(20), primary_key=True)
     count = db.Column(db.Integer, default=0, nullable=False)
 

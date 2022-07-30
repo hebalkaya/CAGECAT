@@ -80,7 +80,7 @@ class JobInfoForm(Form):
 
 # cblaster input
 class InputSearchModeForm(Form):
-    # raise NotImplementedError()
+
     # TODO: implement in future
     mode = RadioField(
         label=u'Remote',
@@ -90,9 +90,7 @@ class InputSearchModeForm(Form):
 
 
 class InputRemoteTypeForm(Form):
-    # raise NotImplementedError()
-
-    # File / NCBI entries radio buttons
+    # TODO: implement in future
     pass
 
 class InputSearchRemoteInputTypeFile(Form):
@@ -389,10 +387,6 @@ class IntermediateGenesSectionForm(Form):
             'disabled': ''
         }
     )
-
-
-
-
 
     # TODO: multiple selection form: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectMultipleField
 

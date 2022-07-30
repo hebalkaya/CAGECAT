@@ -27,11 +27,6 @@ job_details = {
 }
 
 general = {
-    # 'generalEnteredJobId': {
-    #     'title': 'Previous job ID',
-    #     'module': '',
-    #     'text': 'The ID of the job which\' results are wished to be used.'
-    # },
     'generalDelimiter': {
         'title': 'Output file delimiter',
         'module': '',
@@ -287,8 +282,6 @@ cblaster_search_binary_table = {
 }
 
 cblaster_search_filtering = {
-    # 'selectedScaffolds': {'title': '',
-    # 'module': '', 'text': ''},
     'clusterNumbers': {
         'title': 'Cluster numbers',
         'module': '',
@@ -366,9 +359,6 @@ all_helps = [('multiple', job_details), ('multiple', general), ('search', cblast
              ('extract clusters', cblaster_extract_clusters), ('HMM', cblaster_search_hmm_mode),
              ]
 help_texts = {}
-
-# BLANC: {'input_help': {'title': 'blanc',
-# 'module': '', 'text': 'blanc'}}
 
 for label, d in all_helps:
     for key in d:

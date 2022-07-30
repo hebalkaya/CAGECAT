@@ -134,7 +134,6 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
         return connected_jobs
 
     if job.main_search_job == "null": # current job is an initial job (search of clinker)
-        # go and look for child jobs
         children = job.child_jobs
 
         if children:  # empty string evaluates to False
