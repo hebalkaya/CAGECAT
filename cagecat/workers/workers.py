@@ -43,6 +43,7 @@ def cblaster_search(
             job_id=job_id,
             jobs_folder='results'
         )
+
         log_folder = get_job_folder_path(
             job_id=job_id,
             jobs_folder='logs'
@@ -51,10 +52,10 @@ def cblaster_search(
         # create the base command, with all required fields
         cmd = [
             "cblaster", "search",
-            "--output", results_folder / f'{job_id}_summary.txt',
-            "--plot", results_folder / f"{job_id}_plot.html",
-            "--blast_file", results_folder, f"{job_id}_blasthits.txt",
-            "--mode", options["mode"]
+            "--output", Path(results_folder / f'{job_id}_summary.txt').as_posix(),
+            "--plot", Path(results_folder / f"{job_id}_plot.html").as_posix(),
+            "--blast_file", Path(results_folder, f"{job_id}_blasthits.txt").as_posix(),
+            "--mode", Path(options["mode"]).as_posix()
         ]
 
         cmd.extend(forge_database_args(options))
@@ -65,7 +66,7 @@ def cblaster_search(
 
             if input_type == "file":
                 cmd.extend(["--query_file", file_path])
-                session_path = results_folder / f"{job_id}_session.json"
+                session_path = Path(results_folder / f"{job_id}_session.json").as_posix()
                 store_query_sequences_headers(log_folder, input_type, file_path)
             elif input_type == "ncbi_entries":
                 entries = options["ncbiEntriesTextArea"].split()
@@ -73,12 +74,12 @@ def cblaster_search(
                 cmd.append("--query_ids")
                 cmd.extend(entries)
 
-                session_path = results_folder / f"{job_id}_session.json"
+                session_path = Path(results_folder / f"{job_id}_session.json").as_posix()
                 store_query_sequences_headers(log_folder, input_type, entries)
             elif input_type == "prev_session":
                 recompute = True
                 cmd.extend(
-                    ["--recompute", results_folder / f"{job_id}_session.json"]
+                    ["--recompute", Path(results_folder / f"{job_id}_session.json").as_posix()]
                 )
                 session_path = file_path
 
@@ -96,7 +97,7 @@ def cblaster_search(
                     cmd.extend(["--entrez_query", options["entrez_query"]])
 
         if options['mode'] in ('hmm', 'combi_remote'):
-            session_path = results_folder / f"{job_id}_session.json"
+            session_path = Path(results_folder / f"{job_id}_session.json").as_posix()
 
             # add HMM profiles
             cmd.append('--query_profiles')
@@ -140,7 +141,7 @@ def cblaster_search(
 
         # add binary table
         cmd.extend(
-            ["--binary", results_folder / f"{job_id}_binary.txt"]
+            ["--binary", Path(results_folder / f"{job_id}_binary.txt").as_posix()]
         )
 
         bin_table_delim = options["searchBinTableDelim"]
@@ -168,10 +169,11 @@ def cblaster_search(
                     "--intermediate_genes",
                     "--max_distance", options["intermediate_max_distance"],
                     "--maximum_clusters", options["intermediate_max_clusters"],
-                    "--ipg_file", results_folder / f"{job_id}_ipg.txt"
+                    "--ipg_file", Path(results_folder / f"{job_id}_ipg.txt").as_posix()
                 ]
             )
 
+        print('cblaster search before running command')
         return_code = run_command(cmd, job_id)
         return return_code
     except Exception as e:  # intentionally broad except clause
@@ -217,8 +219,8 @@ def cblaster_gne(
         "--max_gap", options["max_intergenic_distance"],
         "--samples", options["sample_number"],
         "--scale", options["sampling_space"],
-        "--plot", results_folder / f"{job_id}_plot.html",
-        "--output", results_folder / f"{job_id}_summary.txt"
+        "--plot", Path(results_folder / f"{job_id}_plot.html").as_posix(),
+        "--output", Path(results_folder / f"{job_id}_summary.txt").as_posix()
     ]
 
     cmd.extend(create_summary_table_commands('gne', options))
@@ -256,7 +258,7 @@ def cblaster_extract_sequences(
 
     cmd = [
         "cblaster", "extract", file_path,
-        "--output", results_folder / f"{job_id}_sequences.{extension}"
+        "--output", Path(results_folder / f"{job_id}_sequences.{extension}").as_posix()
     ]
 
     cmd.extend(create_filtering_command(options, False))
@@ -366,16 +368,22 @@ def clinker(
                 continue
             sanitize_file(path, job_id, remove_old_files=remove_old_files)
 
-        if log_threshold_exceeded(len(os.listdir(file_path)), thresholds['max_clusters_to_plot'], (LOG_PATH, job_id, 'clinker'),
-                                  'Too many selected clusters'):
+        exceeded = log_threshold_exceeded(
+            parameter=len(os.listdir(file_path)),
+            threshold=thresholds['max_clusters_to_plot'],
+            job_id=job_id,
+            error_message='Too many selected clusters'
+        )
+
+        if exceeded:
             return
 
         cmd = [
             "clinker", file_path,
             "--jobs", "2",
-            "--session", results_folder / f"{job_id}_session.json",
-            "--output", results_folder / "alignments.txt",
-            "--plot", results_folder / f"{job_id}_plot.html"
+            "--session", Path(results_folder / f"{job_id}_session.json").as_posix(),
+            "--output", Path(results_folder / "alignments.txt").as_posix(),
+            "--plot", Path(results_folder / f"{job_id}_plot.html").as_posix()
         ]
 
         if "noAlign" in options:
@@ -446,7 +454,7 @@ def clinker_query(
 
     cmd = [
         "cblaster", "plot_clusters", file_path,
-        "--output", results_folder / f"{job_id}_plot.html"
+        "--output", Path(results_folder / f"{job_id}_plot.html").as_posix()
     ]
 
     cmd.extend(create_filtering_command(options, True))

@@ -1,5 +1,4 @@
 from pathlib import Path
-from types import NoneType
 
 from cagecat.const import jobs_dir, folders_to_create
 from config_files.sensitive import server_prefix, sanitized_folder
@@ -26,7 +25,8 @@ def get_log_file_path(job_id: str):
         job_id=job_id,
         jobs_folder='logs',
         suffix=None,
-        extension='log'
+        extension='log',
+        return_absolute_path=True
     )
 
     return fp
@@ -36,9 +36,11 @@ def generate_filepath(
         jobs_folder: str,
         suffix: str,
         extension: str,
+        return_absolute_path: bool,
         override_filename: str = None):
 
-    assert type(override_filename) in (NoneType, str)
+    assert override_filename is None or type(override_filename) == str
+    assert type(return_absolute_path) == bool
     assert len(extension) > 0
 
     check_valid_jobs_folder(jobs_folder)
@@ -49,7 +51,10 @@ def generate_filepath(
     if override_filename is not None:
         fn = override_filename
 
-    return Path(server_prefix, jobs_dir, job_id, jobs_folder, fn).with_suffix(ext)
+    return get_absolute_path(
+        inpath=Path(server_prefix, jobs_dir, job_id, jobs_folder, fn).with_suffix(ext),
+        return_absolute_path=return_absolute_path
+    )
 
 
 def check_valid_jobs_folder(jobs_folder: str):
@@ -63,4 +68,13 @@ def get_job_folder_path(job_id: str, jobs_folder: str):
     return Path(server_prefix, jobs_dir, job_id, jobs_folder)
 
 def generate_sanitization_filepath(job_id: str):
+    # is ok
     return Path(sanitized_folder, job_id)
+
+def get_absolute_path(inpath, return_absolute_path: bool):
+    assert type(inpath) == Path
+
+    if return_absolute_path:
+        return inpath.as_posix()
+    else:
+        return inpath
