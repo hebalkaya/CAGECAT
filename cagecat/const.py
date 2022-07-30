@@ -24,7 +24,7 @@ folders_to_create = ["uploads", "results", "logs"]
 
 connection_error_user_friendly_message = 'A connection error between CAGECAT and NCBI occurred. The NCBI servers are probably experiencing difficulties processing our requests. Please try again at a later moment. If this problem persists, please let us know by providing feedback.'
 no_hits_message = 'Your search with the specified parameters did not return any {} hits. Check your input, and try to loosen your search parameters to get results.'
-sanitization_message = 'An error occurred during sanitization of your input file. Please make sure our input file adheres to the standardized format and does not contain any special characters.'
+sanitization_message = 'An error occurred during sanitization of your input file. Please make sure your input file adheres to the standardized format and does not contain any special characters.'
 invalid_ncbi_response = 'The response CAGECAT received from NCBI was not as expected. Please retry submitting your job. If this error persists, submit feedback to notify the developers of this specific situation.'
 
 # failure_reasons_from_cblaster_code = {

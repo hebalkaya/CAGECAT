@@ -10,6 +10,8 @@ import os
 
 # own project imports
 import datetime
+from pathlib import Path
+
 import pytz
 
 import Bio.SeqIO
@@ -20,14 +22,14 @@ from cagecat.general_utils import generate_paths, send_email
 from cagecat.db_utils import fetch_job_from_db, Job, fetch_statistic_from_db
 from cagecat import db
 from config_files.config import cagecat_version, domain
-from cagecat.const import genbank_extensions, fasta_extensions
+from cagecat.const import genbank_extensions, fasta_extensions, jobs_dir
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
-from config_files.sensitive import finished_hmm_db_folder, sanitized_folder
+from config_files.sensitive import finished_hmm_db_folder, sanitized_folder, server_prefix
 
 timezone = pytz.timezone('Europe/Amsterdam')
 
@@ -444,6 +446,13 @@ def remove_email_from_db(db_job: Job):
         db_job.email = '-'
 
 
+def write_to_log_file(job_id: str, text: str):
+    fp = Path(server_prefix, jobs_dir, job_id, 'logs', job_id).with_suffix('.log')
+
+    with open(fp, 'a') as outf:
+        outf.write(f'{text}\n')
+
+
 def sanitize_file(file_path, job_id, remove_old_files=False):
     """Sanitizes input file by piping it through antiSmash
 
@@ -525,7 +534,9 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
 
     if return_code != 0:
         post_job_formalities(job_id, return_code)
-        raise IOError('Error during sanitization by antiSmash')
+        msg = 'Error during sanitization by antiSmash'
+        write_to_log_file(job_id, text=msg)
+        raise IOError(msg)
 
     write_mode = 'w' if not os.path.exists(log_fn) else 'a'
     with open(log_fn, write_mode) as outf: # manually write to file as there is no log file yet (as we've not executed any command yet)
