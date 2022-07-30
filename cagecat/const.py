@@ -74,8 +74,10 @@ failure_reasons = {
     'OSError: Unable to parse NCBI response':
         invalid_ncbi_response,
 
-    'No protocol for mode':
-        'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.',
+    'NotImplementedError':
+        'The settings you submitted are not implemented in the analysis tool you selected. The developers have been notified of this scenario and this scenario will be hidden in a future update.',
+    # 'No protocol for mode':
+    #     'The used search mode is not yet implemented for the extract_clusters module. Please submit feedback to the developers to notify of this scenario.',
 
     'ERROR - No files found':
         'No files were given when trying to execute clinker. Please retry to submit your analysis.',
@@ -102,7 +104,9 @@ failure_reasons = {
         sanitization_message,
 
     'argument session: Invalid path:':  # occurs when workflow is:  cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.
-        'Referencing to a file during a process of CAGECAT failed. This happens in the workflow: cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.\n It is a known bug, and will be fixed in a future release. Please submit feedback to notify the developers that you encountered this bug. For now, you can directly extract clusters from your recompute job. Apologies for the inconvenience.'
+        'Referencing to a file during a process of CAGECAT failed. This happens in the workflow: cblaster search -> cblaster recompute -> cblaster plot_queries -> cblaster extract_clusters.\n It is a known bug, and will be fixed in a future release. Please submit feedback to notify the developers that you encountered this bug. For now, you can directly extract clusters from your recompute job. Apologies for the inconvenience.',
+
+
 
     # error below is in sanitize_file() function but is currently not in used
     # raise IOError('At least one record in the input file is a protein sequence which is not supported. GenBank (nucleotide sequences), nucleotide FASTA and protein FASTA are supported inputs.')

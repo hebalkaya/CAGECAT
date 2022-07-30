@@ -34,6 +34,12 @@ def get_failure_reason(job_id: str) -> str:
         for l in logs:
             for fail in failure_reasons:
                 if fail in l:
+                    if fail == 'NotImplementedError':
+                        send_email(
+                            subject=f'{job_id} failed with an NotImplementedError',
+                            message=f'The job {job_id} failed with an NotImplementedError and should be investigated.\n',
+                            receiving_email=sender_email
+                        )
                     return failure_reasons[fail]
 
             for fail_pattern, message in regex_failure_reasons:
