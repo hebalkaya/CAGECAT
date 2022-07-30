@@ -192,16 +192,9 @@ def log_command(cmd: t.List[str], job_id: str) -> None:
         extension='txt',
         return_absolute_path=True
     )
-    print('we reached this before writing')
-    print('fp is:', fp.as_uri())
-    print(fp.absolute())
-    print(str(fp))
+
     with open(fp, 'a') as outf:
-        print('in hereee')
-        print(cmd)
-        print(" ".join(cmd))
         outf.write(" ".join(cmd))
-    print('we reached this code!')
 
 
 def pre_job_formalities(job_id: str) -> None:
