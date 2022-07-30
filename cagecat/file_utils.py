@@ -72,8 +72,6 @@ def generate_sanitization_filepath(job_id: str):
     return Path(sanitized_folder, job_id)
 
 def get_absolute_path(inpath, return_absolute_path: bool):
-    assert type(inpath) == Path
-
     if return_absolute_path:
         return inpath.as_posix()
     else:

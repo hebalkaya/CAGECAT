@@ -173,7 +173,6 @@ def cblaster_search(
                 ]
             )
 
-        print('cblaster search before running command')
         return_code = run_command(cmd, job_id)
         return return_code
     except Exception as e:  # intentionally broad except clause
