@@ -6,6 +6,7 @@ import os
 import smtplib
 import typing as t
 from email.message import EmailMessage
+from pathlib import Path
 
 import redis
 import rq
@@ -17,7 +18,7 @@ from cagecat.const import jobs_dir, hmm_database_organisms
 from cagecat.db_utils import fetch_statistic_from_db
 from config_files.config import email_footer_msg
 from config_files.notifications import notifications
-from config_files.sensitive import account, pwd, smtp_server, sender_email, port, finished_hmm_db_folder
+from config_files.sensitive import account, pwd, smtp_server, sender_email, port, finished_hmm_db_folder, server_prefix
 
 available_hmm_databases = None
 
@@ -147,3 +148,23 @@ def list_available_hmm_databases():
 
 
 available_hmm_databases = list_available_hmm_databases()
+
+
+def write_to_log_file(job_id: str, text: str):
+    fp = get_log_file_path(job_id)
+
+    with open(fp, 'a') as outf:
+        outf.write(f'{text}\n')
+
+
+def get_log_file_contents(job_id: str):
+    fp = get_log_file_path(job_id)
+
+    with open(fp) as inf:
+        logs = inf.read()
+
+    return logs
+
+
+def get_log_file_path(job_id: str):
+    return Path(server_prefix, jobs_dir, job_id, 'logs', job_id).with_suffix('.log')

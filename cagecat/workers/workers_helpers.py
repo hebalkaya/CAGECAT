@@ -10,26 +10,24 @@ import os
 
 # own project imports
 import datetime
-from pathlib import Path
 
 import pytz
 
-import Bio.SeqIO
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from flask_sqlalchemy import SQLAlchemy
 
-from cagecat.general_utils import generate_paths, send_email
+from cagecat.general_utils import generate_paths, send_email, write_to_log_file
 from cagecat.db_utils import fetch_job_from_db, Job, fetch_statistic_from_db
 from cagecat import db
 from config_files.config import cagecat_version, domain
-from cagecat.const import genbank_extensions, fasta_extensions, jobs_dir
+from cagecat.const import genbank_extensions, fasta_extensions
 
 # typing imports
 from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
-from config_files.sensitive import finished_hmm_db_folder, sanitized_folder, server_prefix
+from config_files.sensitive import finished_hmm_db_folder, sanitized_folder
 
 timezone = pytz.timezone('Europe/Amsterdam')
 
@@ -130,8 +128,8 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
         log_command(cmd, log_base, job_id)
         log_fp = os.path.join(log_base, f"{job_id}.log")
 
-        write_mode = 'a' if os.path.exists(log_fp) else 'w' # indicate a sanitization step has occurred
-        with open(log_fp, write_mode) as outf:
+
+        with open(log_fp, 'a') as outf:  # if the log file exists, a sanitization step already has occurred
             try:
                 res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True, **kwargs)
                 return_code = res.returncode
@@ -446,13 +444,6 @@ def remove_email_from_db(db_job: Job):
         db_job.email = '-'
 
 
-def write_to_log_file(job_id: str, text: str):
-    fp = Path(server_prefix, jobs_dir, job_id, 'logs', job_id).with_suffix('.log')
-
-    with open(fp, 'a') as outf:
-        outf.write(f'{text}\n')
-
-
 def sanitize_file(file_path, job_id, remove_old_files=False):
     """Sanitizes input file by piping it through antiSmash
 
@@ -467,11 +458,8 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     extension = f".{file_path.split('.')[-1]}"
 
     base, log_folder, _ = generate_paths(job_id)
-    log_fn = os.path.join(log_folder, f'{job_id}.log')
-    write_mode = 'w' if not os.path.exists(log_fn) else 'a'
 
-    with open(log_fn, write_mode) as outf:
-        outf.write('-- Executing input file sanitization\n')
+    write_to_log_file(job_id, text='-- Executing input file sanitization')
 
     if extension in fasta_extensions:
         # determine what type of FASTA it is.
@@ -489,9 +477,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
                     file_type = 'aa_fasta'
 
         if 'file_type' not in locals(): # check if the variable exists
-            write_mode = 'w' if not os.path.exists(log_fn) else 'a'
-            with open(log_fn, write_mode) as outf: # manually write to file as there is no log file yet (as we've not executed any command yet)
-                outf.write('-- Error when parsing FASTA file\n')
+            write_to_log_file(job_id, text='-- Error when parsing FASTA file') # manually write to file as there is no log file yet (as we've not executed any command yet)
 
             raise IOError('Error when parsing FASTA file')
 
@@ -520,7 +506,6 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
     # actually sanitize
     # situations: nt FASTA, GenBank file
 
-
     # # print('before actual sanitization')
     # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
     cmd = sanitization_cmd_base.format(os.path.join(sanitized_folder, job_id), job_id, file_path)
@@ -538,9 +523,7 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
         write_to_log_file(job_id, text=msg)
         raise IOError(msg)
 
-    write_mode = 'w' if not os.path.exists(log_fn) else 'a'
-    with open(log_fn, write_mode) as outf: # manually write to file as there is no log file yet (as we've not executed any command yet)
-        outf.write(f'-- Finished sanitization of input file: {file_path}\n')
+    write_to_log_file(job_id, text=f'-- Finished sanitization of input file: {file_path}') # manually write to file as there is no log file yet (as we've not executed any command yet)
 
     if remove_old_files:
         os.remove(file_path)

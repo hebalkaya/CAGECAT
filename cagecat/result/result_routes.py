@@ -15,7 +15,7 @@ from werkzeug.utils import secure_filename
 
 from cagecat.routes.routes_helpers import format_size
 from cagecat.const import modules_with_plots, downstream_modules
-from cagecat.general_utils import show_template, generate_paths
+from cagecat.general_utils import show_template, generate_paths, get_log_file_contents
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason, create_execution_stages
 
@@ -209,11 +209,7 @@ def get_execution_stage(job_id: str):
     )
 
     # running situation
-    log_base = generate_paths(job_id)[1]
-    log_fn = os.path.join(log_base, f'{job_id}.log')
-
-    with open(log_fn) as inf:
-        logs = inf.read()
+    logs = get_log_file_contents(job_id)
 
     if job.status != 'running':  # double check to prevent odd situations
         raise ValueError('Function should not reach this code')
