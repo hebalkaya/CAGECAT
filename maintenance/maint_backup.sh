@@ -33,6 +33,10 @@ libs_python="$fp/python_libs.txt"
 echo "Writing installed Python libraries to $libs_python"
 /miniconda3/bin/pip freeze > "$libs_python"
 
+crontab_fn="$fp/cron_commands.txt"
+echo "Writing crontab to $crontab_fn"
+crontab -l > "$crontab_fn"
+
 echo "Compressing in to $fp.tar.gz"
 cd "/backups" || exit
 tar cvf - $todays_backup --remove-files | gzip -9 - > $fp.tar.gz

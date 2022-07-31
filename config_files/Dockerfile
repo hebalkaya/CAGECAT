@@ -68,6 +68,5 @@ RUN chmod +x /repo/hmm_database_creation/construct_hmm_databases.sh
 RUN chmod +x /repo/maintenance/maint_remove_old_jobs.py
 RUN chmod +x /repo/hmm_database_creation/create_databases.py
 
-RUN mv /repo/config_files/crontab /etc/crontab
 
 CMD ["/usr/bin/supervisord", "-c", "/repo/config_files/supervisord.conf"]
