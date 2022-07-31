@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-cagecat_version = '3.0'  # when this is changed, /repo/maintenance/store_version_info.py should be run
+cagecat_version = '3.1'  # when this is changed, /repo/maintenance/store_version_info.py should be run
 
 # jobs to persist on server (i.e. example outputs)
 persistent_jobs = ('W885A828D304Y06',  # used in report: cblaster search
