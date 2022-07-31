@@ -231,7 +231,7 @@ class ClusteringSectionForm(Form):
         label=u'Percentage',
         validators=[val.input_required(), is_safe_string_value],
         description='percentageQueryGenes',
-        default=50,
+        default=0,
         render_kw={
             'min': 0,
             'max': 100,
