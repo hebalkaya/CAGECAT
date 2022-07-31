@@ -48,13 +48,10 @@ RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && 
 
 COPY repo/ /repo/
 
-RUN mkdir /backups
+RUN mkdir /backups /pfam_db/hmm_databases /sanitization /hmm_profiles /repo/cagecat/jobs
 RUN mkdir -p /process_logs/maintenance
-RUN mkdir /pfam_db
 RUN mkdir -p /root/.config/cblaster
-RUN mkdir /hmm_databases
-RUN mkdir /sanitization
-RUN mkdir /hmm_profiles
+
 
 RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
 RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
@@ -63,10 +60,6 @@ RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
 
 RUN ln -s /etc/nginx/sites-available/cagecat /etc/nginx/sites-enabled
 
-RUN chmod +x /repo/maintenance/maint_backup.sh
-RUN chmod +x /repo/hmm_database_creation/construct_hmm_databases.sh
-RUN chmod +x /repo/maintenance/maint_remove_old_jobs.py
-RUN chmod +x /repo/hmm_database_creation/create_databases.py
-
+RUN chmod +x /repo/maintenance/maint_backup.sh /repo/hmm_database_creation/construct_hmm_databases.sh /repo/maintenance/maint_remove_old_jobs.py /repo/hmm_database_creation/create_databases.py
 
 CMD ["/usr/bin/supervisord", "-c", "/repo/config_files/supervisord.conf"]
