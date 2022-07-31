@@ -48,7 +48,7 @@ RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && 
 
 COPY repo/ /repo/
 
-RUN mkdir /backups /pfam_db/hmm_databases /sanitization /hmm_profiles /repo/cagecat/jobs
+RUN mkdir /backups /pfam_db /hmm_databases /sanitization /hmm_profiles /repo/cagecat/jobs
 RUN mkdir -p /process_logs/maintenance
 RUN mkdir -p /root/.config/cblaster
 
