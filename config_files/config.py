@@ -8,6 +8,7 @@ NCBI_ftp_base_url = 'ftp.ncbi.nlm.nih.gov'
 
 # changeable
 send_mail = True
+period_to_keep_job_results = 31
 domain = 'https://cagecat.bioinformatics.nl/'
 hmm_db_creation_conf = {'sleeping_time': 60,
                           'cpus': '10',
