@@ -15,9 +15,9 @@ from rq.registry import StartedJobRegistry
 from cagecat import q, r
 from cagecat.const import jobs_dir, hmm_database_organisms
 from cagecat.db_utils import fetch_statistic_from_db
-from config_files.config import email_footer_msg
+from config_files.config import email_footer_msg, finished_hmm_db_folder
 from config_files.notifications import notifications
-from config_files.sensitive import account, pwd, smtp_server, sender_email, port, finished_hmm_db_folder
+from config_files.sensitive import account, pwd, smtp_server, sender_email, port
 
 available_hmm_databases = None
 

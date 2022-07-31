@@ -11,11 +11,11 @@ import sys
 
 sys.path.append('..')
 
-from config_files.sensitive import server_prefix
 from cagecat import db
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.const import jobs_dir
-from config_files.config import persistent_jobs
+from config_files.config import server_prefix
+from config_files.sensitive import persistent_jobs
 
 
 def get_folders_to_delete(period_to_keep: int = 31) -> t.List[t.Tuple[str, str]]:
