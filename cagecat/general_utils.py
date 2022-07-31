@@ -15,7 +15,7 @@ from rq.registry import StartedJobRegistry
 from cagecat import q, r
 from cagecat.const import jobs_dir, hmm_database_organisms
 from cagecat.db_utils import fetch_statistic_from_db
-from config_files.config import email_footer_msg, finished_hmm_db_folder
+from config_files.config import email_footer_msg, finished_hmm_db_folder, send_mail
 from config_files.notifications import notifications
 from config_files.sensitive import account, pwd, smtp_server, sender_email, port
 
@@ -32,18 +32,19 @@ def send_email(subject: str, message: str, receiving_email: str) -> None:
     Output:
         - None, sent emails
     """
-    with smtplib.SMTP(smtp_server, port=port) as server:
-        msg = EmailMessage()
-        server.starttls()
-        server.ehlo()
+    if send_mail:
+        with smtplib.SMTP(smtp_server, port=port) as server:
+            msg = EmailMessage()
+            server.starttls()
+            server.ehlo()
 
-        server.login(account, pwd)
+            server.login(account, pwd)
 
-        msg['Subject'] = subject
-        msg['From'] = sender_email
-        msg['To'] = receiving_email
-        msg.set_content(f'{message}\n{email_footer_msg}')
-        server.send_message(msg)
+            msg['Subject'] = subject
+            msg['From'] = sender_email
+            msg['To'] = receiving_email
+            msg.set_content(f'{message}\n{email_footer_msg}')
+            server.send_message(msg)
 
 
 def show_template(template_name: str, help_enabled:bool = True,
