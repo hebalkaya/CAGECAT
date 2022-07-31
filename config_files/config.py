@@ -4,11 +4,11 @@ Author: Matthias van den Belt
 """
 cagecat_version = '3.1'  # when this is changed, /repo/maintenance/store_version_info.py should be run
 
-# changeable
-domain = 'https://cagecat.bioinformatics.nl/'
 NCBI_ftp_base_url = 'ftp.ncbi.nlm.nih.gov'
 
-
+# changeable
+send_mail = True
+domain = 'https://cagecat.bioinformatics.nl/'
 hmm_db_creation_conf = {'sleeping_time': 60,
                           'cpus': '10',
                           'batch_size': '30'}
