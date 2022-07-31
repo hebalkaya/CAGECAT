@@ -7,8 +7,11 @@ import os
 import datetime
 import shutil
 import typing as t
+import sys
 
-from config_files.sensitive import maintenance_logs, server_prefix
+sys.path.append('..')
+
+from config_files.sensitive import server_prefix
 from cagecat import db
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.const import jobs_dir
@@ -24,6 +27,7 @@ def get_folders_to_delete(period_to_keep: int = 31) -> t.List[t.Tuple[str, str]]
     Output:
         - to_delete: directory path and job ID's to delete
     """
+    print('Getting folders to delete')
 
     to_delete = []
     current = datetime.datetime.now()
@@ -45,25 +49,23 @@ def delete_old_jobs():
         - None, entries are removed from the database and job folders which
             have expired the storage data are removed
     """
-    with open(os.path.join(f'{maintenance_logs}',
-                           f'{datetime.datetime.now().date()}_removal.txt'),
-              'w') as outf:
-        for directory, job_id in get_folders_to_delete():
 
-            if job_id in persistent_jobs:
-                print(f'Skipped: {job_id} (in persistent jobs)')
-                continue
-            try:
-                shutil.rmtree(directory)
-            except FileNotFoundError:  # occurred during development.
-                #  will not happen in production
-                print(f'Directory not found: {directory}')
+    for directory, job_id in get_folders_to_delete():
 
-            db.session.delete(fetch_job_from_db(job_id))
+        if job_id in persistent_jobs:
+            print(f'Skipped: {job_id} (in persistent jobs)')
+            continue
+        try:
+            shutil.rmtree(directory)
+        except FileNotFoundError:  # occurred during development.
+            #  will not happen in production
+            print(f'Directory not found: {directory}')
 
-            outf.write(f'Deleted: {directory}\n')
+        db.session.delete(fetch_job_from_db(job_id))
 
-        outf.write('Finished deleting jobs')
+        print(f'Deleted: {directory}')
+
+    print('Finished deleting jobs')
 
     db.session.commit()
 
