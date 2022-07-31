@@ -55,6 +55,7 @@ RUN mkdir -p /root/.config/cblaster
 RUN mkdir /hmm_databases
 RUN mkdir /sanitization
 RUN mkdir /hmm_profiles
+RUN mkdir /repo/cagecat/jobs
 
 RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
 RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
