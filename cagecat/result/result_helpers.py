@@ -7,8 +7,6 @@ import os
 import re
 import typing as t
 
-from flask import url_for
-
 from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons, execution_stages
 from cagecat.file_utils import generate_filepath
 from cagecat.general_utils import send_email

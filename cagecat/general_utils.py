@@ -13,7 +13,7 @@ from flask import render_template
 from rq.registry import StartedJobRegistry
 
 from cagecat import q, r
-from cagecat.const import jobs_dir, hmm_database_organisms
+from cagecat.const import hmm_database_organisms
 from cagecat.db_utils import fetch_statistic_from_db
 from config_files.config import email_footer_msg, finished_hmm_db_folder, send_mail
 from config_files.notifications import notifications

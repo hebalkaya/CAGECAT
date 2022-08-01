@@ -6,7 +6,6 @@ Author: Matthias van den Belt
 # package imports
 import copy
 import json
-from pathlib import Path
 from typing import Union, Any, Tuple
 
 from flask import Blueprint, request, url_for, send_file
@@ -20,9 +19,6 @@ from cagecat.general_utils import show_template
 from cagecat.file_utils import get_log_file_contents, generate_filepath
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason, create_execution_stages
-
-# other imports
-import os
 
 # typing imports
 import typing as t

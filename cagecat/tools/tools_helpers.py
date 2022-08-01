@@ -9,7 +9,7 @@ import typing as t
 from more_itertools import consecutive_groups
 
 from cagecat.const import jobs_dir
-from cagecat.db_utils import fetch_job_from_db, Job
+from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import parse_search_mode
 
 

@@ -7,7 +7,6 @@ Author: Matthias van den Belt
 import os.path
 
 # own project imports
-from pathlib import Path
 
 from cagecat.file_utils import get_job_folder_path
 from cagecat.workers.workers_helpers import *

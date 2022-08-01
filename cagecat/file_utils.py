@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from cagecat.const import jobs_dir, folders_to_create
-from config_files.sensitive import server_prefix, sanitized_folder
+from config_files.config import server_prefix, sanitized_folder
 
 
 def write_to_log_file(job_id: str, text: str):

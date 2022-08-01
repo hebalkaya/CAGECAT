@@ -11,7 +11,6 @@ Author: Matthias van den Belt
 """
 
 # package imports
-import os
 import sys
 from pathlib import Path
 
