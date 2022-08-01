@@ -39,3 +39,8 @@ Kind regards,
     
 The CAGECAT team
 {domain}'''
+
+init_config = {
+    'SQLALCHEMY_DATABASE_URI': 'sqlite:////repo/cagecat/database.db',
+    "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+}
