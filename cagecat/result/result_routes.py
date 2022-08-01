@@ -6,6 +6,7 @@ Author: Matthias van den Belt
 # package imports
 import copy
 import json
+from pathlib import Path
 from typing import Union, Any, Tuple
 
 from flask import Blueprint, request, url_for, send_file
@@ -15,7 +16,8 @@ from werkzeug.utils import secure_filename
 
 from cagecat.routes.routes_helpers import format_size
 from cagecat.const import modules_with_plots, downstream_modules
-from cagecat.general_utils import show_template, generate_paths
+from cagecat.general_utils import show_template
+from cagecat.file_utils import get_log_file_contents, generate_filepath
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.result.result_helpers import prepare_finished_result, get_connected_jobs, get_failure_reason, create_execution_stages
 
@@ -148,11 +150,15 @@ def return_user_download(job_id: str) -> Union[Union[str, Tuple[str, int]], Any]
     # TODO future: send_from_directory is a safer approach and should be used
     # as Flask should not be serving files when deployed. Actually, NGINX should serve the files
     # result_path =
-    path = f'{os.sep}'.join(generate_paths(job_id)[2].split(os.sep)[1:])
-    # take results path, and remove first cagecat occurrence as this is also
-    # pasted by the send_file function
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='results',
+        suffix=None,
+        extension='zip',
+        return_absolute_path=False
+    )
     try:
-        return send_file(os.path.join(path, f"{job_id}.zip"))
+        return send_file(fp)
     except FileNotFoundError:
         return show_template("job_not_found.html", job_id=job_id)
 
@@ -204,11 +210,7 @@ def get_execution_stage(job_id: str):
     )
 
     # running situation
-    log_base = generate_paths(job_id)[1]
-    log_fn = os.path.join(log_base, f'{job_id}.log')
-
-    with open(log_fn) as inf:
-        logs = inf.read()
+    logs = get_log_file_contents(job_id)
 
     if job.status != 'running':  # double check to prevent odd situations
         raise ValueError('Function should not reach this code')

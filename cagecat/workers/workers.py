@@ -7,14 +7,21 @@ Author: Matthias van den Belt
 import os.path
 
 # own project imports
+from pathlib import Path
+
+from cagecat.file_utils import get_job_folder_path
 from cagecat.workers.workers_helpers import *
 
 ### redis-queue functions
 from config_files.config import thresholds, pfam_db_folder
 
 
-def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
-                    file_path: t.Union[str, None] = None) -> None:
+
+def cblaster_search(
+        job_id: str,
+        options: ImmutableMultiDict = None,
+        file_path: t.Union[str, None] = None) \
+        -> None:
     """Executed when requested job is cblaster_search (forges + exec. command)
 
     Input:
@@ -28,17 +35,28 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
     This function forges and executes a cblaster command.
     """
     try:
-        _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
         recompute = False
-        if file_path is not None and not file_path.endswith('.json'): #.json indicates this is a recompute job
+        if file_path is not None and not file_path.endswith('.json'):  # .json indicates this is a recompute job
             file_path = sanitize_file(file_path, job_id)
 
+        results_folder = get_job_folder_path(
+            job_id=job_id,
+            jobs_folder='results'
+        )
+
+        log_folder = get_job_folder_path(
+            job_id=job_id,
+            jobs_folder='logs'
+        )
+
         # create the base command, with all required fields
-        cmd = ["cblaster", "search",
-               "--output", os.path.join(RESULTS_PATH, f"{job_id}_summary.txt"),
-               "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html"),
-               "--blast_file", os.path.join(RESULTS_PATH, f"{job_id}_blasthits.txt"),
-               "--mode", options["mode"]]
+        cmd = [
+            "cblaster", "search",
+            "--output", Path(results_folder / f'{job_id}_summary.txt').as_posix(),
+            "--plot", Path(results_folder / f"{job_id}_plot.html").as_posix(),
+            "--blast_file", Path(results_folder, f"{job_id}_blasthits.txt").as_posix(),
+            "--mode", Path(options["mode"]).as_posix()
+        ]
 
         cmd.extend(forge_database_args(options))
 
@@ -48,20 +66,21 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
 
             if input_type == "file":
                 cmd.extend(["--query_file", file_path])
-                session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
-                store_query_sequences_headers(LOG_PATH, input_type, file_path)
+                session_path = Path(results_folder / f"{job_id}_session.json").as_posix()
+                store_query_sequences_headers(log_folder, input_type, file_path)
             elif input_type == "ncbi_entries":
                 entries = options["ncbiEntriesTextArea"].split()
 
                 cmd.append("--query_ids")
                 cmd.extend(entries)
 
-                session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
-                store_query_sequences_headers(LOG_PATH, input_type, entries)
+                session_path = Path(results_folder / f"{job_id}_session.json").as_posix()
+                store_query_sequences_headers(log_folder, input_type, entries)
             elif input_type == "prev_session":
                 recompute = True
-                cmd.extend(["--recompute",
-                            os.path.join(RESULTS_PATH, f"{job_id}_session.json")])
+                cmd.extend(
+                    ["--recompute", Path(results_folder / f"{job_id}_session.json").as_posix()]
+                )
                 session_path = file_path
 
             else:  # future input types and prev_session
@@ -78,7 +97,7 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
                     cmd.extend(["--entrez_query", options["entrez_query"]])
 
         if options['mode'] in ('hmm', 'combi_remote'):
-            session_path = os.path.join(RESULTS_PATH, f"{job_id}_session.json")
+            session_path = Path(results_folder / f"{job_id}_session.json").as_posix()
 
             # add HMM profiles
             cmd.append('--query_profiles')
@@ -93,28 +112,37 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
 
         # add filtering options
         if options['mode'] != 'hmm':
-            cmd.extend(["--max_evalue", options["max_evalue"],
-                        "--min_identity", options["min_identity"],
-                        "--min_coverage", options["min_query_coverage"]])
+            cmd.extend(
+                [
+                    "--max_evalue", options["max_evalue"],
+                    "--min_identity", options["min_identity"],
+                    "--min_coverage", options["min_query_coverage"]
+                ]
+            )
 
         # add clustering options
-        cmd.extend(["--gap", options["max_intergenic_gap"],
-                    "--unique", options["min_unique_query_hits"],
-                    "--min_hits", options["min_hits_in_clusters"],
-                    "--percentage", options["percentageQueryGenes"]])
+        cmd.extend(
+            [
+                "--gap", options["max_intergenic_gap"],
+                "--unique", options["min_unique_query_hits"],
+                "--min_hits", options["min_hits_in_clusters"],
+                "--percentage", options["percentageQueryGenes"]
+            ]
+        )
 
         if options["requiredSequences"]:  # as empty string evaluates to False
             cmd.append("--require")
             for q in options["requiredSequences"].split(";"):
                 cmd.append(f"{q.strip().split()[0]}")  # to prevent 1 header to be interpreted
-                                        # as multiple due to spaces in header
+                # as multiple due to spaces in header
 
         # add summary table
         cmd.extend(create_summary_table_commands('search', options))
 
         # add binary table
-        cmd.extend(["--binary",
-                    os.path.join(RESULTS_PATH, f"{job_id}_binary.txt")])
+        cmd.extend(
+            ["--binary", Path(results_folder / f"{job_id}_binary.txt").as_posix()]
+        )
 
         bin_table_delim = options["searchBinTableDelim"]
         if bin_table_delim:
@@ -136,20 +164,27 @@ def cblaster_search(job_id: str, options: ImmutableMultiDict = None,
 
         # add intermediate genes options
         if "intermediate_genes" in options:
-            cmd.extend(["--intermediate_genes",
+            cmd.extend(
+                [
+                    "--intermediate_genes",
                     "--max_distance", options["intermediate_max_distance"],
                     "--maximum_clusters", options["intermediate_max_clusters"],
-                    "--ipg_file", os.path.join(RESULTS_PATH, f"{job_id}_ipg.txt")])
+                    "--ipg_file", Path(results_folder / f"{job_id}_ipg.txt").as_posix()
+                ]
+            )
 
-        return_code = run_command(cmd, LOG_PATH, job_id)
+        return_code = run_command(cmd, job_id)
         return return_code
     except Exception as e:  # intentionally broad except clause
         print('Exception occurred:', e)
         return 999
 
 
-def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
-                 file_path: t.Union[str, None] = None) -> None:
+def cblaster_gne(
+        job_id: str,
+        options: ImmutableMultiDict = None,
+        file_path: t.Union[str, None] = None) \
+        -> None:
     """Executed when requested job is cblaster_gne (forges + exec. command)
 
     Input:
@@ -162,33 +197,42 @@ def cblaster_gne(job_id: str, options: ImmutableMultiDict = None,
 
     This function forges and executes a cblaster command.
     """
-    _, log_path, results_path = generate_paths(job_id)
 
-    if log_threshold_exceeded(int(options["sample_number"]),
-                              thresholds['maximum_gne_samples'],
-                              (log_path, job_id, 'cblaster'),
-                          'Too many samples'):
+    exceeded = log_threshold_exceeded(
+        parameter=int(options["sample_number"]),
+        threshold=thresholds['maximum_gne_samples'],
+        job_id=job_id,
+        error_message='Too many samples'
+    )
+    if exceeded:
         return
 
     session_path = file_path
+    results_folder = get_job_folder_path(
+        job_id=job_id,
+        jobs_folder='results'
+    )
 
-    cmd = ["cblaster", "gne", session_path,
-           "--max_gap", options["max_intergenic_distance"],
-           "--samples", options["sample_number"],
-           "--scale", options["sampling_space"],
-           "--plot", os.path.join(results_path, f"{job_id}_plot.html"),
-           "--output", os.path.join(results_path, f"{job_id}_summary.txt")]
+    cmd = [
+        "cblaster", "gne", session_path,
+        "--max_gap", options["max_intergenic_distance"],
+        "--samples", options["sample_number"],
+        "--scale", options["sampling_space"],
+        "--plot", Path(results_folder / f"{job_id}_plot.html").as_posix(),
+        "--output", Path(results_folder / f"{job_id}_summary.txt").as_posix()
+    ]
 
     cmd.extend(create_summary_table_commands('gne', options))
 
-    return_code = run_command(cmd, log_path, job_id)
+    return_code = run_command(cmd, job_id)
     return return_code
 
 
-
-def cblaster_extract_sequences(job_id: str,
-                               options: ImmutableMultiDict=None,
-                               file_path: t.Union[str, None] = None) -> None:
+def cblaster_extract_sequences(
+        job_id: str,
+        options: ImmutableMultiDict = None,
+        file_path: t.Union[str, None] = None) \
+        -> None:
     """Executed when requested job is extract sequences of cblaster
 
     Input:
@@ -201,19 +245,27 @@ def cblaster_extract_sequences(job_id: str,
 
     This function forges and executes a cblaster command.
     """
-    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+
+    results_folder = get_job_folder_path(
+        job_id=job_id,
+        jobs_folder='results'
+    )
 
     extension = "txt"
     if "downloadSeqs" in options:
         extension = "fasta"
 
-    cmd = ["cblaster", "extract", file_path,
-           "--output", os.path.join(RESULTS_PATH, f"{job_id}_sequences.{extension}")]
+    cmd = [
+        "cblaster", "extract", file_path,
+        "--output", Path(results_folder / f"{job_id}_sequences.{extension}").as_posix()
+    ]
 
     cmd.extend(create_filtering_command(options, False))
 
     if "outputDelimiter" in options and options["outputDelimiter"]:
-        cmd.extend(["--delimiter", options["outputDelimiter"]])
+        cmd.extend(
+            ["--delimiter", options["outputDelimiter"]]
+        )
 
     if "nameOnly" in options:
         cmd.append("--name_only")
@@ -221,13 +273,15 @@ def cblaster_extract_sequences(job_id: str,
     if "downloadSeqs" in options:
         cmd.append("--extract_sequences")
 
-    return_code = run_command(cmd, LOG_PATH, job_id)
+    return_code = run_command(cmd, job_id)
     return return_code
 
 
-def cblaster_extract_clusters(job_id: str,
-                              options: ImmutableMultiDict=None,
-                              file_path: t.Union[str, None] = None) -> None:
+def cblaster_extract_clusters(
+        job_id: str,
+        options: ImmutableMultiDict = None,
+        file_path: t.Union[str, None] = None) \
+        -> None:
     """Executed when requested job is extract clusters of cblaster
 
     Input:
@@ -240,30 +294,45 @@ def cblaster_extract_clusters(job_id: str,
 
     This function forges and executes a cblaster command.
     """
-    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+    results_folder = get_job_folder_path(
+        job_id=job_id,
+        jobs_folder='results'
+    )
 
-    if log_threshold_exceeded(int(options["maxclusters"]),
-                              thresholds['maximum_clusters_to_extract'],
-                              (LOG_PATH, job_id, 'cblaster'),
-                                  'Too many selected clusters'):
+    exceeded = log_threshold_exceeded(
+        parameter=int(options["maxclusters"]),
+        threshold=thresholds['maximum_clusters_to_extract'],
+        job_id=job_id,
+        error_message='Too many selected clusters')
+
+    if exceeded:
         return
 
-    cmd = ["cblaster", "extract_clusters", file_path,
-           "--output", RESULTS_PATH]
+    cmd = [
+        "cblaster", "extract_clusters", file_path,
+        "--output", results_folder
+    ]
 
     cmd.extend(create_filtering_command(options, True))
 
     if options["prefix"]:
-        cmd.extend(["--prefix", options["prefix"]])
+        cmd.extend(
+            ["--prefix", options["prefix"]]
+        )
 
-    cmd.extend(["--format", options["format"]])
+    cmd.extend(
+        ["--format", options["format"]]
+    )
 
-    return_code = run_command(cmd, LOG_PATH, job_id)
+    return_code = run_command(cmd, job_id)
     return return_code
 
 
-def clinker(job_id: str, options: ImmutableMultiDict=None,
-            file_path: t.Union[str, None] = None) -> None:
+def clinker(
+        job_id: str,
+        options: ImmutableMultiDict = None,
+        file_path: t.Union[str, None] = None) \
+        -> None:
     """Executed when requested job is visualization using clinker.
 
     Input:
@@ -278,9 +347,12 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
 
     This function forges and executes a clinker command.
     """
-    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
+    results_folder = get_job_folder_path(
+        job_id=job_id,
+        jobs_folder='results'
+    )
 
-    if 'clinkerEnteredJobId' in options: # indicates we are a downstream job
+    if 'clinkerEnteredJobId' in options:  # indicates we are a downstream job
         remove_old_files = False
     else:
         remove_old_files = True
@@ -289,32 +361,45 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
         for f in os.listdir(file_path):
             path = os.path.join(file_path, f)
 
-            if path.endswith('.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
+            if path.endswith(
+                    '.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
                 print('Skipped', path)
                 continue
             sanitize_file(path, job_id, remove_old_files=remove_old_files)
 
-        if log_threshold_exceeded(len(os.listdir(file_path)),
-                                  thresholds['max_clusters_to_plot'],
-                                  (LOG_PATH, job_id, 'clinker'),
-                                  'Too many selected clusters'):
+        exceeded = log_threshold_exceeded(
+            parameter=len(os.listdir(file_path)),
+            threshold=thresholds['max_clusters_to_plot'],
+            job_id=job_id,
+            error_message='Too many selected clusters'
+        )
+
+        if exceeded:
             return
 
-        cmd = ["clinker", file_path,
-               "--jobs", "2",
-               "--session", os.path.join(RESULTS_PATH, f"{job_id}_session.json"),
-               "--output", os.path.join(RESULTS_PATH, "alignments.txt"),
-               "--plot", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
+        cmd = [
+            "clinker", file_path,
+            "--jobs", "2",
+            "--session", Path(results_folder / f"{job_id}_session.json").as_posix(),
+            "--output", Path(results_folder / "alignments.txt").as_posix(),
+            "--plot", Path(results_folder / f"{job_id}_plot.html").as_posix()
+        ]
 
         if "noAlign" in options:
             cmd.append("--no_align")
 
-        cmd.extend(["--identity", options["identity"]])
+        cmd.extend(
+            ["--identity", options["identity"]]
+        )
 
         if options["clinkerDelim"]:  # empty string evaluates to false
-            cmd.extend(["--delimiter", options["clinkerDelim"]])
+            cmd.extend(
+                ["--delimiter", options["clinkerDelim"]]
+            )
 
-        cmd.extend(["--decimals", options["clinkerDecimals"]])
+        cmd.extend(
+            ["--decimals", options["clinkerDecimals"]]
+        )
 
         if "hideLinkHeaders" in options:
             cmd.append("--hide_link_headers")
@@ -325,20 +410,19 @@ def clinker(job_id: str, options: ImmutableMultiDict=None,
         if "useFileOrder" in options:
             cmd.append("--use_file_order")
 
-        return_code = run_command(cmd, LOG_PATH, job_id)
+        return_code = run_command(cmd, job_id)
         return return_code
     except Exception as e:
-        log_fn = os.path.join(LOG_PATH, f'{job_id}.log')
-        write_mode = 'w' if not os.path.exists(log_fn) else 'a'
-
-        with open(log_fn, write_mode) as outf:
-            outf.write(f'{e}\n')
+        write_to_log_file(job_id, text=e)
 
         return 1
 
 
-def clinker_query(job_id: str, options: ImmutableMultiDict=None,
-                  file_path: t.Union[str, None] = None) -> None:
+def clinker_query(
+        job_id: str,
+        options: ImmutableMultiDict = None,
+        file_path: t.Union[str, None] = None) \
+        -> None:
     """Executed when requested job is visualization using cblaster
 
     Input:
@@ -351,18 +435,28 @@ def clinker_query(job_id: str, options: ImmutableMultiDict=None,
 
     This function forges and executes a cblaster command.
     """
-    _, LOG_PATH, RESULTS_PATH = generate_paths(job_id)
 
-    if log_threshold_exceeded(int(options['maxclusters']),
-                              thresholds['max_clusters_to_plot'],
-                              (LOG_PATH, job_id, 'cblaster'),
-                              'Too many selected clusters'):
+    exceeded = log_threshold_exceeded(
+        parameter=int(options['maxclusters']),
+        threshold=thresholds['max_clusters_to_plot'],
+        job_id=job_id,
+        error_message='Too many selected clusters'
+    )
+
+    if exceeded:
         return
 
-    cmd = ["cblaster", "plot_clusters", file_path,
-           "--output", os.path.join(RESULTS_PATH, f"{job_id}_plot.html")]
+    results_folder = get_job_folder_path(
+        job_id=job_id,
+        jobs_folder='results'
+    )
+
+    cmd = [
+        "cblaster", "plot_clusters", file_path,
+        "--output", Path(results_folder / f"{job_id}_plot.html").as_posix()
+    ]
 
     cmd.extend(create_filtering_command(options, True))
 
-    return_code = run_command(cmd, LOG_PATH, job_id)
+    return_code = run_command(cmd, job_id)
     return return_code

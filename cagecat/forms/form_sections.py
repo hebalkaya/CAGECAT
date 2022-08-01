@@ -117,7 +117,7 @@ class InputSearchRemoteInputTypeNCBIEntries(Form):
             'rows': 6,
             'cols': 25,
             'class': 'ncbi-entries',
-            'placeholder': 'NCBI accessions',
+            'placeholder': 'NCBI accessions (GenPept))',
             'onfocusout': 'validateNCBIEntries()',
             # 'required': '',
             'disabled': 'disabled'

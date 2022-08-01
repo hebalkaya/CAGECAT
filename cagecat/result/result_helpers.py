@@ -10,7 +10,8 @@ import typing as t
 from flask import url_for
 
 from cagecat.const import failure_reasons, jobs_dir, regex_failure_reasons, execution_stages
-from cagecat.general_utils import send_email, generate_paths
+from cagecat.file_utils import generate_filepath
+from cagecat.general_utils import send_email
 from cagecat.db_utils import fetch_job_from_db, Job as dbJob
 from config_files.sensitive import sender_email, persistent_jobs
 
@@ -219,8 +220,14 @@ def create_execution_stages(job_type: str, job_id: str, options: str, stack: str
     if stack not in ('front-end', 'back-end'):
         raise ValueError('Invalid stack')
 
-    log_base = generate_paths(job_id)[1]
-    cmd_fp = os.path.join(log_base, f'{job_id}_command.txt')
+    cmd_fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='logs',
+        suffix='command',
+        extension='txt',
+        return_absolute_path=True
+    )
+
     with open(cmd_fp) as inf:
         contents = inf.read()
 

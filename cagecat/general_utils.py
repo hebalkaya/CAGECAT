@@ -107,22 +107,6 @@ def get_server_info(queue: rq.Queue = None, redis_conn: redis.Redis = None) \
         "completed": fetch_statistic_from_db("finished").count
         }
 
-
-def generate_paths(job_id: str) -> t.Tuple[str, str, str]:
-    """Returns paths for logging and result directories
-
-    Input:
-        - job_id: ID corresponding to the job the function is called for
-
-    Output:
-        - [0]: base path for the job
-        - [1]: path for the logging directory
-        - [2]: path for the results directory
-    """
-    base = os.path.join(jobs_dir, job_id)
-    return base, os.path.join(base, "logs"), os.path.join(base, "results")
-
-
 def list_available_hmm_databases():
     all_databases = {}
 

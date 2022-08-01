@@ -14,11 +14,11 @@ from pathlib import Path
 
 import pytz
 
-import Bio.SeqIO
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from flask_sqlalchemy import SQLAlchemy
 
-from cagecat.general_utils import generate_paths, send_email
+from cagecat.general_utils import send_email
+from cagecat.file_utils import write_to_log_file, generate_filepath, get_log_file_path, generate_sanitization_filepath
 from cagecat.db_utils import fetch_job_from_db, Job, fetch_statistic_from_db
 from cagecat import db
 from config_files.config import cagecat_version, domain, server_prefix, sanitized_folder, finished_hmm_db_folder
@@ -104,16 +104,14 @@ def create_summary_table_commands(
     return summary_cmds
 
 
-def run_command(cmd: t.List[str], log_base: str, job_id: str,
-                log_output: bool = True, **kwargs) -> int:
+def run_command(cmd: t.List[str], job_id: str, log_output: bool = True, **kwargs) -> int:
     """Executes a command on the command line
 
     Input:
         - cmd: split command to be executed. All elements in the
             list are joined together with a space to form a full command
-        - log_base: base directory for logging. Has the following structure:
-            "cagecat/jobs/{job_id}/logs/"
         - job_id: ID corresponding to the job the function is called for
+        - log_output: log the output of the command to a file
 
     Output:
         - return_code: exit code of the executed command. A non-zero exit
@@ -122,11 +120,10 @@ def run_command(cmd: t.List[str], log_base: str, job_id: str,
 
     """
     if log_output:
-        log_command(cmd, log_base, job_id)
-        log_fp = os.path.join(log_base, f"{job_id}.log")
+        log_command(cmd, job_id)
+        fp = get_log_file_path(job_id)
 
-        write_mode = 'a' if os.path.exists(log_fp) else 'w' # indicate a sanitization step has occurred
-        with open(log_fp, write_mode) as outf:
+        with open(fp, 'a') as outf: # if the log file exists, a sanitization step already has occurred
             try:
                 res = subprocess.run(cmd, stderr=outf, stdout=outf, text=True, **kwargs)
                 return_code = res.returncode
@@ -158,17 +155,24 @@ def zip_results(job_id: str) -> None:
     1. logs; 2. results; 3. uploads; Therefore, the paths used in this
     function are relative to the {job_id} folder.
     """
-    base, log_dir, results_dir = generate_paths(job_id)
-    os.chdir(base)  # go 1 level up
+    os.chdir(Path(server_prefix, jobs_dir, job_id))  # go 1 level up
 
-    cmd = ["zip", "-r", os.path.join("results", f"{job_id}.zip"), "."]
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='results',
+        suffix=None,
+        extension='zip',
+        return_absolute_path=True
+    )
+
+    cmd = ["zip", "-r", fp, "."]
     # all files and folders in the current directory
     # (cagecat/jobs/{job_id}/ under the base folder
 
-    run_command(cmd, "logs", job_id, log_output=False)
+    run_command(cmd, job_id, log_output=False)
 
 
-def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
+def log_command(cmd: t.List[str], job_id: str) -> None:
     """Logs the executed command to a file
 
     Input:
@@ -182,8 +186,15 @@ def log_command(cmd: t.List[str], log_base: str, job_id: str) -> None:
         - None
         - .txt file with the executed command
     """
-    with open(os.path.join(log_base,
-                           f"{job_id}_command.txt"), "w") as outf:
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='logs',
+        suffix='command',
+        extension='txt',
+        return_absolute_path=True
+    )
+
+    with open(fp, 'a') as outf:
         outf.write(" ".join(cmd))
 
 
@@ -238,7 +249,16 @@ def log_cagecat_version(job_id: str) -> None:
         - written file with CAGECAT's version
 
     """
-    with open(os.path.join(generate_paths(job_id)[1], 'CAGECAT_version.txt'), 'w') as outf:
+    fp = generate_filepath(
+        job_id=job_id,
+        jobs_folder='logs',
+        suffix=None,
+        extension='txt',
+        return_absolute_path=True,
+        override_filename='CAGECAT_version'
+    )
+
+    with open(fp, 'w') as outf:
         outf.write(f'CAGECAT_version={cagecat_version}')
 
 
@@ -270,7 +290,7 @@ def post_job_formalities(job_id: str, return_code: int) -> None:
     db.session.commit()
 
 
-def store_query_sequences_headers(log_path: str, input_type: str, data: str):
+def store_query_sequences_headers(log_path: Path, input_type: str, data: str):
     """Saves the submitted query headers to a .csv file
 
     Input:
@@ -296,7 +316,8 @@ def store_query_sequences_headers(log_path: str, input_type: str, data: str):
         else:
             raise ValueError(f'Invalid extension: {ext}. Did the user upload a file with dots in it?')
 
-    with open(os.path.join(log_path, "query_headers.csv"), "w") as outf:
+    fp = log_path / "query_headers.csv"
+    with open(fp.as_posix(), "w") as outf:
         outf.write(",".join(headers))
 
 
@@ -511,7 +532,16 @@ def sanitize_file(file_path, job_id, remove_old_files=False):
         raise IOError('Invalid extension found:', extension, f'(from file) {file_path}')
 
     # situations: nt FASTA, GenBank file
-    cmd = sanitization_cmd_base.format(os.path.join(sanitized_folder, job_id), job_id, file_path)
+
+    # # print('before actual sanitization')
+    sanitization_folder = generate_sanitization_filepath(job_id=job_id)
+
+    # cmd = sanitization_cmd_base.format(sanitized_folder, job_id, os.path.join(os.getcwd(), file_path))
+    cmd = sanitization_cmd_base.format(
+        sanitization_folder.as_posix(),
+        job_id,
+        file_path
+    )
 
     return_code = run_command(
         cmd=cmd.split(),

@@ -54,6 +54,9 @@ failure_reasons = {
     'sqlite3.OperationalError: unable to open database file':
         'Internally, CAGECAT was unable to open the selected genus database. Please submit feedback as this should not happen.',
 
+    'Failed to read the Blast query: Nucleotide FASTA provided for protein sequence':
+        'The NCBI identifiers you entered refer to nucleotide sequences. Currently, cblaster only accepts GenPept NCBI identifiers (protein sequences). As a solution, you are able to manually download the nucleotide FASTA/GenBank files of the entered NCBI identifiers, and upload these files in your cblaster search job.',
+    
     'OSError: Unable to parse NCBI response':
         invalid_ncbi_response,
 
