@@ -14,8 +14,6 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 import rq
 
-from config_files.sensitive import init_config
-
 r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
