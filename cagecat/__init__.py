@@ -14,6 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 import rq
 
+from cagecat.db_utils import Statistic
 from config_files.config import init_config
 
 r = redis.Redis()
@@ -32,3 +33,14 @@ app.register_blueprint(tools, url_prefix="/tools")
 app.register_blueprint(result, url_prefix="/results")
 
 db.create_all()
+
+# for custom instances
+if Statistic.query.filter_by(name="finished").first() is None:
+    stats = [Statistic(name="finished"),
+             Statistic(name="failed")]
+    # Maybe some additional statistics
+
+    for s in stats:
+        db.session.add(s)
+
+    db.session.commit()
