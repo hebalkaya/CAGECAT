@@ -4,14 +4,6 @@ Author: Matthias van den Belt
 """
 cagecat_version = '3.1'  # when this is changed, /repo/maintenance/store_version_info.py should be run
 
-# jobs to persist on server (i.e. example outputs)
-persistent_jobs = ('W885A828D304Y06',  # used in report: cblaster search
-                   'N250X793I290S34',  # used in report: cblaster extract_clusters
-                   'M709G912A874A87',  # used in report: cblaster gne
-                   'K814Y501M103S02',  # used in report: clinker visualization
-                   'Y736N982T834D20',  # example cblaster search output
-                   'V139R332L449N10'  # example clinker visualization output
-                   )
 
 # changeable
 send_mail = True
