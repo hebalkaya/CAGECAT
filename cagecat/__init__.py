@@ -14,7 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 import rq
 
-from cagecat.db_utils import Statistic
+
 from config_files.config import init_config
 
 r = redis.Redis()
@@ -28,6 +28,8 @@ db = SQLAlchemy(app)
 from cagecat.routes import routes
 from cagecat.tools.tools_routes import tools
 from cagecat.result.result_routes import result
+
+from cagecat.db_utils import Statistic
 
 app.register_blueprint(tools, url_prefix="/tools")
 app.register_blueprint(result, url_prefix="/results")
