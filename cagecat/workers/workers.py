@@ -13,8 +13,8 @@ from cagecat.file_utils import get_job_folder_path
 from cagecat.workers.workers_helpers import *
 
 ### redis-queue functions
-from config_files.config import thresholds
-from config_files.sensitive import pfam_db_folder
+from config_files.config import thresholds, pfam_db_folder
+
 
 
 def cblaster_search(

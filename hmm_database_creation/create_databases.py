@@ -15,8 +15,8 @@ import shutil
 import requests
 
 sys.path.append('..')
-from config_files.sensitive import finished_hmm_db_folder, hmm_db_genome_downloads
-from config_files.config import hmm_db_creation_conf
+from config_files.config import hmm_db_creation_conf, finished_hmm_db_folder, hmm_db_genome_downloads
+
 
 def list_files(_genus: str) -> t.List[str]:
     """Lists all present GenBank files for the given genus

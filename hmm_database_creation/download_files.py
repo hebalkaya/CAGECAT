@@ -13,7 +13,6 @@ import sys
 
 
 sys.path.append('..')
-from config_files.sensitive import hmm_db_genome_downloads
 from config_files.config import *
 
 def parse_paths(fp: str, ext='.gbff.gz') -> dict:

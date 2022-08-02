@@ -22,8 +22,7 @@ sys.path.append('..')
 # own project imports
 from cagecat.db_utils import Versions
 from cagecat.workers.workers_helpers import run_command
-from config_files.config import cagecat_version
-from config_files.sensitive import pfam_db_folder
+from config_files.config import cagecat_version, pfam_db_folder
 from cagecat import db
 
 ### main code

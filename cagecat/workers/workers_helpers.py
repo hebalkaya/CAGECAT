@@ -21,7 +21,7 @@ from cagecat.general_utils import send_email
 from cagecat.file_utils import write_to_log_file, generate_filepath, get_log_file_path, generate_sanitization_filepath
 from cagecat.db_utils import fetch_job_from_db, Job, fetch_statistic_from_db
 from cagecat import db
-from config_files.config import cagecat_version, domain
+from config_files.config import cagecat_version, domain, server_prefix, sanitized_folder, finished_hmm_db_folder
 from cagecat.const import genbank_extensions, fasta_extensions, jobs_dir
 
 # typing imports
@@ -29,7 +29,6 @@ from werkzeug.datastructures import ImmutableMultiDict
 import typing as t
 
 # Function definitions
-from config_files.sensitive import finished_hmm_db_folder, sanitized_folder, server_prefix
 
 timezone = pytz.timezone('Europe/Amsterdam')
 
