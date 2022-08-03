@@ -144,10 +144,14 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
-        return show_template(**kwargs)
-
     else:  # indicates no such job exists in the database
-        return show_template("job_not_found.html", job_id=secure_filename(job_id))
+        kwargs = {
+            'template_name': 'job_not_found.html',
+            'job_id': secure_filename(job_id),
+            'help_enabled': False
+        }
+
+    return show_template(**kwargs)
 
 
 @result.route("/download/<job_id>", methods=["GET", "POST"])
