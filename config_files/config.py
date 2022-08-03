@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-cagecat_version = '3.1'  # when this is changed, /repo/maintenance/store_version_info.py should be run
+cagecat_version = '3.2'  # when this is changed, /repo/maintenance/store_version_info.py should be run
 
 # changeable
 send_mail = True
