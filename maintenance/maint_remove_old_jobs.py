@@ -2,7 +2,7 @@
 
 Author: Matthias van den Belt
 """
-
+import copy
 import os
 import datetime
 import shutil
@@ -61,7 +61,9 @@ def delete_old_jobs():
             #  will not happen in production
             print(f'Directory not found: {directory}')
 
-        db.session.delete(fetch_job_from_db(job_id))
+        job = fetch_job_from_db(job_id)
+        old_status = copy.deepcopy(job.status)
+        job.status = f'Removed ({old_status})'
 
         print(f'Deleted: {directory}')
 
