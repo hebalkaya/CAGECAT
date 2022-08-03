@@ -56,6 +56,13 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
     if job is not None:
         status = job.status
 
+        kwargs = {
+            'status': status,
+            'j_id': job_id,
+            'job_title': job.title,
+            'help_enabled': False
+        }
+
         if status == "finished":
             module = job.job_type
             _, program, size = prepare_finished_result(
@@ -65,27 +72,25 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             if module =='search' and get_search_mode_from_job_id(job.id) == 'combi_remote':
                 modules.remove('extract_clusters')  # this can be removed when it is implemented in cblaster
 
-            return show_template("result_page.html", j_id=job_id,
-                                 status=status,
-                                 content_size=format_size(size),
-                                 module=module,
-                                 modules_with_plots=modules_with_plots,
-                                 job_title=job.title,
-                                 # log_contents=log_contents,
-                                 downstream_modules=modules,
-                                 connected_jobs=get_connected_jobs(job),
-                                 help_enabled=False)
+            kwargs.update(
+                {
+                    'template_name': 'result_page.html',
+                    'content_size': format_size(size),
+                    'module': module,
+                    'modules_with_plots': modules_with_plots,
+                    'downstream_modules': modules,
+                    'connected_jobs': get_connected_jobs(job)
+                }
+            )
 
         elif status == "failed":
-
-            return show_template("failed_job.html",
-                                 job_title=job.title,
-                                 j_id=job_id,
-                                 module=job.job_type,
-                                 status=status,
-                                 failure_reason=get_failure_reason(job_id),
-                                 help_enabled=False
-                                 )
+            kwargs.update(
+                {
+                    'template_name': 'failed_job.html',
+                    'module': job.job_type,
+                    'failure_reason': get_failure_reason(job_id)
+                }
+            )
 
         elif status == "queued" or status == "running":
             if "pj" not in request.args:
@@ -103,36 +108,43 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                     stack='front-end'
                 )
 
-            return show_template("status_page.html", j_id=job_id,
-                                 parent_job=pj,
-                                 status=status,
-                                 store_job_id=store_job_id,
-                                 job_title=job.title,
-                                 j_type=j_type,
-                                 stat_code=302,
-                                 stages=stages,
-                                 help_enabled=False)
+            kwargs.update(
+                {
+                    'template_name': 'status_page.html',
+                    'parent_job': pj,
+                    'store_job_id': store_job_id,
+                    'j_type': j_type,
+                    'stat_code': 302,
+                    'stages': stages
+                }
+            )
 
         elif status == "waiting":
             pj = fetch_job_from_db(job_id).depending_on\
                 if "pj" not in request.args else request.args["pj"]
 
-            return show_template("status_page.html", j_id=job_id,
-                                 status="waiting for preceding job to finish",
-                                 parent_job=pj,
-                                 job_title=job.title,
-                                 store_job_id=store_job_id,
-                                 j_type=j_type,
-                                 help_enabled=False)
+            kwargs.update(
+                {
+                    'template_name': 'status_page.html',
+                    'parent_job': pj,
+                    'store_job_id': store_job_id,
+                    'j_type': j_type,
+                }
+            )
 
         elif 'Removed' in status:
-            show_template("status_page.html", j_id=job_id,
-                          status="removed",
-                          parent_job=pj,
-                          help_enabled=False)
+            kwargs.update(
+                {
+                    'template_name': 'status_page.html',
+                    'status': 'removed',  # override old status for use during template rendering
+                    'parent_job': pj
+                }
+            )
 
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
+
+        return show_template(**kwargs)
 
     else:  # indicates no such job exists in the database
         return show_template("job_not_found.html", job_id=secure_filename(job_id))
