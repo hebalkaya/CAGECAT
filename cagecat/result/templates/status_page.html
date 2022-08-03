@@ -16,27 +16,25 @@
 
 {% block content %}
     <div class="indent">
-        <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
+        {% if status == 'removed' %}
+            <p>Job <span class="important" id="givenJobID">{{j_id}}</span> and it's associated result files have been deleted from our servers to maintain CAGECAT as a free service.</p>
+        {% else %}
+            <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
 
-        {% if parent_job != "null" %}
-            <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
-        {% endif %}
+            {% if parent_job != "null" %}
+                <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
+            {% endif %}
+            {% for stage in stages %}
+                <div style="height: 30px;">
+                    <img id="stage{{ loop.index }}" style="vertical-align: middle; width: 60px; height: auto;" src="{{ url_for('static', filename='images/dna_loader_not_started.png') }}">
+                    <span>{{ loop.index }}. {{ stage }}</span>
+                </div>
+            {% endfor %}
 
-{#        TODO: possibly add progress bar in future#}
-{#        <div id="progress-bar" style="background-color: #5284a7">#}
-{#            <div id="progress">0%</div>#}
-{#        </div>#}
-    
-        {% for stage in stages %}
-            <div style="height: 30px;">
-                <img id="stage{{ loop.index }}" style="vertical-align: middle; width: 60px; height: auto;" src="{{ url_for('static', filename='images/dna_loader_not_started.png') }}">
-                <span>{{ loop.index }}. {{ stage }}</span>
-            </div>
-        {% endfor %}
-        
-{#        <p>In future releases, it will be possible to start downstream analyses from this page.</p>#}
+    {#        <p>In future releases, it will be possible to start downstream analyses from this page.</p>#}
 
-        {{ showBookMarkButton() }}
-    </div>
+            {{ showBookMarkButton() }}
+        </div>
+    {% endif %}
 
 {% endblock %}

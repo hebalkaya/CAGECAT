@@ -124,6 +124,13 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                                  store_job_id=store_job_id,
                                  j_type=j_type,
                                  help_enabled=False)
+
+        elif 'Removed' in status:
+            show_template("status_page.html", j_id=job_id,
+                          status="removed",
+                          parent_job=pj,
+                          help_enabled=False)
+
         else:
             raise IOError(f"Incorrect status of job {job_id} in database")
 
