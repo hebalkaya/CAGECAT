@@ -309,7 +309,7 @@ def cblaster_extract_clusters(
 
     cmd = [
         "cblaster", "extract_clusters", file_path,
-        "--output", results_folder
+        "--output", results_folder.as_posix()
     ]
 
     cmd.extend(create_filtering_command(options, True))

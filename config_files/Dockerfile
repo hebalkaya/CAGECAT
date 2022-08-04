@@ -52,8 +52,8 @@ RUN mkdir /backups /pfam_db /hmm_databases /sanitization /hmm_profiles /repo/cag
 RUN mkdir -p /process_logs/maintenance
 RUN mkdir -p /root/.config/cblaster
 
+
 RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
-RUN mv /repo/config_files/config.ini /root/.config/cblaster/config.ini
 
 # We don't have to copy uwsgi_params, as in cagecat the /repo/config_files/uwsgi_params file is referenced to
 
