@@ -334,7 +334,7 @@ def forge_database_args(options: ImmutableMultiDict) -> t.List[str]:
     if options['mode'] in ('hmm', 'combi_remote'):
         splitted = options["selectedGenus"].split('_')
         organism = splitted[0].lower()
-        genus_fasta = f'{splitted[1]}.fasta.gz'
+        genus_fasta = f'{splitted[1]}.fasta'
 
         base.append(os.path.join(finished_hmm_db_folder, organism, genus_fasta))
 
