@@ -55,19 +55,21 @@ def cblaster_search(prev_run_id: str = None) -> str:
     can enter previous job IDs are pre-filled with the given job ID
     """
     if "type" in request.args:
-        headers = None if prev_run_id is None and request.args["type"] == "recompute" else read_headers(prev_run_id)
+        query_headers = [] if prev_run_id is None and request.args["type"] == "recompute" else read_headers(prev_run_id)
         module_to_show = request.args["type"]
         show_examples = False if request.args['type'] == 'recompute' else 'cblaster_search'
     else:
-        headers = None
+        query_headers = []
         module_to_show = None
         show_examples = 'cblaster_search'
 
+    form = CblasterSearchForm()
+    form.base.clustering.requiredSequencesSelector.choices = query_headers
+
     return show_template("cblaster_search.html",
-                         all_forms=CblasterSearchForm(),
+                         all_forms=form,
                          prev_run_id=prev_run_id,
                          module_to_show=module_to_show,
-                         headers=headers,
                          organism_databases=available_hmm_databases,
                          query_file_extensions=','.join(fasta_extensions + genbank_extensions),
                          show_examples=show_examples)
