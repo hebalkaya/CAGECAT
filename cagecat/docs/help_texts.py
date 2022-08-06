@@ -64,7 +64,7 @@ cblaster_search = {
             '<li>'
             'Remote + HMM: combine cluster hits of searching NCBI databases and pre-defined sequence databases of the selected genus'
             '</li>'
-            
+
             '</ul>'
     },
     'genomeFile': {
@@ -72,10 +72,10 @@ cblaster_search = {
         'module': '',
         'text': 'File containing protein/nucleotide sequences (FASTA) or a GenBank (not GenPept) file with the regions of interest (not a full genome, which will cause an error) to be searched.\n\n',
         'frame': ''.join([
-          '<span>Allowed extensions:</span>'
-          '<ul>',
+            '<span>Allowed extensions:</span>'
+            '<ul>',
             ''.join([f'<li>{ext[1:]}</li>' for ext in fasta_extensions + genbank_extensions]),
-          '</ul>'
+            '</ul>'
         ])
     },
     'ncbiEntriesTextArea': {
@@ -94,7 +94,7 @@ cblaster_search = {
         'module': '',
         'text': 'The type of NCBI database to be searched. Click the links below for a detailed explanation of the contents of each database.\n\nRequired: yes',
         'frame': '<ul>'
-                 
+
                  '<li>'
                  '<a target="_blank" href="https://blast.ncbi.nlm.nih.gov/getDBInfo.cgi?CMD=getDbInfo&DB_PATH=nr&IS_PROT=on&IS_COMPLETE=on">'
                  'nr'
@@ -118,7 +118,7 @@ cblaster_search = {
                  'pdbaa'
                  '</a>'
                  '</li>'
-                 
+
                  '</ul>'
     },
     'max_hits': {
@@ -155,12 +155,12 @@ cblaster_search = {
     'min_unique_query_hits': {
         'title': 'Minimum unique query sequences',
         'module': '',
-        'text': 'Minimum number of unique query sequences that must be present in cluster hits.\n\nRequired: yes'
+        'text': 'Minimum number of unique query sequences that must be present in cluster hits. If this parameter exceeds the total number of input queries, the total number of input queries will be used for this parameter.\n\nRequired: yes'
     },
     'min_hits_in_clusters': {
         'title': 'Minimum number of query hits in clusters',
         'module': '',
-        'text': 'Minimum number of query hits in a cluster.\n\nRequired: yes'
+        'text': 'Minimum number of query hits in a cluster. If this parameter exceeds the total number of input queries, the total number of input queries will be used for this parameter.\n\nRequired: yes'
     },
     'requiredSequencesSelector': {
         'title': 'Required sequences in a cluster',
@@ -258,19 +258,19 @@ cblaster_search_binary_table = {
         'frame':
             'Additional explanation:'
             '<ul>'
-            
+
             '<li>'
             'Length: write the query count presence in cluster hits'
             '</li>'
-            
+
             '<li>'
             'Sum: write the sum per query of the selected attribute'
             '</li>'
-            
+
             '<li>'
             'Max: write the maximum value per query of the selected attribute'
             '</li>'
-            
+
             '</ul>'
     },
     'hitAttribute': {
@@ -353,11 +353,20 @@ cblaster_search_hmm_mode = {
     }
 }
 
-all_helps = [('multiple', job_details), ('multiple', general), ('search', cblaster_search), ('neighbourhood', cblaster_gne),
-             ('clinker visualisation', clinker), ('search', cblaster_search_binary_table), ('multiple', cblaster_search_filtering),
-             ('clinker visualisation with query', cblaster_plot_clusters), ('extract sequences', cblaster_extract_sequences),
-             ('extract clusters', cblaster_extract_clusters), ('HMM', cblaster_search_hmm_mode),
-             ]
+all_helps = [
+    ('multiple', job_details),
+    ('multiple', general),
+    ('search', cblaster_search),
+    ('neighbourhood', cblaster_gne),
+    ('clinker visualisation', clinker),
+    ('search', cblaster_search_binary_table),
+    ('multiple', cblaster_search_filtering),
+    ('clinker visualisation with query', cblaster_plot_clusters),
+    ('extract sequences', cblaster_extract_sequences),
+    ('extract clusters', cblaster_extract_clusters),
+    ('HMM', cblaster_search_hmm_mode),
+]
+
 help_texts = {}
 
 for label, d in all_helps:
