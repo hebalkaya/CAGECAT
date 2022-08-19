@@ -113,12 +113,6 @@ cblaster_search = {
                  '</a>'
                  '</li>'
 
-                 '<li>'
-                 '<a target="_blank" href="https://blast.ncbi.nlm.nih.gov/getDBInfo.cgi?CMD=getDbInfo&DB_PATH=pdb&IS_PROT=on&IS_COMPLETE=on">'
-                 'pdbaa'
-                 '</a>'
-                 '</li>'
-
                  '</ul>'
     },
     'max_hits': {

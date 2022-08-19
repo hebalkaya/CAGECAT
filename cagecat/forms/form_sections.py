@@ -22,7 +22,6 @@ cblaster_search_databases = [
     ('nr', 'nr'),
     ('refseq_protein', 'Refseq protein'),
     ('swissprot', 'Swissprot'),
-    ('pdbaa', 'pdbaa')
 ]
 
 cblaster_search_binary_table_key_functions = [
