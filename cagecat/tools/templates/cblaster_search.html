@@ -146,6 +146,13 @@ addAccordionListeners();
     </fieldset>
 </div>
 
+<div id="intermediateGenesDiv">
+    <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
+    <fieldset id="intermediateGenesSection">
+        {{ renderForm(all_forms.base.intermediate_genes) }}
+    </fieldset>
+</div>
+
 {% else %}
         <input type="hidden" name="searchEnteredJobId" value="{{ prev_run_id }}"></input>
         <input type="hidden" value="prev_session" id="radioPrevSession" name="inputType"/>
@@ -189,13 +196,6 @@ addAccordionListeners();
         <label class="fieldset-label" for="generalOptionSection">Additional options</label>
         <fieldset id="generalOptionSection">
             {{ renderForm(all_forms.base.additional_options) }}
-        </fieldset>
-    </div>
-
-    <div id="intermediateGenesDiv">
-        <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
-        <fieldset id="intermediateGenesSection">
-            {{ renderForm(all_forms.base.intermediate_genes) }}
         </fieldset>
     </div>
 

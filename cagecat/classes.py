@@ -48,9 +48,6 @@ class CAGECATJob:
         if self.job_type is None:
             self.job_type = self.options['job_type']
 
-    def get_job_type(self):
-        # TODO: check if this can be removed
-        return self.options['job_type']
 
     def get_relevant_stage_options(self):
         stage_options = []

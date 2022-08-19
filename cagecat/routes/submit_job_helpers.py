@@ -41,7 +41,7 @@ def prepare_search(job_id: str, job_type: str) -> t.Tuple[str, str]:
             # file_path = sanitize_file(file_path, job_id) # should not be here, as this would stall the job submission
         elif input_type == "ncbi_entries":
             file_path = None
-        elif input_type == "prev_session":
+        elif input_type == "prev_session": # indicates we are in a recompute job
             job_type = "recompute"
             file_path = get_previous_job_properties(job_id, job_type, "search")
         else:
@@ -139,7 +139,7 @@ def add_parent_search_and_child_jobs_to_db(new_job: CAGECATJob,
     Output:
         - job id of the main search job
     """
-    if new_job.get_job_type() == 'search':
+    if new_job.job_type == 'search':
         main_search_job_id = "null"
     else:
         old_job = get_parent_job(new_job, is_last_job)
@@ -171,7 +171,8 @@ def get_parent_job(new_job: CAGECATJob,
     Output:
         - parent Job instance
     """
-    j_type = new_job.get_job_type()
+    j_type = new_job.job_type
+
     if j_type in ("recompute", "gne", "clinker"):
         # are modules which use the prev_session macro to get the previous session ID
         # might change in the future
