@@ -46,7 +46,7 @@
     </div>
 
     {% if prev_job_type == 'clinker_query' %}
-        <b><p class="indent">Note that when your previous job was a clinker_query one, all cluster hits of the <a href="{{ url_for('result.show_result', job_id=main_search_id) }}">main search job</a> will be extracted.</p></b>
+        <b><p class="indent">Note that your previous job was a clinker_query one, and as a consequence, all cluster hits of the <a href="{{ url_for('result.show_result', job_id=main_search_id) }}">main search job</a> will be extracted. If you wish to only select specific cluster hits, you can manually select these clusters at the cblaster-search or cblaster-recompute, and directly extract these clusters via the "extract clusters" module.</p></b>
     {% endif %}
     <div class="input-layer centered">
         {{ all_forms.general.submit.submit }}
