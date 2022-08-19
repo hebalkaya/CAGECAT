@@ -363,6 +363,7 @@ class IntermediateGenesSectionForm(Form):
         validators=[], # TODO: add boolean validator
         description='intermediate_genes',
         render_kw={
+            'checked': 'checked',
             'onclick': "toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')"
         }
     )
@@ -372,9 +373,6 @@ class IntermediateGenesSectionForm(Form):
         validators=[is_safe_string_value, val.number_range(min=0, max=250000)],
         description='intermediate_max_distance',
         default=5000,
-        render_kw={
-            'disabled': ''
-        }
     )
 
     intermediate_max_clusters = IntegerField(
@@ -382,9 +380,6 @@ class IntermediateGenesSectionForm(Form):
         validators=[is_safe_string_value, val.number_range(min=1, max=100)],
         description='intermediate_max_clusters',
         default=100,
-        render_kw={
-            'disabled': ''
-        }
     )
 
     # TODO: multiple selection form: https://wtforms.readthedocs.io/en/2.3.x/fields/#wtforms.fields.SelectMultipleField
