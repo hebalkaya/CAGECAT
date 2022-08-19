@@ -354,18 +354,21 @@ def clinker(
 
     if 'clinkerEnteredJobId' in options:  # indicates we are a downstream job
         remove_old_files = False
+        sanitize_files = False
     else:
         remove_old_files = True
+        sanitize_files = True
 
     try:
-        for f in os.listdir(file_path):
-            path = os.path.join(file_path, f)
+        if sanitize_files:
+            for f in os.listdir(file_path):
+                path = os.path.join(file_path, f)
 
-            if path.endswith(
-                    '.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
-                print('Skipped', path)
-                continue
-            sanitize_file(path, job_id, remove_old_files=remove_old_files)
+                if path.endswith(
+                        '.zip'):  # indicates we are coming from an extract_clusters job and are going to a clinker job (or the user has uploaded a .zip file)
+                    print('Skipped', path)
+                    continue
+                sanitize_file(path, job_id, remove_old_files=remove_old_files)
 
         exceeded = log_threshold_exceeded(
             parameter=len(os.listdir(file_path)),
