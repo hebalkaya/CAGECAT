@@ -10,9 +10,21 @@
         <h1>Welcome to CAGECAT</h1>
         <h2>the online CompArative GEne Cluster Analysis Toolbox</h2>
 
+        <div style="display: table;margin: auto;">
+            <p style="width: 33%;float: left;">
+                <a href="{{ url_for('tutorial') }}">Introductory tutorial</a>
+            </p>
+            <p style="width: 33%;float: left;">
+                <a href="{{ url_for('help_page') }}">Contact page</a>
+            </p>
+            <p style="width: 33%;float: left;">
+                <a href="{{ url_for('tools.tools_explanation') }}">Tool explanations</a>
+            </p>
+        </div>
+
         <h4>Available entry points:</h4>
         <div style="display: table;margin: auto;">
-            <div style="width: 50%;float: left;">
+            <div style="width: %;float: left;">
                 <h3>cblaster</h3>
             </div>
             <div style="width: 50%;float: left;">
