@@ -10,6 +10,10 @@ body{
 
 }
 
+a {
+    color: blue;
+}
+
 .button {
     margin: 10px auto;
     color: white;
