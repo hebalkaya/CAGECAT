@@ -11,6 +11,9 @@
         storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
         redirect('{{  url_for('result.show_result', job_id=j_id)}}');
     {% endif %}
+    {% if status in ["waiting", "queued"] %}
+        setTimeout(function () { location.reload(true); }, 15000);
+    {% endif %}
     startJobExecutionStageUpdater('{{ j_id }}');
 {% endblock %}
 
@@ -18,11 +21,16 @@
     <div class="indent">
         {% if status == 'removed' %}
             <p>Job <span class="important" id="givenJobID">{{j_id}}</span> and it's associated result files have been deleted from our servers to maintain CAGECAT as a free service.</p>
+
         {% else %}
-            <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}</p>
+            <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}} and will start as soon as possible.</p>
 
             {% if parent_job != "null" %}
                 <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
+            {% endif %}
+
+            {% if status in ["waiting", "queued"] %}
+            <p>This page reloads every 15 seconds to check if your job is running.</p>
             {% endif %}
             {% for stage in stages %}
                 <div style="height: 30px;">
