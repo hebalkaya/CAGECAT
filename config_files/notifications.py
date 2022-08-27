@@ -24,5 +24,5 @@ notifications = [
 ]
 
 if not send_mail:
-    to_insert = (0, 'notification_0', 'Email functionality has been disabled by your administrator. Feedback submissions or email notifications are not available')
-    notifications.insert(to_insert)
+    to_insert = 'notification_0', 'Email functionality has been disabled by your administrator. Feedback submissions or email notifications are not available'
+    notifications.insert(0, to_insert)
