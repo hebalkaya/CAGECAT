@@ -23,10 +23,14 @@
             <p>Job <span class="important" id="givenJobID">{{j_id}}</span> and it's associated result files have been deleted from our servers to maintain CAGECAT as a free service.</p>
 
         {% else %}
-            <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}} and will start as soon as possible.</p>
+            <p>Job <span class="important" id="givenJobID">{{j_id}}</span> is currently {{status}}.
+                {% if status in ["waiting", "queued"] %}
+                Your job will start as soon as possible.
+                {% endif %}
+            </p>
 
             {% if parent_job != "null" %}
-                <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a></p>
+                <p>Parent job: <a href="{{url_for('result.show_result', job_id=parent_job)}}">{{parent_job}}</a>. The parent job will be executed prior to the current job. The output of the parent job will be used as input for the current job.</p>
             {% endif %}
 
             {% if status in ["waiting", "queued"] %}
