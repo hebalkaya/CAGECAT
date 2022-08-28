@@ -45,7 +45,7 @@ RUN download-antismash-databases
 RUN antismash --check-prereqs
 
 RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && pip install .
-RUN git clone -b v1.0 https://github.com/MatthiasvdBelt/CAGECAT.git && mv CAGECAT /repo
+RUN git clone --branch v1.0 https://github.com/MatthiasvdBelt/CAGECAT.git && mv CAGECAT /repo
 
 RUN mkdir /backups /pfam_db /hmm_databases /sanitization /hmm_profiles /repo/cagecat/jobs
 RUN mkdir -p /process_logs/maintenance
