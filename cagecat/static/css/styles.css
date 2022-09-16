@@ -656,3 +656,7 @@ input[readonly] {
     text-align:center;
     border-bottom: 1px solid black;
 }
+
+.required-sequences-selector {
+    width: 60%;
+}

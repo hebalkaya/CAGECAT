@@ -269,7 +269,7 @@ class ClusteringSectionForm(Form):
         choices=[],
         validate_choice=False,  # as this is generated dynamically
         render_kw={
-            'style': 'width: 60%;'
+            'class': 'required-sequences-selector'
         }
     )
 
