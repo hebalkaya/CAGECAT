@@ -82,7 +82,7 @@ csp_headers =   "frame-src 'self'; " \
                 "cdn.jsdelivr.net"
 
 # js_pattern = r'<body .+onload="(.+)">'
-js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
+js_pattern = re.compile(r'<<script type="application\/javascript">(function wrapped\(\)[\S\s]+)<\/script>')
 
 def hash_digest_js_code(resp):
     """Returns sha256 digest of response JS code to set CSP header
@@ -91,6 +91,8 @@ def hash_digest_js_code(resp):
     :return:
     """
     resp: Response
+
+    print(resp.get_data(True))
 
     matches = re.findall(pattern=js_pattern, string=resp.get_data(as_text=True))
     if len(matches) == 0:
