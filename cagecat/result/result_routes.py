@@ -48,6 +48,8 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
     found in the SQL database
     """
     job = fetch_job_from_db(job_id)
+    scripts = [f"startJobExecutionStageUpdater('{job_id}')"]
+
 
     if job is not None:
         status = job.status
@@ -146,6 +148,18 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             'job_id': secure_filename(job_id),
             'help_enabled': False
         }
+        # TODO: below jinja2 rendering code should be added here
+        # {% if request.args.get('store_job_id') == "True" %}
+        # storeJobId('{{ j_id }}','{{ request.args.get("j_type")}}', '{{ job_title }}');
+        # redirect('{{  url_for('result.show_result', job_id=j_id)}}');
+        # {% endif %}
+        # {% if status in ["waiting", "queued"] %}
+        # setTimeout(function () { location.reload(true); }, 15000);
+        # {% endif %}
+
+    kwargs.update(
+        {'scripts_to_execute': ';'.join(scripts)}
+    )
 
     return show_template(**kwargs)
 
