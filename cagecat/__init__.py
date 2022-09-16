@@ -69,6 +69,8 @@ if Statistic.query.filter_by(name="finished").first() is None:
 # }
 
 csp_headers =   "frame-src 'self'; " \
+                "frame-ancestors 'self'; " \
+                "style-src 'self' cdnjs.cloudflare.com; " \
                 "script-src " \
                 "'unsafe-hashes' " \
                 "'sha256-VTAmOhFJf7NXPaOoDtmGnzgeTy5irawqE7Gps5UfNaU=' " \
