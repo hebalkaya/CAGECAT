@@ -77,7 +77,7 @@ csp_headers =   "frame-src 'self'; " \
                 "'sha256-5NUfqwE5Ru7GwQSUKLQJ+U61xroMjwjJdR/FrbGlXgc=' " \
                 "'sha256-{0}' " \
                 "'self' " \
-                "*.googleapis.com " \
+                "ajax.googleapis.com " \
                 "cdnjs.cloufdare.com " \
                 "cdn.jsdelivr.net"
 
