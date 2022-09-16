@@ -6,14 +6,7 @@
 {% from 'macros.html' import showRequiredInputsText %}
 {% from 'macros.html' import renderForm %}
 
-{% block scripts %}
-    {% if module_to_show == 'recompute' %}
-$(':radio:not(:checked)').attr('disabled', true);
-    {% else %}
-initReadQueryFile();
-    {% endif %}
-addAccordionListeners();
-{% endblock %}
+{% block scripts %};{{scripts_to_execute}};{% endblock %}
 
 {% block navigationBar %}
     {{ showNavigationBar('analyze') }}

@@ -66,13 +66,22 @@ def cblaster_search(prev_run_id: str = None) -> str:
     form = CblasterSearchForm()
     form.base.clustering.requiredSequencesSelector.choices = query_headers
 
+    if module_to_show == 'recompute':
+        scripts = ["$(':radio:not(:checked)').attr('disabled', true)"]
+    else:
+        scripts = ["initReadQueryFile()"]
+
+    scripts.append("addAccordionListeners()")
+
+
     return show_template("cblaster_search.html",
                          all_forms=form,
                          prev_run_id=prev_run_id,
                          module_to_show=module_to_show,
                          organism_databases=available_hmm_databases,
                          query_file_extensions=','.join(fasta_extensions + genbank_extensions),
-                         show_examples=show_examples)
+                         show_examples=show_examples,
+                         scripts_to_execute=';'.join(scripts))
 
 
 @tools.route("/clinker_query", methods=["POST"])
