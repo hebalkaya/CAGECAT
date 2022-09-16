@@ -6,3 +6,9 @@
     display: table;
     margin: auto;
 }
+
+.index-page-link {
+    width: 33%;
+    float: left;
+    font-weight: bold;
+}
