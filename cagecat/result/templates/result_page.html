@@ -10,7 +10,7 @@
 
 {% block content %}
     <div>
-        <div class="indent" style="">
+        <div class="indent">
         {% if job_title %}
             <h2>{{ job_title }}</h2>
         {% endif %}
@@ -30,7 +30,7 @@
         </div>
 
     {% if connected_jobs %}
-        <div style="margin-top: 1%" id="connectedJobsCheckbox">
+        <div class="margin-top-1p" id="connectedJobsCheckbox">
             <label class="checkbox-label" for="connectedJobsToggle">
                 <input type="checkbox" id="connectedJobsToggle" onclick="toggleElementVisibility('connectedJobs')"/>Show linked jobs
             </label>
@@ -70,11 +70,11 @@
 
 {% if downstream_modules %}
             <div class="partly-height">
-    <div style="border-top: 2px solid #5284a7;">
+    <div class="downstream-modules-box">
             <div class="column leftColumn downstream-div downstream-div-height" id="downStreamModulesDiv">
 
-                <div style="text-align: center">
-            <h3 style="margin-bottom: 2%;margin-top: 2%;">Available subsequent analyses</h3>
+                <div class="centered-text">
+            <h3 class="available-subsequent-analyses">Available subsequent analyses</h3>
                     <a href="{{ url_for('tools.tools_explanation') }}"><span>What to do?</span></a>
                 </div>
         {% if 'recompute' in downstream_modules %}
@@ -125,7 +125,7 @@
             </div>
 
     {% if module != 'extract_clusters' %}
-        <div class="column middleColumn downstream-div-height" id="middleColumnDiv" style="border-bottom: 2px solid #5284a7;width: 80%;">
+        <div class="column middleColumn downstream-div-height middle-column-div" id="middleColumnDiv">
     {% endif %}
 
     {% endif %}
@@ -173,10 +173,10 @@
         {% endif %}
     </div>
 
-<div style="margin: auto;width: 60%;">
+<div class="result-loading-div">
 
-    <p style="display: inline-block;padding-left: 10px;"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
-    <img id="loadingImage" style="vertical-align: middle; width: 80px; height: auto;" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
+    <p class="result-loading-message"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
+    <img id="loadingImage" class="loading-image" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
 </div>
 
     {% if module in ['search', 'recompute'] %}
@@ -187,7 +187,7 @@
         {% set onload = '' %}
         {% for connected_job in connected_jobs %}
             {% if connected_job[3] == 'depending' %}
-                <p style="padding-left: 30px;"> <a href="{{ url_for('result.return_user_download', job_id=connected_job[0]) }}">Click this sentence to download the sequences of the clusters shown below.</a></p>
+                <p class="connected-job"> <a href="{{ url_for('result.return_user_download', job_id=connected_job[0]) }}">Click this sentence to download the sequences of the clusters shown below.</a></p>
             {% endif %}
         {% endfor %}
 

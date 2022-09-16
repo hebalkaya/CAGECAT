@@ -37,8 +37,8 @@
             <p>This page reloads every 15 seconds to check if your job is running.</p>
             {% endif %}
             {% for stage in stages %}
-                <div style="height: 30px;">
-                    <img id="stage{{ loop.index }}" style="vertical-align: middle; width: 60px; height: auto;" src="{{ url_for('static', filename='images/dna_loader_not_started.png') }}">
+                <div class="stage-div">
+                    <img id="stage{{ loop.index }}" class="stage-img" src="{{ url_for('static', filename='images/dna_loader_not_started.png') }}">
                     <span>{{ loop.index }}. {{ stage }}</span>
                 </div>
             {% endfor %}
