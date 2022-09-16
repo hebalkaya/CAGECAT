@@ -47,7 +47,7 @@
         <script type="application/javascript">checkConsent();</script>
 
         {% for notification_id, notification_text in notifications %}
-            <div id='{{ notification_id }}' class="notification-message" style='font-size: 18px;'>
+            <div id='{{ notification_id }}' class="notification-message notification-font-size">
                 {{ notification_text }} -
                 <a href='#' onclick="Cookies.set('{{ notification_id }}',1);$('#{{ notification_id }}').remove();return false;">Hide message</a>
             </div>
@@ -60,10 +60,10 @@
 </div>
 
 {% if help_enabled %}
-<button id="toggleHelpButton" style="position: absolute;top: 8%;right: 8px; z-index: 9000" onclick="toggleExplanationColumn()">&#60&#60</button>
+<button id="toggleHelpButton" class="toggle-help-button" onclick="toggleExplanationColumn()">&#60&#60</button>
     <div class="hide-overflow">
 <div  class="column rightColumn invisible" id="explanationColumn">
-    <div id="filler" style="height: 0"></div>
+    <div id="filler" class="no-height"></div>
         <h2 id="explanationTitle">Explanation</h2>
         <h4 id="explanationModule">Module: </h4>
 

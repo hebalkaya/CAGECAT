@@ -80,20 +80,20 @@ addAccordionListeners();
 
                 <div id="inputFileMessages"> {# messages div #}
                     <br/>
-                    <span class="no-display info-message" id="selectedFileName" style="margin-left:1%;"></span>
+                    <span class="no-display info-message small-indent" id="selectedFileName"></span>
                     <br/>
 
-                    <div class="no-display" style="margin-left:1%;margin-top: 1%;" id="fileUploadIncorExt">
+                    <div class="no-display error-message" id="fileUploadIncorExt">
                         <span class="error-message" id="fileUploadIncorExtText"></span>
                         <br/>
                     </div>
 
-                    <div class="no-display" style="margin-left:1%;margin-top: 1%;" id="sanitizationMessage">
+                    <div class="no-display error-message" id="sanitizationMessage">
                         <span class="info-message">Your input GenBank file will be sanitized (rewritten) to prevent formatting errors during job execution. Your sequences remain unaffected.</span>
                         <br/>
                     </div>
 
-                    <div class="no-display" style="margin-left:1%;margin-top: 1%;" id="nucleotideFastaWarning">
+                    <div class="no-display error-message" id="nucleotideFastaWarning">
                         <span class="warning-message">You selected a FASTA file with nucleotide sequences. Your input file will be sanitized (re-formatted) into a GenBank file.</span>
                         <br/>
                     </div>
@@ -101,7 +101,7 @@ addAccordionListeners();
                 </div>
             </div>
 
-{#                <div class="warning-message no-display" style="margin-left:1%;" id="genpeptFileError">#}
+{#                <div class="warning-message no-display small-indent" id="genpeptFileError">#}
 {#                    <span>You selected a GenBank file with protein sequences, which is actually a GenPept file. Please create a protein FASTA file from your GenPept file.</span>#}
 {#                    TODO: we can also create it for the user. Maybe for future#}
 {#                </div>#}

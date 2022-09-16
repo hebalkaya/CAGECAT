@@ -73,3 +73,52 @@
     width: 60px;
     height: auto;
 }
+
+.tutorial-img-indent {
+    margin-left: 10%;
+}
+
+.small-indent {
+    margin-left: 1%;
+}
+
+.error-message {
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.no-height {
+    height: 0;
+}
+
+.subtitle {
+    white-space: nowrap;
+}
+
+.contributors-div {
+    margin-left: 2%;
+}
+
+.bookmark-button {
+    margin-top: 1%;
+    text-align: center;
+}
+
+.height-110px {
+    height: 110px;
+}
+.height-140px {
+    height: 140px;
+}
+
+
+.notification-font-size {
+    font-size: 18px;
+}
+
+.toggle-help-button {
+    position: absolute;
+    top: 8%;
+    right: 8px;
+    z-index: 9000;
+}

@@ -108,7 +108,7 @@
 {% endmacro %}
 
 {% macro create_scientific_input(label, type, default_value) %}
-    <div style="display: table;width: 25%;margin-left: 1%">
+    <div>
         {#TODO future: change style as it is not user-friendly yet#}
         <input type="hidden" name="{{type.lower()}}" id="{{type.lower()}}" value=""/>
 
@@ -193,7 +193,7 @@
 {% endmacro %}
 
 {% macro showBookMarkButton() %}
-    <input class="button" style="margin-top: 1%; text-align: center" onclick="alert('Press CTRL + D to bookmark this page')" value="Bookmark this page"/>
+    <input class="button bookmark-button" onclick="alert('Press CTRL + D to bookmark this page')" value="Bookmark this page"/>
 {% endmacro %}
 
 {% macro renderForm(form, additional_data=None) %}
