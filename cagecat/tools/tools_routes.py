@@ -71,8 +71,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
     else:
         scripts = ["initReadQueryFile()"]
 
-    scripts.append("addAccordionListeners()")
-
+    scripts.extend(["addAccordionListeners()", "addCblasterSearchListeners()"])
 
     return show_template("cblaster_search.html",
                          all_forms=form,

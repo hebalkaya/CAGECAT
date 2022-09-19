@@ -23,7 +23,7 @@
     {{  showRequiredInputsText() }}
 
 <div id="searchModuleContent" class="moduleContent">
-<form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" onsubmit="addRequiredSeqs()" name="searchOptionForm">
+<form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" name="searchOptionForm" id="searchOptionForm">
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     <div>
@@ -41,13 +41,13 @@
         <div class="radio-options">
 {#            {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
             <label class="radioLabel">
-                <input type="radio"  class="radio-margin" value="remote" name="mode" id="remoteMode" checked="checked" onclick="changeSearchMode('remote')">Remote
+                <input type="radio"  class="radio-margin" value="remote" name="mode" id="remoteMode" checked="checked">Remote
             </label>
             <label class="radioLabel">
-                <input type="radio" value="hmm" name="mode" onclick="changeSearchMode('hmm')">HMM
+                <input type="radio" value="hmm" name="mode" id="hmmMode">HMM
             </label>
             <label class="radioLabel">
-                <input type="radio" value="combi_remote" name="mode" onclick="changeSearchMode('combi_remote')">Remote + HMM
+                <input type="radio" value="combi_remote" id="combiMode" name="mode">Remote + HMM
             </label>
 
             {{ renderHelpButton('searchMethod', false) }}
@@ -59,11 +59,10 @@
 {#                    {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
                 <label class="radioLabel">
                 <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
-                       name="inputType" onclick="showInputOptions('file', 1)"/>File</label>
+                       name="inputType"/>File</label>
                 <label class="radioLabel">
                 <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
-                       name="inputType"
-                       onclick="showInputOptions('ncbi_entries', 1)"/>NCBI entries
+                       name="inputType"/>NCBI entries
                 </label>
             </div>
 
