@@ -137,7 +137,7 @@
 {% endmacro %}
 
 {% macro renderHelpButton(help_type, for_checkbox) %}
-    <img class="help-button{{ " checkbox-help" if for_checkbox else "" }}" onclick="showHelp('{{ help_type }}')"
+    <img id="{{help_type}}" class="help-button {{" checkbox-help" if for_checkbox else "" }}"
          src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
 {% endmacro %}
 

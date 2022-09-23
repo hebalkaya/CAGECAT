@@ -1,8 +1,28 @@
-function getElemById(elem_id, v){
+function getElemById(elem_id){
     return document.getElementById(elem_id);
 }
 
+// submit
+// click
+// focus
+// focusout
+
+function addHelpButtonsListeners() {
+    let helpButtons = document.getElementsByClassName('help-button');
+
+    for (let i=0; i<helpButtons.length;i++){
+        let elem = helpButtons[i];
+
+        elem.addEventListener('click', function (){
+            showHelp(elem.id);
+        }, false);
+    }
+}
+
+
+
 function addCblasterSearchListeners(){
+    addHelpButtonsListeners();
     // if (module === 'search'){
     getElemById('remoteMode').addEventListener('click', function () {
         changeSearchMode('remote')
@@ -31,4 +51,6 @@ function addCblasterSearchListeners(){
     // else if (module === 'recompute'){
     //
     // }
+
+
 }
