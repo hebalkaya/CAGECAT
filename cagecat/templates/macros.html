@@ -121,7 +121,7 @@
 {% endmacro %}
 
 {% macro renderHelpButton(help_type, for_checkbox) %}
-    <img id="{{help_type}}" class="help-button {{" checkbox-help" if for_checkbox else "" }}"
+    <img id="{{help_type}}_help" class="help-button {{" checkbox-help" if for_checkbox else "" }}"
          src="{{ url_for('static', filename='images/question-circle.svg') }}"/>
 {% endmacro %}
 
@@ -196,20 +196,20 @@
                     <label class="checkbox-label">
                         {{ field }}{{ field.label.text }}
                     </label>
-                    <img class="help-button checkbox-help" id="{{field.description}}" src="/static/images/question-circle.svg">
+                    <img class="help-button checkbox-help" id="{{field.description}}_help" src="/static/images/question-circle.svg">
 
             {% elif field.type in ('MultipleFileField', 'FileField') %}
                 <div>
                     <label class="file-upload-lbl" for="{{ field.id }}">
                         {{ field }}{{ field.label.text }}{% if field.flags.required %}*{% endif %}
                     </label>
-                    <img class="help-button checkbox-help" id="{{ field.description}}" src="/static/images/question-circle.svg">
+                    <img class="help-button checkbox-help" id="{{ field.description}}_help" src="/static/images/question-circle.svg">
                 </div>
 
             {% else %}
                 <div class="input-layer">
                 {{ field.label(class="input-label") }}{% if field.flags.required %}*{% endif %}
-                <img class="help-button" id="{{ field.description}}" src="/static/images/question-circle.svg">
+                <img class="help-button" id="{{ field.description}}_help" src="/static/images/question-circle.svg">
                     {% if additional_data is not none and field.id == 'clusterNumbers' %} {# clusterNumbers can be replaced by a tuple of which id's should have additional data filled in  #}
                 {{ field(class=classes, value=additional_data) }}
                     {% else %}

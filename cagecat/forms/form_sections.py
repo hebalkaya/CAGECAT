@@ -364,7 +364,6 @@ class IntermediateGenesSectionForm(Form):
         description='intermediate_genes',
         render_kw={
             'checked': 'checked',
-            'onclick': "toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters')"
         }
     )
 

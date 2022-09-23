@@ -14,7 +14,7 @@ function addHelpButtonsListeners() {
         let elem = helpButtons[i];
 
         elem.addEventListener('click', function (){
-            showHelp(elem.id);
+            showHelp(elem.id.slice(0, -5));
         }, false);
     }
 }
@@ -57,6 +57,10 @@ function addCblasterSearchListeners(){
 
     getElemById('searchOptionForm').addEventListener('submit',
         addRequiredSeqs, false);
+
+    getElemById('intermediate_genes').addEventListener('click', function (){
+        toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters');
+    }, false);
     // }
     //
     // else if (module === 'recompute'){
