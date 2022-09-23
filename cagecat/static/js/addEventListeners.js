@@ -19,15 +19,40 @@ function addHelpButtonsListeners() {
     }
 }
 
-function addGeneralListeners(){
-    let elem = getElemById('bookMarkButton');
+function addNotificationListeners(){
+    addListener('base-notification', 'click', function (){
+        Cookies.set('consent',1);$('#consent').remove();
+    }
+    )
+
+    let notifications = document.getElementsByClassName('notification');
+
+    for (let i=0; i<notifications.length;i++){
+        let elem = notifications[i];
+
+        elem.addEventListener('click', function(){
+            Cookies.set(elem.id,1);$('#' + elem.id).remove();
+        })
+    }
+}
+
+function addListener(elem_id, listener_type, func){
+    let elem = document.getElementById(elem_id);
 
     if (elem !== null){
-        elem.addEventListener('click', function () {
-            alert('Press CTRL + D to bookmark this page');
-        }, false);
+        elem.addEventListener(listener_type, func,  false);
     }
-    addHelpButtonsListeners()
+
+}
+
+function addGeneralListeners(){
+    addHelpButtonsListeners();
+    addNotificationListeners();
+
+    addListener('bookMarkButton', 'click', function () {
+        alert('Press CTRL + D to bookmark this page');
+    }, false);
+
 }
 
 function addClinkerStartPointListeners(){
@@ -38,7 +63,6 @@ function addClinkerStartPointListeners(){
 }
 
 function addCblasterSearchListeners(){
-    addGeneralListeners()
     // if (module === 'search'){
     getElemById('remoteMode').addEventListener('click', function () {
         changeSearchMode('remote')
