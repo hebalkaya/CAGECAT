@@ -80,6 +80,8 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 }
             )
 
+            scripts.append('addResultPageListeners()')
+
         elif status == "failed":
             kwargs.update(
                 {
