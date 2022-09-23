@@ -102,7 +102,6 @@ class InputSearchRemoteInputTypeFile(Form):
         description='genomeFile',
         render_kw={
             'accept': ','.join(_all_suffixes),
-            'onchange': 'readFileContents()',
             'required': ''
         }
     )
@@ -117,7 +116,6 @@ class InputSearchRemoteInputTypeNCBIEntries(Form):
             'cols': 25,
             'class': 'ncbi-entries',
             'placeholder': 'NCBI accessions (GenPept))',
-            'onfocusout': 'validateNCBIEntries()',
             # 'required': '',
             'disabled': 'disabled'
         }
@@ -333,7 +331,6 @@ class BinaryTableForm(Form):
         description='keyFunction',
         choices=cblaster_search_binary_table_key_functions,
         render_kw={
-            'onChange': 'changeHitAttribute()',
             'class': 'select-options'
         }
     )
@@ -555,7 +552,6 @@ class ClinkerInputForm(Form):
         description='fileUploadClinker',
         render_kw={
             'accept': ','.join(genbank_extensions),
-            'onchange': 'getGenBankFileNames()',
             'required': ''
         }
     )

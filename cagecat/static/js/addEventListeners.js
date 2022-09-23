@@ -30,7 +30,12 @@ function addGeneralListeners(){
     addHelpButtonsListeners()
 }
 
+function addClinkerStartPointListeners(){
+    getElemById('fileUploadClinker').addEventListener('change',
+        getGenBankFileNames, false);
 
+
+}
 
 function addCblasterSearchListeners(){
     addGeneralListeners()
@@ -61,6 +66,15 @@ function addCblasterSearchListeners(){
     getElemById('intermediate_genes').addEventListener('click', function (){
         toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters');
     }, false);
+
+    getElemById('ncbiEntriesTextArea').addEventListener('focusout',
+        validateNCBIEntries, false);
+
+    getElemById('keyFunction').addEventListener('change',
+        changeHitAttribute, false);
+
+    getElemById('genomeFiles').addEventListener('change',
+        getGenBankFileNames, false);
     // }
     //
     // else if (module === 'recompute'){
