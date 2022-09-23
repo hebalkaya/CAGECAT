@@ -11,6 +11,7 @@ Author: Matthias van den Belt
 import base64
 import hashlib
 
+import flask
 from flask import Flask, Response
 from flask_sqlalchemy import SQLAlchemy
 
@@ -79,7 +80,7 @@ csp_headers =   "frame-src 'self'; " \
                 "'self' " \
                 "ajax.googleapis.com " \
                 "cdnjs.cloufdare.com " \
-                "cdn.jsdelivr.net"
+                "cdn.jsdelivr.net " \
 
 # js_pattern = r'<body .+onload="(.+)">'
 js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
@@ -92,8 +93,6 @@ def hash_digest_js_code(resp):
     """
     resp: Response
 
-    print(resp.get_data(True))
-
     matches = re.findall(pattern=js_pattern, string=resp.get_data(as_text=True))
     if len(matches) == 0:
         to_encode = ''
@@ -102,12 +101,14 @@ def hash_digest_js_code(resp):
     else:
         raise Exception('Invalid match length')
 
-    print('ENCODING:', to_encode)
     return base64.b64encode(hashlib.sha256(to_encode.encode()).digest()).decode('UTF-8')
 
 @app.after_request
 def add_security_headers(resp):
-    headers = csp_headers.format(hash_digest_js_code(resp))
-    resp.headers['Content-Security-Policy'] = headers
+    resp: flask.Response
+
+    if resp.headers.get('NO-CSP', None) is None:
+        headers = csp_headers.format(hash_digest_js_code(resp))
+        resp.headers['Content-Security-Policy'] = headers
 
     return resp

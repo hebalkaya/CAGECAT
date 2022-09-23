@@ -45,33 +45,52 @@ function addListener(elem_id, listener_type, func){
 
 }
 
-function addResultPageListeners(){
+function addResultPageListeners(module){
     addListener('connectedJobsToggle', 'click', function (){
         toggleElementVisibility('connectedJobs')
     });
 
     addListener('selectedClusterButton', 'click', function (){
         showSelection('cluster');
-    })
+    });
 
     addListener('selectedQueryButton', 'click', function (){
         showSelection('query');
-    })
+    });
 
     addListener('unselectClustersButton', 'click', function (){
         moveSelectedElements('unselected', 'Clusters');
-    })
+    });
 
     addListener('selectClustersButton', 'click', function (){
         moveSelectedElements('selected', 'Clusters');
-    })
+    });
 
     addListener('unselectQueriesButton', 'click', function (){
         moveSelectedElements('unselected', 'Queries');
-    })
+    });
 
     addListener('selectQueriesButton', 'click', function (){
         moveSelectedElements('selected', 'Queries');
+    });
+
+    addListener('dummyIframe', 'load', function (){
+        console.log('From dummyIframe');
+        showPreviousJobs(true);
+        console.log('From dummyIframe end');
+    });
+
+    addListener('newWindow', 'load', function (){
+        console.log('From newWindow');
+        if (module in ['search', 'recompute']){
+            getOutputFromPlot('search')
+        }
+        else if (module === 'clinker_query'){
+            getOutputFromPlot('visualize');
+        }
+
+        postLoadingIFrame();
+        console.log('From newWindow end');
     })
 
 }

@@ -128,78 +128,79 @@
         <div class="column middleColumn downstream-div-height middle-column-div" id="middleColumnDiv">
     {% endif %}
 
-    {% endif %}
+{% endif %}
 
-    {% if module in modules_with_plots %}
-        {% if module not in ('clinker', 'gne') %}
-        <div>
-            <div class="centered">
-                <button class="button smaller" id="selectedClusterButton">Select clusters (0)</button>
-            {% if module != 'clinker_query' %}
-                <button class="button smaller" id="selectedQueryButton">Select queries (0)</button>
-            {% endif %}
-                {#                {{ renderHelpButton('downstream_select') }}#}
-            </div>
-
-            <div>
-                <div class="centered" id="clusterSelection">
-
-                    <select id="unselectedClustersSelector" class="multiselect-large selector-custom-height" multiple="multiple">
-                    </select>
-
-                    <button id="unselectClustersButton"><<</button>
-                    <button id="selectClustersButton">>></button>
-
-                    <select id="selectedClustersSelector" class="multiselect-large selector-custom-height" multiple="multiple">
-                        {#                        <option>ads</option>#}
-                    </select>
-                </div>
-
-            {% if module != 'clinker_query' %}
-                <div id="queriesSelection" class="centered no-display">
-                    <select id="unselectedQueriesSelector" multiple="multiple" class="multiselect-small selector-custom-height">
-                    </select>
-
-                    <button id="unselectQueriesButton"><<</button>
-                    <button id="selectQueriesButton">>></button>
-
-                    <select id="selectedQueriesSelector" multiple="multiple" class="multiselect-small selector-custom-height">
-                        {#            <option></option>#}
-                    </select>
-                </div>
-            {% endif %}
-            </div>
-        </div>
+{% if module in modules_with_plots %}
+    {% if module not in ('clinker', 'gne') %}
+    <div>
+        <div class="centered">
+            <button class="button smaller" id="selectedClusterButton">Select clusters (0)</button>
+        {% if module != 'clinker_query' %}
+            <button class="button smaller" id="selectedQueryButton">Select queries (0)</button>
         {% endif %}
+            {#                {{ renderHelpButton('downstream_select') }}#}
+        </div>
+
+        <div>
+            <div class="centered" id="clusterSelection">
+
+                <select id="unselectedClustersSelector" class="multiselect-large selector-custom-height" multiple="multiple">
+                </select>
+
+                <button id="unselectClustersButton"><<</button>
+                <button id="selectClustersButton">>></button>
+
+                <select id="selectedClustersSelector" class="multiselect-large selector-custom-height" multiple="multiple">
+                    {#                        <option>ads</option>#}
+                </select>
+            </div>
+
+        {% if module != 'clinker_query' %}
+            <div id="queriesSelection" class="centered no-display">
+                <select id="unselectedQueriesSelector" multiple="multiple" class="multiselect-small selector-custom-height">
+                </select>
+
+                <button id="unselectQueriesButton"><<</button>
+                <button id="selectQueriesButton">>></button>
+
+                <select id="selectedQueriesSelector" multiple="multiple" class="multiselect-small selector-custom-height">
+                    {#            <option></option>#}
+                </select>
+            </div>
+        {% endif %}
+        </div>
     </div>
+    {% endif %}
+</div>
 
 <div class="result-loading-div">
 
-    <p class="result-loading-message"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
-    <img id="loadingImage" class="loading-image" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
+<p class="result-loading-message"  id="resultLoadedMessage">Result is being loaded.. File size: {{ content_size }}</p>
+<img id="loadingImage" class="loading-image" src="{{ url_for('static', filename='images/dna_loader.gif') }}" alt="loading"/>
 </div>
 
-    {% if module in ['search', 'recompute'] %}
-        {% set onload = 'getOutputFromPlot("search");' %}
-    {% elif module == 'clinker_query' %}
-        {% set onload = 'getOutputFromPlot("visualize");' %}
-    {% elif module == 'clinker' %}
-        {% set onload = '' %}
-        {% for connected_job in connected_jobs %}
-            {% if connected_job[3] == 'depending' %}
-                <p class="connected-job"> <a href="{{ url_for('result.return_user_download', job_id=connected_job[0]) }}">Click this sentence to download the sequences of the clusters shown below.</a></p>
-            {% endif %}
-        {% endfor %}
-
-    {% elif module == 'gne' %}
-        {% set onload = '' %}
-    {% endif %}
-
-    {% set mergedOnload = onload + 'postLoadingIFrame()' %}
-
-<iframe onload="showPreviousJobs(true)" class="no-display"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
-    <iframe onload="{{mergedOnload}}" height="800" id="newWindow" src="{{ url_for('result.get_plot_contents', job_id=j_id) }}" title="Generated HTML plot"></iframe>
-</div>
+{% if module in ['search', 'recompute'] %}
+    {% set onload = 'getOutputFromPlot("search");' %}
+{% elif module == 'clinker_query' %}
+    {% set onload = 'getOutputFromPlot("visualize");' %}
+{% elif module == 'clinker' %}
+    {% set onload = '' %}
+    {% for connected_job in connected_jobs %}
+        {% if connected_job[3] == 'depending' %}
+            <p class="connected-job"> <a href="{{ url_for('result.return_user_download', job_id=connected_job[0]) }}">Click this sentence to download the sequences of the clusters shown below.</a></p>
         {% endif %}
+    {% endfor %}
 
+{% elif module == 'gne' %}
+    {% set onload = '' %}
+{% endif %}
+
+{% set mergedOnload = onload + 'postLoadingIFrame()' %}
+
+<iframe sandbox="allow-same-origin allow-scripts" id="dummyIframe" class="no-display"></iframe> {# Dummy frame to load previous jobs before potentially large file is downloaded #}
+<iframe sandbox="allow-same-origin allow-scripts" height="800" id="newWindow" src="{{ url_for('result.get_plot_contents', job_id=j_id) }}" title="Generated HTML plot"></iframe>
+</div>
+{% endif %}
+        </div>
+</div>
 {% endblock %}

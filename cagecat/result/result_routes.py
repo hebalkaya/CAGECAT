@@ -8,6 +8,8 @@ import copy
 import json
 from typing import Union, Any, Tuple
 
+import flask
+import markupsafe
 from flask import Blueprint, request, url_for, send_file
 
 # own project imports
@@ -80,7 +82,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 }
             )
 
-            scripts.append('addResultPageListeners()')
+            scripts.append(f'addResultPageListeners("{module}")')
 
         elif status == "failed":
             kwargs.update(
@@ -160,7 +162,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
             scripts.append("setTimeout(function () { location.reload(true); }, 15000)")
 
         kwargs.update(
-            {'scripts_to_execute': ';'.join(scripts)}
+            {'scripts_to_execute': markupsafe.Markup(';'.join(scripts))}
         )
 
     return show_template(**kwargs)
@@ -274,5 +276,8 @@ def get_plot_contents(job_id) -> str:
     job = fetch_job_from_db(job_id)
     if job is None:
         return show_template("job_not_found.html", job_id=job_id)
+    html = prepare_finished_result(job_id, job.job_type)[0]
+    resp = flask.Response(html)
 
-    return prepare_finished_result(job_id, job.job_type)[0]
+    resp.headers['NO-CSP'] = 1
+    return resp
