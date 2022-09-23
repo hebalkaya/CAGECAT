@@ -19,10 +19,21 @@ function addHelpButtonsListeners() {
     }
 }
 
+function addGeneralListeners(){
+    let elem = getElemById('bookMarkButton');
+
+    if (elem !== null){
+        elem.addEventListener('click', function () {
+            alert('Press CTRL + D to bookmark this page');
+        }, false);
+    }
+    addHelpButtonsListeners()
+}
+
 
 
 function addCblasterSearchListeners(){
-    addHelpButtonsListeners();
+    addGeneralListeners()
     // if (module === 'search'){
     getElemById('remoteMode').addEventListener('click', function () {
         changeSearchMode('remote')

@@ -397,7 +397,7 @@ div.input-layer label {
     width: 50%;
 }
 
-#database_type {
+select#database_type {
     width: 40%;
 }
 
