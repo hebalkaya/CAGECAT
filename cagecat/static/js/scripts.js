@@ -615,8 +615,8 @@ function moveSelectedElements(target, selectionType){
     let result = !$(src+'Selector' + ' option:selected').remove().appendTo(dest+ 'Selector');
     let selectedQueriesSelector = $('#selectedQueriesSelector')[0];
 
-    $('#selectClusterButton')[0].innerText = 'Select clusters (' + $('#selectedClustersSelector')[0].length.toString() + ')'
-    $('#selectQueryButton')[0].innerText = 'Select queries (' + selectedQueriesSelector.length.toString() + ')'
+    $('#selectedClusterButton')[0].innerText = 'Select clusters (' + $('#selectedClustersSelector')[0].length.toString() + ')'
+    $('#selectedQueryButton')[0].innerText = 'Select queries (' + selectedQueriesSelector.length.toString() + ')'
 
     return result;
 }
