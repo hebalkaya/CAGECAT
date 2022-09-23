@@ -45,7 +45,7 @@ function addListener(elem_id, listener_type, func){
 
 }
 
-function addResultPageListeners(module){
+function addResultPageListeners(){
     addListener('connectedJobsToggle', 'click', function (){
         toggleElementVisibility('connectedJobs')
     });
@@ -79,20 +79,6 @@ function addResultPageListeners(module){
         showPreviousJobs(true);
         console.log('From dummyIframe end');
     });
-
-    addListener('newWindow', 'load', function (){
-        console.log('From newWindow');
-        if (module in ['search', 'recompute']){
-            getOutputFromPlot('search')
-        }
-        else if (module === 'clinker_query'){
-            getOutputFromPlot('visualize');
-        }
-
-        postLoadingIFrame();
-        console.log('From newWindow end');
-    })
-
 }
 
 function addExampleButtonListeners() {

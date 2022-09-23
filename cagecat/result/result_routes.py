@@ -50,7 +50,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
     found in the SQL database
     """
     job = fetch_job_from_db(job_id)
-    scripts = [f"startJobExecutionStageUpdater('{job_id}')"]
+    scripts = []
 
     if job is not None:
         status = job.status
@@ -82,7 +82,7 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 }
             )
 
-            scripts.append(f'addResultPageListeners("{module}")')
+            scripts.append(f'addResultPageListeners()')
 
         elif status == "failed":
             kwargs.update(
@@ -119,6 +119,9 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                     'stages': stages
                 }
             )
+
+            if status == 'running':
+                scripts.append(f"startJobExecutionStageUpdater('{job_id}')")
 
         elif status == "waiting":
             pj = fetch_job_from_db(job_id).depending_on\
@@ -161,9 +164,9 @@ def show_result(job_id: str, pj=None, store_job_id=False, j_type=None) -> str: #
                 # unassigned as it is always assigned if the template name is status_page.html
             scripts.append("setTimeout(function () { location.reload(true); }, 15000)")
 
-        kwargs.update(
-            {'scripts_to_execute': markupsafe.Markup(';'.join(scripts))}
-        )
+    kwargs.update(
+        {'scripts_to_execute': markupsafe.Markup(';'.join(scripts))}
+    )
 
     return show_template(**kwargs)
 
