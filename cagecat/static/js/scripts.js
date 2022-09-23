@@ -660,17 +660,18 @@ document.addEventListener('scroll', function(e){
 })
 
 function setExampleInput(tool_name){
-    let exampleQueries = 'QBE85649.1\n' +
-        'QBE85641.1\n' +
-        'QBE85642.1\n' +
-        'QBE85643.1\n' +
-        'QBE85644.1\n' +
-        'QBE85645.1\n' +
-        'QBE85646.1\n' +
-        'QBE85647.1\n' +
-        'QBE85648.1';
-
     if (tool_name === 'cblaster_search'){
+        let exampleQueries = 'QBE85649.1\n' +
+            'QBE85641.1\n' +
+            'QBE85642.1\n' +
+            'QBE85643.1\n' +
+            'QBE85644.1\n' +
+            'QBE85645.1\n' +
+            'QBE85646.1\n' +
+            'QBE85647.1\n' +
+            'QBE85648.1';
+
+
         let firstRadio = $('#remoteMode')[0];
         firstRadio.click();
 

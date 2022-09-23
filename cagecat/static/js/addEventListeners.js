@@ -45,9 +45,22 @@ function addListener(elem_id, listener_type, func){
 
 }
 
+function addExampleButtonListeners() {
+    addListener('exampleInputClinker', 'click', function (){
+        setExampleInput('clinker');
+    })
+
+    addListener('exampleInputCblaster', 'click', function (){
+        setExampleInput('cblaster_search');
+    })
+
+    addListener('toggleHelpButton', 'click', toggleExplanationColumn);
+}
+
 function addGeneralListeners(){
     addHelpButtonsListeners();
     addNotificationListeners();
+    addExampleButtonListeners();
 
     addListener('bookMarkButton', 'click', function () {
         alert('Press CTRL + D to bookmark this page');

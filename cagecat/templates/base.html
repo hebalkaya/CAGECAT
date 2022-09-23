@@ -61,7 +61,7 @@
 </div>
 
 {% if help_enabled %}
-<button id="toggleHelpButton" class="toggle-help-button" onclick="toggleExplanationColumn()">&#60&#60</button>
+<button id="toggleHelpButton" class="toggle-help-button">&#60&#60</button>
     <div class="hide-overflow">
 <div  class="column rightColumn invisible" id="explanationColumn">
     <div id="filler" class="no-height"></div>
@@ -76,10 +76,10 @@
         <div class="centered">
         {% if show_examples == 'clinker' %}
             <a href="{{url_for('static', filename='clinker_example_files.zip')}}">
-                <button class="button example-button" onclick="setExampleInput('{{ show_examples }}')">Example input</button>
+                <button id="exampleInputClinker" class="button example-button">Example input</button>
             </a>
         {% else %}
-            <button class="button example-button" onclick="setExampleInput('{{ show_examples }}')">Example input</button>
+            <button id="exampleInputCblaster" class="button example-button">Example input</button>
         {% endif %}
 
             {% if show_examples == 'cblaster_search' %}
