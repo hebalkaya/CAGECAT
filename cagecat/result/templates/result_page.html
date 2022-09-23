@@ -3,6 +3,7 @@
 {% from "macros.html" import renderHelpButton %}
 {% from "macros.html" import showBookMarkButton %}
 
+{% block scripts %};{{scripts_to_execute}};{% endblock %}
 
 {% block navigationBar %}
 {{ showNavigationBar('results') }}
