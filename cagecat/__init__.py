@@ -78,7 +78,7 @@ csp_headers =   "frame-src 'self'; " \
                 "'sha256-5NUfqwE5Ru7GwQSUKLQJ+U61xroMjwjJdR/FrbGlXgc=' " \
                 "'sha256-{0}' " \
                 "'sha256-UrGL39Ep7h0yuSfY4CfGceOqkSJzeEXxMLERfefe21Y=' " \
-                "'sha256-/JVZXUkfRbDAnK3DggeqeD6uf1+DxHFVlKZslbarBIQ= " \
+                "'sha256-/JVZXUkfRbDAnK3DggeqeD6uf1+DxHFVlKZslbarBIQ=' " \
                 "'self' " \
                 "ajax.googleapis.com " \
                 "cdnjs.cloufdare.com " \
