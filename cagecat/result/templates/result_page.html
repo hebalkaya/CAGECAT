@@ -90,7 +90,7 @@
                 {% endif %}
 
                 {% if 'extract_sequences' in downstream_modules %}
-                <form action="{{url_for('tools.extract_sequences')}}" method="post" onsubmit="addSelectedToForm('sequences')">
+                <form class="downstream-form" action="{{url_for('tools.extract_sequences')}}" method="post" id="sequences">
                     <input type="hidden" name="job_id" value="{{j_id}}"/>
                     <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
                     <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
@@ -99,7 +99,7 @@
                 {% endif %}
 
                 {% if 'extract_clusters' in downstream_modules %}
-                <form action="{{url_for('tools.extract_clusters')}}" method="post" onsubmit="addSelectedToForm('clusters')">
+                <form class="downstream-form" action="{{url_for('tools.extract_clusters')}}" method="post" id="clusters">
                     <input type="hidden" name="job_id" value="{{j_id}}"/>
                     <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
                     <button class="button button-small" type="submit">Extract clusters</button>
@@ -107,7 +107,7 @@
                 {% endif %}
 
                 {% if 'clinker_query' in downstream_modules %}
-                <form action="{{url_for('tools.clinker_query')}}" method="post" onsubmit="addSelectedToForm('clinker_query')">
+                <form class="downstream-form" action="{{url_for('tools.clinker_query')}}" method="post" id="clinker_query">
                     <input type="hidden" name="job_id" value="{{j_id}}"/>
                     <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
                     <button class="button button-small" type="submit">Visualize compared to query</button>

@@ -46,6 +46,16 @@ function addListener(elem_id, listener_type, func){
 }
 
 function addResultPageListeners(){
+    let jobSubmissionForms = document.getElementsByClassName('downstream-form');
+
+    for (let i=0; i<jobSubmissionForms.length;i++) {
+        let elem = jobSubmissionForms[i];
+
+        elem.addEventListener('submit', function (){
+            addSelectedToForm(elem.id);
+        }, false);
+    }
+
     addListener('connectedJobsToggle', 'click', function (){
         toggleElementVisibility('connectedJobs')
     });
@@ -75,9 +85,7 @@ function addResultPageListeners(){
     });
 
     addListener('dummyIframe', 'load', function (){
-        console.log('From dummyIframe');
         showPreviousJobs(true);
-        console.log('From dummyIframe end');
     });
 }
 
