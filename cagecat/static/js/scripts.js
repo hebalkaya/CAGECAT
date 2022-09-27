@@ -180,36 +180,6 @@ function validateNCBIEntries() {
     }
 }
 
-function validateJobID(target){
-    let elem;
-    let shouldDisable;
-
-    if (typeof target === "undefined"){
-        elem = event.target;
-    }
-    else {
-        elem = document.getElementById(target);
-    }
-
-    if(!elem.value.match(jobIDPattern)){
-        elem.classList.add("invalid");
-        shouldDisable = true;
-    }
-    else {
-        elem.classList.remove("invalid");
-        shouldDisable = false;
-    }
-    enableOrDisableSubmitButtons(shouldDisable)
-}
-
-function enableOrDisableSubmitButtons(disable){
-    let buttons = document.getElementsByClassName("submit_button");
-
-    for (let i=0; i < buttons.length; i++){
-        buttons[i].disabled = disable;
-    }
-}
-
 function addSelectedToForm(downstream_prog) {
     if (downstream_prog === "sequences") {
         $('#selectedQueries')[0].value = getSelectedQueries();
