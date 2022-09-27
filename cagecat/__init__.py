@@ -83,9 +83,10 @@ csp_headers =   "frame-src 'self'; " \
                 "ajax.googleapis.com " \
                 "cdnjs.cloufdare.com " \
                 "cdn.jsdelivr.net " \
-
+ \
 # js_pattern = r'<body .+onload="(.+)">'
-js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\)(\s+.+)+)<\/script>')
+js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
+# TODO: make sure that no newlines are there JS as this gives errors in nginx --> error in regex??
 
 def hash_digest_js_code(resp):
     """Returns sha256 digest of response JS code to set CSP header
@@ -100,8 +101,6 @@ def hash_digest_js_code(resp):
         to_encode = ''
     elif len(matches) == 1:
         to_encode = matches[0]
-    elif len(matches) > 1: # TODO: check if this works
-        to_encode = ''.join(matches)
     else:
         raise Exception('Invalid match length')
 
