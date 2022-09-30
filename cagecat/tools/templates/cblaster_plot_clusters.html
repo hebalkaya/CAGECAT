@@ -21,6 +21,7 @@
     <br/>
 
     <form action="{{url_for('submit_job')}}" method="post">
+        {{  add_csrf_line() }}
         <input type="hidden" name="job_type" value="clinker_query"/>
         <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>
 

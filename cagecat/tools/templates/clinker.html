@@ -17,6 +17,7 @@
 
 <div id="clinkerContent" class="moduleContent">
     <form action="{{url_for('submit_job')}}" enctype="multipart/form-data" method="post">
+        {{  add_csrf_line() }}
         <input type="hidden" name="job_type" value="clinker"/>
 
         <div>

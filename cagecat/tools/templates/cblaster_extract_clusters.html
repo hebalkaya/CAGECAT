@@ -16,6 +16,7 @@
     {{  showRequiredInputsText() }}
 
 <form action="{{url_for('submit_job')}}" method="post">
+    {{  add_csrf_line() }}
 
     <input type="hidden" name="job_type" value="extract_clusters"/>
     <input type="hidden" name="prev_job_id" value="{{prev_job_id}}"/>

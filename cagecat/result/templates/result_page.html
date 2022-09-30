@@ -20,6 +20,7 @@
 
         <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
               enctype="multipart/form-data" name="download_settings">
+            {{  add_csrf_line() }}
             <input name="job_id" type="hidden" value="{{j_id}}"/>
 
             <label class="button margin-top-1p" for="download-button"><i class="fa fa-download"><span> Download results</span></i></label>
@@ -84,6 +85,7 @@
 
                 {% if 'gne' in downstream_modules %}
                 <form action="{{url_for('tools.gene_neighbourhood_estimation')}}" method="post">
+                    {{  add_csrf_line() }}
                     <input type="hidden" name="job_id" value="{{ j_id }}"/>
                     <button class="button button-small" type="submit">Gene neighbourhood estimation</button>
                 </form>
@@ -91,6 +93,7 @@
 
                 {% if 'extract_sequences' in downstream_modules %}
                 <form class="downstream-form" action="{{url_for('tools.extract_sequences')}}" method="post" id="sequences">
+                    {{  add_csrf_line() }}
                     <input type="hidden" name="job_id" value="{{j_id}}"/>
                     <input type="hidden" id="selectedQueries" name="selectedQueries" value=""/>
                     <input type="hidden" id="selectedClusters" name="selectedClusters" value=""/>
@@ -100,6 +103,7 @@
 
                 {% if 'extract_clusters' in downstream_modules %}
                 <form class="downstream-form" action="{{url_for('tools.extract_clusters')}}" method="post" id="clusters">
+                    {{  add_csrf_line() }}
                     <input type="hidden" name="job_id" value="{{j_id}}"/>
                     <input type="hidden" name="selectedClusters" id="selectedClusters1" value=""/>
                     <button class="button button-small" type="submit">Extract clusters</button>
@@ -108,6 +112,7 @@
 
                 {% if 'clinker_query' in downstream_modules %}
                 <form class="downstream-form" action="{{url_for('tools.clinker_query')}}" method="post" id="clinker_query">
+                    {{  add_csrf_line() }}
                     <input type="hidden" name="job_id" value="{{j_id}}"/>
                     <input type="hidden" name="selectedClusters" id="selectedClusters3" value=""/>
                     <button class="button button-small" type="submit">Visualize compared to query</button>
@@ -117,6 +122,7 @@
 
                 {% if 'clinker' in downstream_modules %}
                 <form action="{{url_for('tools.clinker')}}" method="post">
+                    {{  add_csrf_line() }}
                     <input type="hidden" name="job_id" value="{{ j_id }}"/>
                     <button class="button button-small" type="submit">clinker: visualize everything</button>
                 </form>

@@ -16,6 +16,7 @@
     <div id="gneModuleContent" class="moduleContent">
         <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}"
               name="gneOptionForm">
+            {{  add_csrf_line() }}
             <input type="hidden" name="job_type" value="gne" required="required"/>
             <input type="hidden" name="gneEnteredJobId" value="{{ prev_job_id }}"/>
 

@@ -25,6 +25,7 @@
 
         <form action="{{ url_for('result.return_user_download', job_id=j_id) }}" method="post"
               enctype="multipart/form-data" name="download_settings">
+            {{  add_csrf_line() }}
             <input name="job_id" type="hidden" value="{{j_id}}"/>
 
             <label class="button margin-top-1p" for="download-button"><i class="fa fa-download"><span> Download results</span></i></label>
