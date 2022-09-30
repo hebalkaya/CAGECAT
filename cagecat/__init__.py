@@ -79,12 +79,13 @@ csp_headers =   "frame-src 'self'; " \
                 "'sha256-{0}' " \
                 "'sha256-UrGL39Ep7h0yuSfY4CfGceOqkSJzeEXxMLERfefe21Y=' " \
                 "'sha256-/JVZXUkfRbDAnK3DggeqeD6uf1+DxHFVlKZslbarBIQ=' " \
+                "'sha256-FUxXofRXGrzDcNbdjD1cl4gD5pHIv4v78rA6lMWng9A=' " \
                 "'self' " \
                 "ajax.googleapis.com " \
                 "cdnjs.cloufdare.com " \
                 "cdn.jsdelivr.net " \
  \
-# js_pattern = r'<body .+onload="(.+)">'
+    # js_pattern = r'<body .+onload="(.+)">'
 js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
 # TODO: make sure that no newlines are there JS as this gives errors in nginx --> error in regex??
 
