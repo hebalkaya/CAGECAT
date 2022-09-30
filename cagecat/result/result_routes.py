@@ -10,7 +10,7 @@ from typing import Union, Any, Tuple
 
 import flask
 import markupsafe
-from flask import Blueprint, request, url_for, send_file
+from flask import Blueprint, request, url_for, send_file, Response
 
 # own project imports
 from werkzeug.utils import secure_filename
@@ -198,7 +198,11 @@ def return_user_download(job_id: str) -> Union[Union[str, Tuple[str, int]], Any]
         return_absolute_path=False
     )
     try:
-        return send_file(fp)
+        resp: Response
+
+        resp = send_file(fp)
+        resp.headers['BINARY'] = 1
+        return resp
     except FileNotFoundError:
         return show_template("job_not_found.html", job_id=job_id)
 

@@ -183,9 +183,13 @@ def clinker() -> str:
     else:
         form = ClinkerDownstreamForm()
 
-    show_examples = 'clinker' if request.method == 'GET' else None
+    scripts = ['addAccordionListeners()']
+    if request.method == 'GET':
+        show_examples = 'clinker'
+        scripts.append('addClinkerStartPointListeners()')
+    else:
+        show_examples = None
 
-    scripts = ['addAccordionListeners()', 'addClinkerStartPointListeners()']
     return show_template('clinker.html',
                          all_forms=form,
                          query_file_extensions=','.join(genbank_extensions),
