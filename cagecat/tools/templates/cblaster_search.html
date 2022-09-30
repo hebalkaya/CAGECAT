@@ -23,6 +23,7 @@
 
 <div id="searchModuleContent" class="moduleContent">
 <form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" name="searchOptionForm" id="searchOptionForm">
+    {{  add_csrf_line() }}
     <input type="hidden" name="job_type" value="search" required="required"/>
 
     <div>

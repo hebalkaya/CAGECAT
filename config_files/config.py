@@ -2,6 +2,8 @@
 
 Author: Matthias van den Belt
 """
+from config_files.sensitive import csrf_key
+
 cagecat_version = '1.0'
 # When the version number is changed, /repo/maintenance/store_version_info.py should be run
 # also, the cache busting of the JavaScript file and CSS file in cagecat/templates/base.html
@@ -47,4 +49,5 @@ hmm_db_genome_downloads = '/hmm_db_downloads'
 init_config = {
     'SQLALCHEMY_DATABASE_URI': 'sqlite:////repo/cagecat/database.db',
     "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+    'SECRET_KEY': csrf_key
 }

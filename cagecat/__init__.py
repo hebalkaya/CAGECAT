@@ -14,6 +14,7 @@ import hashlib
 import flask
 from flask import Flask, Response
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 
 import redis
 import rq
@@ -27,6 +28,9 @@ q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
 app = Flask("cagecat")
 app.config.update(init_config)
+
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 db = SQLAlchemy(app)
 

@@ -21,7 +21,7 @@ RUN pip install ./antismash-6.0.0
 RUN download-antismash-databases
 RUN antismash --check-prereqs
 
-RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi genomicsqlite
+RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi genomicsqlite Flask-WTF
 
 ### Using Bioconda for antiSmash dependencies installation
 # intall Bioconda
@@ -39,7 +39,7 @@ RUN /miniconda3/condabin/conda install hmmer2 hmmer diamond fasttree prodigal bl
 ##
 
 # Install Python packages
-RUN /miniconda3/bin/pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz genomicsqlite
+RUN /miniconda3/bin/pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz genomicsqlite Flask-WTF
 RUN /miniconda3/condabin/conda init
 
 RUN pip3 install jinja2==3.0.1
