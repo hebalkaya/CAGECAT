@@ -8,7 +8,7 @@
 {% block navigationBar %}
     {{ showNavigationBar('analyze') }}
 {% endblock %}
-{% block scripts %};addAccordionListeners();{% endblock %}
+{% block scripts %}{{scripts_to_execute}}{% endblock %}
 
 {% block content %}
 
