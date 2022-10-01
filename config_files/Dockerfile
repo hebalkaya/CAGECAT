@@ -14,7 +14,6 @@ RUN apt update
 RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct diamond-aligner zip
 RUN apt install -y default-jdk
 
-
 RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi genomicsqlite Flask-WTF
 
 ### Using Bioconda for antiSmash dependencies installation
@@ -46,14 +45,12 @@ RUN pip install ./antismash-6.0.0
 RUN download-antismash-databases
 RUN antismash --check-prereqs
 
-
 RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && pip install .
 RUN git clone --branch v1.0 https://github.com/MatthiasvdBelt/CAGECAT.git && mv CAGECAT /repo
 
 RUN mkdir /backups /pfam_db /hmm_databases /sanitization /hmm_profiles /repo/cagecat/jobs
 RUN mkdir -p /process_logs/maintenance
 RUN mkdir -p /root/.config/cblaster
-
 
 RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
 
