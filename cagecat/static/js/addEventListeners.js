@@ -1,12 +1,3 @@
-function getElemById(elem_id){
-    return document.getElementById(elem_id);
-}
-
-// submit
-// click
-// focus
-// focusout
-
 function addHelpButtonsListeners() {
     let helpButtons = document.getElementsByClassName('help-button');
 
@@ -98,7 +89,9 @@ function addExampleButtonListeners() {
         setExampleInput('cblaster_search');
     })
 
-    addListener('toggleHelpButton', 'click', toggleExplanationColumn);
+    addListener('toggleHelpButton', 'click',
+        toggleExplanationColumn
+    );
 }
 
 function addGeneralListeners(){
@@ -108,59 +101,54 @@ function addGeneralListeners(){
 
     addListener('bookMarkButton', 'click', function () {
         alert('Press CTRL + D to bookmark this page');
-    }, false);
+    });
 
 }
 
 function addClinkerStartPointListeners(){
-    getElemById('fileUploadClinker').addEventListener('change',
-        getGenBankFileNames, false);
-
-
+    addListener('fileUploadClinker', 'change',
+        getGenBankFileNames
+    )
 }
 
 function addCblasterSearchListeners(){
-    // if (module === 'search'){
-    getElemById('remoteMode').addEventListener('click', function () {
-        changeSearchMode('remote')
-    }, false);
+    addListener('remoteMode', 'click', function () {
+        changeSearchMode('remote');
+    });
 
-    getElemById('hmmMode').addEventListener('click', function (){
+    addListener('hmmMode', 'click', function (){
         changeSearchMode('hmm');
-    }, false);
+    });
 
-    getElemById('combiMode').addEventListener('click', function (){
+    addListener('combiMode', 'click', function (){
         changeSearchMode('combi_remote');
-    }, false);
+    });
 
-    getElemById('radioFasta').addEventListener('click', function (){
+    addListener('radioFasta', 'click', function (){
         showInputOptions('file', 1);
-    }, false);
+    });
 
-    getElemById('radioNCBIEntries').addEventListener('click', function (){
+    addListener('radioNCBIEntries', 'click', function (){
         showInputOptions('ncbi_entries', 1);
-    }, false);
+    });
 
-    getElemById('searchOptionForm').addEventListener('submit',
-        addRequiredSeqs, false);
+    addListener('searchOptionForm', 'submit',
+        addRequiredSeqs
+    );
 
-    getElemById('intermediate_genes').addEventListener('click', function (){
+    addListener('intermediate_genes', 'click', function (){
         toggleDisabled('intermediate_max_distance', 'intermediate_max_clusters');
-    }, false);
+    });
 
-    getElemById('ncbiEntriesTextArea').addEventListener('focusout',
-        validateNCBIEntries, false);
+    addListener('ncbiEntriesTextArea', 'focusout',
+        validateNCBIEntries
+    );
 
-    getElemById('keyFunction').addEventListener('change',
-        changeHitAttribute, false);
+    addListener('keyFunction', 'change',
+        changeHitAttribute
+    );
 
-    getElemById('genomeFiles').addEventListener('change',
-        getGenBankFileNames, false);
-    // }
-    //
-    // else if (module === 'recompute'){
-    //
-    // }
-
-
+    addListener('genomeFiles', 'change',
+        getGenBankFileNames
+    );
 }
