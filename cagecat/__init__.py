@@ -116,7 +116,7 @@ def add_security_headers(resp):
     resp: flask.Response
 
     for exception_header in ['NO-CSP', 'BINARY']:
-        if resp.headers.get(exception_header, None) is not None:  # indicates the header is there, so JS should be digested to generate
+        if resp.headers.get(exception_header, None) is None:  # indicates the header is not there, so JS should be digested to generate
             headers = csp_headers.format(hash_digest_js_code(resp))
             resp.headers['Content-Security-Policy'] = headers
 
