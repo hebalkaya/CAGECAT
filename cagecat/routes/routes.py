@@ -96,7 +96,7 @@ def page_not_found(error):  # should have 1 parameter, doesn't have to be used
 
 
 @app.errorhandler(405)
-def invalid_method():
+def invalid_method(error):  # should have 1 parameter, doesn't have to be used
     """Redirects user to home page if method used for request was invalid
 
     """
