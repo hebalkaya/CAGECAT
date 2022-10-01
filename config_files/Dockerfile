@@ -14,12 +14,6 @@ RUN apt update
 RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct diamond-aligner zip
 RUN apt install -y default-jdk
 
-### Installing antiSmash itself
-RUN wget https://dl.secondarymetabolites.org/releases/6.0.0/antismash-6.0.0.tar.gz
-RUN tar -zxf antismash-6.0.0.tar.gz
-RUN pip install ./antismash-6.0.0
-RUN download-antismash-databases
-RUN antismash --check-prereqs
 
 RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi genomicsqlite Flask-WTF
 
@@ -42,8 +36,15 @@ RUN /miniconda3/condabin/conda install hmmer2 hmmer diamond fasttree prodigal bl
 RUN /miniconda3/bin/pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz genomicsqlite Flask-WTF
 RUN /miniconda3/condabin/conda init
 
+# for antismash
 RUN pip3 install jinja2==3.0.1
 
+### Installing antiSmash itself
+RUN wget https://dl.secondarymetabolites.org/releases/6.0.0/antismash-6.0.0.tar.gz
+RUN tar -zxf antismash-6.0.0.tar.gz
+RUN pip install ./antismash-6.0.0
+RUN download-antismash-databases
+RUN antismash --check-prereqs
 
 
 RUN git clone https://github.com/MatthiasvdBelt/cblaster.git && cd cblaster/ && pip install .
