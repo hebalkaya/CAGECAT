@@ -115,11 +115,14 @@ def hash_digest_js_code(resp):
 def add_security_headers(resp):
     resp: flask.Response
 
+    digest_js = True
     for exception_header in ['NO-CSP', 'BINARY']:
-        if resp.headers.get(exception_header, None) is None:  # indicates the header is not there, so JS should be digested to generate
-            headers = csp_headers.format(hash_digest_js_code(resp))
-            resp.headers['Content-Security-Policy'] = headers
-
+        if resp.headers.get(exception_header, None) is not None:  # indicates the header is not there, so JS should be digested to generate
+            digest_js = False
             break  # break as we don't need to check further
+
+    if digest_js:
+        headers = csp_headers.format(hash_digest_js_code(resp))
+        resp.headers['Content-Security-Policy'] = headers
 
     return resp
