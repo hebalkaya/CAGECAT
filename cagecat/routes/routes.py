@@ -12,13 +12,14 @@ from flask import url_for, redirect, request
 
 from cagecat import app
 from cagecat.classes import CAGECATJob
+
 # own project imports
 from cagecat.const import submit_url, extract_clusters_options, jobs_dir
 from cagecat.db_utils import fetch_job_from_db
 from cagecat.docs.help_texts import help_texts
 from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm, \
-    CblasterExtractSequencesFormHMM
+    CblasterExtractSequencesFormHMM, GeneralForm
 from cagecat.general_utils import show_template, get_server_info, send_email
 from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
@@ -121,6 +122,9 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
+    if not validate_full_form(GeneralForm, request.form):
+        return redirect(url_for('invalid_submission'))
+
     new_jobs = []
 
     job_type = request.form["job_type"]

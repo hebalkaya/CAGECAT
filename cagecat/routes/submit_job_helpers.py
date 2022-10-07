@@ -208,7 +208,6 @@ def validate_full_form(form_type, request_form):
         smaller_form.process(request_form)
 
         is_valid = smaller_form.validate()
-        print(smaller_form, smaller_form.errors)
 
         if not is_valid:
             all_valid = False
