@@ -1,5 +1,8 @@
 """Stores sections of larger forms
 
+For IntegerFields and DecimalFields, it is automatically checked if the
+value can be coerced into an integer. If not, the validation fails
+
 Author: Matthias van den Belt
 """
 
