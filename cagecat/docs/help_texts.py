@@ -12,17 +12,18 @@ Author: Matthias van den Belt
 """
 
 from cagecat.const import fasta_extensions, genbank_extensions
+from cagecat.forms.valid_input_cblaster import malicious_characters
 
 job_details = {
     'job_title': {
         'title': 'Job title',
         'module': '',
-        'text': 'Enter a job title to label your analyses and enable quick identification of your executed jobs.\n\nRequired: no\n\nMaximum length: 60 characters'
+        'text': f'Enter a job title to label your analyses and enable quick identification of your executed jobs.\n\nRequired: no\n\nMaximum length: 60 characters\nInvalid characters: {malicious_characters}'
     },
     'email_notification': {
         'title': 'Email notification',
         'module': '',
-        'text': 'Enter your e-mail to get notified when your job has finished. Your email will be removed from our database after one notification mail.\n\nRequired: no'
+        'text': f'Enter your e-mail to get notified when your job has finished. Your email will be removed from our database after one notification mail.\n\nRequired: no\n\nInvalid characters: {malicious_characters}'
     }
 }
 
