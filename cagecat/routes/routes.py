@@ -44,7 +44,7 @@ def output_files_explanation():
 
 @app.route('/invalid-submission')
 def invalid_submission():
-    return show_template('incorrect_submission.html', help_enabled=False)
+    return show_template('invalid_submission.html', help_enabled=False)
 
 @app.route("/help")
 def help_page() -> str:
