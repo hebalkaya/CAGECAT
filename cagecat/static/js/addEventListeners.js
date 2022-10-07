@@ -149,6 +149,6 @@ function addCblasterSearchListeners(){
     );
 
     addListener('genomeFiles', 'change',
-        getGenBankFileNames
+        readFileContents
     );
 }
