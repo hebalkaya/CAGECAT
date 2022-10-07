@@ -72,7 +72,7 @@ class JobInfoForm(Form):
 
     mail_address = EmailField(
         label=u'Email address for notification',
-        validators=[val.length(max=100)],
+        validators=[val.length(max=100), is_safe_string_value],
         description='email_notification',
         render_kw={
             'class': ' ',
@@ -173,13 +173,11 @@ class SearchSectionForm(Form):
 
     hitlist_size = IntegerField(
         label=u'Maximum hits',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=10000)],
         description='max_hits',
         default=500,
         id='max_hits',
         render_kw={
-            'min': 1,
-            'max': 10000,
             'step': 1
         }
     )
@@ -229,36 +227,30 @@ class ClusteringSectionForm(Form):
 
     percentageQueryGenes = IntegerField(
         label=u'Percentage',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=100)],
         description='percentageQueryGenes',
         default=0,
         render_kw={
-            'min': 0,
-            'max': 100,
             'step': 1
         }
     )
 
     min_unique_query_hits = IntegerField(
         label=u'Min. unique query hits',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=150)],
         description='min_unique_query_hits',
         default=3,
         render_kw={
-            'min': 0,
-            'max': 150,
             'step': 1
         }
     )
 
     min_hits_in_clusters = IntegerField(
         label=u'Min. hits in clusters',
-        validators=[val.input_required(), is_safe_string_value],
+        validators=[val.input_required(), is_safe_string_value, val.number_range(min=0, max=150)],
         description='min_hits_in_clusters',
         default=3,
         render_kw={
-            'min': 0,
-            'max': 150,
             'step': 1
         }
     )
