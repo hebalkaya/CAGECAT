@@ -43,18 +43,19 @@ from cagecat.db_utils import Statistic
 app.register_blueprint(tools, url_prefix="/tools")
 app.register_blueprint(result, url_prefix="/results")
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 # for custom instances
-if Statistic.query.filter_by(name="finished").first() is None:
-    stats = [Statistic(name="finished"),
-             Statistic(name="failed")]
-    # Maybe some additional statistics
+    if Statistic.query.filter_by(name="finished").first() is None:
+        stats = [Statistic(name="finished"),
+                 Statistic(name="failed")]
+        # Maybe some additional statistics
 
-    for s in stats:
-        db.session.add(s)
+        for s in stats:
+            db.session.add(s)
 
-    db.session.commit()
+        db.session.commit()
 
 # add_header Content-Security-Policy "script-src 'self' *.googleapis.com cdnjs.cloudflare.com cdn.jsdelivr.net; frame-src 'self'";
 # csp_headers = {
@@ -88,7 +89,7 @@ csp_headers =   "frame-src 'self'; " \
                 "ajax.googleapis.com " \
                 "cdnjs.cloufdare.com " \
                 "cdn.jsdelivr.net " \
- \
+
     # js_pattern = r'<body .+onload="(.+)">'
 js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
 # TODO: make sure that no newlines are there JS as this gives errors in nginx --> error in regex??
