@@ -109,6 +109,8 @@ def invalid_method(error):  # should have 1 parameter, doesn't have to be used
 @app.route(submit_url, methods=["POST"])
 def submit_job() -> str:
     """Handles job submissions by putting it onto the Redis queue
+    # TODO: form validation should be before creating directories,
+       otherwise many empty directories will be created for jobs that are actually invalid
 
     Input:
         No inputs
