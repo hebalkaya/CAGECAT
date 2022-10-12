@@ -137,7 +137,8 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
         if children:  # empty string evaluates to False
             for j_id in children.split(","):
                 child_job = fetch_job_from_db(j_id)
-                connected_jobs.append((child_job.id, child_job.title, child_job.job_type, child_job.status, "child"))
+                if child_job is not None:
+                    connected_jobs.append((child_job.id, child_job.title, child_job.job_type, child_job.status, "child"))
 
     else:
         main_job = fetch_job_from_db(job.main_search_job)
@@ -145,7 +146,8 @@ def get_connected_jobs(job: t.Optional[dbJob]) -> \
 
         if job.depending_on != "null":
             parent_job = fetch_job_from_db(job.depending_on)
-            connected_jobs.append((parent_job.id, parent_job.title, parent_job.job_type, parent_job.status, "depending"))
+            if parent_job is not None:
+                connected_jobs.append((parent_job.id, parent_job.title, parent_job.job_type, parent_job.status, "depending"))
 
     return connected_jobs
 
