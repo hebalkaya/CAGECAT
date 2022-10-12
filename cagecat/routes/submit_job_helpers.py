@@ -257,7 +257,7 @@ def save_file(file_obj: werkzeug.datastructures.FileStorage,
     """
     fn = werkzeug.utils.secure_filename(file_obj.filename)
     if fn:
-
+        create_directories(job_id)
         file_path = os.path.join(f"{jobs_dir}", job_id,
                                  "uploads", fn)
         file_obj.save(file_path)

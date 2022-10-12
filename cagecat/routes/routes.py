@@ -135,14 +135,11 @@ def submit_job() -> str:
     # Note that the "{module}PreviousType" is submitted via the form, but is
     # only used if a previous job ID or previous session file will be used
 
-    create_directories(job_id)
-
     if job_type == "search":
         # first check if the base form is valid
         if not validate_full_form(CblasterSearchBaseForm, request.form):
             return redirect(url_for('invalid_submission'))
 
-        file_path, job_type = prepare_search(job_id, job_type)
         forms_to_validate = []
         if job_type == 'recompute':
             forms_to_validate.append(CblasterRecomputeForm)
@@ -166,6 +163,8 @@ def submit_job() -> str:
         for form_type in forms_to_validate:
             if not validate_full_form(form_type, request.form):
                 return redirect(url_for('invalid_submission'))
+
+        file_path, job_type = prepare_search(job_id, job_type)
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
