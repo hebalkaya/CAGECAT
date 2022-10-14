@@ -199,6 +199,9 @@ def get_stages(job_type, contents, options, job_id):
 
 
 def parse_search_mode(options):
+    if options is None:
+        return options
+
     if options.count('&') == 0:
         mode = options.split('=')[-1]
     else:
