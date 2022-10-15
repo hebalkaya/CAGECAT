@@ -4,6 +4,7 @@ Author: Matthias van den Belt
 """
 
 import cagecat.workers.workers as w
+from cagecat import app
 from cagecat.workers.workers_helpers import post_job_formalities, pre_job_formalities
 
 function_dict = {
@@ -65,10 +66,11 @@ class CAGECATJob:
         return '&'.join(stage_options)
 
     def execute(self, *args, **kwargs):
-        pre_job_formalities(self.job_id)
+        with app.app_context():
+            pre_job_formalities(self.job_id)
 
-        job_type = self.options['job_type'] if self.job_type is None else self.job_type
-        func = function_dict[job_type]
+            job_type = self.options['job_type'] if self.job_type is None else self.job_type
+            func = function_dict[job_type]
 
-        exit_code = func(*args, **kwargs)
-        post_job_formalities(self.job_id, exit_code)
+            exit_code = func(*args, **kwargs)
+            post_job_formalities(self.job_id, exit_code)
