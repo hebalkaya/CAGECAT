@@ -7,7 +7,7 @@ import decimal
 
 from wtforms import ValidationError
 
-malicious_characters = ':;“`"\'%$#>^&*<>/\\{}[]?|=-~'
+malicious_characters = ':;“`"\'%$#>^&*<>/\\{}[]?|=~'
 
 def is_safe_string_value(form, field):
     if field.data is None:
