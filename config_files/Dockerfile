@@ -14,7 +14,7 @@ RUN apt update
 RUN apt-get install -y supervisor redis zip hmmer nginx systemd nano htop cron ncdu ncbi-entrez-direct diamond-aligner zip
 RUN apt install -y default-jdk
 
-RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi genomicsqlite Flask-WTF
+RUN pip3 install rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz uwsgi genomicsqlite Flask-WTF ncbi-genome-download
 
 ### Using Bioconda for antiSmash dependencies installation
 # intall Bioconda
@@ -32,7 +32,7 @@ RUN /miniconda3/condabin/conda install hmmer2 hmmer diamond fasttree prodigal bl
 ##
 
 # Install Python packages
-RUN /miniconda3/bin/pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz genomicsqlite Flask-WTF
+RUN /miniconda3/bin/pip3 install jinja2==3.0.1 rq Flask more_itertools Flask_SQLAlchemy redis Werkzeug clinker wtforms pytz genomicsqlite Flask-WTF ncbi-genome-download
 RUN /miniconda3/condabin/conda init
 
 # for antismash
