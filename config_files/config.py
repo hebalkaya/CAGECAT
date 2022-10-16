@@ -15,17 +15,10 @@ period_to_keep_job_results = 31
 domain = 'https://cagecat.bioinformatics.nl/'
 NCBI_ftp_base_url = 'ftp.ncbi.nlm.nih.gov'
 
-hmm_db_creation_conf = {
-    'sleeping_time': 60,
-    'cpus': '10',
-    'batch_size': '30'}
-
 thresholds = {
     'maximum_clusters_to_extract': 150,
     'maximum_gne_samples': 300,
     'max_clusters_to_plot': 75,
-    "prokaryotes_min_number_of_genomes": 50,
-    'fungi_min_number_of_genomes': 10
 }
 
 email_footer_msg = f'''Thank you for using our service. 
