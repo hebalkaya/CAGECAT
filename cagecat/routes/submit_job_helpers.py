@@ -12,6 +12,7 @@ import werkzeug.datastructures
 import werkzeug.utils
 
 from flask import request
+from wtforms import Form
 
 from cagecat import q, db
 from cagecat.classes import CAGECATJob
@@ -196,23 +197,19 @@ def get_parent_job(new_job: CAGECATJob,
         new_job.options[key] if is_last_job else new_job.file_path.split(os.sep)[2])
 
 
-def validate_full_form(form_type, request_form):
+def validate_full_form(form_type, request_form) -> Form:
+    errors = {}
     standard_attributes = ('Meta', 'meta', 'form_errors', 'errors', 'data', 'populate_obj', 'process', 'validate')
     large_form = form_type(request_form)
-    all_valid = True
 
     all_forms = [attr for attr in dir(large_form) if not attr.startswith('_') and attr not in standard_attributes]
 
     for form in all_forms:
         smaller_form = large_form.__getattribute__(form)
         smaller_form.process(request_form)
+        smaller_form.validate()
 
-        is_valid = smaller_form.validate()
-
-        if not is_valid:
-            all_valid = False
-
-    return all_valid
+    return errors
 
 
 def generate_job_id(id_len: int = 15) -> str:

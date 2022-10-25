@@ -21,7 +21,8 @@ from cagecat.forms.forms import CblasterSearchBaseForm, CblasterRecomputeForm, C
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerBaseForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterSearchHMMForm, \
     CblasterExtractSequencesFormHMM, GeneralForm
 from cagecat.general_utils import show_template, get_server_info, send_email
-from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, create_directories, prepare_search, get_previous_job_properties, \
+from cagecat.routes.routes_helpers import show_invalid_submission
+from cagecat.routes.submit_job_helpers import validate_full_form, generate_job_id, prepare_search, get_previous_job_properties, \
     save_file, enqueue_jobs
 from cagecat.tools.tools_helpers import get_search_mode_from_job_id
 from config_files.config import cagecat_version, thresholds
@@ -41,10 +42,6 @@ def home_page():
 @app.route('/output-files')
 def output_files_explanation():
     return show_template('output_descriptions.html', help_enabled=False)
-
-@app.route('/invalid-submission')
-def invalid_submission():
-    return show_template('invalid_submission.html', help_enabled=False)
 
 @app.route("/help")
 def help_page() -> str:
@@ -124,8 +121,9 @@ def submit_job() -> str:
         - IOError: failsafe for when for some reason no jobID or sessionFile
             was given
     """
-    if not validate_full_form(GeneralForm, request.form):
-        return redirect(url_for('invalid_submission'))
+    errors = validate_full_form(GeneralForm, request.form)
+    if errors:
+        return show_invalid_submission(errors)
 
     new_jobs = []
 
@@ -137,8 +135,9 @@ def submit_job() -> str:
 
     if job_type == "search":
         # first check if the base form is valid
-        if not validate_full_form(CblasterSearchBaseForm, request.form):
-            return redirect(url_for('invalid_submission'))
+        errors = validate_full_form(CblasterSearchBaseForm, request.form)
+        if errors:
+            return show_invalid_submission(errors)
 
         forms_to_validate = []
         if job_type == 'recompute':
@@ -161,8 +160,9 @@ def submit_job() -> str:
             raise ValueError('Incorrect job type returned')
 
         for form_type in forms_to_validate:
-            if not validate_full_form(form_type, request.form):
-                return redirect(url_for('invalid_submission'))
+            errors = validate_full_form(form_type, request.form)
+            if errors:
+                return show_invalid_submission(errors)
 
         file_path, job_type = prepare_search(job_id, job_type)
 
@@ -172,8 +172,9 @@ def submit_job() -> str:
                                    file_path=file_path))
 
     elif job_type == "gne":
-        if not validate_full_form(CblasterGNEForm, request.form):
-            return redirect(url_for('invalid_submission'))
+        errors = validate_full_form(CblasterGNEForm, request.form)
+        if errors:
+            return show_invalid_submission(errors)
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
@@ -192,8 +193,9 @@ def submit_job() -> str:
         else:
             form = CblasterExtractSequencesForm
 
-        if not validate_full_form(form, request.form):
-            return redirect(url_for('invalid_submission'))
+        errors = validate_full_form(form, request.form)
+        if errors:
+            return show_invalid_submission(errors)
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
@@ -203,8 +205,9 @@ def submit_job() -> str:
                                               f"{request.form['prev_job_id']}_session.json")))
 
     elif job_type == "extract_clusters":
-        if not validate_full_form(CblasterExtractClustersForm, request.form):
-            return redirect(url_for('invalid_submission'))
+        errors = validate_full_form(CblasterExtractClustersForm, request.form)
+        if errors:
+            return show_invalid_submission(errors)
 
         prev_job_id = fetch_job_from_db(
             request.form["prev_job_id"]).main_search_job
@@ -222,8 +225,9 @@ def submit_job() -> str:
                                               f"{prev_job_id}_session.json")))
 
     elif job_type == "clinker_query":
-        if not validate_full_form(CblasterVisualisationForm, request.form):
-            return redirect(url_for('invalid_submission'))
+        errors = validate_full_form(CblasterVisualisationForm, request.form)
+        if errors:
+            return show_invalid_submission(errors)
 
         new_jobs.append(CAGECATJob(job_id=job_id,
                                    options=request.form,
@@ -233,12 +237,14 @@ def submit_job() -> str:
                                                           f"{request.form['prev_job_id']}_session.json")))
 
     elif job_type == "clinker":
-        if not validate_full_form(ClinkerBaseForm, request.form):
-            return redirect(url_for('invalid_submission'))
+        errors = validate_full_form(ClinkerBaseForm, request.form)
+        if errors:
+            return show_invalid_submission(errors)
 
         if 'clinkerEnteredJobId' in request.form:  # indicates it was downstream
-            if not validate_full_form(ClinkerDownstreamForm, request.form):
-                return redirect(url_for('invalid_submission'))
+            errors = validate_full_form(ClinkerDownstreamForm, request.form)
+            if errors:
+                return show_invalid_submission(errors)
 
             prev_job_id = request.form["clinkerEnteredJobId"]
 
@@ -280,8 +286,9 @@ def submit_job() -> str:
                 depending_on = new_jobs[-1].job_id
 
         elif request.files:  # started as individual tool
-            if not validate_full_form(ClinkerInitialForm, request.form):
-                return redirect(url_for('invalid_submission'))
+            errors = validate_full_form(ClinkerInitialForm, request.form)
+            if errors:
+                return show_invalid_submission(errors)
 
             for f in request.files.getlist('fileUploadClinker'):
                 if f.filename:
@@ -313,7 +320,7 @@ def submit_job() -> str:
                   email=last_job.email,
                   j_type=last_job.job_type)
 
-    return show_template('redirect.html', url=url)
+    return show_template('redirect.html', url=url)  # redirect to store job info at client side
 
 
 @app.route('/submit-feedback', methods=['POST'])
