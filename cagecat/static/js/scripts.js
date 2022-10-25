@@ -520,6 +520,8 @@ function changeSearchMode(mode){
     let radioFasta = document.getElementById('radioFasta');
 
     let ncbiDiv = document.getElementById('ncbiEntriesDiv');
+    let intermediateGenesDiv = document.getElementById('intermediateGenesDiv');
+    let intermediateGenesSectionFieldSet = document.getElementById('intermediateGenesSection');
 
     document.getElementById("requiredSequencesSelector").options.length = 0;
 
@@ -533,7 +535,9 @@ function changeSearchMode(mode){
         radioFasta.click()
         document.getElementById('entrez_query').removeAttribute('disabled');
         document.getElementById('database_type').removeAttribute('disabled');
-        showElement('intermediateGenesDiv');
+
+        intermediateGenesDiv.classList.remove('no-display');
+        intermediateGenesSectionFieldSet.removeAttribute('disabled');
     }
     else if (mode === 'hmm'){
         fieldsetDiv.classList.remove('no-display');
@@ -547,7 +551,8 @@ function changeSearchMode(mode){
         document.getElementById('entrez_query').setAttribute('disabled', 'disabled');
         document.getElementById('database_type').setAttribute('disabled', 'disabled');
 
-        hideElement('intermediateGenesDiv');
+        intermediateGenesDiv.classList.add('no-display');
+        intermediateGenesSectionFieldSet.setAttribute('disabled', 'disabled');
     }
     else if (mode === 'combi_remote'){
         fieldsetDiv.classList.remove('no-display');
@@ -559,7 +564,9 @@ function changeSearchMode(mode){
         radioFasta.click()
         document.getElementById('entrez_query').removeAttribute('disabled');
         document.getElementById('database_type').removeAttribute('disabled');
-        hideElement('intermediateGenesDiv');
+
+        intermediateGenesDiv.classList.add('no-display');
+        intermediateGenesSectionFieldSet.setAttribute('disabled', 'disabled');
     }
     else {
         console.log('Invalid mode');
