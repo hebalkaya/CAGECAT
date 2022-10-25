@@ -208,6 +208,7 @@ def validate_full_form(form_type, request_form) -> Form:
         smaller_form = large_form.__getattribute__(form)
         smaller_form.process(request_form)
         smaller_form.validate()
+        errors.update(smaller_form.errors)
 
     return errors
 
