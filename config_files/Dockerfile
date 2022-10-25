@@ -58,6 +58,6 @@ RUN mv /repo/config_files/cagecat /etc/nginx/sites-available/cagecat
 
 RUN ln -s /etc/nginx/sites-available/cagecat /etc/nginx/sites-enabled
 
-RUN chmod +x /repo/maintenance/maint_backup.sh /repo/hmm_database_creation/construct_hmm_databases.sh /repo/maintenance/maint_remove_old_jobs.py /repo/hmm_database_creation/create_databases.py
+RUN chmod +x /repo/maintenance/maint_backup.sh /repo/maintenance/maint_remove_old_jobs.py
 
 CMD ["/usr/bin/supervisord", "-c", "/repo/config_files/supervisord.conf"]
