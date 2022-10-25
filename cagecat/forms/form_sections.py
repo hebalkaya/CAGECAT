@@ -65,7 +65,6 @@ class JobInfoForm(Form):
         validators=[val.length(max=60), is_safe_string_value],
         description='job_title',
         render_kw={
-            'class': ' ',
             'placeholder': 'Experiment number'
         }
     )
@@ -75,7 +74,6 @@ class JobInfoForm(Form):
         validators=[val.length(max=100), is_safe_string_value],
         description='email_notification',
         render_kw={
-            'class': ' ',
             'placeholder': 'username@institution.com'
         }
     )
