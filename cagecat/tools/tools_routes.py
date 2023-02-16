@@ -193,6 +193,6 @@ def clinker() -> str:
     return show_template('clinker.html',
                          all_forms=form,
                          query_file_extensions=','.join(genbank_extensions),
-                         show_examples=show_examples,
+                         show_examples=show_examples, thresholds=thresholds,
                          prev_job_id=prev_job_id,
                          scripts_to_execute=';'.join(scripts))
