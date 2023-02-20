@@ -289,7 +289,7 @@ def get_plot_contents(job_id) -> str:
     resp.headers['NO-CSP'] = 1
     return resp
 
-@result.route("/logs/<job_id>")
+@result.route("/log/<job_id>")
 def get_job_log(job_id) -> str:
     job = fetch_job_from_db(job_id)
     if job is None:
