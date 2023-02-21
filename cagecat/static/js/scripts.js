@@ -1,5 +1,6 @@
 // var ncbiPattern = "^[A-Z]{3}(\\d{5}|\\d{7})(\\.\\d{1,3})? *$"
 // Examples: "ABC12345", "ABC9281230.999", "PAK92813.22" up to .999th version
+var maxJobsToShow = 25
 var jobIDPattern = "^([A-Z]\\d{3}){3}[A-Z]\\d{2}$"
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var checkmarkPath = 'https://cagecat.bioinformatics.nl/static/images/checkmark.svg'
@@ -370,8 +371,16 @@ function showPreviousJobs(disableBodyOnLoad){
     }
 
     let overview = document.getElementById("previousJobsOverview");
+    let numberOfJobsToShow;
+    if (localStorage.length > maxJobsToShow){
+        numberOfJobsToShow = maxJobsToShow
+    }
+    else {
+        numberOfJobsToShow = localStorage.length
+    }
+    // let maxJobsToShow = if (localStorage.length > 25) {25} else {localStorage.length}
 
-    for (let i=0; i <localStorage.length; i++){
+    for (let i=0; i <numberOfJobsToShow; i++){
         try{
             let jobId = localStorage.getItem(i).split(";")[0];
 
