@@ -4,3 +4,5 @@ __pycache__/*
 
 /config_files/sensitive.py
 /config_files/config.ini
+
+/cagecat/database.db
