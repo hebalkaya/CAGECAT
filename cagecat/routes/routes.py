@@ -1,6 +1,5 @@
-"""Stores routes for Flask web application
-
-Author: Matthias van den Belt
+"""
+Stores routes for Flask web application
 """
 
 # package imports
@@ -29,12 +28,7 @@ from config_files.config import cagecat_version, thresholds
 from config_files.sensitive import sender_email
 
 
-# route definitions
-
-@app.route('/cagecat')
-def home_page_old_url():
-    return redirect(url_for('home_page'))
-
+# Route definitions
 @app.route('/')
 def home_page():
     return show_template('index.html', help_enabled=False)
