@@ -1,79 +1,230 @@
-{% extends "base.html" %}
-{% from "macros.html" import showNavigationBar %}
-
-{% block navigationBar %}
-    {{ showNavigationBar('home') }}
-{% endblock %}
+<title>Cagecat - Home</title>
+{% extends 'base.html' %}
 
 {% block content %}
-    <div class="centered">
-        <h1>Welcome to CAGECAT</h1>
-        <h2>the online CompArative GEne Cluster Analysis Toolbox</h2>
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
 
-        <div class="index-page-centered">
-            <p class="index-page-link">
-                <a href="{{ url_for('tutorial') }}">Introductory tutorial</a>
-            </p>
-            <p class="index-page-link">
-                <a href="{{ url_for('help_page') }}">Contact page</a>
-            </p>
-            <p class="index-page-link">
-                <a href="{{ url_for('tools.tools_explanation') }}">Tool explanations</a>
-            </p>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-2 pt-lg-0 order-2 order-lg-1 flex-column justify-content-center">
+          <h1><b>C</b>omp<b>A</b>rative <b>GE</b>ne <b>C</b>luster <b>A</b>nalysis <b>T</b>oolbox</h1>
+            <h2>version 2.0</h2>
+            <!-- <a href="index.html" class="logo"><img src="/static/img/logo.png" alt="" class="img-fluid"></a> -->
+          <ul>
+              <p>Discover the essentials of gene cluster analysis with CAGECAT, your scientific tool for in-depth
+                  exploration of gene clusters. CAGECAT simplifies comparative analysis by integrating advanced NCBI
+                  searches for accurate homology searches and visualisation modules generating publication-quality gene
+                  cluster comparison figures. It is designed for researchers seeking a straightforward yet powerful
+                  approach to uncovering evolutionary relationships and taxonomic distributions in genomic research.</p>
+          </ul>
+
+          <div class="mt-3">
+            <a href="#toolbox" class="btn-getstarted scrollto">Get Started</a>
+          </div>
         </div>
-
-        <h4>Available entry points:</h4>
-        <div class="index-page-centered">
-            <div class="width-50p-left">
-                <h3>cblaster</h3>
-            </div>
-            <div class="width-50p-left">
-                <h3>clinker</h3>
-            </div>
-            <div class="width-50p-left">
-                <p>Homologous gene cluster searches</p>
-                <a href="{{ url_for('tools.cblaster_search') }}"><button class="button width-40p">Start</button></a>
-                <a href="{{ url_for('tools.tools_explanation') }}#cblasterTitle"><button class="button width-40p">Explanation</button></a>
-
-                <div class="centered">
-                    <a target="_blank" href="https://dx.doi.org/10.1093/bioadv/vbab016"><button class="button width-40p">Publication</button></a>
-                </div>
-
-                <p>Input types:</p>
-                <ul>
-                    <li>Protein sequences (FASTA)</li>
-                    <li>Nucleotide sequences (FASTA)</li>
-                    <li>Gene cluster (GenBank)</li>
-                    <li>NCBI accessions (GenPept)</li>
-                    <li>HMM profile identifiers</li>
-                </ul>
-            </div>
-
-            <div class="width-50p-left">
-                <p class="subtitle">Generating publication-quality gene cluster comparison figures</p>
-                <a href="{{ url_for('tools.clinker') }}"><button class="button width-40p">Start</button></a>
-                <a href="{{ url_for('tools.tools_explanation') }}#clinkerTitle"><button class="button width-40p">Explanation</button></a>
-
-                <div class="centered">
-                    <a target="_blank" href="http://dx.doi.org/10.1093/bioinformatics/btab007"><button class="button width-40p">Publication</button></a>
-                </div>
-
-                <p>Input types:</p>
-                <ul>
-                    <li>Gene cluster (GenBank)</li>
-                </ul>
-            </div>
+        <div class="col-lg-6 order-1 order-lg-2 hero-img">
+          <img src="/static/img/logo.png" class="img-fluid" alt="">
         </div>
-
-        <br/>
-        <div>
-            <hr/>
-            <h4>Workflow of cblaster</h4>
-            <a target="_blank" href="https://dx.doi.org/10.1093/bioadv/vbab016">
-                <img height="450px" src="{{ url_for('static', filename='images/cblaster_workflow.svg') }}" alt="cblaster workflow"/>
-            </a>
-
-        </div>
-        <br/>
+      </div>
     </div>
+
+  </section><!-- End Hero -->
+
+   <!-- ======= Toolbox Section ======= -->
+    <section id="toolbox" class="toolbox">
+      <div class="container">
+          <h1>Toolbox</h1>
+
+        <div class="row">
+
+          <div class="col-lg-6 mt-4 mt-lg-4">
+            <a href="/tools/search" class="tool-link">
+                <div class="box">
+                  <img src="/static/img/tools/cblaster-workflow.png" alt="Cblaster workflow">
+                  <h4>Cblaster</h4>
+                    <p>Blast your cluster query against NCBI</p>
+                </div>
+            </a>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-4">
+            <div class="box">
+              <img src="/static/img/tools/clinker-workflow.png" alt="Clinker workflow">
+              <h4>Clinker</h4>
+                <p>Visualise the similarity of the hits</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-4">
+            <div class="box">
+              <img src="/static/img/tools/makedb-workflow.png" alt="Makedb workflow">
+              <h4>Makedb</h4>
+                <p>Curate your own local database</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-4">
+            <div class="box">
+              <img src="/static/img/tools/cblasterdb-workflow.png" alt="Cblaster - database workflow">
+              <h4>Cblaster - database</h4>
+                <p>Blast your cluster query against localdb</p>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </section><!-- End Toolbox Section -->
+
+      <!-- ======= How to cite Section ======= -->
+    <section id="how-to-cite" class="how-to-cite">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>How to cite</h2>
+          <p>If you find CAGECAT useful, please cite us:</p>
+        </div>
+
+          <div class="row justify-content-center"> <!-- Center the column in the row -->
+            <div class="col-lg-6 mt-4 mt-lg-0 mx-auto">
+        <div class="accordion" id="accordionCitation">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMLA" aria-expanded="false" aria-controls="collapseMLA">
+        MLA
+      </button>
+    </h2>
+    <div id="collapseMLA" class="accordion-collapse collapse show" data-bs-parent="#accordionCitation">
+      <div class="accordion-body">
+          van den Belt, Matthias, et al. "CAGECAT: The CompArative GEne Cluster Analysis Toolbox for rapid search and visualisation of homologous gene clusters." <i>BMC bioinformatics</i> 24.1 (2023): 1-8.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAPA" aria-expanded="false" aria-controls="collapseAPA">
+        APA
+      </button>
+    </h2>
+    <div id="collapseAPA" class="accordion-collapse collapse" data-bs-parent="#accordionCitation">
+      <div class="accordion-body">
+          van den Belt, M., Gilchrist, C., Booth, T. J., Chooi, Y. H., Medema, M. H., & Alanjary, M. (2023). CAGECAT: The CompArative GEne Cluster Analysis Toolbox for rapid search and visualisation of homologous gene clusters. <i>BMC bioinformatics</i>, 24(1), 1-8.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChicago" aria-expanded="false" aria-controls="collapseChicago">
+        Chicago
+      </button>
+    </h2>
+    <div id="collapseChicago" class="accordion-collapse collapse" data-bs-parent="#accordionCitation">
+      <div class="accordion-body">
+        van den Belt, Matthias, Cameron Gilchrist, Thomas J. Booth, Yit-Heng Chooi, Marnix H. Medema, and Mohammad Alanjary. "CAGECAT: The CompArative GEne Cluster Analysis Toolbox for rapid search and visualisation of homologous gene clusters." <i>BMC bioinformatics</i> 24, no. 1 (2023): 1-8.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHarvard" aria-expanded="false" aria-controls="collapseHarvard">
+        Harvard
+      </button>
+    </h2>
+    <div id="collapseHarvard" class="accordion-collapse collapse" data-bs-parent="#accordionCitation">
+      <div class="accordion-body">
+        van den Belt, M., Gilchrist, C., Booth, T.J., Chooi, Y.H., Medema, M.H. and Alanjary, M., 2023. CAGECAT: The CompArative GEne Cluster Analysis Toolbox for rapid search and visualisation of homologous gene clusters. <i>BMC bioinformatics</i>, 24(1), pp.1-8.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVancouver" aria-expanded="false" aria-controls="collapseVancouver">
+        Vancouver
+      </button>
+    </h2>
+    <div id="collapseVancouver" class="accordion-collapse collapse" data-bs-parent="#accordionCitation">
+      <div class="accordion-body">
+        van den Belt M, Gilchrist C, Booth TJ, Chooi YH, Medema MH, Alanjary M. CAGECAT: The CompArative GEne Cluster Analysis Toolbox for rapid search and visualisation of homologous gene clusters. BMC bioinformatics. 2023 Dec;24(1):1-8.
+      </div>
+    </div>
+  </div>
+</div>
+            </div>
+          </div>
+      </div>
+    </section><!-- End How to cite Section -->
+
+    <!-- ======= About Section ======= -->
+    <!-- Not required at the moment
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <h2><b>C</b>omp<b>A</b>rative <b>GE</b>ne <b>C</b>luster <b>A</b>nalysis <b>T</b>oolbox</h2>
+            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assum perenda sruen jonee trave</h3>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            <p>
+              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+              culpa qui officia deserunt mollit anim id est laborum
+            </p>
+            <ul>
+              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequa</li>
+              <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate velit</li>
+              <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in</li>
+            </ul>
+            <p class="fst-italic">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+              magna aliqua.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section> --><!-- End About Section -->
+
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+          <p>You can contact us regarding the difficulties you are facing or simply for leaving a feedback.</p>
+        </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-0 mx-auto">
+            <form action="/forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+              </div>
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div>
+
+
+      </div>
+    </section><!-- End Contact Section -->
+
 {% endblock %}
