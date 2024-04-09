@@ -65,7 +65,7 @@ with app.app_context():
 # Define Content Security Policy headers
 csp_headers =   "frame-src 'self'; " \
                 "frame-ancestors 'self'; " \
-                "style-src 'self' cdnjs.cloudflare.com fonts.googleapis.com; " \
+                "style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; " \
                 "script-src " \
                 "'unsafe-hashes' " \
                 "'sha256-VTAmOhFJf7NXPaOoDtmGnzgeTy5irawqE7Gps5UfNaU=' " \
