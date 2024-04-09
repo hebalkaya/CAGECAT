@@ -4,11 +4,15 @@ Author: Matthias van den Belt
 """
 
 # package imports
-from flask import Blueprint, request
+import os
+from flask import Blueprint, request, render_template
+from flask_wtf import FlaskForm
+
+from cagecat.forms.cblaster_forms import CblasterSearchForm # Replaced: from cagecat.forms.forms import CblasterSearchForm (v1)
 
 # own project imports
 from cagecat.tools.tools_helpers import read_headers, parse_selected_cluster_numbers, get_search_mode_from_job_id
-from cagecat.forms.forms import CblasterSearchForm, CblasterGNEForm, CblasterExtractSequencesForm, \
+from cagecat.forms.forms import CblasterGNEForm, CblasterExtractSequencesForm, \
     CblasterExtractClustersForm, CblasterVisualisationForm, ClinkerDownstreamForm, ClinkerInitialForm, CblasterExtractSequencesFormHMM
 from cagecat.general_utils import show_template, available_hmm_databases
 from cagecat.db_utils import fetch_job_from_db
@@ -41,9 +45,19 @@ def tools_explanation() -> str:
 
 
 @tools.route("/search/rerun/<prev_run_id>")
-@tools.route("/search")
-def cblaster_search(prev_run_id: str = None) -> str:
-    """Shows home page to the user
+@tools.route("/search", methods=['GET', 'POST'])
+def cblaster_search_form():
+
+    form = CblasterSearchForm()
+
+    return show_template('cblaster_search.html', form=form)
+
+    """
+    Old (v1) def cblaster_search_form()
+    Kept here in case some parts are needed to be integrated in the future.
+    Currently, only v2 front end is done. Might need the following in back end development
+
+    Shows home page to the user
 
     Input:
         - prev_run_id: job ID of a previous run.
@@ -53,7 +67,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
 
     When the /rerun/<prev_run_id> is visited, the input fields where the user
     can enter previous job IDs are pre-filled with the given job ID
-    """
+
     if "type" in request.args:
         query_headers = [] if prev_run_id is None and request.args["type"] == "recompute" else read_headers(prev_run_id)
         module_to_show = request.args["type"]
@@ -81,7 +95,7 @@ def cblaster_search(prev_run_id: str = None) -> str:
                          query_file_extensions=','.join(fasta_extensions + genbank_extensions),
                          show_examples=show_examples,
                          scripts_to_execute=';'.join(scripts))
-
+"""
 
 @tools.route("/clinker_query", methods=["POST"])
 def clinker_query() -> str:
