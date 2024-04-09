@@ -12,6 +12,7 @@ import flask
 import redis
 import rq
 import re
+import secrets
 
 from flask import Flask, Response
 from flask_sqlalchemy import SQLAlchemy
@@ -62,23 +63,28 @@ with app.app_context():
 
         db.session.commit()
 
+# Generate a nonce
+nonce = base64.b64encode(secrets.token_bytes(16)).decode('utf-8')
+
 # Define Content Security Policy headers
-csp_headers =   "frame-src 'self'; " \
-                "frame-ancestors 'self'; " \
-                "style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; " \
-                "script-src " \
-                "'unsafe-hashes' " \
-                "'sha256-VTAmOhFJf7NXPaOoDtmGnzgeTy5irawqE7Gps5UfNaU=' " \
-                "'sha256-5NUfqwE5Ru7GwQSUKLQJ+U61xroMjwjJdR/FrbGlXgc=' " \
-                "'sha256-{0}' " \
-                "'sha256-UrGL39Ep7h0yuSfY4CfGceOqkSJzeEXxMLERfefe21Y=' " \
-                "'sha256-/JVZXUkfRbDAnK3DggeqeD6uf1+DxHFVlKZslbarBIQ=' " \
-                "'sha256-FUxXofRXGrzDcNbdjD1cl4gD5pHIv4v78rA6lMWng9A=' " \
-                "'sha256-W/mfD2v1UD18rRdrsJ6QIruFQ7N2AOXxVr4w+zQBJMY=' " \
-                "'self' " \
-                "ajax.googleapis.com " \
-                "cdnjs.cloufdare.com " \
-                "cdn.jsdelivr.net " \
+csp_headers =   f"frame-src 'self'; " \
+                f"frame-ancestors 'self'; " \
+                f"style-src 'self' cdnjs.cloudflare.com fonts.googleapis.com; " \
+                f"script-src " \
+                f"'unsafe-hashes' " \
+                f"'sha256-VTAmOhFJf7NXPaOoDtmGnzgeTy5irawqE7Gps5UfNaU=' " \
+                f"'sha256-5NUfqwE5Ru7GwQSUKLQJ+U61xroMjwjJdR/FrbGlXgc=' " \
+                f"'sha256-{nonce}' " \
+                f"'sha256-UrGL39Ep7h0yuSfY4CfGceOqkSJzeEXxMLERfefe21Y=' " \
+                f"'sha256-/JVZXUkfRbDAnK3DggeqeD6uf1+DxHFVlKZslbarBIQ=' " \
+                f"'sha256-FUxXofRXGrzDcNbdjD1cl4gD5pHIv4v78rA6lMWng9A=' " \
+                f"'sha256-W/mfD2v1UD18rRdrsJ6QIruFQ7N2AOXxVr4w+zQBJMY=' " \
+                f"'self' " \
+                f"ajax.googleapis.com " \
+                f"cdnjs.cloudflare.com " \
+                f"cdn.jsdelivr.net 'nonce-{nonce}' 'cdn.jsdelivr.net';"
+
+
 
 # Regex pattern to find JS code in response
 js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
