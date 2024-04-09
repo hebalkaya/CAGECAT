@@ -26,8 +26,8 @@ class CblasterSearchForm(FlaskForm):
         ('remote', 'Remote'),
         ('hmm', 'HMM'),
         ('remote_hmm', 'Remote+HMM'),
-        ('mibig', 'MIBiG 3.1'),
-        ('antismash', 'antiSMASH 4.0')
+        ('mibig', 'MIBiG'),
+        ('antismash', 'antiSMASH')
     ], default='remote')
 
     # Remote input type fields
