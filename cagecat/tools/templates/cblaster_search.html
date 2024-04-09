@@ -1,202 +1,164 @@
-{% extends "base.html" %}
-{% from "macros.html" import showNavigationBar %}
-{% from "macros.html" import renderHelpButton %}
-{% from 'macros.html' import renderJobDetailsInput %}
-{% from 'macros.html' import showRequiredInputsText %}
-{% from 'macros.html' import renderForm %}
+<title>Cagecat - Cblaster Search</title>
+{% extends 'base.html' %}
+{% from "form_macros.html" import render_form_group %}
 
 {% block scripts %};{{scripts_to_execute|safe}};{% endblock %}
 
-{% block navigationBar %}
-    {{ showNavigationBar('analyze') }}
-{% endblock %}
-
 {% block content %}
-    {% if module_to_show is none %}
-        {% set module_name = "Search" %}
-    {% else %}
-        {% set module_name = module_to_show.capitalize()  %}
-    {% endif %}
 
-    <h2 class="indent">{{ module_name }} (cblaster)</h2>
-    {{  showRequiredInputsText() }}
-
-<div id="searchModuleContent" class="moduleContent">
-<form method="post" enctype="multipart/form-data" action="{{url_for('submit_job')}}" name="searchOptionForm" id="searchOptionForm">
-    {{  add_csrf_line() }}
-    <input type="hidden" name="job_type" value="search" required="required"/>
-
-    <div>
-        <label class="fieldset-label" for="jobDetailsInputFieldset">Job description</label>
-        <fieldset id="jobDetailsInputFieldset">
-            {{ renderForm(all_forms.base.general.job_info) }}
-        </fieldset>
-    </div>
-
-    {% if prev_run_id is none %}
-    <label class="fieldset-label" for="inputSection">Input</label>
-    <fieldset id="inputSection">
-
-
-        <div class="radio-options">
-{#            {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
-            <label class="radioLabel">
-                <input type="radio"  class="radio-margin" value="remote" name="mode" id="remoteMode" checked="checked">Remote
-            </label>
-            <label class="radioLabel">
-                <input type="radio" value="hmm" name="mode" id="hmmMode">HMM
-            </label>
-            <label class="radioLabel">
-                <input type="radio" value="combi_remote" id="combiMode" name="mode">Remote + HMM
-            </label>
-
-            {{ renderHelpButton('searchMethod', false) }}
-
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+        <div class="container d-flex align-items-center justify-content-between py-4 px-2">
+            <h2>Cblaster Search</h2>
+              <ol>
+                <li><a href="/">Home</a></li>
+                <li>Cblaster</li>
+              </ol>
         </div>
 
-        <div class="radio-options" id="remoteOptionsSection">
-            <div>
-{#                    {{ renderForm(all_forms.search_modes) }} TODO: change to WTForms in future#}
-                <label class="radioLabel">
-                <input type="radio" class="radio-margin" value="file" checked="checked" id="radioFasta"
-                       name="inputType"/>File</label>
-                <label class="radioLabel">
-                <input type="radio" value="ncbi_entries" id="radioNCBIEntries"
-                       name="inputType"/>NCBI entries
-                </label>
-            </div>
+    </section><!-- End Breadcrumbs -->
 
-            <div class="div-margin" id="genomeFileUploadDiv">
-                {{ renderForm(all_forms.remote_input_types_file) }}
-
-
-                <div id="inputFileMessages"> {# messages div #}
-                    <br/>
-                    <span class="no-display info-message small-indent" id="selectedFileName"></span>
-                    <br/>
-
-                    <div class="no-display" id="fileUploadIncorExt">
-                        <span class="error-message" id="fileUploadIncorExtText"></span>
-                        <br/>
+    <!-- ======= Input Form ======= -->
+    <section class="inputform">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="container">
+                <!-- General input -->
+                <div class="row">
+                    <!-- Job description -->
+                    <div class="col-lg-6 mt-4">
+                        <h3>Job description</h3>
+                        {{ render_form_group(form.job_title) }}
+                        {{ render_form_group(form.institution_name) }}
+                        {{ render_form_group(form.email_address) }}
                     </div>
 
-                    <div class="no-display" id="sanitizationMessage">
-                        <span class="warning-message">Your input GenBank file will be sanitized (rewritten) to prevent formatting errors during job execution. Your sequences remain unaffected.</span>
-                        <br/>
+                    <!-- Search -->
+                    <div class="col-lg-6 mt-4">
+                        <h3>Search</h3>
+                        {{ render_form_group(form.entrez_query) }}
+                        {{ render_form_group(form.database, "form-select") }}
+                        {{ render_form_group(form.maximum_hits) }}
                     </div>
 
-                    <div class="no-display" id="nucleotideFastaWarning">
-                        <span class="warning-message">You selected a FASTA file with nucleotide sequences. Your input file will be sanitized (re-formatted) into a GenBank file.</span>
-                        <br/>
+                    <!-- Intermediate genes -->
+                    <div class="col-lg-6 mt-4">
+                        <h3>Intermediate genes</h3>
+                        <div class="form-check">
+                            {{ form.find_intermediate_genes(class="form-check-input") }}
+                            {{ form.find_intermediate_genes.label(class="form-check-label") }}
+                        </div>
+                        {{ render_form_group(form.maximum_distance) }}
+                        {{ render_form_group(form.maximum_clusters) }}
                     </div>
 
-                </div>
-            </div>
-
-{#                <div class="warning-message no-display small-indent" id="genpeptFileError">#}
-{#                    <span>You selected a GenBank file with protein sequences, which is actually a GenPept file. Please create a protein FASTA file from your GenPept file.</span>#}
-{#                    TODO: we can also create it for the user. Maybe for future#}
-{#                </div>#}
-
-            <div id="ncbiEntriesDiv" class="no-display">
-                {{ renderForm(all_forms.remote_input_types_ncbi_entries) }}
-            </div>
-
-        </div>
-    </fieldset>
-
-<div id="hmmFullFieldset" class="no-display">
-    <label class="fieldset-label" for="hmmSection">Hidden Markov Models (HMM)</label>
-    <fieldset id="hmmSection" disabled="disabled">
-            <div id="hmmProfilesDiv">
-
-{#            TODO: remove below if selectedGenus is added to WTForms#}
-                <div class="input-layer">
-                    <label class="select-label" for="selectedGenus">Genus*</label>
-                    <select class="select-options" required="required" name="selectedGenus" id="selectedGenus">
-
-                        {% for organism in organism_databases %}
-                            <optgroup label="{{ organism }}">
-                            {% for genus in organism_databases.get(organism) %}
-                                <option value="{{ organism }}_{{ genus }}">{{ genus }}</option>
-                            {% endfor %}
-                            </optgroup>
+                    <!-- Input -->
+                    <div class="col-lg-6 mt-4">
+                        <h3>Input</h3>
+                        <!-- Remote, HMM or Remote + HMM -->
+                        {% for subfield in form.input_type %}
+                            <div class="form-check form-check-inline">
+                                {{ subfield(class="form-check-input", id=subfield.data + "Checkbox") }}
+                                {{ subfield.label(class="form-check-label") }}
+                            </div>
                         {% endfor %}
-                    </select>
-                    {{ renderHelpButton('selectedGenus') }}
+                        <!-- Input type -->
+                        <!-- displayed only if one of the remote options are checked -->
+                        <div id="inputTypeSection" class="hidden">
+                            <h4>Input type</h4>
+                            {% for subfield in form.remote_input_type %}
+                            <div class="form-check form-check-inline">
+                                {{ subfield(class="form-check-input", id=subfield.data + "Checkbox") }}
+                                {{ subfield.label(class="form-check-label") }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- File upload -->
+                        <!-- displayed only if one of the remote options + file is checked -->
+                        <div id="fileSection" class="hidden">
+                            <div class="mt-4">
+                                <input class="form-control" type="file" id="formFile">
+                            </div>
+                        </div>
+
                 </div>
+                <!-- End General input -->
 
-                {{ renderForm(all_forms.hmm) }}
+                <!-- Advanced settings button -->
+                <div class="row">
+                    <div class="mt-3">
+                    <button class="btn btn-outline-success btn-lg w-100" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSection" aria-expanded="true" aria-controls="advancedSection">
+                        Advanced settings
+                    </button>
+                    </div>
+                </div>
             </div>
-    </fieldset>
-</div>
 
-<div id="searchSectionFullFieldset">
-    <label class="fieldset-label" for="searchSection">Search</label>
-    <fieldset id="searchSection">
-        {{ renderForm(all_forms.search) }}
-    </fieldset>
-</div>
+            <!-- Advanced settings -->
+            <div class="container">
+                <div class="collapse" id="advancedSection">
+                    <div class="row">
+                        <!-- Filtering -->
+                        <div class="col-lg-3">
+                            <h4>Filtering</h4>
+                            {{ render_form_group(form.max_e_value) }}
+                            {{ render_form_group(form.min_identity) }}
+                            {{ render_form_group(form.min_query_coverage) }}
+                        </div>
 
-<div id="intermediateGenesDiv">
-    <label class="fieldset-label" for="intermediateGenesSection">Intermediate genes</label>
-    <fieldset id="intermediateGenesSection">
-        {{ renderForm(all_forms.base.intermediate_genes) }}
-    </fieldset>
-</div>
+                        <!-- Clustering -->
+                        <div class="col-lg-3">
+                            <h4>Clustering</h4>
+                            {{ render_form_group(form.max_intergenic_gap) }}
+                            {{ render_form_group(form.min_presence_percentage) }}
+                            {{ render_form_group(form.min_unique_hits) }}
+                            {{ render_form_group(form.min_cluster_hits) }}
+                            {{ render_form_group(form.required_sequences) }}
+                        </div>
 
-{% else %}
-        <input type="hidden" name="searchEnteredJobId" value="{{ prev_run_id }}"></input>
-        <input type="hidden" value="prev_session" id="radioPrevSession" name="inputType"/>
-        <input type="hidden" name="mode" value="remote"></input>
-{#        TODO future: mode is not always remote, find way to als use it for HMM / HMM+remote#}
-{% endif %}
+                        <!-- Summary table -->
+                        <div class="col-lg-3">
+                            <h4>Summary table</h4>
+                            {{ render_form_group(form.summary_delimiter) }}
+                            {{ render_form_group(form.summary_decimal) }}
+                            <div class="form-check mt-3">
+                                {{ form.summary_hide_header(class="form-check-input") }}
+                                {{ form.summary_hide_header.label(class="form-check-label") }}
+                            </div>
+                        </div>
 
-<label id="advancedSection" class="fieldset-label accordion">Advanced +</label>
-<fieldset id="dummy"></fieldset>
-<div class="panel">
-    <div id="filteringSectionFullFieldset">
-        <label class="fieldset-label" for="filteringSection">Filtering</label>
-        <fieldset id="filteringSection">
-            {{ renderForm(all_forms.filtering) }}
-        </fieldset>
-    </div>
+                        <!-- Binary table -->
+                        <div class="col-lg-3">
+                            <h4>Binary table</h4>
+                            {{ render_form_group(form.binary_delimiter) }}
+                            {{ render_form_group(form.binary_decimal) }}
+                            {{ render_form_group(form.key_function) }}
+                            {{ render_form_group(form.hit_attribute) }}
+                            <div class="form-check mt-3">
+                                {{ form.binary_hide_header(class="form-check-input") }}
+                                {{ form.binary_hide_header.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Advanced settings -->
 
-    <div id="clusteringSectionFullFieldset">
-        <label class="fieldset-label" for="clusteringSection">Clustering</label>
-        <fieldset id="clusteringSection">
-            {{ renderForm(all_forms.base.clustering) }}
 
-        </fieldset>
-    </div>
 
-    <div>
-        <label class="fieldset-label" for="searchSumTableSection">Summary table</label>
-        <fieldset id="searchSumTableSection">
-            {{ renderForm(all_forms.base.summary_table) }}
-        </fieldset>
-    </div>
 
-    <div>
-        <label class="fieldset-label" for="searchBinTableSection">Binary table</label>
-        <fieldset id="searchBinTableSection">
-            {{ renderForm(all_forms.base.binary_table) }}
-        </fieldset>
-    </div>
 
-    <div>
-        <label class="fieldset-label" for="generalOptionSection">Additional options</label>
-        <fieldset id="generalOptionSection">
-            {{ renderForm(all_forms.base.additional_options) }}
-        </fieldset>
-    </div>
 
-</div>
+        <!-- Submit button -->
+        <div class="container">
+            <div class="mt-3">
+                {{ form.submit(class="btn btn-outline-success btn-lg w-100") }}
+            </div>
+        </div>
 
-<div class="input-layer centered">
-    {{ all_forms.base.general.submit.submit }}
-{#    <input class="button" value="Submit" type="submit" id="submitSearchForm"/>#}
-</div>
-    </form>
-</div>
+        </form>
+    </section>
+    <!-- End Input Form -->
+
+    <!-- Link to the JavaScript file for toggling Intermediate genes -->
+    <script src="/static/js/cblaster_search_form.js"></script>
 {% endblock %}
