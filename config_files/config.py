@@ -12,7 +12,9 @@ cagecat_version = '1.0'
 # changeable
 send_mail = True
 period_to_keep_job_results = 31
-domain = 'https://cagecat.bioinformatics.nl/'
+domain = '127.0.0.1:5364/'
+# Below should be uncommented for deployment
+# domain = 'https://cagecat.bioinformatics.nl/'
 NCBI_ftp_base_url = 'ftp.ncbi.nlm.nih.gov'
 
 thresholds = {
