@@ -3,37 +3,41 @@
 Initialization module of the CAGECAT web service. This module executes any
 preparational steps before starting CAGECAT. This file is ran from
 <server_prefix>/run.py
-
-Author: Matthias van den Belt
 """
 
-# import statements
+# Import statements
 import base64
 import hashlib
-
 import flask
-from flask import Flask, Response
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CSRFProtect
-
 import redis
 import rq
 import re
 
+from flask import Flask, Response
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 
+# Import configurations
 from config_files.config import init_config
 
+# Initialize Redis connection
 r = redis.Redis()
 q = rq.Queue(connection=r, default_timeout=28800) # 8h for 1 job
 
+# Initialize Flask application
 app = Flask("cagecat")
+
+# Load configurations
 app.config.update(init_config)
 
+# Initialize CSRF protection
 csrf = CSRFProtect()
 csrf.init_app(app)
 
+# Initialize database
 db = SQLAlchemy(app)
 
+# Import blueprints and register them
 from cagecat.routes import routes
 from cagecat.tools.tools_routes import tools
 from cagecat.result.result_routes import result
@@ -43,10 +47,11 @@ from cagecat.db_utils import Statistic
 app.register_blueprint(tools, url_prefix="/tools")
 app.register_blueprint(result, url_prefix="/results")
 
+# Create database tables if they don't exist
 with app.app_context():
     db.create_all()
 
-# for custom instances
+    # Initialize statistics if not present
     if Statistic.query.filter_by(name="finished").first() is None:
         stats = [Statistic(name="finished"),
                  Statistic(name="failed")]
@@ -57,26 +62,10 @@ with app.app_context():
 
         db.session.commit()
 
-# add_header Content-Security-Policy "script-src 'self' *.googleapis.com cdnjs.cloudflare.com cdn.jsdelivr.net; frame-src 'self'";
-# csp_headers = {
-#     'frame-src': [
-#         'self'
-#     ],
-#     'script-src': [
-#         "'sha256-VTAmOhFJf7NXPaOoDtmGnzgeTy5irawqE7Gps5UfNaU='",
-#         "'sha256-5NUfqwE5Ru7GwQSUKLQJ+U61xroMjwjJdR/FrbGlXgc='",
-#         0,
-#         # body.onload will be added here. index 2 will be set over and over for every response
-#         'self',
-#         '*.googleapis.com',
-#         'cdnjs.cloudflare.com',
-#         'cdn.jsdelivr.net',
-#     ]
-# }
-
+# Define Content Security Policy headers
 csp_headers =   "frame-src 'self'; " \
                 "frame-ancestors 'self'; " \
-                "style-src 'self' cdnjs.cloudflare.com; " \
+                "style-src 'self' cdnjs.cloudflare.com fonts.googleapis.com; " \
                 "script-src " \
                 "'unsafe-hashes' " \
                 "'sha256-VTAmOhFJf7NXPaOoDtmGnzgeTy5irawqE7Gps5UfNaU=' " \
@@ -91,7 +80,7 @@ csp_headers =   "frame-src 'self'; " \
                 "cdnjs.cloufdare.com " \
                 "cdn.jsdelivr.net " \
 
-    # js_pattern = r'<body .+onload="(.+)">'
+# Regex pattern to find JS code in response
 js_pattern = re.compile(r'<script type="application\/javascript">(function wrapped\(\).+)<\/script>')
 # TODO: make sure that no newlines are there JS as this gives errors in nginx --> error in regex??
 
