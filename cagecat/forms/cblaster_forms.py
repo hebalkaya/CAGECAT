@@ -1,18 +1,22 @@
 from flask_wtf import FlaskForm
+from wtforms.fields import FileField 
 from wtforms.fields.choices import SelectField, RadioField
 from wtforms.fields.numeric import IntegerField, FloatField
 from wtforms.fields.simple import StringField, EmailField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, Length
+
+from cagecat.forms.valid_input_cblaster import is_safe_string_value
+from cagecat.const import genbank_extensions, fasta_extensions
 
 
 class CblasterSearchForm(FlaskForm):
     # Job description fields
-    job_title = StringField('Job title', validators=[DataRequired()], render_kw={"placeholder": "experiment name or number"})
+    job_title = StringField('Job title', validators=[DataRequired(), Length(max=60), is_safe_string_value], render_kw={"placeholder": "experiment name or number"})
     institution_name = StringField('Institution name', validators=[DataRequired()], render_kw={"placeholder": "institution name"})
-    email_address = EmailField('Email address (notifications)', validators=[DataRequired(), Email()], render_kw={"placeholder": "username@institution.com"})
+    email_address = EmailField('Email address (notifications)', validators=[DataRequired(), Email(), is_safe_string_value], render_kw={"placeholder": "username@institution.com"})
 
     # Search fields
-    entrez_query = StringField('Entrez query', validators=[DataRequired()], render_kw={"placeholder": "Aspergillus[organism]"})
+    entrez_query = StringField('Entrez query', render_kw={"placeholder": "Aspergillus[organism]"})
     database = SelectField('Database', choices=[('nr', 'RefSeq non-redundant proteins (nr)'), ('refseq_protein', 'RefSeq protein'), ('swissprot', 'Swissprot'), ('custom', '[Custom Database] Streptomyces_complete')])
     maximum_hits = IntegerField('Maximum hits', validators=[DataRequired()], default=500)
 
@@ -20,6 +24,18 @@ class CblasterSearchForm(FlaskForm):
     find_intermediate_genes = BooleanField('Find intermediate genes', id='find_intermediate_genes')
     maximum_distance = IntegerField('Maximum distance', id='maximum_distance', default=5000)
     maximum_clusters = IntegerField('Maximum clusters', id='maximum_clusters', default=100)
+
+    # Genome file input settings
+    _all_suffixes = list(genbank_extensions)
+    _all_suffixes.extend(fasta_extensions)
+
+    input_genome_file = FileField('',
+        validators=[],  # Add more validators as needed
+        render_kw={
+            'accept': ','.join(_all_suffixes),
+            'required': ''
+        }
+    )
 
     # Input type fields
     input_type = RadioField('Input Type', choices=[

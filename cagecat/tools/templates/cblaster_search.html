@@ -77,7 +77,7 @@
                         <!-- displayed only if one of the remote options + file is checked -->
                         <div id="fileSection" class="hidden">
                             <div class="mt-4">
-                                <input class="form-control" type="file" id="formFile">
+                                {{ render_form_group(form.input_genome_file) }}
                             </div>
                         </div>
 
